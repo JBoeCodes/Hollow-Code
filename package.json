@@ -1,6 +1,7 @@
 {
   "name": "hollow",
   "version": "0.5.15",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "engines": {

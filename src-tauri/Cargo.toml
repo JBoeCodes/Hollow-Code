@@ -3,6 +3,7 @@ name = "hollow"
 version = "0.5.15"
 description = "Hollow: outcome workspaces with local files, agents, and connected sources"
 authors = ["Hollow Contributors"]
+license = "MIT"
 edition = "2021"
 rust-version = "1.89"
 
