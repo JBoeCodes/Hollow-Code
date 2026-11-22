@@ -1,0 +1,31 @@
+{
+  "asked": "What changed?",
+  "attended": true,
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "permissionMode": "default",
+  "queueId": 42,
+  "recall": [
+    {
+      "path": "notes/a.md",
+      "score": 0.5,
+      "statement": "B",
+      "subject": "A",
+      "targetPath": "notes/a.md"
+    }
+  ],
+  "rt": {
+    "candidates": [],
+    "query": "q",
+    "sessionKey": "s-20261118-abc"
+  },
+  "runId": "run-1",
+  "sessionKey": "s-20261118-abc",
+  "steerSupport": {
+    "agent": "claude",
+    "note": "Steer goes in now.",
+    "support": "native"
+  },
+  "type": "runStarted",
+  "unattended": false
+}

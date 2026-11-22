@@ -1,0 +1,59 @@
+{
+  "key": "research-fourth-attachment-2",
+  "task": "research-fourth-attachment",
+  "slice": "research",
+  "rep": 2,
+  "status": "done",
+  "startedAt": "2026-10-07T09:00:00.000Z",
+  "endedAt": "2026-10-07T09:01:10.000Z",
+  "queue": {
+    "id": 2,
+    "status": "done",
+    "error": null
+  },
+  "transcript": {
+    "sessionKey": "s-r-base-research-fourth-attachment-2",
+    "nativeSessionId": "native-research-fourth-attachment-2",
+    "historyRunId": "run-r-base-research-fourth-attachment-2",
+    "queueId": 2,
+    "sessionRecord": "session-record.md"
+  },
+  "sessionFolders": [],
+  "composer": {
+    "workspace": "eval-outcome",
+    "agent": "claude",
+    "model": "opus",
+    "effort": "High",
+    "mode": "Edits only"
+  },
+  "cost": {
+    "turnCostUsd": 0.8,
+    "otherCostUsd": 0,
+    "costUsd": 0.8,
+    "knownCostUsd": 0.8,
+    "inputTokens": 2000,
+    "cachedInputTokens": 18000,
+    "outputTokens": 400,
+    "models": [
+      "claude-opus-5-5"
+    ],
+    "rows": []
+  },
+  "pendingCards": 0,
+  "artifacts": {
+    "created": [
+      "workspaces/eval-outcome/outputs/budget.md"
+    ],
+    "modified": [],
+    "deleted": []
+  },
+  "reverted": {
+    "removed": 1,
+    "restored": 0
+  },
+  "facts": {
+    "contains": [],
+    "absent": [],
+    "pass": true
+  }
+}

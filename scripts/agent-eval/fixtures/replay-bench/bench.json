@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "all": {
+    "sessions": 52,
+    "turns": 620,
+    "recorded": { "resets": 110, "flips": 79, "per100": 17.74, "flipsPer100": 12.74, "modeChangedResets": 79, "assumedPartResets": 33, "byPart": { "unknown": 28, "mode": 79, "model": 3 } },
+    "replayed": { "resets": 31, "flips": 0, "per100": 5.0, "flipsPer100": 0.0, "modeChangedResets": 4, "assumedPartResets": 7, "byPart": { "contract": 1, "mcp": 11, "model": 19 } },
+    "recordedOnly": 84,
+    "replayedOnly": 5
+  },
+  "claude": {
+    "sessions": 40,
+    "turns": 505,
+    "recorded": { "resets": 102, "flips": 75, "per100": 20.2, "flipsPer100": 14.85, "modeChangedResets": 75, "assumedPartResets": 30, "byPart": { "unknown": 24, "mode": 75, "model": 3 } },
+    "replayed": { "resets": 27, "flips": 0, "per100": 5.35, "flipsPer100": 0.0, "modeChangedResets": 4, "assumedPartResets": 6, "byPart": { "contract": 1, "mcp": 9, "model": 17 } },
+    "recordedOnly": 80,
+    "replayedOnly": 5
+  },
+  "mainAgent": {
+    "sessions": 1,
+    "turns": 109,
+    "recorded": { "resets": 27, "flips": 20, "per100": 24.77, "flipsPer100": 18.35, "modeChangedResets": 20, "assumedPartResets": 9, "byPart": { "unknown": 7, "mode": 20 } },
+    "replayed": { "resets": 0, "flips": 0, "per100": 0.0, "flipsPer100": 0.0, "modeChangedResets": 0, "assumedPartResets": 0, "byPart": {} },
+    "recordedOnly": 27,
+    "replayedOnly": 0
+  },
+  "mainWakes": { "turns": 80, "recordedResets": 34, "replayedResets": 0 },
+  "recordedByPartAll": { "caps": 12, "mcp": 12, "mode": 79, "model": 3, "unknown": 28 },
+  "replayedByPartAll": { "caps": 11, "contract": 1, "mcp": 11, "model": 19, "skills": 1 },
+  "window": { "from": "2026-10-09T00:00:00Z", "to": "2026-10-16T21:16:00Z" },
+  "snapshotQuickCheck": "ok",
+  "assumed": {
+    "turns": 620,
+    "model": 12,
+    "perm": 0,
+    "agentFromSession": 12,
+    "mcpFromSession": 380,
+    "mcpDefault": 40,
+    "canvasesFromSession": 390,
+    "canvasesDefault": 40,
+    "cwdSessionLevel": 620,
+    "teammatesInstalled": 560
+  },
+  "manifests": {
+    "pool": 500,
+    "turns": 620,
+    "turnsWithManifest": 200,
+    "unreadable": 0,
+    "withoutVisualGuide": 10,
+    "byEntry": { "appSession": 60, "composer": 140 },
+    "bySession": { "new": 20, "reset": 15, "resume": 165 },
+    "configChangedResets": 14
+  },
+  "skippedTurns": 2,
+  "unmatched": { "noTurn": 1, "preWindowTurn": 3, "skippedTurn": 0 },
+  "snapshotDeleted": true
+}

@@ -1,0 +1,52 @@
+{
+  "arm": "jev",
+  "complete": true,
+  "condition": "proposal-dedup",
+  "results": [
+    {
+      "basis": "fallback",
+      "calls": 1,
+      "costUsd": null,
+      "id": "cadence-learning",
+      "latencyMs": 0.6,
+      "note": "Jev returned an invalid response.",
+      "of": null,
+      "outcome": "malformed",
+      "verdict": "new"
+    },
+    {
+      "basis": "fallback",
+      "calls": 1,
+      "costUsd": null,
+      "id": "firmware-task",
+      "latencyMs": 0.5,
+      "note": "Jev returned an invalid response.",
+      "of": null,
+      "outcome": "malformed",
+      "verdict": "new"
+    },
+    {
+      "basis": "fallback",
+      "calls": 1,
+      "costUsd": null,
+      "id": "access-task",
+      "latencyMs": 0.5,
+      "note": "Jev returned an invalid response.",
+      "of": null,
+      "outcome": "malformed",
+      "verdict": "new"
+    },
+    {
+      "basis": "exact",
+      "calls": 0,
+      "costUsd": 0,
+      "id": "firmware-exact",
+      "latencyMs": 0.0,
+      "note": null,
+      "of": "t-firmware",
+      "outcome": "not-sent",
+      "verdict": "duplicate"
+    }
+  ],
+  "schema": 1
+}

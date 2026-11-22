@@ -1,0 +1,8 @@
+@layer components {
+.rbk-card.canvas-export-card { width: min(480px, 94vw); height: auto; max-height: 88vh; overflow: auto; }
+.canvas-export-card .rbk-head h2 { flex: 1; }
+.canvas-export-card .rbk-foot { display: flex; justify-content: flex-end; }
+.canvas-export-card [role="status"] { overflow-wrap: anywhere; }
+.canvas-export-field { display: grid; grid-template-columns: 1fr 2fr; align-items: center; gap: var(--sp-3); }
+}
+

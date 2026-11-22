@@ -1,0 +1,618 @@
+{
+ "version": 1,
+ "files": {
+  "scripts/gate-run.test.mjs": {
+   "sleep": 1,
+   "clock": 5
+  },
+  "scripts/release-nightly.test.mjs": {
+   "clock": 2
+  },
+  "src-tauri/src/agent_sessions.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/agent_tests.rs": {
+   "sleep": 3
+  },
+  "src-tauri/src/app_mcp.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/approvals.rs": {
+   "sleep": 3
+  },
+  "src-tauri/src/automated_history.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/automated_history_tests.rs": {
+   "sleep": 4
+  },
+  "src-tauri/src/budgets_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/build_slots.rs": {
+   "sleep": 5
+  },
+  "src-tauri/src/build_slots_remote_tests.rs": {
+   "sleep": 6
+  },
+  "src-tauri/src/chat_pause_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/chat_self_hosted_tests.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/chat_tests.rs": {
+   "sleep": 12
+  },
+  "src-tauri/src/claude_quota.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/companion_bridge.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/connectors.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/context_rank.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/descendants.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/directory_connections.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/doc_text.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/embed_model.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/evidence.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/flock.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/inline_ai.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/jev.rs": {
+   "sleep": 4
+  },
+  "src-tauri/src/jev_study.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/launch_tests.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/logo_options.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/move_home_tests.rs": {
+   "sleep": 4
+  },
+  "src-tauri/src/peer_client.rs": {
+   "sleep": 4
+  },
+  "src-tauri/src/phone_access/canvases_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/phone_access/dispatcher_tests.rs": {
+   "sleep": 5
+  },
+  "src-tauri/src/phone_access/lid_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/phone_access/peer_api_tests.rs": {
+   "sleep": 4
+  },
+  "src-tauri/src/phone_access/peer_tests.rs": {
+   "sleep": 4
+  },
+  "src-tauri/src/phone_access/revoke_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/phone_access/search_api_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/phone_access_tests.rs": {
+   "sleep": 18
+  },
+  "src-tauri/src/prep_deadline.rs": {
+   "sleep": 3
+  },
+  "src-tauri/src/process_group.rs": {
+   "sleep": 8
+  },
+  "src-tauri/src/project_text_index.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/recall_prefetch.rs": {
+   "sleep": 4
+  },
+  "src-tauri/src/remote_auth.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/remote_session_tests.rs": {
+   "sleep": 13
+  },
+  "src-tauri/src/remote_status_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/repo_diff_tests.rs": {
+   "sleep": 3
+  },
+  "src-tauri/src/retrieval_broker.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/run_activity.rs": {
+   "sleep": 7
+  },
+  "src-tauri/src/run_auth.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/run_permit.rs": {
+   "sleep": 4
+  },
+  "src-tauri/src/run_pump_tests.rs": {
+   "sleep": 6
+  },
+  "src-tauri/src/scratch.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/self_hosted_forwarder_tests.rs": {
+   "sleep": 6
+  },
+  "src-tauri/src/self_hosted_jobs_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/self_hosted_registry_tests.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/self_hosted_wake_tests.rs": {
+   "sleep": 3
+  },
+  "src-tauri/src/self_install.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/services.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/session_store.rs": {
+   "sleep": 3
+  },
+  "src-tauri/src/shell_path.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/team_mcp.rs": {
+   "sleep": 3
+  },
+  "src-tauri/src/tracker/linear_tests.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/update_client/overnight_tests.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/usage_ledger.rs": {
+   "sleep": 7
+  },
+  "src-tauri/src/vault.rs": {
+   "sleep": 2
+  },
+  "src-tauri/src/vault_commitments.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/vault_embed_index.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/workflow_hygiene.rs": {
+   "sleep": 3
+  },
+  "src-tauri/src/workflow_permissions.rs": {
+   "sleep": 1
+  },
+  "src-tauri/src/workspace_results.rs": {
+   "sleep": 1
+  },
+  "src/appMenu.test.ts": {
+   "sleep": 1
+  },
+  "src/canvasBridge.test.ts": {
+   "clock": 3
+  },
+  "src/canvasGallery.test.ts": {
+   "sleep": 1
+  },
+  "src/chatLimits.test.ts": {
+   "sleep": 2
+  },
+  "src/components/chat/chatScrollController.test.ts": {
+   "sleep": 1
+  },
+  "src/components/chat/chatSendController.test.ts": {
+   "sleep": 1
+  },
+  "src/libraryCanvasListing.test.ts": {
+   "sleep": 1
+  },
+  "src/messageActions.test.ts": {
+   "clock": 1
+  },
+  "src/mockDemo.test.ts": {
+   "clock": 1
+  },
+  "src/planModel.test.ts": {
+   "clock": 2
+  },
+  "src/runnerStatus.test.ts": {
+   "clock": 2
+  },
+  "src/selfHostedWake.test.ts": {
+   "clock": 2
+  },
+  "src/settings/agentSettingsQueue.test.ts": {
+   "sleep": 1
+  },
+  "src/settings/claudeLimitsSaves.test.ts": {
+   "sleep": 1
+  },
+  "src/settings/claudeLimitsState.test.ts": {
+   "sleep": 1
+  },
+  "src/store/ask.scope.test.ts": {
+   "sleep": 1
+  },
+  "src/store/chatPause.test.ts": {
+   "sleep": 1,
+   "clock": 1
+  },
+  "src/store/chatPermission.test.ts": {
+   "sleep": 1
+  },
+  "src/store/dictation.test.ts": {
+   "sleep": 1
+  },
+  "src/store/peerChat.test.ts": {
+   "sleep": 2
+  },
+  "src/store/peerSessions.test.ts": {
+   "sleep": 5
+  },
+  "src/store/prepOverwrite.test.ts": {
+   "sleep": 1
+  },
+  "src/store/replyFeedback.test.ts": {
+   "sleep": 1
+  },
+  "src/store/theme.test.ts": {
+   "sleep": 2
+  },
+  "src/store/workspaces.navigation.test.ts": {
+   "sleep": 2
+  },
+  "src/store/workspaces.refresh.test.ts": {
+   "sleep": 2
+  },
+  "src/todayFreshness.test.ts": {
+   "clock": 3
+  },
+  "src/viewTransitions.test.ts": {
+   "sleep": 7
+  },
+  "src/workflowWindows.test.ts": {
+   "clock": 2
+  },
+  "src/workspaceMenu.test.ts": {
+   "sleep": 1
+  },
+  "tests/perf/frontend.perf.spec.ts": {
+   "sleep": 13
+  },
+  "tests/review/frontier-capture.spec.ts": {
+   "sleep": 26,
+   "clock": 2
+  },
+  "tests/review/layout-review.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/a11y-sweep.minimum.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/activity-open.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/askSend.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/automation-window-editor.journey.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/build-changes.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/build-workspace.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/canvas-ask-draft.spec.ts": {
+   "sleep": 4,
+   "clock": 2
+  },
+  "tests/smoke/canvas-ask-survive.spec.ts": {
+   "sleep": 6
+  },
+  "tests/smoke/canvas-file-links.spec.ts": {
+   "sleep": 2
+  },
+  "tests/smoke/canvas-focus.spec.ts": {
+   "sleep": 10
+  },
+  "tests/smoke/canvas-frame-budget.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/canvas-host-contract.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/canvas-inline.spec.ts": {
+   "sleep": 1,
+   "clock": 1
+  },
+  "tests/smoke/canvas-kit-ask.spec.ts": {
+   "sleep": 5
+  },
+  "tests/smoke/canvas-kit-display.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/canvas-look.spec.ts": {
+   "sleep": 2
+  },
+  "tests/smoke/canvas-open-settle.spec.ts": {
+   "sleep": 24,
+   "clock": 1
+  },
+  "tests/smoke/canvas-results.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/canvas-revisions.spec.ts": {
+   "sleep": 3
+  },
+  "tests/smoke/canvas-scale-measure.spec.ts": {
+   "sleep": 2
+  },
+  "tests/smoke/canvases-setting.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/card-survives-wake.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/cfo-settings.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/chat-blocks.spec.ts": {
+   "sleep": 1,
+   "clock": 2
+  },
+  "tests/smoke/chat-empty.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/chat-jump.spec.ts": {
+   "sleep": 3,
+   "clock": 1
+  },
+  "tests/smoke/chat-motion.spec.ts": {
+   "sleep": 3
+  },
+  "tests/smoke/chat-note-aloud.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/chat-quote.spec.ts": {
+   "sleep": 2,
+   "clock": 1
+  },
+  "tests/smoke/chat-title.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/chat-video.spec.ts": {
+   "sleep": 1,
+   "clock": 1
+  },
+  "tests/smoke/chat-workspace.spec.ts": {
+   "clock": 5
+  },
+  "tests/smoke/choose.ts": {
+   "clock": 1
+  },
+  "tests/smoke/companion-settings.spec.ts": {
+   "sleep": 1,
+   "clock": 3
+  },
+  "tests/smoke/confirm-load-recovery.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/connectors.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/context-ring.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/dictation.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/expanded-canvas-focus.spec.ts": {
+   "sleep": 3
+  },
+  "tests/smoke/fixture-parity.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/fixture-states.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/j1-resume.journey.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/j8-running.journey.spec.ts": {
+   "clock": 3
+  },
+  "tests/smoke/keyboard-only.spec.ts": {
+   "sleep": 2
+  },
+  "tests/smoke/launch-ipc.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/layout.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/library-all-list.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/library-recovery.journey.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/library-tabs-state.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/long-chat.spec.ts": {
+   "sleep": 2
+  },
+  "tests/smoke/main-agent-provider.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/main-chat-file-chips.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/main-space-facts.journey.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/meeting-recap.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/mission-tracks.spec.ts": {
+   "sleep": 1,
+   "clock": 2
+  },
+  "tests/smoke/mock-coverage.spec.ts": {
+   "sleep": 2
+  },
+  "tests/smoke/model-menu.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/nav-history.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/next-level-activity.spec.ts": {
+   "clock": 4
+  },
+  "tests/smoke/next-level-conversation.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/notice-lifetime.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/notification-bell.spec.ts": {
+   "clock": 4
+  },
+  "tests/smoke/palette-search.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/parallel-conversations.spec.ts": {
+   "sleep": 1,
+   "clock": 1
+  },
+  "tests/smoke/peer-machines.spec.ts": {
+   "clock": 5
+  },
+  "tests/smoke/preview-pane.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/provider-usage.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/question-dock.spec.ts": {
+   "sleep": 3,
+   "clock": 1
+  },
+  "tests/smoke/quick-chats.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/quick-entry.journey.spec.ts": {
+   "sleep": 2
+  },
+  "tests/smoke/rail-git-status.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/rail-pinned.minimum.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/rail-pinned.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/rail-state.journey.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/rail-tree.spec.ts": {
+   "sleep": 3,
+   "clock": 4
+  },
+  "tests/smoke/remote-images.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/restart-resume.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/review-queue-order.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/review-views.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/run-activity.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/run-record.journey.spec.ts": {
+   "sleep": 2
+  },
+  "tests/smoke/runner-status.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/sent-file-chips-reload.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/shell-scale.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/sidebar-sections.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/skills-page.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/steering.journey.spec.ts": {
+   "sleep": 2,
+   "clock": 3
+  },
+  "tests/smoke/toast-placement.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/toast-policy.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/transition-click.spec.ts": {
+   "sleep": 1
+  },
+  "tests/smoke/turn-feedback.spec.ts": {
+   "clock": 2
+  },
+  "tests/smoke/turn-footer.spec.ts": {
+   "clock": 5
+  },
+  "tests/smoke/visible-menus.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/workbench.spec.ts": {
+   "clock": 1
+  },
+  "tests/smoke/workspace-only.spec.ts": {
+   "sleep": 2
+  }
+ }
+}

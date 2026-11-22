@@ -1,0 +1,168 @@
+/* Settings, Usage budgets (Paperclip PR 8a). Imported by
+   src/components/BudgetsPanel.tsx only, so it rides the lazy Usage chunk and
+   the main CSS bundle is unaffected. Tokens and scale steps only; the bar is
+   the shared .meter primitive (the fill is clamped, the number never). */
+@layer components {
+.budgets-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+}
+
+.budgets-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.budgets-title {
+  margin: 0;
+  font-size: var(--fs-body);
+  color: var(--ink);
+}
+
+.budgets-note,
+.budgets-empty,
+.budgets-counts {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-base);
+  color: var(--muted);
+}
+
+.budgets-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-3);
+  align-items: flex-end;
+  padding: var(--sp-3);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+}
+
+.budgets-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+
+.budgets-field input,
+.budgets-field select {
+  min-width: 8em;
+}
+
+.budgets-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+
+.budgets-form-actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex: 1 1 100%;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.budgets-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The caps Hollow keeps for you (P1-07), above your own budgets. */
+.budgets-list.budgets-fixed { margin-bottom: var(--sp-3); }
+.budgets-fixed-row { padding: var(--sp-4); background: var(--material-solid); border: 1px solid var(--material-edge); border-radius: var(--r-lg); box-shadow: var(--elev-edge); }
+.budgets-fixed-row .budgets-scope { flex: 1 1 16em; }
+.budgets-fixed-row .budgets-counts { color: var(--body); font-size: var(--fs-meta); font-variant-numeric: var(--type-numeric); }
+.budgets-fixed-row .budgets-state { color: var(--ink); border-inline-start: 3px solid var(--primary); padding-inline-start: var(--sp-2); }
+.budgets-fixed-row[data-state="warn"] .budgets-state { border-color: var(--warning); }
+.budgets-fixed-row[data-state="stopped"] .budgets-state { border-color: var(--error); }
+.budgets-fixed-row[data-state="unknown"] .budgets-state { border-color: var(--hairline); }
+.budgets-fixed-row .meter { margin: var(--sp-2) 0; }
+.budgets-fixed-row[data-state="warn"] .meter-fill { background: var(--warning); }
+.budgets-fixed-row[data-state="stopped"] .meter-fill { background: var(--error); }
+.budgets-fixed-row .budgets-row-actions { margin-top: var(--sp-2); }
+
+.budgets-row,
+.budgets-fixed-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.budgets-row-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  font-size: var(--fs-meta);
+}
+
+.budgets-scope {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.budgets-window,
+.budgets-soft {
+  color: var(--muted);
+}
+
+.budgets-row[data-state="warning"] .meter-fill {
+  background: var(--warning);
+}
+
+.budgets-row[data-state="over"] .meter-fill,
+.budgets-row[data-state="paused"] .meter-fill {
+  background: var(--error);
+}
+
+.budgets-chip[data-state="paused"],
+.budgets-chip[data-state="over"] {
+  /* Error text on the chip's former dark surface was only 4.16:1 (the chip
+     has sat on --surface-soft since overnight 10-15/16 S02, where --error
+     passes). Keep the state in words and its border/gauge while using
+     readable text in every theme. */
+  color: var(--ink);
+  border: 1px solid var(--error);
+}
+
+.budgets-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-3);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-caption);
+  color: var(--body);
+}
+
+.budgets-warn {
+  margin: 0;
+  font-size: var(--fs-caption);
+  color: var(--warning);
+}
+
+.budgets-row-actions,
+.budgets-resume {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+}

@@ -1,0 +1,8 @@
+{
+  "workspaces": [
+    {"id": "quick-chats", "title": "Quick chats", "kind": "quick", "status": "active", "canRunOnMini": false},
+    {"id": "main", "title": "Main agent", "kind": "main", "status": "active", "canRunOnMini": false},
+    {"id": "hollow-companion-app-cdc399a4852fa14c", "title": "Hollow Companion App", "kind": "vault", "status": "active", "canRunOnMini": true},
+    {"id": "phone-chat-api-for-the-iphone-app-da43f53e03747c94", "title": "Phone chat API for the iPhone app", "kind": "build", "status": "active", "canRunOnMini": true}
+  ]
+}

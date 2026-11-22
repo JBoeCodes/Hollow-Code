@@ -1,0 +1,5 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"toolUse","id":"toolu_3","name":"Read","input":{}}
+{"type":"result","result":"x","costUsd":null,"isError":false,"subtype":"success","sessionId":null}
+{"type":"usage","usage":{}}
+{"type":"done","sessionId":null}

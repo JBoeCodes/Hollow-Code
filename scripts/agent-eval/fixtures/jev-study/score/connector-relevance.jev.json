@@ -1,0 +1,283 @@
+{
+  "arm": "jev",
+  "complete": true,
+  "condition": "connector-relevance",
+  "results": [
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "mail"
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "notion",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "plaud",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "blender",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "zoom",
+          "score": 0.0
+        }
+      ],
+      "engine": "jev",
+      "id": "email-cost-update",
+      "latencyMs": 4.1,
+      "note": null,
+      "outcome": "ok"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "mail",
+          "score": 3.0
+        },
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "plaud"
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "zoom",
+          "score": 0.0
+        }
+      ],
+      "engine": "jev",
+      "id": "plaud-site-walk",
+      "latencyMs": 0.8,
+      "note": null,
+      "outcome": "ok"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-01",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-02",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-03",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-04",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-05",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-06",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-07",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-08",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-09",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-10",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-11",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-12",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-13",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-14",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-15",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-16",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-17",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-18",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-19",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-20",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-21",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-22",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "tool-23",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "tool-24",
+          "score": 0.0
+        },
+        {
+          "attach": false,
+          "basis": "beyond-limit",
+          "id": "tool-25",
+          "reason": "Jev scores at most 24 connectors per request; this one was not among those sent."
+        },
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "kestrel-gauges"
+        }
+      ],
+      "engine": "jev",
+      "id": "named-past-24",
+      "latencyMs": 2.0,
+      "note": "1 connector(s) past Jev's 24 used local relevance.",
+      "outcome": "ok"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "mail",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "calendar",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "zoom",
+          "score": 3.0
+        },
+        {
+          "attach": false,
+          "basis": "jev",
+          "id": "notion",
+          "score": 0.0
+        },
+        {
+          "attach": true,
+          "basis": "jev",
+          "id": "slack",
+          "score": 3.0
+        }
+      ],
+      "engine": "jev",
+      "id": "steering-slot",
+      "latencyMs": 0.7,
+      "note": null,
+      "outcome": "ok"
+    }
+  ],
+  "schema": 1
+}

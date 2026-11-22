@@ -1,0 +1,5 @@
+# Hashed identifier denylist (BG3). SHA-256 values only, one per line; never a name.
+# Add with: node scripts/identifier-guard.mjs --hash < your-private-names.txt >> scripts/identifier-denylist.sha256
+# (the names file stays outside the repo). A line is the hash of the lowercased one or two words.
+# This first entry is a canary phrase that proves the guard is live; the test builds it at run time.
+278e81740de0375edf95c615500a9154a77ca6f398afc0d224a5d55badf2eedc # canary

@@ -1,0 +1,8 @@
+{
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "message": "It failed.",
+  "queueId": 42,
+  "resultKind": "error",
+  "type": "error"
+}

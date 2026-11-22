@@ -1,0 +1,26 @@
+/* A Result's review bar in the Files tab (COO rebuild L4; it was the
+   Results section, ResultsView.tsx), owned by components/ResultReviewBar.tsx,
+   and the result notes ResultCanvas.tsx shares. */
+@layer components {
+.result-review-bar { display: grid; gap: var(--sp-2); padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--hairline-soft, var(--hairline)); background: var(--surface-soft, var(--canvas)); }
+.result-states { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.result-origin { color: var(--muted); font-size: var(--fs-meta); }
+.result-origin .btn-link { font-size: inherit; text-decoration: none; }
+.result-origin .btn-link:hover { text-decoration: underline; }
+.result-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.result-note { margin: 0; color: var(--warning); font-size: var(--fs-meta); }
+.result-compare { min-width: 0; max-height: 60vh; overflow: auto; }
+.result-history { color: var(--body); font-size: var(--fs-meta); }
+.result-history summary { cursor: pointer; color: var(--muted); }
+.result-history ol { display: grid; gap: var(--sp-1); margin: var(--sp-2) 0 0; padding: 0; list-style: none; }
+.result-history li { display: flex; gap: var(--sp-2); }
+.result-history small { color: var(--muted); }
+/* A saved canvas in Canvas mode (Canvas C5b, ResultCanvas). */
+.result-canvas { min-width: 0; margin-top: var(--sp-4); }
+.result-canvas-note { margin: var(--sp-3) 0 var(--sp-2); }
+/* Accepting is a meaningful moment: the review pill settles in once. */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .result-review-bar[data-review="accepted"] .result-states > .ui-pill:first-child { animation: result-accepted var(--t-xl, 320ms) var(--ease-out, ease-out); }
+}
+@keyframes result-accepted { 0% { box-shadow: 0 0 0 0 var(--accent-glow); } 60% { box-shadow: 0 0 0 6px transparent; } 100% { box-shadow: none; } }
+}

@@ -1,0 +1,23 @@
+@layer components {
+  .preview-player-controls { display: flex; align-items: center; gap: var(--sp-2); }
+  .preview-player-title { flex: 1; font-size: var(--fs-meta); color: var(--ink); }
+  .canvas-split > .preview-pane.preview-mini {
+    position: fixed; z-index: var(--z-card); right: var(--sp-4); bottom: var(--sp-4);
+    width: min(24rem, calc(100vw - 2 * var(--sp-4)));
+    height: min(18rem, calc(100dvh - 6rem));
+    flex: none; border: 1px solid var(--hairline); border-radius: var(--r-float);
+    box-shadow: var(--elev-2);
+  }
+  .preview-mini > .resize-handle,
+  .preview-mini > .preview-pane-bar > :not(.preview-player-controls),
+  .preview-mini .browser-pane > :not(.browser-page) { display: none; }
+  .preview-mini .preview-player-controls { flex: 1; }
+  .preview-mini .preview-pane-bar { padding-inline: var(--sp-2); }
+  /* A floating preview leaves the page available at every window size. */
+  @container hollow-window (max-width: 68.75em) {
+    .canvas-split:has(> .preview-pane.preview-mini) > .page { display: flex; }
+  }
+  @media (forced-colors: active) {
+    .canvas-split > .preview-pane.preview-mini { border-color: CanvasText; }
+  }
+}

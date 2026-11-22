@@ -1,0 +1,29 @@
+/* Parity 7.3: Projects → Pull requests. The detail reuses pr-panel.css's chips, checks and comments. */
+@layer components {
+.gh-page { display: flex; flex-direction: column; gap: var(--sp-3); min-width: 0; }
+.gh-bar, .gh-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.gh-repo { margin-inline-start: auto; font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.gh-filters input[type="search"], .gh-filters input[type="text"] { min-width: 0; width: 11rem; }
+.gh-check { display: inline-flex; align-items: center; gap: var(--sp-1); color: var(--body); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.gh-split { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--sp-3); align-items: start; min-width: 0; }
+.gh-list-col, .gh-detail-col { min-width: 0; }
+.gh-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.gh-row { display: flex; flex-direction: column; gap: var(--sp-1); width: 100%; padding: var(--sp-2); border: 1px solid var(--hairline-soft); border-radius: var(--r-lg); background: none; color: var(--ink); text-align: start; font: inherit; cursor: pointer; }
+.gh-row:hover { background: var(--surface-soft); }
+.gh-row.selected { border-color: var(--primary); background: var(--surface-soft); }
+.gh-row:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.gh-row-title { font: 600 var(--fs-body)/var(--lh-tight) var(--ui); overflow-wrap: anywhere; }
+.gh-num { color: var(--muted); font-weight: 400; }
+.gh-row-meta, .gh-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); margin: 0; }
+.gh-row-by { font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.gh-label { display: inline-block; padding: 1px var(--sp-2); border: 1px solid var(--hairline-soft); border-radius: var(--r-md); color: var(--body); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.gh-label[data-colored="true"] { border-color: var(--gh-label, var(--hairline-soft)); }
+.gh-linear-chip { padding: 1px var(--sp-2); border-radius: var(--r-md); background: var(--surface-soft); color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.gh-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); margin-top: var(--sp-2); }
+.gh-linear { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.gh-linear li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.gh-linear-key { color: var(--ink); }
+.gh-comment { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-1); margin-top: var(--sp-2); }
+.gh-comment textarea { width: 100%; box-sizing: border-box; resize: vertical; }
+.gh-detail.pr-panel { height: auto; overflow: visible; padding: 0; }
+}

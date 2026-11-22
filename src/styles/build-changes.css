@@ -1,0 +1,95 @@
+/* The Changes tab of a build workspace's side panel (components/BuildChanges.tsx,
+   Build PR B2). Imported by the component so it stays out of the main bundle. */
+@layer components {
+.build-changes { display:flex; flex-direction:column; flex:1; min-height:0; min-width:0; }
+.bc-head { display:flex; align-items:center; gap:var(--sp-2); padding:10px 14px; border-bottom:1px solid var(--hairline); flex-wrap:wrap; }
+/* The Mac mini runner (2026-11-01): Runs on, under the branch line. */
+.bc-runs-on { display:flex; align-items:center; gap:var(--sp-2); padding:8px 14px; border-bottom:1px solid var(--hairline); flex-wrap:wrap; font-size:var(--fs-meta); }
+.bc-branch { display:flex; align-items:center; gap:6px; min-width:0; flex:1; font-size:var(--fs-body); }
+.bc-branch strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-family:var(--mono); font-size:var(--fs-meta); }
+.bc-counts { display:flex; align-items:center; gap:var(--sp-2); font-size:var(--fs-meta); }
+.bc-behind { color:var(--warning); }
+.bc-muted { color:var(--muted); font-size:var(--fs-meta); }
+.bc-empty { padding:var(--sp-4) 0; }
+.bc-pr { padding:2px 8px; border:1px solid var(--hairline); border-radius:var(--r-pill); background:var(--surface-card); color:var(--primary); font:500 var(--fs-caption) var(--ui); cursor:pointer; }
+.bc-pr[data-state=merged] { color:var(--success); }
+.bc-pr[data-state=closed] { color:var(--muted); }
+.bc-error { margin:var(--sp-2) 14px 0; padding:8px 10px; border:1px solid var(--error); border-radius:var(--r-sm); background:var(--error-soft); color:var(--error); font-size:var(--fs-meta); white-space:pre-wrap; }
+.bc-scroll { flex:1; min-height:0; overflow:auto; padding:var(--sp-2) 14px var(--sp-4); }
+.bc-files { display:flex; flex-direction:column; gap:2px; }
+.bc-file { display:flex; align-items:center; gap:var(--sp-2); width:100%; padding:6px 8px; border:0; border-radius:var(--r-sm); background:none; color:var(--ink); font:var(--fs-meta) var(--ui); text-align:left; cursor:pointer; }
+.bc-file:hover { background:var(--surface-soft); }
+.bc-file[aria-pressed=true] { background:var(--primary-soft); }
+.bc-letter { width:16px; flex-shrink:0; text-align:center; font:600 var(--fs-caption) var(--mono); color:var(--muted); }
+.bc-letter[data-status=added], .bc-letter[data-status=untracked] { color:var(--success); }
+.bc-letter[data-status=deleted] { color:var(--error); }
+.bc-letter[data-status=renamed] { color:var(--primary); }
+.bc-path { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-family:var(--mono); }
+.bc-dot { width:6px; height:6px; flex-shrink:0; border-radius:50%; background:var(--warning); }
+.bc-stat { flex-shrink:0; font:var(--fs-caption) var(--mono); }
+.bc-add { color:var(--success); }
+.bc-del { color:var(--error); }
+.bc-diff { margin:4px 0 var(--sp-2); border:1px solid var(--hairline); border-radius:var(--r-sm); overflow:hidden; }
+.bc-diff > .bc-muted { padding:8px 10px; margin:0; }
+.bc-hunk + .bc-hunk { border-top:1px solid var(--hairline); }
+.bc-hunk-head { display:flex; align-items:center; gap:var(--sp-2); padding:4px 8px; background:var(--surface-soft); font-size:var(--fs-caption); }
+.bc-hunk-head code { font-family:var(--mono); color:var(--muted); }
+.bc-section { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--muted); font-family:var(--mono); }
+.bc-lines { width:100%; border-collapse:collapse; font:var(--fs-caption)/1.5 var(--mono); }
+.bc-no { width:1%; padding:0 6px; color:var(--muted-soft); text-align:right; white-space:nowrap; user-select:none; vertical-align:top; }
+.bc-code { padding:0 8px 0 4px; white-space:pre-wrap; word-break:break-word; }
+.bc-sign { display:inline-block; width:12px; color:var(--muted); user-select:none; }
+.bc-line.add { background:var(--success-soft); }
+.bc-line.del { background:var(--error-soft); }
+.bc-line.note .bc-code { color:var(--muted); font-style:italic; }
+.bc-commits { margin-top:var(--sp-3); font-size:var(--fs-meta); }
+.bc-commits summary { cursor:pointer; color:var(--muted); }
+.bc-commit { display:flex; gap:var(--sp-2); padding:3px 0; }
+.bc-commit code { font-family:var(--mono); color:var(--muted); }
+.bc-actions { display:flex; flex-direction:column; gap:var(--sp-2); margin-top:var(--sp-4); padding-top:var(--sp-3); border-top:1px solid var(--hairline); }
+.bc-message, .bc-pr-form input, .bc-pr-form textarea { width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid var(--hairline); border-radius:var(--r-sm); background:var(--canvas); color:var(--ink); font:var(--fs-meta) var(--ui); resize:vertical; }
+.bc-buttons { display:flex; gap:var(--sp-2); flex-wrap:wrap; }
+.bc-pr-form { display:flex; flex-direction:column; gap:var(--sp-2); }
+.bc-pr-form label { display:flex; flex-direction:column; gap:4px; font-size:var(--fs-meta); color:var(--muted); }
+/* Build app (Build PR B5, components/AppBuildPanel.tsx). */
+.bc-app { display:flex; flex-direction:column; gap:var(--sp-2); margin-top:var(--sp-4); padding:var(--sp-3) 0; border:0; border-top:1px solid var(--hairline); border-radius:0; background:transparent; box-shadow:none; overflow-wrap:anywhere; }
+.bc-app h3 { margin:0; font:600 var(--fs-md)/var(--lh-tight) var(--ui); letter-spacing:var(--ls-tight); font-optical-sizing:auto; }
+.bc-app > .bc-muted { margin:0; line-height:var(--lh-base); font-variant-numeric:tabular-nums; }
+.bc-app .bc-error { margin:0; }
+.bc-brings { font-size:var(--fs-body); overflow-wrap:anywhere; }
+.bc-brings summary { cursor:pointer; }
+.bc-brings > div { margin-top:var(--sp-2); padding-left:var(--sp-2); border-left:1px solid var(--hairline); }
+.bc-log summary { cursor:pointer; color:var(--muted); font-size:var(--fs-caption); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.bc-log pre { max-height:220px; overflow:auto; margin:4px 0 0; padding:8px; border:1px solid var(--hairline); border-radius:var(--r-sm); background:var(--surface-soft); font:var(--fs-caption)/1.45 var(--mono); white-space:pre-wrap; word-break:break-word; }
+/* Services (Build PR B6, components/ServicesPanel.tsx). */
+.bc-services { display:flex; flex-direction:column; gap:var(--sp-2); margin-top:var(--sp-4); padding-top:var(--sp-3); border-top:1px solid var(--hairline); }
+.bc-services h3 { margin:0; font:600 var(--fs-body) var(--ui); }
+.bc-service-row { display:flex; align-items:center; gap:var(--sp-2); font-size:var(--fs-meta); }
+.bc-service-dot { width:8px; height:8px; flex-shrink:0; border-radius:50%; background:var(--success); }
+.bc-service[data-status=exited] .bc-service-dot { background:var(--muted-soft); }
+.bc-service-cmd { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:var(--fs-caption) var(--mono); color:var(--muted); }
+.bc-service-log { max-height:200px; overflow:auto; margin:4px 0 0; padding:8px; border:1px solid var(--hairline); border-radius:var(--r-sm); background:var(--surface-soft); font:var(--fs-caption)/1.45 var(--mono); white-space:pre-wrap; word-break:break-word; }
+
+/* Delivery record (next-level P20): each step with its own evidence. */
+.delivery-record { display: grid; gap: 2px; margin: 0 0 var(--sp-3); padding: var(--sp-2) 0; border: 0; border-block: 1px solid var(--hairline); border-radius: 0; background: transparent; list-style: none; }
+.delivery-record li { display: flex; align-items: flex-start; gap: var(--sp-2); padding: 3px 0; }
+.delivery-mark { display: grid; place-items: center; flex: none; width: 16px; height: 16px; margin-top: 1px; border: 1.5px solid var(--muted-soft); border-radius: 50%; color: var(--on-primary); }
+.delivery-mark > i { width: 6px; height: 6px; border-radius: 50%; }
+.delivery-record li[data-state="done"] .delivery-mark { border-color: var(--success); background: var(--success); }
+.delivery-record li[data-state="current"] .delivery-mark { border-color: var(--primary); }
+.delivery-record li[data-state="current"] .delivery-mark > i { background: var(--primary); }
+.delivery-record li[data-state="failed"] .delivery-mark { border-color: var(--error); background: var(--error); color: var(--on-error); }
+.delivery-record li[data-state="unknown"] .delivery-mark { border-color: var(--warning); border-style: dashed; }
+.delivery-record li > .btn { margin-left: auto; }
+.delivery-text { display: grid; gap: 1px; min-width: 0; }
+.delivery-text strong { color: var(--ink); font: 500 var(--fs-meta)/1.3 var(--ui); }
+.delivery-record li[data-state="pending"] .delivery-text strong { color: var(--muted); font-weight: 400; }
+.delivery-text small { color: var(--muted); font-size: var(--fs-caption); overflow-wrap: anywhere; }
+}
+
+/* Settings, Diffs (parity 4.7): wrap long lines off scrolls the hunk sideways; line numbers off hides both columns. */
+@layer components {
+  :root[data-diff-wrap='off'] .bc-hunk { overflow-x: auto; }
+  :root[data-diff-wrap='off'] .bc-code { white-space: pre; word-break: normal; }
+  :root[data-diff-numbers='off'] .bc-no { display: none; }
+}

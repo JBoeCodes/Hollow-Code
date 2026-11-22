@@ -1,0 +1,10 @@
+{
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "queueId": 42,
+  "receipt": {
+    "files": [],
+    "runId": "run-1"
+  },
+  "type": "evidenceReceipt"
+}

@@ -1,0 +1,23 @@
+@layer components {
+/* Push-to-talk (overnight 10-11 B7): the composer's mic and its listening
+   pill. App tokens only; the pulse runs only without Reduce motion. */
+.dictate-btn { display: inline-flex; align-items: center; gap: var(--sp-1); }
+.dictate-btn.is-off { opacity: 0.6; }
+.dictate-btn.is-live,
+.chat-main .dictate-btn.is-live { width: auto; flex: none; padding: 0 var(--sp-2); color: var(--error); background: color-mix(in srgb, var(--error) 12%, transparent); border-radius: var(--r-pill); }
+.dictate-pill { font-size: var(--fs-meta); font-weight: 600; color: var(--ink); white-space: nowrap; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .dictate-btn.is-live svg { animation: dictate-pulse 1.2s var(--ease) infinite; animation-play-state: var(--ambient-play, running); }
+}
+}
+
+@keyframes dictate-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.18); opacity: 0.7; }
+}
+@layer components {
+@media (forced-colors: active) {
+  .dictate-btn.is-live { outline: 2px solid Highlight; }
+}
+}
+

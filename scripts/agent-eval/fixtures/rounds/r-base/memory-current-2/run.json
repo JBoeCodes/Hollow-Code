@@ -1,0 +1,59 @@
+{
+  "key": "memory-current-2",
+  "task": "memory-current",
+  "slice": "memory",
+  "rep": 2,
+  "status": "done",
+  "startedAt": "2026-10-07T09:00:00.000Z",
+  "endedAt": "2026-10-07T09:00:42.000Z",
+  "queue": {
+    "id": 5,
+    "status": "done",
+    "error": null
+  },
+  "transcript": {
+    "sessionKey": "s-r-base-memory-current-2",
+    "nativeSessionId": "native-memory-current-2",
+    "historyRunId": "run-r-base-memory-current-2",
+    "queueId": 5,
+    "sessionRecord": "session-record.md"
+  },
+  "sessionFolders": [],
+  "composer": {
+    "workspace": "eval-outcome",
+    "agent": "claude",
+    "model": "opus",
+    "effort": "High",
+    "mode": "Edits only"
+  },
+  "cost": {
+    "turnCostUsd": 0.8,
+    "otherCostUsd": 0,
+    "costUsd": 0.8,
+    "knownCostUsd": 0.8,
+    "inputTokens": 2000,
+    "cachedInputTokens": 18000,
+    "outputTokens": 400,
+    "models": [
+      "claude-opus-5-5"
+    ],
+    "rows": []
+  },
+  "pendingCards": 0,
+  "artifacts": {
+    "created": [
+      "workspaces/eval-outcome/outputs/cadence.md"
+    ],
+    "modified": [],
+    "deleted": []
+  },
+  "reverted": {
+    "removed": 1,
+    "restored": 0
+  },
+  "facts": {
+    "contains": [],
+    "absent": [],
+    "pass": true
+  }
+}

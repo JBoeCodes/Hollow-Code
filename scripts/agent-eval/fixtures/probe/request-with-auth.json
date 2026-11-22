@@ -1,0 +1,34 @@
+{
+ "_about": "An incoming request as the stub sees it, with credential headers (fake values). Recording it must keep the body only.",
+ "body": {
+  "method": "POST",
+  "url": "/v1/messages?beta=true",
+  "headers": {
+   "host": "127.0.0.1:1",
+   "content-type": "application/json",
+   "authorization": "Bearer FAKE-TOKEN-FIXTURE",
+   "x-api-key": "FAKE-TOKEN-FIXTURE",
+   "anthropic-version": "2023-06-01"
+  },
+  "body": {
+   "model": "claude-opus-5-5",
+   "stream": true,
+   "tools": [
+    {
+     "name": "Bash"
+    }
+   ],
+   "messages": [
+    {
+     "role": "user",
+     "content": [
+      {
+       "type": "text",
+       "text": "probe"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

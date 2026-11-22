@@ -1,0 +1,20 @@
+{
+  "id": "int-1",
+  "reason": "hollow:question",
+  "message": "Which channel?",
+  "toolCallId": "toolu-009",
+  "responseSchema": {
+    "mode": "questions",
+    "title": "Which channel?",
+    "supersedeOnUserMessage": true,
+    "questions": [{ "id": "channel", "prompt": "Ship to which channel?" }]
+  },
+  "expiresAt": null,
+  "metadata": {
+    "mode": "questions",
+    "sessionKey": "s-20261117-abc12345",
+    "status": "pending",
+    "createdAt": "2026-11-17T20:59:00Z",
+    "supersedeOnUserMessage": true
+  }
+}

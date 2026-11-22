@@ -1,0 +1,39 @@
+[
+  {
+    "id": "local-results-view",
+    "title": "Results view",
+    "status": "active",
+    "path": "workspaces/local-results-view",
+    "cwd": "/Users/fixture/Hollow/Worktrees/hollow/results-view",
+    "modified": "2026-10-03T09:00:00Z",
+    "build": {
+      "repo": "/Users/fixture/Projects/hollow",
+      "worktree": "/Users/fixture/Hollow/Worktrees/hollow/results-view",
+      "branch": "hollow/results-view",
+      "base": "origin/main",
+      "exists": true,
+      "runsOn": "runner"
+    },
+    "canvasTheme": "Graphite",
+    "pinned": 1
+  },
+  {
+    "id": "quick-chats",
+    "title": "Quick chats",
+    "status": "active",
+    "path": "workspaces/quick-chats",
+    "cwd": "/Users/fixture/vault/workspaces/quick-chats",
+    "modified": "2026-10-02T18:30:00Z",
+    "kind": "quick"
+  },
+  {
+    "id": "old-research-0a1b2c3d",
+    "title": "Old research",
+    "status": "archived",
+    "path": "workspaces/old-research-0a1b2c3d",
+    "cwd": "/Users/fixture/vault/workspaces/old-research-0a1b2c3d",
+    "modified": "2026-10-01T12:00:00Z",
+    "mergedInto": "local-results-view",
+    "archivedFrom": "active"
+  }
+]

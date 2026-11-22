@@ -1,0 +1,52 @@
+# Hollow CI, frontend part: Hollow 5.0 control-file integrity, typecheck,
+# vitest, the script tests, the production build and the bundle budget.
+#
+# Kept small on purpose (2026-10-03, owner): merges are gated on the local
+# checks run before each merge (docs/reference/build-and-ship.md "Build &
+# ship"), and CI is a cheap second look. So it runs on pull requests only (not
+# again on the push to main),
+# skips unchecked docs-only changes (while still running on checked docs and
+# rust-toolchain.toml), and can be run by hand. The Playwright smoke
+# lives in smoke.yml (Linux, frontend changes only) and the Rust checks in
+# rust.yml (macOS, Rust changes only). This job stays on macOS because a few
+# script tests drive macOS tools (pgrep -a, ps lstart); it takes under a minute.
+name: ci
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '**'
+      - '!**/*.md'
+      - '!docs/**'
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - 'docs/agents/**'
+      - 'docs/WHATS_NEW.md'
+      - 'docs/FRONTEND_MODULES.md'
+      - 'docs/HOLLOW_APP_COMMAND_MAP.tsv'
+      - 'rust-toolchain.toml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    runs-on: macos-14
+    env:
+      TZ: America/New_York
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run plan:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run test:scripts
+      - run: npm run build
+      # Raw-size caps on the build above (scripts/check-bundle-budget.mjs).
+      - run: npm run bundle:budget

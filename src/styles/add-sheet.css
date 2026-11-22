@@ -1,0 +1,21 @@
+/* The Add sheet (next-level P12). */
+@layer components {
+.add-sheet-content { width: min(560px, calc(100vw - 32px)); }
+.add-sheet-content form { display: grid; gap: var(--sp-3); padding: 0 var(--sp-5) var(--sp-5); }
+.add-sheet-content textarea { width: 100%; min-height: 96px; padding: var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--canvas); color: var(--ink); font: var(--fs-md)/1.5 var(--ui); resize: vertical; }
+.add-sheet-content textarea:focus { outline: none; border-color: var(--primary); box-shadow: var(--ring); }
+.add-sheet-file { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--surface-sunken); color: var(--ink); font-size: var(--fs-body); }
+.add-sheet-file > span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.add-sheet-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.add-sheet-kind { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.add-sheet-kind > button { height: 26px; padding: 0 var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-pill); background: var(--surface-card); color: var(--body-strong); font: 500 var(--fs-meta)/1 var(--ui); cursor: pointer; }
+.add-sheet-kind > button[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-soft); color: var(--ink); }
+.add-sheet-why, .add-sheet-preview { margin: 0; color: var(--muted); font-size: var(--fs-meta); }
+.add-sheet-preview { color: var(--body-strong); }
+.add-sheet-dest { display: flex; align-items: center; gap: var(--sp-2); margin: 0; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-sm); background: var(--accent-wash); color: var(--body-strong); font-size: var(--fs-meta); }
+.add-sheet-dest > svg { flex: none; color: var(--primary); }
+.add-sheet-hint { margin-left: auto; color: var(--muted-soft); font-size: var(--fs-caption); }
+.add-sheet-draft-hint { margin: 0; color: var(--muted); font-size: var(--fs-caption); }
+/* Import a source's Domain and Purpose (S5: folded in from the Import source sheet). */
+.add-sheet-anchors { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: var(--sp-3); }
+}

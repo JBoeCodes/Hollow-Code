@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"id-201"}
+{"type":"turn.started"}
+{"type":"item.started","item":{"id":"item_1","type":"mcp_tool_call","server":"hollow_questions","tool":"ask_user_questions","arguments":{"questions":[{"id":"colour","prompt":"Which colour?","options":[{"id":"red","label":"Red"},{"id":"blue","label":"Blue"}]}]},"result":null,"error":null,"status":"in_progress"}}
+{"type":"item.completed","item":{"id":"item_1","type":"mcp_tool_call","server":"hollow_questions","tool":"ask_user_questions","arguments":{"questions":[{"id":"colour","prompt":"Which colour?","options":[{"id":"red","label":"Red"},{"id":"blue","label":"Blue"}]}]},"result":{"content":[{"type":"text","text":"Posted 1 question to the user as a card. End your turn now: do not call more tools or continue this work. The answers will arrive as the user's next message, beginning \"Answered questions\"."}],"structured_content":null},"error":null,"status":"completed"}}
+{"type":"turn.completed","usage":{"input_tokens":21771,"cached_input_tokens":20552,"cache_write_input_tokens":0,"output_tokens":55,"reasoning_output_tokens":0}}

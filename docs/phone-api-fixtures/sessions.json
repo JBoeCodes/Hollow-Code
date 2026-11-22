@@ -1,0 +1,44 @@
+{
+  "sessions": [
+    {
+      "key": "s-20261104-6e772c5f",
+      "title": "Release notes for 5.2",
+      "agent": "claude",
+      "workspace": {"id": "hollow-companion-app-cdc399a4852fa14c", "title": "Hollow Companion App", "kind": "vault"},
+      "createdAt": "2026-11-04T16:07:11.658361+00:00",
+      "lastActivityAt": "2026-11-04T16:18:09.702896+00:00",
+      "turnCount": 3,
+      "state": "running",
+      "needsAnswer": false,
+      "preview": "Drafting the release notes now.",
+      "runsOn": "mac-mini"
+    },
+    {
+      "key": "s-20261104-e2582579",
+      "title": null,
+      "agent": "codex",
+      "workspace": {"id": "quick-chats", "title": "Quick chats", "kind": "quick"},
+      "createdAt": "2026-11-04T15:01:00Z",
+      "lastActivityAt": "2026-11-04T15:02:41Z",
+      "turnCount": 1,
+      "state": "idle",
+      "needsAnswer": true,
+      "preview": "Which branch should I start from?",
+      "runsOn": "this-mac"
+    },
+    {
+      "key": "s-project-3a32152612b5616b96ae191e922b66a04ae30e080d9e5584",
+      "title": "Vault root chat",
+      "agent": "claude",
+      "workspace": null,
+      "createdAt": "2026-11-03T09:00:00.000000+00:00",
+      "lastActivityAt": "2026-11-03T09:30:00.000000+00:00",
+      "turnCount": 12,
+      "state": "queued",
+      "needsAnswer": false,
+      "preview": null,
+      "runsOn": null
+    }
+  ],
+  "nextCursor": "c-3"
+}

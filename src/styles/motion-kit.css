@@ -1,0 +1,92 @@
+@layer components {
+  .motion-height-content { display: flow-root; }
+  .motion-width { display: inline-block; vertical-align: middle; max-width: 100%; }
+  .motion-width-content { display: inline-block; white-space: nowrap; }
+  .motion-cue { position: relative; display: inline-block; isolation: isolate; }
+  .motion-tool, .motion-activity { overflow: clip; overflow-clip-margin: 2px; }
+  .motion-tool::after, .motion-activity::after {
+    content: ''; position: absolute; inset: 0 auto 0 0; width: 4.5rem;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--primary) 14%, transparent), transparent);
+    pointer-events: none; opacity: 0; z-index: -1;
+  }
+  /* Inside a ledger row's truncating verb the cue clips with the ellipsis itself, so a long verb is cut, not dropped. */
+  .toolcall-verb .motion-cue { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+  .motion-skeleton { display: flex; flex-direction: column; gap: var(--sp-2); padding-block: var(--sp-2); }
+  .motion-skeleton-row { display: flex; align-items: center; gap: var(--sp-2); min-height: var(--row-h); }
+  .motion-skeleton-mark, .motion-skeleton-line, .motion-skeleton-detail { display: block; background: var(--fill-selected); border-radius: var(--r-xs); }
+  .motion-skeleton-mark { flex: 0 0 var(--fs-body); width: var(--fs-body); height: var(--fs-body); }
+  .motion-skeleton-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+  .motion-skeleton-line { height: var(--fs-body); }
+  .motion-skeleton-detail { width: 45%; height: var(--fs-meta); }
+  .motion-skeleton[data-detail="true"] { gap: 0; padding: 0; }
+  .motion-skeleton[data-detail="true"] .motion-skeleton-row {
+    display: grid; grid-template-columns: var(--control-h-sm) minmax(0, 1fr);
+    box-sizing: border-box; padding: var(--sp-2); border-bottom: 1px solid var(--hairline);
+    min-height: calc((var(--fs-body) + var(--fs-meta)) * var(--lh-base) + 2 * var(--sp-2));
+  }
+  .motion-skeleton[data-detail="true"] .motion-skeleton-mark { justify-self: center; }
+  .motion-progress { height: 2px; overflow: clip; }
+  .motion-progress > span { display: block; height: 100%; background: var(--primary); transform-origin: left; transform: scaleX(.9); }
+  .motion-progress[data-loading="false"] > span { transform: scaleX(1); opacity: 0; }
+  /* Existing drop classes own the target and menu actions remain available.
+     Labels are immediate without motion, delayed only by the panel setting. */
+  .work-tree-head:is(.pin-drop-before, .pin-drop-after, .session-drop-target) { position: relative; }
+  .work-tree-head:is(.pin-drop-before, .pin-drop-after, .session-drop-target)::after {
+    position: absolute; right: var(--sp-2); top: 0; bottom: 0;
+    display: flex; align-items: center; padding-inline: var(--sp-2);
+    border-radius: var(--r-xs); background: var(--surface-card); color: var(--ink);
+    font-size: var(--fs-caption); pointer-events: none;
+  }
+  .work-tree-head.pin-drop-before::after { content: 'Move before'; }
+  .work-tree-head.pin-drop-after::after { content: 'Move after'; }
+  .work-tree-head.session-drop-target::after { content: 'Move here'; }
+
+  @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+    :root:not([data-motion="reduced"]) [data-motion-playing="true"].motion-skeleton .motion-skeleton-row {
+      animation: kit-skeleton var(--dur-skeleton) infinite;
+      animation-play-state: var(--ambient-play, running);
+    }
+    :root:not([data-motion="reduced"]) .motion-tool[data-active="true"][data-motion-playing="true"]::after {
+      opacity: 1; animation: live-tool-shine var(--dur-shine) steps(var(--steps-shine)) infinite;
+      animation-play-state: var(--ambient-play, running);
+    }
+    :root:not([data-motion="reduced"]) .motion-activity[data-active="true"][data-motion-playing="true"]::after {
+      opacity: 1; animation: live-activity-focus var(--dur-shine) steps(var(--steps-shine)) infinite;
+      animation-play-state: var(--ambient-play, running);
+    }
+    :root:not([data-motion="reduced"]) .motion-search[data-active="true"][data-motion-playing="true"],
+    :root:not([data-motion="reduced"]) .settings-found[data-motion-playing="true"] {
+      animation: settings-search-target-pulse 650ms ease-in-out 2;
+    }
+    :root:not([data-motion="reduced"]) .motion-drag[data-active="true"][data-motion-playing="true"] {
+      animation: sidebar-drag-label-reveal var(--dur-collapse) step-end;
+    }
+    :root:not([data-motion="reduced"]) .work-tree-head:is(.pin-drop-before, .pin-drop-after, .session-drop-target)::after {
+      animation: sidebar-drag-label-reveal var(--panel-duration) step-end;
+    }
+    :root:not([data-motion="reduced"]) .motion-progress[data-loading="true"][data-motion-playing="true"] > span {
+      animation: preview-loading-progress 5300ms cubic-bezier(.1,.5,.2,1) both;
+    }
+    :root:not([data-motion="reduced"]) .motion-progress[data-loading="false"][data-motion-playing="true"] > span {
+      transition: transform var(--dur-hover) var(--ease-decel), opacity var(--dur-hover) 220ms;
+    }
+  }
+
+  @keyframes kit-skeleton {
+    0%, 42% { opacity: 1; animation-timing-function: steps(var(--steps-skeleton)); }
+    50%, 92% { opacity: .55; animation-timing-function: steps(var(--steps-skeleton)); }
+    100% { opacity: 1; }
+  }
+  @keyframes live-tool-shine { from { left: -4.5rem; } to { left: calc(100% + 4.5rem); } }
+  @keyframes live-activity-focus { from { left: -4.5rem; } to { left: calc(100% + 4.5rem); } }
+  @keyframes settings-search-target-pulse { 0%, 100% { box-shadow: inset 0 0 0 0 transparent; } 50% { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--primary) 70%, transparent); } }
+  @keyframes preview-loading-progress { from { transform: scaleX(.04); } to { transform: scaleX(.9); } }
+  @keyframes sidebar-drag-label-reveal { from { opacity: 0; } to { opacity: 1; } }
+}
+
+@layer components {
+  @media (forced-colors: active) {
+    .motion-skeleton-mark, .motion-skeleton-line, .motion-skeleton-detail { background: GrayText; }
+    .motion-progress > span { background: Highlight; }
+  }
+}

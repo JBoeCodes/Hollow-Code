@@ -1,0 +1,117 @@
+{
+  "workspaceId": "local-results-view",
+  "asOf": "2026-10-05T12:00:00Z",
+  "events": [
+    {
+      "id": "run:run-2",
+      "kind": "run",
+      "at": "2026-10-05T10:05:00Z",
+      "status": "succeeded",
+      "title": "Draft the summary",
+      "sessionKey": "hollow-session-1",
+      "runId": "run-2",
+      "receiptId": "receipt-0a1b2c3d4e5f60718293a4",
+      "path": null,
+      "session": null,
+      "run": {
+        "source": "chat",
+        "sourceId": "native-thread-9",
+        "turn": 2,
+        "startedAt": "2026-10-05T10:00:00Z",
+        "endedAt": "2026-10-05T10:05:00Z",
+        "agent": "claude",
+        "model": "claude-opus-4",
+        "costUsd": 0.42,
+        "costStatus": "reported",
+        "inputTokens": 12000,
+        "outputTokens": 1800,
+        "files": 2,
+        "outputs": 1,
+        "checks": 1,
+        "failedChecks": 0,
+        "verification": "verified",
+        "resultKind": "success",
+        "canvases": {
+          "count": 1,
+          "bytes": 6200
+        }
+      },
+      "result": null,
+      "install": null
+    },
+    {
+      "id": "result:receipt-0a1b2c3d4e5f60718293a4:outputs/summary.md",
+      "kind": "result",
+      "at": "2026-10-05T10:05:00Z",
+      "status": "created",
+      "title": "Summary",
+      "sessionKey": "hollow-session-1",
+      "runId": "run-2",
+      "receiptId": "receipt-0a1b2c3d4e5f60718293a4",
+      "path": "workspaces/local-results-view/outputs/summary.md",
+      "session": null,
+      "run": null,
+      "result": {
+        "name": "outputs/summary.md",
+        "kind": "document",
+        "exists": true,
+        "actor": "run",
+        "revision": null,
+        "note": null
+      },
+      "install": null
+    },
+    {
+      "id": "session:hollow-session-1",
+      "kind": "session",
+      "at": "2026-10-05T09:58:00Z",
+      "status": "started",
+      "title": "Quarterly summary",
+      "sessionKey": "hollow-session-1",
+      "runId": null,
+      "receiptId": null,
+      "path": null,
+      "session": {
+        "agent": "claude",
+        "turns": 2,
+        "lastActivityAt": "2026-10-05T10:05:00Z"
+      },
+      "run": null,
+      "result": null,
+      "install": null
+    },
+    {
+      "id": "install:20261004-100000-47e5bd3a",
+      "kind": "install",
+      "at": "2026-10-04T10:00:00Z",
+      "status": "installed",
+      "title": "Install and restart",
+      "sessionKey": null,
+      "runId": null,
+      "receiptId": null,
+      "path": null,
+      "session": null,
+      "run": null,
+      "result": null,
+      "install": {
+        "step": "install",
+        "commit": "63c79a889a21",
+        "branch": "hollow/quarterly",
+        "summary": "Installed 63c79a88 at 2026-10-04T10:00:00Z; the running app reports the same commit.",
+        "matchesRunning": true
+      }
+    }
+  ],
+  "total": 9,
+  "gaps": {
+    "runsWithoutReceipt": 1,
+    "runsWithoutUsage": 2,
+    "resultsWithoutReceipt": 0,
+    "turnsTruncated": false,
+    "resultsTruncated": false,
+    "receiptsError": null,
+    "reviewsError": "Results review state could not be read",
+    "usageError": null
+  },
+  "nextCursor": "WzE3NTk2NjAwMDAwMDAsMywic2Vzc2lvbjpob2xsb3ctc2Vzc2lvbi0xIl0"
+}

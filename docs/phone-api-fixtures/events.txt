@@ -1,0 +1,38 @@
+event: hello
+data: {"api":1,"build":"5.2.0 0123abc","events":["hello","live","state","append","turn","sessions","ping","resync","approvals"]}
+
+id: 5e2a91c4-12-12-3f2c
+event: live
+data: {"key":"s-20261104-6e772c5f","ord":3,"gen":1,"startedAt":"2026-11-04T16:18:09.702896+00:00","text":"Drafting the release notes now.","truncated":false,"tools":[{"id":"toolu_04","name":"Write","status":"running","detail":"outputs/release-notes-5.2.md"}]}
+
+id: 5e2a91c4-12-12-3f2c
+event: state
+data: {"key":"s-20261104-6e772c5f","state":"running","needsAnswer":false}
+
+id: 5e2a91c4-13-12-3f2c
+event: append
+data: {"key":"s-20261104-6e772c5f","ord":3,"gen":1,"text":" Here is the first section:\n\n## Phone access"}
+
+id: 5e2a91c4-14-12-3f2c
+event: append
+data: {"key":"s-20261104-6e772c5f","ord":3,"gen":1,"text":"\n\nYou can read and send chats from your iPhone."}
+
+id: 5e2a91c4-14-12-3f2c
+event: ping
+data: {}
+
+id: 5e2a91c4-16-16-3f2c
+event: live
+data: {"key":"s-20261104-6e772c5f","ord":3,"gen":1,"startedAt":"2026-11-04T16:18:09.702896+00:00","text":"Drafting the release notes now. Here is the first section:\n\n## Phone access\n\nYou can read and send chats from your iPhone.","truncated":false,"tools":[{"id":"toolu_04","name":"Write","status":"done","detail":"outputs/release-notes-5.2.md"}]}
+
+id: 5e2a91c4-17-16-3f2c
+event: turn
+data: {"key":"s-20261104-6e772c5f","ord":3,"status":"success"}
+
+id: 5e2a91c4-17-16-3f2c
+event: state
+data: {"key":"s-20261104-6e772c5f","state":"idle","needsAnswer":false}
+
+id: 5e2a91c4-17-17-3f2c
+event: sessions
+data: {"keys":["s-20261104-6e772c5f"]}

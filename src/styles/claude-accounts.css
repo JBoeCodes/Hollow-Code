@@ -1,0 +1,195 @@
+/* Settings, Claude accounts. Imported by src/settings/ClaudeAccountsPanel.tsx
+   only, so it rides that lazy chunk and the main CSS bundle is unaffected.
+   Tokens and scale steps only; bars are the shared .meter primitive. */
+@layer components {
+.claude-accts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.claude-accts > .btn {
+  align-self: flex-start;
+}
+
+.claude-acct-routing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.claude-acct-summary {
+  margin: 0;
+  font-size: var(--fs-body);
+  color: var(--ink);
+}
+
+.claude-acct-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-3);
+}
+
+.claude-acct-field {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  white-space: nowrap;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+
+.claude-acct-field .settings-input {
+  min-width: 0;
+  width: auto;
+  flex: 1 1 220px;
+  max-width: 420px;
+}
+
+.claude-acct-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.claude-acct {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+}
+
+.claude-acct[data-enabled="no"] {
+  opacity: 0.6;
+}
+
+.claude-acct-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.claude-acct-name {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.claude-acct-kind,
+.claude-acct-next,
+.claude-acct-status {
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-caption);
+  line-height: 1.8;
+  border: 1px solid var(--hairline-soft);
+  color: var(--muted);
+}
+
+.claude-acct-next {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.claude-acct-status[data-status="ok"] {
+  color: var(--success);
+}
+
+.claude-acct-status[data-status="near"] {
+  color: var(--warning);
+}
+
+.claude-acct-status[data-status="limited"],
+.claude-acct-status[data-status="invalid"],
+.claude-acct-status[data-status="missingToken"] {
+  color: var(--error);
+}
+
+.claude-acct-spacer {
+  flex: 1;
+}
+
+.claude-acct-use {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+
+.claude-acct-windows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-3);
+}
+
+.claude-acct-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-3);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+
+.claude-acct-note,
+.claude-acct-hint {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-base);
+  color: var(--muted);
+}
+
+.claude-acct-hint,
+.claude-acct-error {
+  color: var(--error);
+}
+
+.claude-acct-edit,
+.claude-acct-add {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border: 1px dashed var(--hairline);
+  border-radius: var(--r-md);
+}
+
+.claude-acct-edit > .btn,
+.claude-acct-actions {
+  align-self: flex-start;
+}
+
+.claude-acct-actions {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.claude-acct-steps {
+  margin: 0;
+  padding-left: var(--sp-5);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--body);
+}
+}
+
+/* Settings PR 5b (2026-11-12): Accounts fits 1.3 screens. An account is one
+   line (name, status, buttons), its note and edit form wrapping under it;
+   Jev's key field sits on its own line of the card, not in a dashed box. */
+@layer components {
+  .claude-accts { gap: var(--sp-2); padding: var(--sp-1) 0; }
+  .claude-acct-list { gap: var(--sp-1); }
+  .claude-acct { padding: var(--sp-1) var(--sp-3); gap: var(--sp-1); }
+  .provider-acct .claude-acct-edit { flex-direction: row; flex-wrap: wrap; align-items: center; border: 0; padding: 0 0 var(--sp-1); }
+  .provider-acct .claude-acct-edit .claude-acct-field { flex: 1 1 18rem; }
+  .settings-row[data-agent] { min-height: 0; padding: var(--sp-1) 0; }
+  .settings-row[data-agent] .settings-row-label { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-3); }
+}

@@ -1,0 +1,9 @@
+@layer components {
+.task-draft-review{border:1px solid var(--hairline);border-radius:var(--r-sm);padding:12px;margin:12px 0;min-width:0;overflow-wrap:anywhere;font-size:var(--fs-meta)}
+.task-draft-review h3,.task-draft-review h4{margin:0 0 8px;font-size:inherit;font-weight:600}
+.task-draft-review p{margin:8px 0}
+.task-draft-review .task-detail-conflict{border-top:1px solid var(--hairline);padding:12px 0;margin:12px 0;min-width:0}
+.task-draft-review .work-actions{display:flex;flex-wrap:wrap;gap:8px}
+.task-draft-review button[aria-pressed=true]{border-color:var(--primary);background:var(--surface-card)}
+}
+

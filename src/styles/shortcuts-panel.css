@@ -1,0 +1,61 @@
+/* Settings, Keyboard shortcuts. Imported by src/settings/ShortcutsPanel.tsx
+   only, so it rides that lazy chunk. */
+@layer components {
+.shortcuts-panel { display: flex; flex-direction: column; }
+.shortcuts-groups.off .shortcut-key { opacity: 0.5; }
+.shortcut-controls { display: flex; align-items: center; justify-content: flex-end; gap: var(--sp-2); flex: none; }
+.shortcut-key {
+  min-width: 44px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-xs);
+  color: var(--ink);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-soft);
+}
+.shortcut-leader-input {
+  width: 44px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  padding: 2px var(--sp-1);
+  border-radius: var(--r-xs);
+  color: var(--ink);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+}
+.shortcut-leader-input:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.shortcuts-group.off .shortcut-key, .shortcuts-group.off .shortcut-leader-input { opacity: 0.5; }
+.shortcut-none { min-width: 44px; text-align: center; font-size: var(--fs-meta); color: var(--muted); }
+.shortcut-listening { font-size: var(--fs-meta); color: var(--primary); }
+.shortcut-row.recording .shortcut-controls { gap: var(--sp-3); }
+.shortcuts-notice { margin: 0; font-size: var(--fs-meta); color: var(--muted); }
+.shortcuts-notice.error { color: var(--error); }
+.shortcuts-warnings { margin: var(--sp-2) 0; padding-left: var(--sp-4); color: var(--accent-amber); font-size: var(--fs-meta); }
+/* Settings PR 5: tabs and compact rows, so Commands (24 keys) fits a screen. */
+.shortcuts-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-2); padding: var(--sp-1) 0; }
+.shortcuts-toolbar-actions { display: flex; gap: var(--sp-2); }
+.shortcuts-panel .shortcut-row { min-height: 0; padding-top: 1px; padding-bottom: 1px; }
+/* Settings PR 5b: a group's name is a caption line, with its one hint beside it, so Commands (24 keys) fits 1.3 screens. */
+.shortcuts-panel .shortcuts-group .settings-subhead { margin-top: var(--sp-1); padding: var(--sp-1) 0; border-top: 0; }
+.shortcuts-panel .shortcuts-group .settings-subhead-titles { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 var(--sp-3); }
+.shortcuts-panel .shortcuts-group .settings-subhead-title { font-size: var(--fs-meta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+/* Change, Remove and Reset are text-sized buttons here: 29 commands in one screen and a bit. */
+.shortcuts-panel .shortcut-controls .btn { height: 22px; padding: 0 var(--sp-2); font-size: var(--fs-meta); }
+.shortcuts-panel > .settings-row { padding-block: var(--sp-2); min-height: 0; }
+}
+
+/* A command whose key works only in one place says where (parity 4.6). */
+@layer components {
+  .shortcut-context {
+    margin-left: 8px;
+    padding: 1px 6px;
+    border: 1px solid var(--hairline-soft);
+    border-radius: var(--r-xs);
+    font-size: var(--fs-caption);
+    font-weight: 500;
+    color: var(--muted);
+  }
+}

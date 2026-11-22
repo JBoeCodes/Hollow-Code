@@ -1,0 +1,16 @@
+/* The found-context review card (CX20, components/ContextReviewCard.tsx):
+   lazy, so these rules ride its own chunk. It reuses the Learnings card
+   classes (review-card, work-actions, review-provenance). */
+@layer components {
+.context-review { display: grid; gap: var(--sp-2); margin-block: var(--sp-3); min-width: 0; }
+.context-review h3 { margin: 0; }
+.context-review .review-card { min-width: 0; overflow-wrap: anywhere; margin-block: var(--sp-2); }
+.context-review .work-actions { flex-wrap: wrap; }
+.context-review-path { display: block; margin-block: var(--sp-1); color: var(--muted); }
+.context-review-path code { color: inherit; }
+.context-review blockquote { white-space: pre-wrap; overflow-wrap: anywhere; }
+.context-review-withheld, .context-review-why, .context-review-sort { color: var(--muted); }
+.context-review-flags { margin: 0; padding-inline-start: var(--sp-4); font-size: var(--fs-meta); }
+.context-review-flags li[data-severity="block"] { color: var(--error); }
+.context-review-skipped > summary { cursor: pointer; }
+}

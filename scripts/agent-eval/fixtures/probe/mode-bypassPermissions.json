@@ -1,0 +1,26 @@
+{
+ "_about": "Hand-written (OF22): the bypassPermissions half of a mode pair. Same system text and tools as mode-acceptEdits.json; its Bash description is 311 bytes shorter (a synthetic fixture value, not a measurement).",
+ "body": {
+  "model": "claude-opus-5-5",
+  "stream": true,
+  "system": [
+   { "type": "text", "text": "You are Claude Code, a probe fixture." },
+   { "type": "text", "text": "Working directory: /tmp/probe-fixture/project" }
+  ],
+  "tools": [
+   { "name": "Bash", "description": "Executes a given bash command and returns its output.", "input_schema": { "type": "object" } },
+   { "name": "Read", "description": "Reads a file from the local filesystem.", "input_schema": { "type": "object" } },
+   { "name": "ToolSearch", "description": "Fetches full schema definitions for deferred tools.", "input_schema": { "type": "object" } },
+   { "name": "mcp__probe__probe_flagged", "description": "Probe tool flagged to load with the session.", "input_schema": { "type": "object", "properties": {} } }
+  ],
+  "messages": [
+   {
+    "role": "user",
+    "content": [
+     { "type": "text", "text": "<system-reminder>\nThe following deferred tools are now available via ToolSearch:\nmcp__probe__probe_other_a\nmcp__probe__probe_other_b\n</system-reminder>" },
+     { "type": "text", "text": "probe" }
+    ]
+   }
+  ]
+ }
+}

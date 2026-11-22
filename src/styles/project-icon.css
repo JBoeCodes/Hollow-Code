@@ -1,0 +1,11 @@
+@layer components {
+.project-icon { position:relative; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:18px; height:18px; color:var(--muted); }
+.project-icon[data-size="card"] { width:28px; height:28px; }
+.project-icon-art, .project-icon-avatar { width:100%; height:100%; object-fit:contain; border-radius:var(--r-xs); }
+.project-icon-avatar { border-radius:50%; object-fit:cover; }
+.project-icon-mono { display:inline-flex; align-items:center; justify-content:center; width:100%; height:100%; border-radius:var(--r-xs); font-size:var(--fs-caption); font-weight:600; letter-spacing:0; line-height:1;
+  color:hsl(var(--project-hue, 220) 40% 32%); background:hsl(var(--project-hue, 220) 45% 92%); }
+.project-icon[data-size="card"] .project-icon-mono { font-size:var(--fs-meta); }
+[data-theme="dark"] .project-icon-mono { color:hsl(var(--project-hue, 220) 60% 80%); background:hsl(var(--project-hue, 220) 25% 24%); }
+.project-icon-badge { position:absolute; right:-3px; bottom:-3px; width:45%; height:45%; border-radius:50%; object-fit:cover; box-shadow:0 0 0 1.5px var(--canvas); background:var(--canvas); }
+}

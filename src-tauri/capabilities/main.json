@@ -1,0 +1,19 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "Permissions for the main Hollow dashboard window. Other windows (md-preview, canvas-capture) have their own narrower capability files so they cannot, e.g., open arbitrary URLs or register shortcuts even if their renderer is compromised.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-show",
+    "core:window:allow-hide",
+    "core:window:allow-set-focus",
+    "core:window:allow-close",
+    "core:window:allow-start-dragging",
+    "core:window:allow-internal-toggle-maximize",
+    "shell:allow-open",
+    "opener:default",
+    "global-shortcut:default",
+    "dialog:allow-open"
+  ]
+}

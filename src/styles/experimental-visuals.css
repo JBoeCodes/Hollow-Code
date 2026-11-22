@@ -1,0 +1,6 @@
+@layer components {
+/* Existing live-state aura only. The old aurora, pointer spotlight and depth
+   layers are retired; identity art is deterministic and still. */
+html[data-experimental-active="true"] .main-indicator[data-state="waiting"] .main-orb-aura { animation:experimental-breath 4s var(--ease-soft) infinite alternate; animation-play-state:var(--orb-play, var(--ambient-play, running)); }
+@keyframes experimental-breath { from { opacity:.08; transform:scale(.95); } to { opacity:.24; transform:scale(1.18); } }
+}

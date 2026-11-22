@@ -1,0 +1,115 @@
+/* The side panel's card (SidePanelCard.tsx, overnight 11-12 C4) and a
+   Preview pane New tab's Tools (PanelNewTab.tsx, C5). Structure and density
+   follow his references; colour, type and spacing are Hollow's tokens. */
+@layer components {
+/* The chat and composer stay full width. A transcript inset protects words
+   behind the floating summary; it is not a maximum reading width. */
+.chat-main .side-card-host ~ .chat-scroll { padding-right: 320px; }
+/* A new conversation's pane keeps its seated layout (chat-workspace.css: the
+   wrap is display: contents so the box sits under the greeting and the
+   starters under the box); the summary floats at the pane's top right. */
+.work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty):has(> .chat-scroll-wrap > .side-card-host) { position: relative; }
+.chat-scroll-wrap:has(> .chat-find) > .side-card-host { margin-top: 40px; }
+.side-card-host { position: absolute; z-index: 5; top: var(--sp-2); right: var(--sp-3); width: 280px; max-height: min(60cqh, calc(100% - var(--sp-4))); display: flex; border-radius: var(--r-xl); animation: side-card-arrive var(--t-fast) var(--ease); }
+@container chat-column (max-width: 900px) or (max-width: 60em) {
+  .chat-main .side-card-host ~ .chat-scroll { padding-right: calc(min(200px, 30cqw) + 24px); }
+  .side-card-host { width: min(200px, 30cqw); }
+}
+@keyframes side-card-arrive { from { opacity: .75; } to { opacity: 1; } }
+@container chat-wrap (max-height: 20em) {
+  .side-card-host { position: absolute; top: var(--sp-2); right: var(--sp-2); width: min(180px, 30cqw); max-height: calc(100% - var(--sp-4)); margin: 0; }
+  .side-card-host > .side-card { display: flex; }
+  .chat-main .side-card-host ~ .chat-scroll { padding-right: calc(min(180px, 30cqw) + 20px); }
+  .side-card-host ~ .chat-recovery-controls { right: calc(min(180px, 30cqw) + 20px); }
+  .side-card-host:has(~ .chat-recovery-controls > button) ~ .chat-scroll { margin-top: 32px; }
+}
+.side-card { display: flex; flex-direction: column; width: 100%; min-height: 0; overflow: auto; padding: var(--sp-2) var(--sp-3); border: 1px solid var(--hairline-soft); border-radius: var(--r-xl); background: var(--surface-raised); box-shadow: var(--elev-2); }
+.side-card-section { display: flex; flex-direction: column; flex-shrink: 0; min-height: 36px; padding: var(--sp-1) 0; }
+.side-card-section + .side-card-section { border-top: 1px solid var(--hairline-soft); }
+.side-card-head { flex: none; margin: 0; min-height: 28px; }
+.side-card-toggle, .side-card-recall-toggle { display: flex; align-items: center; gap: var(--sp-1); width: 100%; padding: var(--sp-1) 0; border: 0; border-radius: var(--r-md); background: none; color: var(--body); text-align: left; font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); cursor: pointer; }
+.side-card-toggle > svg, .side-card-recall-toggle > svg { flex: none; }
+.side-card-toggle > span { white-space: nowrap; }
+.side-card-count { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+.side-card-toggle:hover, .side-card-recall-toggle:hover { background: var(--surface-soft); color: var(--ink); }
+.side-card-body { min-height: 0; max-height: 24cqh; overflow: auto; overscroll-behavior: contain; padding: 0 var(--sp-1); }
+.side-card-add { display: inline-grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: var(--r-md); background: none; color: var(--muted); cursor: pointer; }
+.side-card-add:hover:not(:disabled) { background: var(--surface-soft); color: var(--ink); }
+.side-card-add:focus-visible,
+.side-card-empty:focus-visible,
+.side-card-file:focus-visible,
+.side-card-subagents:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.side-card-empty { display: block; width: 100%; margin-top: var(--sp-1); padding: var(--sp-1) 0; border: 0; background: none; color: var(--muted); text-align: left; font: 400 var(--fs-body)/var(--lh-tight) var(--ui); cursor: pointer; }
+.side-card-empty:hover { color: var(--ink); }
+.side-card-files { list-style: none; margin: var(--sp-1) 0 0; padding: 0; }
+.side-card-file { display: flex; align-items: center; gap: var(--sp-3); width: 100%; min-height: 32px; padding: var(--sp-1) 0; border: 0; border-radius: var(--r-md); background: none; color: var(--ink); text-align: left; font: 400 var(--fs-body)/var(--lh-tight) var(--ui); cursor: pointer; }
+.side-card-file > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.side-card-file > svg { flex: none; color: var(--muted); }
+.side-card-file:hover > span { text-decoration: underline; }
+/* A row's type icon takes the file chips' colours (fileChip.ts; the same
+   families as vault-inbox-chat.css), so a type reads the same here (C8). */
+.side-card-file.tone-sheet > svg { color: var(--success); }
+.side-card-file:is(.tone-image, .tone-video) > svg { color: var(--accent-teal); }
+.side-card-file:is(.tone-doc, .tone-folder) > svg { color: var(--accent-amber); }
+.side-card-file.tone-slides > svg { color: var(--warning); }
+.side-card-file.tone-pdf > svg { color: var(--error); }
+.side-card-all { color: var(--muted); }
+.side-card-subagents { display: flex; align-items: center; gap: var(--sp-2); width: 100%; margin-top: var(--sp-1); padding: var(--sp-1) 0; border: 0; background: none; color: var(--body); font: 400 var(--fs-body)/var(--lh-tight) var(--ui); cursor: pointer; }
+.side-card-subagents:hover:not(:disabled) { color: var(--ink); }
+.side-card-subagents:disabled { cursor: default; color: var(--muted); }
+.side-card-marks { display: inline-flex; gap: var(--sp-1); }
+.side-card-marks:empty { display: none; }
+.side-card-recall-lifecycle { color: var(--muted); font-size: var(--fs-caption); }
+.side-card-recall { list-style: none; margin: var(--sp-1) 0 0; padding: 0; }
+.side-card-recall-item { padding: var(--sp-2) 0; border-top: 1px solid var(--hairline); overflow-wrap: anywhere; }
+.side-card-recall-item:first-of-type { border-top: 0; }
+.side-card-recall-item strong { display: block; color: var(--ink); font-size: var(--fs-meta); }
+.side-card-recall-item p { margin: var(--sp-1) 0 var(--sp-2); color: var(--body); font-size: var(--fs-meta); line-height: var(--lh-base); }
+.side-card-recall-item code { display: block; padding: 0; background: none; color: var(--muted); font: var(--fs-caption) var(--mono); white-space: normal; overflow-wrap: anywhere; }
+.side-card-recall-lifecycle { display: block; margin-top: var(--sp-1); }
+.side-card-recall-trace { margin-top: var(--sp-1); }
+.side-card-recall-why { margin: 0 0 var(--sp-1); color: var(--body); font-size: var(--fs-meta); }
+.side-card-recall-trace-list { list-style: none; margin: 0; padding: 0; font-size: var(--fs-caption); color: var(--muted); overflow-wrap: anywhere; }
+.side-card-recall-trace-list li { padding: var(--sp-1) 0; }
+.side-card-recall-trace-list li.kept span { color: var(--ink); }
+.side-card-recall-trace-list em { font-style: normal; }
+.side-card-recall-actions { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin-top: var(--sp-2); }
+
+/* A New tab: the Tools grid, two columns while it fits. */
+.panel-newtab { flex: 1; min-height: 0; overflow: auto; padding: var(--sp-5) max(var(--sp-5), calc((100% - 760px) / 2)) var(--sp-6); }
+.panel-newtab-head { margin: 0 0 var(--sp-3); font: 500 var(--fs-body)/var(--lh-tight) var(--ui); color: var(--ink); }
+.panel-newtab-tools { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--sp-2); margin: 0; padding: 0; }
+.panel-newtab-tool { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "icon label" "icon detail"; align-items: center; column-gap: var(--sp-3); row-gap: 2px; width: 100%; min-height: 52px; padding: var(--sp-2) var(--sp-3); border: 0; border-radius: var(--r-lg); background: var(--surface-soft); color: var(--ink); text-align: left; font: 400 var(--fs-body)/var(--lh-tight) var(--ui); cursor: pointer; }
+.panel-newtab-tool > svg { grid-area: icon; color: var(--muted); }
+.panel-newtab-tool:hover { background: var(--surface-sunken); }
+.panel-newtab-tool:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.panel-newtab-tool[aria-disabled="true"] { cursor: default; color: var(--muted); }
+.panel-newtab-tool-label { grid-area: label; }
+.panel-newtab-tool-detail { grid-area: detail; font-size: var(--fs-meta); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+@layer components {
+  :root[data-motion="reduced"] .side-card-host { animation: none; }
+  @media (prefers-reduced-motion: reduce) { .side-card-host { animation: none; } }
+}
+
+@layer components {
+/* Computer section (Cua CU8): the latest frame, the controls and the recent actions. */
+.computer-card { display: grid; gap: var(--sp-2); }
+.computer-frame { width: 100%; height: auto; border-radius: var(--r-md, 8px); border: 1px solid var(--hairline-soft); background: var(--surface-sunken); }
+.computer-controls { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.computer-actions { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); font-size: var(--fs-meta); color: var(--muted); }
+.computer-actions li[data-outcome="refused"], .computer-actions li[data-outcome="failed"] { color: var(--warning, var(--muted)); }
+}
+@layer components {
+/* Parity 5.1: the card header (machine, Open in, Add project script). */
+.side-card-header { display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-1) 0 var(--sp-2); border-bottom: 1px solid var(--hairline-soft); }
+.side-card-machine { display: flex; align-items: center; gap: var(--sp-1); min-width: 0; margin: 0; color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.side-card-machine > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.side-card-header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); }
+.side-card-header .studio-action-menu > summary { display: inline-flex; align-items: center; gap: var(--sp-1); width: auto; height: 28px; padding: 0 var(--sp-2); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.side-card-script { display: inline-flex; align-items: center; gap: var(--sp-1); height: 28px; padding: 0 var(--sp-2); border: 0; border-radius: var(--r-md); background: none; color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); cursor: pointer; }
+.side-card-script:hover { background: var(--surface-soft); color: var(--ink); }
+.side-card-script:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.side-card-header .studio-action-menu-body { min-width: 0; width: max-content; max-width: calc(100cqw - var(--sp-6, 24px)); }
+.side-card-header .studio-action-menu-body button { white-space: normal; text-align: left; }
+}

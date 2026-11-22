@@ -1,0 +1,75 @@
+/* The shell's motion layer (overnight 10-11 B1, "Hollow, reimagined"):
+   page transitions and the ambient layer behind the page column.
+   Every rule here is decoration: with motion off (Settings
+   → Motion, or system Reduce Motion) the app looks the same, only still.
+   Design note: the lane report (outputs/overnight-2026-10-11/lane-b.md). */
+@layer components {
+
+/* ── Page transitions (src/viewTransitions.ts) ──
+   The page column is its own transition group; everything else (rail, top
+   bar) swaps instantly and stays live. The old page hides, the new one rises
+   in opaque. A morph
+   source (a workspace card, a rail row) takes the page's name for the old
+   snapshot, so the same group grows from that row's box into the page. */
+/* Named only while a transition runs (viewTransitions.ts sets the class), so
+   the page column never carries capture side effects at rest. */
+html.is-transitioning .canvas-split > .page { view-transition-name: hollow-page; }
+/* The old root never shows: in Liquid Glass the shell is translucent, so an
+   opaque old snapshot would ghost through the new rail and top bar. Clicks
+   pass through the overlay to the live page while it plays. */
+::view-transition-old(root) { display: none; }
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition { pointer-events: none; }
+::view-transition-group(hollow-page) {
+  animation-duration: var(--t-slow);
+  animation-timing-function: var(--ease-out);
+  overflow: clip;
+  border-radius: var(--r-lg);
+}
+::view-transition-old(hollow-page) {
+  display: none;
+}
+::view-transition-new(hollow-page) {
+  animation: vt-page-in var(--t-slow) var(--ease-out) both;
+}
+/* Both snapshots keep their natural size, pinned to the box's top-left
+   corner, and the box clips them: morphing from a small row, the box grows
+   like a window opening onto the page instead of scaling text up. */
+::view-transition-old(hollow-page),
+::view-transition-new(hollow-page) { width: 100%; height: 100%; object-fit: none; object-position: left top; }
+@keyframes vt-page-in { from { transform: translateY(6px); } }
+
+/* ── Ambient layer (App.tsx `.ambient-layer`) ──
+   Two very soft glows tinted from the accent, drifting slowly behind the page
+   column. Transform-only on one composited layer: no blur filter, no script.
+   It sits under every page (z-index -1 inside the isolated .canvas, so above
+   the canvas colour and below all content) and the top bar's own background
+   covers it. Tints peak at --ambient-tint (6 % light, 8 % dark), the most the
+   quietest text colour can sit on and keep AA (numbers in tokens.css). Its
+   -20% inset overflows the column on purpose; .canvas clips with
+   `overflow: clip` so that overflow can never be scrolled to (10-11 fix). */
+.ambient-layer {
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 34% at 82% 18%, color-mix(in srgb, var(--primary) var(--ambient-tint, 6%), transparent), transparent 70%),
+    radial-gradient(42% 38% at 12% 88%, color-mix(in srgb, var(--accent-teal) var(--ambient-tint, 6%), transparent), transparent 70%);
+}
+html[data-experimental-active="true"][data-experimental-state="working"] .ambient-layer {
+  animation: ambient-drift 72s var(--ease-soft) infinite alternate;
+  animation-play-state: var(--ambient-play, running);
+}
+@keyframes ambient-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-4%, 3%, 0) scale(1.06); }
+  100% { transform: translate3d(3%, -2%, 0) scale(1.02); }
+}
+/* Texture Off, Increase Contrast and forced colours get flat surfaces.
+   Liquid Glass already moves (native vibrancy). */
+[data-texture-level="off"] .ambient-layer { display: none; }
+html[data-glass] .ambient-layer { display: none; }
+@media (forced-colors: active), (prefers-contrast: more) { .ambient-layer { display: none; } }
+
+}

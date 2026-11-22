@@ -1,0 +1,44 @@
+import { expect, test } from './fixtures/test';
+import { openLibraryView } from './libraryView';
+
+test('result recovery clears only its named scope and returns focus without listing again', async ({ page }) => {
+  await page.goto('/?mock=1&demo=1');
+  await expect(page.locator('.top-bar')).toBeVisible();
+  const library = page.getByRole('navigation', { name: 'Main' }).getByRole('button', { name: 'Library', exact: true });
+  if (!await library.isVisible()) await page.getByRole('button', { name: 'Show sidebar', exact: true }).click();
+  await library.click();
+  await openLibraryView(page, 'Results');
+  const input = page.getByRole('searchbox', { name: 'Find a result' });
+  const type = page.getByRole('group', { name: 'Result type' });
+  await expect(page.locator('.library-result-row').first()).toBeVisible();
+  const reads = await page.evaluate(() => window.__mockApiCalls?.list_all_results ?? 0);
+  await input.fill('no such result');
+  await expect(page.getByRole('button', { name: 'Reset filters', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Clear search', exact: true }).click();
+  await expect(input).toBeFocused();
+  await expect(input).toHaveValue('');
+  await expect(page.locator('.library-result-row').first()).toBeVisible();
+
+  await type.getByRole('button', { name: 'Canvases', exact: true }).click();
+  await input.fill('no such result');
+  await expect(page.getByRole('button', { name: 'Clear search', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Reset filters', exact: true }).click();
+  await expect(type.getByRole('button', { name: 'All', exact: true })).toBeFocused();
+  await expect(type.getByRole('button', { name: 'All', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(input).toHaveValue('no such result');
+  await expect(page.getByRole('button', { name: 'Reset filters', exact: true })).toHaveCount(0);
+  await type.getByRole('button', { name: 'Canvases', exact: true }).click();
+  await page.getByRole('button', { name: 'Clear search', exact: true }).click();
+  await expect(input).toBeFocused();
+  await expect(type.getByRole('button', { name: 'Canvases', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await type.getByRole('button', { name: 'All', exact: true }).click();
+  const workspace = page.getByRole('combobox', { name: 'Workspace', exact: true });
+  await workspace.click();
+  await page.getByRole('listbox', { name: 'Workspace', exact: true }).getByRole('option').nth(1).click();
+  await input.fill('no such result');
+  await page.getByRole('button', { name: 'Reset filters', exact: true }).click();
+  await expect(type.getByRole('button', { name: 'All', exact: true })).toBeFocused();
+  await expect(workspace).toHaveAttribute('data-value', '');
+  await expect(input).toHaveValue('no such result');
+  expect(await page.evaluate(() => window.__mockApiCalls?.list_all_results ?? 0)).toBe(reads);
+});

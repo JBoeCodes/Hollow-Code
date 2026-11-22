@@ -1,0 +1,247 @@
+{
+  "arm": "local",
+  "complete": true,
+  "condition": "connector-relevance",
+  "results": [
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "mail"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "notion"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "plaud"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "blender"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "zoom"
+        }
+      ],
+      "engine": "local",
+      "id": "email-cost-update",
+      "latencyMs": 0.2,
+      "note": null,
+      "outcome": "off"
+    },
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "mail"
+        },
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "plaud"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "zoom"
+        }
+      ],
+      "engine": "local",
+      "id": "plaud-site-walk",
+      "latencyMs": 0.1,
+      "note": null,
+      "outcome": "off"
+    },
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-01"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-02"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-03"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-04"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-05"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-06"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-07"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-08"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-09"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-10"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-11"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-12"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-13"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-14"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-15"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-16"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-17"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-18"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-19"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-20"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-21"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-22"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-23"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-24"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "tool-25"
+        },
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "kestrel-gauges"
+        }
+      ],
+      "engine": "local",
+      "id": "named-past-24",
+      "latencyMs": 0.6,
+      "note": null,
+      "outcome": "off"
+    },
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "mail"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "calendar"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "zoom"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "notion"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "slack"
+        }
+      ],
+      "engine": "local",
+      "id": "steering-slot",
+      "latencyMs": 0.2,
+      "note": null,
+      "outcome": "off"
+    }
+  ],
+  "schema": 1
+}

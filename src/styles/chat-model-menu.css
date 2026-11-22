@@ -1,0 +1,176 @@
+/* The composer's model menu (components/ChatModelMenu.tsx). Imported by that
+   component only, so it rides the chat chunk and the main CSS bundle is
+   unaffected. Tokens and scale steps only. */
+@layer components {
+.model-menu { position: relative; display: inline-flex; min-width: 0; }
+
+.model-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: 32px;
+  padding: 0 var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: none;
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  white-space: nowrap;
+  cursor: pointer;
+  /* Shrinks (the name truncates) so a narrow composer never pushes the
+     resource button beside the access chip. It clips its own content: a squeezed
+     trigger once painted "Extra high" over the next button (2026-11-01). */
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+.model-menu-trigger:hover:not(:disabled),
+.model-menu-trigger[aria-expanded="true"] { background: var(--surface-card); }
+.model-menu-trigger > svg { flex: none; }
+.model-menu-trigger-name { max-width: 180px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-menu-trigger .model-menu-effort { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-menu-setting.danger .model-menu-setting-value, .model-menu-row.danger .model-menu-name { color: var(--error); }
+.model-menu-perm-note { margin-top: var(--sp-1); font-size: var(--fs-caption); }
+/* As the composer bar narrows, the effort word goes first. The button's
+   name and the menu keep it. The mode's word moved to the access chip
+   (composer-commands.css, overnight 11-12). */
+@container composer-bar (max-width: 40rem) { .model-menu-trigger .model-menu-effort { display: none; } }
+/* Then the name (C12): under 30rem a squeezed trigger showed one letter
+   ("C"), so it shows the agent glyph and chevron only; its accessible name
+   and tooltip keep the full model name. */
+@container composer-bar (max-width: 30rem) { .model-menu-trigger .model-menu-trigger-name { display: none; } }
+/* On the bar's right since overnight 11-12 (C3): the list opens leftward. */
+.chat-composer-right .model-menu-pop { left: auto; right: 0; transform-origin: bottom right; }
+
+.agent-mark { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; color: var(--ink); }
+
+.model-menu-effort { color: var(--muted); font-size: var(--fs-caption); }
+
+.model-menu-pop {
+  position: absolute;
+  bottom: calc(100% + var(--sp-2));
+  left: 0;
+  z-index: 80;
+  width: 340px;
+  max-width: calc(100vw - 100px);
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-1);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  background: var(--surface-raised);
+  box-shadow: var(--elev-2);
+  animation: ctx-in var(--t-fast) var(--ease-out) both;
+  transform-origin: bottom left;
+}
+.model-menu-pop.is-closing { animation: sheet-out 120ms var(--ease-in) forwards; }
+/* Provider explanations and health rows must not push search above the title bar at
+   Largest text. The trigger stays in the composer's bottom toolbar; reserve
+   its clearance, the title bar and the page heading, shrinking the model list.
+   Overnight 11-04 (C2): also no taller than the room measured when it opens
+   (popoverRoom.ts), since Library's vault chat sits in a pane that clips. */
+.model-menu-pop { max-height: min(calc(100dvh - 208px), var(--model-pop-room, 100dvh)); overflow-y: auto; }
+.model-menu-pop > :not(.model-menu-list) { flex-shrink: 0; }
+.model-menu-pop .model-menu-list { min-height: 80px; flex: 1 1 auto; }
+
+.model-menu-search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--hairline-soft);
+  color: var(--muted);
+}
+.model-menu .model-menu-search input {
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  background: none;
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+}
+
+.model-menu-list { max-height: 320px; overflow-y: auto; padding: var(--sp-1) 0; }
+/* A row the arrows bring into view (scrollIntoView nearest, from the search
+   box) keeps a little room at the list's edge: the group labels' caption
+   line height puts rows on half pixels, and the snapped scroll offset left
+   the first row half a pixel under the list's top (browser run 11-12, FIX-24). */
+.model-menu-list .model-menu-row { scroll-margin-block: var(--sp-1); }
+.model-menu-group + .model-menu-group { margin-top: var(--sp-1); }
+.model-menu-group-label {
+  padding: var(--sp-1) var(--sp-3);
+  color: var(--muted);
+  font-size: var(--fs-caption);
+}
+.model-menu-health { margin: var(--sp-1) var(--sp-3) var(--sp-2); padding: var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-md); font-size: var(--fs-caption); overflow-wrap: anywhere; }
+.model-menu-health p { margin: var(--sp-1) 0; color: var(--muted); }
+.model-menu-health-state { color: var(--ink); font-weight: 600; }
+.model-menu-health-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-2); }
+
+.model-menu-row,
+.model-menu-setting {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  border-radius: var(--r-md);
+  background: none;
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  text-align: left;
+  cursor: pointer;
+}
+.model-menu-row.active,
+.model-menu-row:hover:not(:disabled),
+.model-menu-setting:hover { background: var(--surface-card); }
+.model-menu-row:disabled { cursor: default; opacity: 0.6; }
+.model-menu-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-menu-label { min-width: 0; display: flex; flex-direction: column; }
+.model-menu-check { display: inline-flex; margin-left: auto; width: 14px; color: var(--ink); }
+
+.model-menu-empty { margin: 0; padding: var(--sp-3); color: var(--muted); font-size: var(--fs-meta); }
+
+.model-menu-divider { height: 1px; margin: var(--sp-1) var(--sp-2); background: var(--hairline-soft); }
+.model-menu-setting-value { margin-left: auto; color: var(--muted); font-size: var(--fs-meta); }
+.model-menu-efforts { padding: 0 0 var(--sp-1) var(--sp-4); }
+
+.model-menu-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3) var(--sp-1);
+  border-top: 1px solid var(--hairline-soft);
+}
+.model-menu-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  cursor: pointer;
+}
+.model-menu-edit:hover { color: var(--ink); }
+.model-menu-hint { color: var(--muted-soft, var(--muted)); font-size: var(--fs-caption); }
+}
+@layer components {
+/* Plan L3 X10: what switching does to the conversation. */
+.model-menu-note { margin: 0 var(--sp-2) var(--sp-1); color: var(--muted); font-size: var(--fs-meta); line-height: 1.35; }
+}
+
+@layer components {
+  .model-menu-label .model-menu-note { display: block; margin: 0; }
+}

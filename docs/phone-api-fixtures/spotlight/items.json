@@ -1,0 +1,20 @@
+{
+  "domain": "com.hollow.app.companion.chats",
+  "from": "docs/phone-api-fixtures/sessions.json",
+  "items": [
+    {
+      "id": "hollow.chat.s-20261104-6e772c5f",
+      "title": "Release notes for 5.2",
+      "workspace": "Hollow Companion App",
+      "summary": "Hollow chat in Hollow Companion App",
+      "keywords": ["Hollow", "chat", "Hollow Companion App"]
+    },
+    {
+      "id": "hollow.chat.s-project-3a32152612b5616b96ae191e922b66a04ae30e080d9e5584",
+      "title": "Vault root chat",
+      "summary": "Hollow chat",
+      "keywords": ["Hollow", "chat"]
+    }
+  ],
+  "notIndexed": ["s-20261104-e2582579"]
+}

@@ -1,0 +1,116 @@
+/* Settings, Usage "Claude plan" card (Paperclip PR 8c). Imported by
+   src/components/ClaudeQuotaCard.tsx only, so it rides the lazy Usage chunk
+   and the main CSS bundle is unaffected. Tokens and scale steps only; the
+   bar is the shared .meter primitive (fill width clamped, number never). */
+@layer components {
+.claude-quota-optin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+}
+
+.claude-quota-optin-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  flex: 1 1 280px;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--muted);
+}
+
+.claude-quota-optin-text strong {
+  font-size: var(--fs-body);
+  color: var(--ink);
+}
+
+.claude-quota-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+}
+
+.claude-quota-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2) var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.claude-quota-title {
+  margin: 0;
+  font-size: var(--fs-body);
+  color: var(--ink);
+}
+
+.claude-quota-age {
+  flex: 1;
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+
+.claude-quota-windows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.claude-quota-window {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.claude-quota-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+
+.claude-quota-percent {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.claude-quota-window[data-level="high"] .meter-fill {
+  background: var(--warning);
+}
+
+.claude-quota-window[data-level="over"] .meter-fill {
+  background: var(--error);
+}
+
+.claude-quota-window[data-level="over"] .claude-quota-percent {
+  color: var(--error);
+}
+
+.claude-quota-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-3);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+
+.claude-quota-note {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-base);
+  color: var(--muted);
+}
+}

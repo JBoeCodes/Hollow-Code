@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "canvas-capture",
+  "description": "Storeless canvas capture child. Its job and completion commands validate the caller label; canvas scripts remain in an opaque-origin iframe with no network.",
+  "webviews": ["canvas-capture-*"],
+  "permissions": ["core:default"]
+}

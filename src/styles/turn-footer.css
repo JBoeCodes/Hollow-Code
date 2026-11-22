@@ -1,0 +1,135 @@
+/* The row under a finished agent reply and, while the agent works, the same
+   slot with a spinner and a live clock (components/TurnFooter.tsx). Modelled
+   on Conductor: muted, one line, icon buttons, file chips with line counts. */
+@layer components {
+.chat-context-divider { border-block: 1px solid var(--hairline); padding-block: var(--sp-2); color: var(--muted); font-size: var(--fs-meta); line-height: var(--lh-meta); }
+.chat-context-divider summary { cursor: pointer; font-weight: var(--fw-medium); }
+.chat-context-divider p { margin: var(--sp-2) 0 0; color: var(--body); }
+.turn.system:has(.chat-context-divider) .turn-content { padding: 0; background: transparent; border: 0; font-family: var(--ui); }
+.turn-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  margin-top: var(--sp-3);
+  color: var(--muted);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+}
+.turn-footer-time { font-variant-numeric: tabular-nums; white-space: nowrap; margin-right: var(--sp-1); }
+.turn-footer-typical { font-variant-numeric: tabular-nums; white-space: nowrap; margin-right: var(--sp-1); }
+.turn-footer-notes { white-space: nowrap; }
+.turn-footer-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.turn-footer-btn:hover { color: var(--ink); background: var(--surface-soft); }
+.turn-footer-btn.active { color: var(--primary); }
+/* P0-23: a reply that could look verified but isn't says so here, in the Run
+   record's own claim pill (`.execution-receipt-claim`); a click opens it. */
+.turn-footer-check { background: transparent; font: inherit; line-height: 20px; white-space: nowrap; cursor: pointer; }
+.turn-footer-check:hover { background: var(--surface-soft); }
+
+/* A reply's changed files (components/ReplyFileChips.tsx; overnight 11-12,
+   C2): right-aligned above its "Worked for" line, or above its row of
+   actions when its steps aren't folded. */
+.turn-chips-row { display: flex; justify-content: flex-end; margin: var(--sp-3) 0 var(--sp-2); }
+.turn-chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-2); min-width: 0; }
+.turn-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 280px;
+  height: 28px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xs);
+  background: var(--material-solid);
+  box-shadow: none;
+  color: var(--body);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  cursor: pointer;
+}
+.turn-chip:hover, .turn-chip.active { border-color: var(--primary-soft-strong); color: var(--ink); }
+.turn-chip svg { flex: none; color: var(--muted); }
+.turn-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Each chip sits in its own listitem (a button can't be one); the folder
+   tells two files with one name apart (EH4). */
+.turn-chip-item { display: flex; min-width: 0; }
+.turn-chip-dir { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.turn-chip.deleted .turn-chip-name { text-decoration: line-through; }
+/* The type colours of #1280's chips (fileChip.ts tones). */
+.turn-chip.tone-sheet svg { color: var(--success); }
+.turn-chip:is(.tone-image, .tone-video) svg { color: var(--accent-teal); }
+.turn-chip.tone-doc svg { color: var(--accent-amber); }
+.turn-chip.tone-slides svg { color: var(--warning); }
+.turn-chip.tone-pdf svg { color: var(--error); }
+.turn-chip-add, .turn-chip-del { font-family: var(--mono); font-size: var(--fs-caption); font-variant-numeric: tabular-nums; }
+.turn-chip-add { color: var(--success); }
+.turn-chip-del { color: var(--error); margin-left: -2px; }
+
+/* Not useful's optional one-line reason, under the row. */
+.chat-feedback-reason { display: flex; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); max-width: 520px; }
+.chat-feedback-reason input { flex: 1 1 auto; min-width: 0; padding: var(--sp-1) var(--sp-2); color: var(--ink); border: 1px solid var(--hairline); border-radius: var(--r-sm); background: var(--surface-card); font: var(--fs-meta)/1.4 var(--ui); }
+
+/* Working: the footer slot shows what the agent is doing and for how long.
+   `.chat-ember` keeps the old status line's hooks; the transcript already
+   pads the row, so its outer padding is dropped. */
+.turn-footer.live.chat-ember {
+  max-width: none;
+  margin: 0 0 var(--sp-6);
+  padding: 0;
+  flex-wrap: nowrap;
+  animation: none;
+}
+.turn-footer-verb {
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--body-strong);
+}
+.chat-inline-warning { color: var(--ink); font-size: var(--fs-body); border-left: 2px solid var(--warning); padding: var(--sp-1) var(--sp-3); }
+.chat-inline-warning summary { cursor: pointer; min-height: 24px; overflow-wrap: anywhere; }
+.chat-inline-warning summary span { color: var(--muted); }
+.chat-inline-warning pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 384px; overflow: auto; font: inherit; margin: var(--sp-2) 0; }
+
+/* Conductor-style inline code in a reply: an outlined chip, not a tint. */
+.chat-msg .md-view :not(pre) > code {
+  padding: 1px 6px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  background: transparent;
+  font-size: 0.88em;
+}
+/* Images in a reply are bounded thumbnails; the preview opens them full size. */
+.chat-msg .md-view img {
+  display: block;
+  max-width: min(100%, 560px);
+  max-height: 360px;
+  margin: var(--sp-3) 0;
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+  object-fit: contain;
+}
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .turn-footer.just-finished { border-radius: var(--r-md); }
+}
+/* Quick chats (2026-11-14): "Move to <project>" under a quick chat's reply
+   (components/QuickChatMoveOffer.tsx). */
+.chat-move-offer { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-2); color: var(--muted); font-size: var(--fs-meta); }
+}

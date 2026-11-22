@@ -1,0 +1,29 @@
+{
+  "round": "r-base",
+  "mode": "real",
+  "seed": 7,
+  "repeats": 3,
+  "budgetUsd": 20,
+  "agent": "claude",
+  "model": "opus",
+  "effort": "high",
+  "permissionMode": "acceptEdits",
+  "candidate": {
+    "commit": "52cbfdf8",
+    "dirty": false,
+    "sourceFingerprint": "f00d",
+    "pid": 42
+  },
+  "order": [
+    "memory-current-2",
+    "research-fourth-attachment-1",
+    "continuity-settled-constraint-1",
+    "memory-current-1",
+    "research-fourth-attachment-3",
+    "continuity-settled-constraint-2",
+    "research-fourth-attachment-2",
+    "memory-current-3",
+    "continuity-settled-constraint-3"
+  ],
+  "writtenAt": "2026-10-07T09:00:00Z"
+}

@@ -1,0 +1,108 @@
+{
+  "projectAgentKey": "s-project-7b1d1e19d222f79ab29a218320c8f9f1fdd651a8c6714076",
+  "workspace": {
+    "id": "local-results-view",
+    "title": "Results view",
+    "status": "active",
+    "path": "workspaces/local-results-view",
+    "cwd": "/Users/fixture/vault/workspaces/local-results-view",
+    "modified": "2026-10-05T10:05:00Z"
+  },
+  "files": [
+    {
+      "path": "workspaces/local-results-view/PLAN.md",
+      "name": "PLAN.md",
+      "kind": "context",
+      "size": 61000,
+      "modified": "2026-10-05T09:00:00Z"
+    },
+    {
+      "path": "workspaces/local-results-view/outputs/summary.md",
+      "name": "outputs/summary.md",
+      "kind": "output",
+      "size": 2048,
+      "modified": null
+    }
+  ],
+  "sessions": [
+    {
+      "key": "s-20261005-abcd0001",
+      "title": "Draft the summary",
+      "agent": "codex",
+      "harnessSessionId": "codex-thread-9",
+      "cwd": "/Users/fixture/vault/workspaces/local-results-view",
+      "createdAt": "2026-10-05T09:58:00Z",
+      "lastActivityAt": "2026-10-05T10:05:00Z",
+      "endedAt": null,
+      "turnCount": 2,
+      "parentKey": null,
+      "forkKind": null,
+      "adopted": false,
+      "stints": [
+        {
+          "agent": "claude",
+          "harnessSessionId": "claude-session-1",
+          "startedAt": "2026-10-05T09:58:00Z",
+          "endedAt": "2026-10-05T10:00:00Z",
+          "reason": "agent changed"
+        },
+        {
+          "agent": "codex",
+          "harnessSessionId": "codex-thread-9",
+          "startedAt": "2026-10-05T10:00:00Z",
+          "endedAt": null,
+          "reason": null
+        }
+      ],
+      "resumable": "native"
+    }
+  ],
+  "sources": [
+    {
+      "path": "sources/q3-export.csv",
+      "original": "/Users/fixture/Downloads/q3-export.csv",
+      "captured": "2026-10-04T16:00:00Z",
+      "freshness": "unchanged_metadata",
+      "coverage": "excerpt",
+      "includedBytes": 24000,
+      "totalBytes": 81920
+    }
+  ],
+  "sourcesOmitted": 2,
+  "reentry": {
+    "asOf": "2026-10-05T12:00:00Z",
+    "nextStep": "Send the summary to Dana.",
+    "openItems": [
+      "Send the summary to Dana"
+    ],
+    "openItemCount": 3,
+    "lastRun": {
+      "sessionKey": "s-20261005-abcd0001",
+      "status": "success",
+      "finishedAt": "2026-10-05T10:05:00Z",
+      "failedChecks": 0,
+      "checkCount": 4,
+      "unknownChecks": null,
+      "verification": "verified"
+    },
+    "gaps": [],
+    "briefStale": {
+      "days": 9,
+      "conversations": 2
+    }
+  },
+  "contextHealth": [
+    {
+      "name": "WORKSPACE.md",
+      "bytes": 3100,
+      "included": 3100,
+      "limit": 24000
+    },
+    {
+      "name": "PLAN.md",
+      "bytes": 61000,
+      "included": 44900,
+      "limit": 44900
+    }
+  ]
+}

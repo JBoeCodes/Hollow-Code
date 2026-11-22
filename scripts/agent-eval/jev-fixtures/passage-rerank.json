@@ -1,0 +1,904 @@
+{
+  "schema": 1,
+  "condition": "passage-rerank",
+  "about": "Judged passage reranking (Jev use 2, passages). Each item is a request and the passages retrieval would offer (at most 24, the pool the reranker sees); `relevant` are judged evidence, `stale` are superseded statements a current-state request should not keep, `kind` the case it tests (plain, buried: the answer behind topical notes, stale, historical, paraphrase, decoy, multi: the answer needs two passages, none: no passage answers, single: one passage, which production never sends). Synthetic, from the bed Eval fixture. Outputs per arm: kept [id], in order.",
+  "items": [
+    {
+      "id": "vendor-decision",
+      "kind": "buried",
+      "request": "Which sensor vendor did we decide on for Kestrel?",
+      "passages": [
+        {
+          "id": "sync-0911",
+          "title": "Kestrel weekly sync 2026-09-11",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Hill reservoir."
+        },
+        {
+          "id": "sync-0910",
+          "title": "Kestrel weekly sync 2026-09-10",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Canal yard."
+        },
+        {
+          "id": "decision-0602",
+          "title": "Kestrel sensor vendor decision",
+          "excerpt": "Decision: the Kestrel pilot uses Halvard sensors. Brightline was ruled out because its battery life fell short of the 18-month requirement."
+        },
+        {
+          "id": "catalogue-k1",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0001: mounting bracket type 1, 17 units in stock, lead time 5 days."
+        }
+      ],
+      "relevant": [
+        "decision-0602"
+      ],
+      "stale": []
+    },
+    {
+      "id": "cadence-now",
+      "kind": "stale",
+      "request": "How often do Kestrel status reports go out now?",
+      "passages": [
+        {
+          "id": "cadence-new",
+          "title": "Kestrel status reports",
+          "excerpt": "Kestrel status reports go out every second Tuesday, since the steering group changed the cadence on 2026-09-15."
+        },
+        {
+          "id": "cadence-old",
+          "title": "Kestrel status reports",
+          "excerpt": "Kestrel status reports go out every Friday."
+        },
+        {
+          "id": "plan-report",
+          "title": "Plan",
+          "excerpt": "Send the status report."
+        }
+      ],
+      "relevant": [
+        "cadence-new"
+      ],
+      "stale": [
+        "cadence-old"
+      ]
+    },
+    {
+      "id": "cadence-before",
+      "kind": "historical",
+      "request": "How often did Kestrel status reports go out before the steering group changed the cadence?",
+      "passages": [
+        {
+          "id": "cadence-new",
+          "title": "Kestrel status reports",
+          "excerpt": "Kestrel status reports go out every second Tuesday, since the steering group changed the cadence on 2026-09-15."
+        },
+        {
+          "id": "cadence-old",
+          "title": "Kestrel status reports",
+          "excerpt": "Kestrel status reports go out every Friday."
+        },
+        {
+          "id": "plan-report",
+          "title": "Plan",
+          "excerpt": "Send the status report."
+        }
+      ],
+      "relevant": [
+        "cadence-old",
+        "cadence-new"
+      ],
+      "stale": []
+    },
+    {
+      "id": "ceiling-amount",
+      "kind": "plain",
+      "request": "What budget ceiling did the steering group approve for the pilot?",
+      "passages": [
+        {
+          "id": "committed",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "Committed so far: 31,200 EUR (sensors and gateways). Anything above the ceiling needs a new approval."
+        },
+        {
+          "id": "ceiling",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "The steering group approved a budget ceiling of 48,500 EUR for the Kestrel field pilot on 2026-08-28."
+        },
+        {
+          "id": "eur-rule",
+          "title": "Decisions",
+          "excerpt": "Settled: every Kestrel report states amounts in EUR, never USD."
+        },
+        {
+          "id": "catalogue-k2",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0002: mounting bracket type 2, 24 units in stock, lead time 8 days."
+        },
+        {
+          "id": "sync-0908",
+          "title": "Kestrel weekly sync 2026-09-08",
+          "excerpt": "Install schedule holds; readings look normal. Next sync in a week."
+        }
+      ],
+      "relevant": [
+        "ceiling"
+      ],
+      "stale": []
+    },
+    {
+      "id": "headroom",
+      "kind": "multi",
+      "request": "How much of the Kestrel budget is still uncommitted?",
+      "passages": [
+        {
+          "id": "ceiling",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "The steering group approved a budget ceiling of 48,500 EUR for the Kestrel field pilot on 2026-08-28."
+        },
+        {
+          "id": "committed",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "Committed so far: 31,200 EUR (sensors and gateways). Anything above the ceiling needs a new approval."
+        },
+        {
+          "id": "catalogue-k1",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0001: mounting bracket type 1, 17 units in stock, lead time 5 days."
+        },
+        {
+          "id": "catalogue-k2",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0002: mounting bracket type 2, 24 units in stock, lead time 8 days."
+        },
+        {
+          "id": "sync-0909",
+          "title": "Kestrel weekly sync 2026-09-09",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for North depot."
+        },
+        {
+          "id": "plan-report",
+          "title": "Plan",
+          "excerpt": "Send the status report."
+        }
+      ],
+      "relevant": [
+        "ceiling",
+        "committed"
+      ],
+      "stale": []
+    },
+    {
+      "id": "why-not-brightline",
+      "kind": "paraphrase",
+      "request": "Why did the other supplier lose out?",
+      "passages": [
+        {
+          "id": "sync-0911",
+          "title": "Kestrel weekly sync 2026-09-11",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Hill reservoir."
+        },
+        {
+          "id": "sync-0910",
+          "title": "Kestrel weekly sync 2026-09-10",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Canal yard."
+        },
+        {
+          "id": "sync-0909",
+          "title": "Kestrel weekly sync 2026-09-09",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for North depot."
+        },
+        {
+          "id": "decision-0602",
+          "title": "Kestrel sensor vendor decision",
+          "excerpt": "Decision: the Kestrel pilot uses Halvard sensors. Brightline was ruled out because its battery life fell short of the 18-month requirement."
+        },
+        {
+          "id": "brightline-spec",
+          "title": "Brightline datasheet (synthetic)",
+          "excerpt": "Brightline B7 level sensor: rated battery life 14 months at one reading every 15 minutes."
+        },
+        {
+          "id": "catalogue-k3",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0003: mounting bracket type 3, 9 units in stock, lead time 12 days."
+        }
+      ],
+      "relevant": [
+        "decision-0602",
+        "brightline-spec"
+      ],
+      "stale": []
+    },
+    {
+      "id": "bracket-stock",
+      "kind": "plain",
+      "request": "How many type 2 mounting brackets are in stock?",
+      "passages": [
+        {
+          "id": "catalogue-k1",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0001: mounting bracket type 1, 17 units in stock, lead time 5 days."
+        },
+        {
+          "id": "catalogue-k2",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0002: mounting bracket type 2, 24 units in stock, lead time 8 days."
+        },
+        {
+          "id": "catalogue-k3",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0003: mounting bracket type 3, 9 units in stock, lead time 12 days."
+        },
+        {
+          "id": "sync-0910",
+          "title": "Kestrel weekly sync 2026-09-10",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Canal yard."
+        },
+        {
+          "id": "sync-0911",
+          "title": "Kestrel weekly sync 2026-09-11",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Hill reservoir."
+        }
+      ],
+      "relevant": [
+        "catalogue-k2"
+      ],
+      "stale": []
+    },
+    {
+      "id": "bracket-decoy",
+      "kind": "decoy",
+      "request": "Which sensor vendor did the crews ask about?",
+      "passages": [
+        {
+          "id": "sync-0911",
+          "title": "Kestrel weekly sync 2026-09-11",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Hill reservoir."
+        },
+        {
+          "id": "sync-0910",
+          "title": "Kestrel weekly sync 2026-09-10",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Canal yard."
+        },
+        {
+          "id": "sync-0909",
+          "title": "Kestrel weekly sync 2026-09-09",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for North depot."
+        },
+        {
+          "id": "sync-0908",
+          "title": "Kestrel weekly sync 2026-09-08",
+          "excerpt": "Install schedule holds; readings look normal. Next sync in a week."
+        },
+        {
+          "id": "decision-0602",
+          "title": "Kestrel sensor vendor decision",
+          "excerpt": "Decision: the Kestrel pilot uses Halvard sensors. Brightline was ruled out because its battery life fell short of the 18-month requirement."
+        }
+      ],
+      "relevant": [
+        "decision-0602"
+      ],
+      "stale": []
+    },
+    {
+      "id": "firmware-version",
+      "kind": "stale",
+      "request": "Which gateway firmware do we need before go-live?",
+      "passages": [
+        {
+          "id": "firmware-risk",
+          "title": "Field log (synthetic)",
+          "excerpt": "Gateway firmware: the gateways need firmware 2.4 before go-live; the vendor has not confirmed a date."
+        },
+        {
+          "id": "gateway-old",
+          "title": "Gateway plan (superseded)",
+          "excerpt": "Go-live is planned on gateway firmware 2.2."
+        },
+        {
+          "id": "day-001",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 001: crew visited Canal yard; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "sync-0908",
+          "title": "Kestrel weekly sync 2026-09-08",
+          "excerpt": "Install schedule holds; readings look normal. Next sync in a week."
+        }
+      ],
+      "relevant": [
+        "firmware-risk"
+      ],
+      "stale": [
+        "gateway-old"
+      ]
+    },
+    {
+      "id": "canal-access",
+      "kind": "stale",
+      "request": "When are crews allowed on site at Canal yard?",
+      "passages": [
+        {
+          "id": "access-risk",
+          "title": "Field log (synthetic)",
+          "excerpt": "Site access: Canal yard allows crews only on weekday mornings."
+        },
+        {
+          "id": "access-old",
+          "title": "Site access (superseded)",
+          "excerpt": "Canal yard allows crews any weekday until 18:00."
+        },
+        {
+          "id": "day-001",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 001: crew visited Canal yard; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "survey-001",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 001: Canal yard, mast height 4 m, signal 63 dB, ground firm."
+        }
+      ],
+      "relevant": [
+        "access-risk"
+      ],
+      "stale": [
+        "access-old"
+      ]
+    },
+    {
+      "id": "weakest-signal",
+      "kind": "plain",
+      "request": "Which surveyed site had the weakest signal?",
+      "passages": [
+        {
+          "id": "survey-001",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 001: Canal yard, mast height 4 m, signal 63 dB, ground firm."
+        },
+        {
+          "id": "survey-002",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 002: Hill reservoir, mast height 5 m, signal 76 dB, ground firm."
+        },
+        {
+          "id": "survey-003",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 003: North depot, mast height 6 m, signal 89 dB, ground soft after rain."
+        },
+        {
+          "id": "day-002",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 002: crew visited Hill reservoir; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "pilot-brief",
+          "title": "Kestrel pilot",
+          "excerpt": "A synthetic field pilot of wireless level sensors at three sites. The Eval outcome workspace holds its work."
+        }
+      ],
+      "relevant": [
+        "survey-001",
+        "survey-002",
+        "survey-003"
+      ],
+      "stale": []
+    },
+    {
+      "id": "soft-ground",
+      "kind": "paraphrase",
+      "request": "Is there anywhere the mast footing could be a problem?",
+      "passages": [
+        {
+          "id": "survey-001",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 001: Canal yard, mast height 4 m, signal 63 dB, ground firm."
+        },
+        {
+          "id": "survey-002",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 002: Hill reservoir, mast height 5 m, signal 76 dB, ground firm."
+        },
+        {
+          "id": "survey-003",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 003: North depot, mast height 6 m, signal 89 dB, ground soft after rain."
+        },
+        {
+          "id": "day-001",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 001: crew visited Canal yard; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "access-risk",
+          "title": "Field log (synthetic)",
+          "excerpt": "Site access: Canal yard allows crews only on weekday mornings."
+        }
+      ],
+      "relevant": [
+        "survey-003"
+      ],
+      "stale": []
+    },
+    {
+      "id": "report-currency",
+      "kind": "plain",
+      "request": "Which currency should the status report use?",
+      "passages": [
+        {
+          "id": "eur-rule",
+          "title": "Decisions",
+          "excerpt": "Settled: every Kestrel report states amounts in EUR, never USD."
+        },
+        {
+          "id": "ceiling",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "The steering group approved a budget ceiling of 48,500 EUR for the Kestrel field pilot on 2026-08-28."
+        },
+        {
+          "id": "committed",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "Committed so far: 31,200 EUR (sensors and gateways). Anything above the ceiling needs a new approval."
+        },
+        {
+          "id": "skill",
+          "title": "Kestrel status report",
+          "excerpt": "The first line is exactly KESTREL STATUS and today's date; then three sections: progress, risks, next steps."
+        },
+        {
+          "id": "cadence-new",
+          "title": "Kestrel status reports",
+          "excerpt": "Kestrel status reports go out every second Tuesday, since the steering group changed the cadence on 2026-09-15."
+        }
+      ],
+      "relevant": [
+        "eur-rule"
+      ],
+      "stale": []
+    },
+    {
+      "id": "report-format",
+      "kind": "plain",
+      "request": "How should the first line of a Kestrel status report read?",
+      "passages": [
+        {
+          "id": "skill",
+          "title": "Kestrel status report",
+          "excerpt": "The first line is exactly KESTREL STATUS and today's date; then three sections: progress, risks, next steps."
+        },
+        {
+          "id": "cadence-new",
+          "title": "Kestrel status reports",
+          "excerpt": "Kestrel status reports go out every second Tuesday, since the steering group changed the cadence on 2026-09-15."
+        },
+        {
+          "id": "plan-report",
+          "title": "Plan",
+          "excerpt": "Send the status report."
+        },
+        {
+          "id": "eur-rule",
+          "title": "Decisions",
+          "excerpt": "Settled: every Kestrel report states amounts in EUR, never USD."
+        }
+      ],
+      "relevant": [
+        "skill"
+      ],
+      "stale": []
+    },
+    {
+      "id": "dana-deadline",
+      "kind": "plain",
+      "request": "When is Dana sending the draft?",
+      "passages": [
+        {
+          "id": "sync-actions",
+          "title": "Weekly Sync (synthetic)",
+          "excerpt": "Action items: Dana: send the draft by 2026-10-09. Review the findings (owner: Lee)."
+        },
+        {
+          "id": "plan-report",
+          "title": "Plan",
+          "excerpt": "Send the status report."
+        },
+        {
+          "id": "sync-0908",
+          "title": "Kestrel weekly sync 2026-09-08",
+          "excerpt": "Install schedule holds; readings look normal. Next sync in a week."
+        },
+        {
+          "id": "outcome",
+          "title": "Eval outcome",
+          "excerpt": "Run the Kestrel field pilot at three synthetic sites and report what it shows."
+        }
+      ],
+      "relevant": [
+        "sync-actions"
+      ],
+      "stale": []
+    },
+    {
+      "id": "who-reviews",
+      "kind": "paraphrase",
+      "request": "Who looks over the findings?",
+      "passages": [
+        {
+          "id": "sync-actions",
+          "title": "Weekly Sync (synthetic)",
+          "excerpt": "Action items: Dana: send the draft by 2026-10-09. Review the findings (owner: Lee)."
+        },
+        {
+          "id": "outcome",
+          "title": "Eval outcome",
+          "excerpt": "Run the Kestrel field pilot at three synthetic sites and report what it shows."
+        },
+        {
+          "id": "pilot-brief",
+          "title": "Kestrel pilot",
+          "excerpt": "A synthetic field pilot of wireless level sensors at three sites. The Eval outcome workspace holds its work."
+        },
+        {
+          "id": "sync-0908",
+          "title": "Kestrel weekly sync 2026-09-08",
+          "excerpt": "Install schedule holds; readings look normal. Next sync in a week."
+        }
+      ],
+      "relevant": [
+        "sync-actions"
+      ],
+      "stale": []
+    },
+    {
+      "id": "battery-life",
+      "kind": "plain",
+      "request": "What battery life does the Halvard sensor have?",
+      "passages": [
+        {
+          "id": "battery-spec",
+          "title": "Halvard datasheet (synthetic)",
+          "excerpt": "Halvard L2 level sensor: rated battery life 24 months at one reading every 15 minutes."
+        },
+        {
+          "id": "brightline-spec",
+          "title": "Brightline datasheet (synthetic)",
+          "excerpt": "Brightline B7 level sensor: rated battery life 14 months at one reading every 15 minutes."
+        },
+        {
+          "id": "decision-0602",
+          "title": "Kestrel sensor vendor decision",
+          "excerpt": "Decision: the Kestrel pilot uses Halvard sensors. Brightline was ruled out because its battery life fell short of the 18-month requirement."
+        },
+        {
+          "id": "catalogue-k1",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0001: mounting bracket type 1, 17 units in stock, lead time 5 days."
+        }
+      ],
+      "relevant": [
+        "battery-spec"
+      ],
+      "stale": []
+    },
+    {
+      "id": "battery-requirement",
+      "kind": "plain",
+      "request": "What battery life did the pilot require?",
+      "passages": [
+        {
+          "id": "decision-0602",
+          "title": "Kestrel sensor vendor decision",
+          "excerpt": "Decision: the Kestrel pilot uses Halvard sensors. Brightline was ruled out because its battery life fell short of the 18-month requirement."
+        },
+        {
+          "id": "battery-spec",
+          "title": "Halvard datasheet (synthetic)",
+          "excerpt": "Halvard L2 level sensor: rated battery life 24 months at one reading every 15 minutes."
+        },
+        {
+          "id": "brightline-spec",
+          "title": "Brightline datasheet (synthetic)",
+          "excerpt": "Brightline B7 level sensor: rated battery life 14 months at one reading every 15 minutes."
+        },
+        {
+          "id": "sync-0911",
+          "title": "Kestrel weekly sync 2026-09-11",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Hill reservoir."
+        }
+      ],
+      "relevant": [
+        "decision-0602"
+      ],
+      "stale": []
+    },
+    {
+      "id": "pilot-goal",
+      "kind": "plain",
+      "request": "What is the Kestrel pilot for?",
+      "passages": [
+        {
+          "id": "pilot-brief",
+          "title": "Kestrel pilot",
+          "excerpt": "A synthetic field pilot of wireless level sensors at three sites. The Eval outcome workspace holds its work."
+        },
+        {
+          "id": "outcome",
+          "title": "Eval outcome",
+          "excerpt": "Run the Kestrel field pilot at three synthetic sites and report what it shows."
+        },
+        {
+          "id": "sync-0908",
+          "title": "Kestrel weekly sync 2026-09-08",
+          "excerpt": "Install schedule holds; readings look normal. Next sync in a week."
+        },
+        {
+          "id": "survey-002",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 002: Hill reservoir, mast height 5 m, signal 76 dB, ground firm."
+        }
+      ],
+      "relevant": [
+        "pilot-brief",
+        "outcome"
+      ],
+      "stale": []
+    },
+    {
+      "id": "nothing-relevant",
+      "kind": "none",
+      "request": "What is the periwinkle lodestar?",
+      "passages": [
+        {
+          "id": "sync-0911",
+          "title": "Kestrel weekly sync 2026-09-11",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Hill reservoir."
+        },
+        {
+          "id": "catalogue-k1",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0001: mounting bracket type 1, 17 units in stock, lead time 5 days."
+        },
+        {
+          "id": "ceiling",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "The steering group approved a budget ceiling of 48,500 EUR for the Kestrel field pilot on 2026-08-28."
+        },
+        {
+          "id": "day-001",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 001: crew visited Canal yard; checked mounts, logged readings, no incidents."
+        }
+      ],
+      "relevant": [],
+      "stale": []
+    },
+    {
+      "id": "incidents",
+      "kind": "plain",
+      "request": "Were there any incidents at Hill reservoir?",
+      "passages": [
+        {
+          "id": "day-002",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 002: crew visited Hill reservoir; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "day-001",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 001: crew visited Canal yard; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "survey-002",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 002: Hill reservoir, mast height 5 m, signal 76 dB, ground firm."
+        },
+        {
+          "id": "sync-0911",
+          "title": "Kestrel weekly sync 2026-09-11",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Hill reservoir."
+        }
+      ],
+      "relevant": [
+        "day-002"
+      ],
+      "stale": []
+    },
+    {
+      "id": "go-live-blockers",
+      "kind": "multi",
+      "request": "What could still hold up go-live?",
+      "passages": [
+        {
+          "id": "firmware-risk",
+          "title": "Field log (synthetic)",
+          "excerpt": "Gateway firmware: the gateways need firmware 2.4 before go-live; the vendor has not confirmed a date."
+        },
+        {
+          "id": "access-risk",
+          "title": "Field log (synthetic)",
+          "excerpt": "Site access: Canal yard allows crews only on weekday mornings."
+        },
+        {
+          "id": "day-001",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 001: crew visited Canal yard; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "day-002",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 002: crew visited Hill reservoir; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "sync-0908",
+          "title": "Kestrel weekly sync 2026-09-08",
+          "excerpt": "Install schedule holds; readings look normal. Next sync in a week."
+        },
+        {
+          "id": "ceiling",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "The steering group approved a budget ceiling of 48,500 EUR for the Kestrel field pilot on 2026-08-28."
+        },
+        {
+          "id": "gateway-old",
+          "title": "Gateway plan (superseded)",
+          "excerpt": "Go-live is planned on gateway firmware 2.2."
+        }
+      ],
+      "relevant": [
+        "firmware-risk",
+        "access-risk"
+      ],
+      "stale": [
+        "gateway-old"
+      ]
+    },
+    {
+      "id": "vendor-in-24",
+      "kind": "buried",
+      "request": "Which sensor vendor did we decide on for Kestrel?",
+      "passages": [
+        {
+          "id": "sync-0911",
+          "title": "Kestrel weekly sync 2026-09-11",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Hill reservoir."
+        },
+        {
+          "id": "sync-0910",
+          "title": "Kestrel weekly sync 2026-09-10",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for Canal yard."
+        },
+        {
+          "id": "sync-0909",
+          "title": "Kestrel weekly sync 2026-09-09",
+          "excerpt": "The sensor vendor came up again: crews asked about mounting brackets for North depot."
+        },
+        {
+          "id": "sync-0908",
+          "title": "Kestrel weekly sync 2026-09-08",
+          "excerpt": "Install schedule holds; readings look normal. Next sync in a week."
+        },
+        {
+          "id": "catalogue-k1",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0001: mounting bracket type 1, 17 units in stock, lead time 5 days."
+        },
+        {
+          "id": "catalogue-k2",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0002: mounting bracket type 2, 24 units in stock, lead time 8 days."
+        },
+        {
+          "id": "catalogue-k3",
+          "title": "Supplier catalogue (synthetic)",
+          "excerpt": "Part K-0003: mounting bracket type 3, 9 units in stock, lead time 12 days."
+        },
+        {
+          "id": "day-001",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 001: crew visited Canal yard; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "day-002",
+          "title": "Field log (synthetic)",
+          "excerpt": "Day 002: crew visited Hill reservoir; checked mounts, logged readings, no incidents."
+        },
+        {
+          "id": "survey-001",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 001: Canal yard, mast height 4 m, signal 63 dB, ground firm."
+        },
+        {
+          "id": "survey-002",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 002: Hill reservoir, mast height 5 m, signal 76 dB, ground firm."
+        },
+        {
+          "id": "survey-003",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 003: North depot, mast height 6 m, signal 89 dB, ground soft after rain."
+        },
+        {
+          "id": "access-risk",
+          "title": "Field log (synthetic)",
+          "excerpt": "Site access: Canal yard allows crews only on weekday mornings."
+        },
+        {
+          "id": "firmware-risk",
+          "title": "Field log (synthetic)",
+          "excerpt": "Gateway firmware: the gateways need firmware 2.4 before go-live; the vendor has not confirmed a date."
+        },
+        {
+          "id": "plan-report",
+          "title": "Plan",
+          "excerpt": "Send the status report."
+        },
+        {
+          "id": "pilot-brief",
+          "title": "Kestrel pilot",
+          "excerpt": "A synthetic field pilot of wireless level sensors at three sites. The Eval outcome workspace holds its work."
+        },
+        {
+          "id": "outcome",
+          "title": "Eval outcome",
+          "excerpt": "Run the Kestrel field pilot at three synthetic sites and report what it shows."
+        },
+        {
+          "id": "sync-actions",
+          "title": "Weekly Sync (synthetic)",
+          "excerpt": "Action items: Dana: send the draft by 2026-10-09. Review the findings (owner: Lee)."
+        },
+        {
+          "id": "skill",
+          "title": "Kestrel status report",
+          "excerpt": "The first line is exactly KESTREL STATUS and today's date; then three sections: progress, risks, next steps."
+        },
+        {
+          "id": "eur-rule",
+          "title": "Decisions",
+          "excerpt": "Settled: every Kestrel report states amounts in EUR, never USD."
+        },
+        {
+          "id": "ceiling",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "The steering group approved a budget ceiling of 48,500 EUR for the Kestrel field pilot on 2026-08-28."
+        },
+        {
+          "id": "committed",
+          "title": "Budget ceiling (synthetic)",
+          "excerpt": "Committed so far: 31,200 EUR (sensors and gateways). Anything above the ceiling needs a new approval."
+        },
+        {
+          "id": "brightline-spec",
+          "title": "Brightline datasheet (synthetic)",
+          "excerpt": "Brightline B7 level sensor: rated battery life 14 months at one reading every 15 minutes."
+        },
+        {
+          "id": "decision-0602",
+          "title": "Kestrel sensor vendor decision",
+          "excerpt": "Decision: the Kestrel pilot uses Halvard sensors. Brightline was ruled out because its battery life fell short of the 18-month requirement."
+        }
+      ],
+      "relevant": [
+        "decision-0602"
+      ],
+      "stale": []
+    },
+    {
+      "id": "single-passage",
+      "kind": "single",
+      "request": "What did the survey say about Canal yard?",
+      "passages": [
+        {
+          "id": "survey-001",
+          "title": "Site survey (synthetic)",
+          "excerpt": "Survey point 001: Canal yard, mast height 4 m, signal 63 dB, ground firm."
+        }
+      ],
+      "relevant": [
+        "survey-001"
+      ],
+      "stale": []
+    }
+  ]
+}

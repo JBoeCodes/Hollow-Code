@@ -1,0 +1,43 @@
+import { expect, test } from './fixtures/test';
+import AxeBuilder from '@axe-core/playwright';
+test('Damaged icon recovery details remain readable at minimum sizes',async({page})=>{
+  await page.addInitScript(()=>{
+    localStorage.setItem('theme','light');
+    localStorage.setItem('mockWorkspaces',JSON.stringify([{id:'main',kind:'main',title:'COO',status:'active',path:'workspaces/main',cwd:'/Users/fixture/vault/workspaces/main',modified:'2026-10-21T12:00:00Z'}]));
+    localStorage.setItem('mockCustomIconReadError:mainAgent','ICON_DAMAGED: Saved icon is damaged; left unchanged: EOF while parsing a value');
+  });
+  await page.goto('/?mock=1');
+  await page.locator('.main-agent-orb').click();
+  await page.locator('.top-bar').getByRole('button',{name:'Actions for COO'}).click();
+  await page.getByRole('menuitem',{name:'Change icon…'}).click();
+  const editor=page.getByRole('dialog',{name:'COO icon',exact:true});
+  await expect(editor.getByRole('button',{name:'Apply icon'})).toBeDisabled();
+  await editor.getByRole('button',{name:'Details',exact:true}).scrollIntoViewIfNeeded();
+  await editor.getByRole('button',{name:'Details',exact:true}).click();
+  await expect(editor.getByRole('button',{name:'Details',exact:true})).toHaveAttribute('aria-expanded','true');
+  expect((await new AxeBuilder({page}).include('.custom-icon-editor').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()).violations).toEqual([]);
+});
+test('COO icon dialog fits the minimum window and keeps keyboard access',async({page},info)=>{
+  await page.addInitScript(()=>localStorage.setItem('mockWorkspaces',JSON.stringify([{id:'main',kind:'main',title:'COO',status:'active',path:'workspaces/main',cwd:'/Users/fixture/vault/workspaces/main',modified:'2026-10-21T12:00:00Z'}])));
+  await page.goto('/?mock=1');
+  await page.locator('.main-agent-orb').click();
+  await page.locator('.top-bar').getByRole('button',{name:'Actions for COO'}).click();
+  await page.getByRole('menuitem',{name:'Change icon…'}).click();
+  const editor=page.getByRole('dialog',{name:'COO icon',exact:true});
+  await editor.getByRole('button',{name:'Generate a logo',exact:true}).focus();
+  await page.keyboard.press('Enter');
+  await expect(editor.getByRole('button',{name:'Generate a logo',exact:true})).toHaveAttribute('aria-pressed','true');
+  await editor.getByRole('button',{name:'Generate four options',exact:true}).focus();
+  await page.keyboard.press('Enter');
+  const options=editor.getByRole('radiogroup',{name:'Logo options'}).getByRole('radio');
+  await expect(options).toHaveCount(4);
+  await options.first().focus();
+  await page.keyboard.press('Space');
+  await expect(options.first()).toBeChecked();
+  await page.keyboard.press('ArrowRight');
+  await expect(options.nth(1)).toBeChecked();
+  const bounds=await editor.boundingBox(), viewport=page.viewportSize()!;expect(bounds!.x).toBeGreaterThanOrEqual(0);expect(bounds!.width).toBeLessThanOrEqual(viewport.width);expect(bounds!.height).toBeLessThanOrEqual(viewport.height);
+  await editor.screenshot({path:info.outputPath('generate-minimum.png')});
+  await editor.getByRole('button',{name:'Apply icon'}).click();
+  await expect(editor).toHaveCount(0);await expect(page.locator('.top-bar .main-icon-image')).toHaveCount(1);
+});

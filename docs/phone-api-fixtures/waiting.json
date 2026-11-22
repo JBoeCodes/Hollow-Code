@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "sessionKey": "s-20261104-e2582579",
+      "questionId": "qi-8c4e2b7a1d9f3605",
+      "title": null,
+      "workspaceTitle": "Quick chats",
+      "kind": "question",
+      "since": "2026-11-04T15:02:41Z",
+      "preview": "Which branch should I start from?"
+    },
+    {
+      "sessionKey": "s-project-3a32152612b5616b96ae191e922b66a04ae30e080d9e5584",
+      "questionId": "qi-0f9e8d7c6b5a4321",
+      "title": "Vault root chat",
+      "workspaceTitle": null,
+      "kind": "question",
+      "since": "2026-11-03T09:30:00.000000+00:00",
+      "preview": "Keep the old notes folder, or archive it?"
+    }
+  ]
+}

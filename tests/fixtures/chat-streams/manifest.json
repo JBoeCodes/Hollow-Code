@@ -1,0 +1,148 @@
+{
+ "note": "Synthetic streams shaped like each adapter's emitted events; see docs/reference/chat-stream-grammar.md. Line is 1-based.",
+ "streams": [
+  {
+   "file": "claude-text-tool.jsonl",
+   "adapter": "claude",
+   "expect": "pass"
+  },
+  {
+   "file": "claude-steered-two-results.jsonl",
+   "adapter": "claude",
+   "expect": "pass"
+  },
+  {
+   "file": "claude-remote-run-after-usage.jsonl",
+   "adapter": "claude",
+   "expect": "pass"
+  },
+  {
+   "file": "codex-mcp-tool.jsonl",
+   "adapter": "codex",
+   "expect": "pass"
+  },
+  {
+   "file": "antigravity-text-only.jsonl",
+   "adapter": "antigravity",
+   "expect": "pass"
+  },
+  {
+   "file": "grok-tool-no-id.jsonl",
+   "adapter": "grok",
+   "expect": "pass"
+  },
+  {
+   "file": "claude-stopped-open-tool.jsonl",
+   "adapter": "claude",
+   "expect": "pass"
+  },
+  {
+   "file": "queued-cancel.jsonl",
+   "adapter": "claude",
+   "expect": "pass"
+  },
+  {
+   "file": "codex-error-then-done.jsonl",
+   "adapter": "codex",
+   "expect": "pass"
+  },
+  {
+   "file": "bad-tool-result-no-use.jsonl",
+   "adapter": "codex",
+   "expect": "fail",
+   "rule": "G06",
+   "line": 3
+  },
+  {
+   "file": "bad-event-after-done.jsonl",
+   "adapter": "claude",
+   "expect": "fail",
+   "rule": "G03",
+   "line": 5
+  },
+  {
+   "file": "bad-no-run-started.jsonl",
+   "adapter": "claude",
+   "expect": "fail",
+   "rule": "G02",
+   "line": 1
+  },
+  {
+   "file": "bad-missing-done.jsonl",
+   "adapter": "claude",
+   "expect": "fail",
+   "rule": "G03",
+   "line": 3
+  },
+  {
+   "file": "bad-open-tool-at-done.jsonl",
+   "adapter": "claude",
+   "expect": "fail",
+   "rule": "G05",
+   "line": 2
+  },
+  {
+   "file": "bad-delta-after-error.jsonl",
+   "adapter": "grok",
+   "expect": "fail",
+   "rule": "G04",
+   "line": 3
+  },
+  {
+   "file": "bad-text-after-deltas.jsonl",
+   "adapter": "antigravity",
+   "expect": "fail",
+   "rule": "G07",
+   "line": 4
+  },
+  {
+   "file": "bad-duplicate-usage.jsonl",
+   "adapter": "codex",
+   "expect": "fail",
+   "rule": "G10",
+   "line": 3
+  },
+  {
+   "file": "bad-content-after-usage.jsonl",
+   "adapter": "codex",
+   "expect": "fail",
+   "rule": "G10",
+   "line": 3
+  },
+  {
+   "file": "bad-activity-wrong-run.jsonl",
+   "adapter": "codex",
+   "expect": "fail",
+   "rule": "G09",
+   "line": 2
+  },
+  {
+   "file": "bad-unknown-type.jsonl",
+   "adapter": "claude",
+   "expect": "fail",
+   "rule": "G01",
+   "line": 2
+  },
+  {
+   "file": "bad-tool-use-no-name.jsonl",
+   "adapter": "grok",
+   "expect": "fail",
+   "rule": "G08",
+   "line": 2
+  },
+  {
+   "file": "bad-duplicate-tool-id.jsonl",
+   "adapter": "claude",
+   "expect": "fail",
+   "rule": "G05",
+   "line": 4
+  },
+  {
+   "file": "bad-not-json.jsonl",
+   "adapter": "claude",
+   "expect": "fail",
+   "rule": "G01",
+   "line": 2
+  }
+ ]
+}

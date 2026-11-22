@@ -1,0 +1,53 @@
+{
+  "calls": 3,
+  "conditions": [
+    {
+      "arms": {
+        "jev": "connector-relevance.jev.json",
+        "local": "connector-relevance.local.json"
+      },
+      "complete": true,
+      "condition": "connector-relevance",
+      "fixtureSha256": "0b24193d419dc171283ae9dc07d1ec820d8fcca07827bd078ac75eeec8f61b9e",
+      "items": 1
+    },
+    {
+      "arms": {
+        "jev": "passage-rerank.jev.json",
+        "local": "passage-rerank.local.json"
+      },
+      "complete": true,
+      "condition": "passage-rerank",
+      "fixtureSha256": "b4b87b285aeb0be87488dc9814430dbe9c8e7e5d82719962ca8ef2c3035b8e71",
+      "items": 1
+    },
+    {
+      "arms": {
+        "exact": "proposal-dedup.exact.json",
+        "jev": "proposal-dedup.jev.json"
+      },
+      "complete": true,
+      "condition": "proposal-dedup",
+      "fixtureSha256": "dda3b557a7625f8e6f799ee028e335b6d93f7e527f4fb0e9902a343f8bb9397f",
+      "items": 1
+    }
+  ],
+  "costUsd": null,
+  "endpoint": {
+    "kind": "loopback",
+    "url": "http://127.0.0.1:0/v1/systemone"
+  },
+  "finishedAt": "2026-10-07T19:12:02.166143+00:00",
+  "fixtures": "scripts/agent-eval/jev-fixtures",
+  "inFlight": null,
+  "items": 1,
+  "maxCalls": 200,
+  "model": "jev-1.13.0",
+  "schema": 1,
+  "startedAt": "2026-10-07T19:11:50.153589+00:00",
+  "state": "complete",
+  "stopped": null,
+  "tool": "hollow jev-study",
+  "updatedAt": "2026-10-07T19:12:02.166142+00:00",
+  "version": "test"
+}

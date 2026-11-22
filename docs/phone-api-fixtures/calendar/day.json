@@ -1,0 +1,35 @@
+{
+  "enabled": true,
+  "connected": true,
+  "complete": true,
+  "partial": null,
+  "error": null,
+  "source": "Microsoft 365 · read only",
+  "fetchedAt": "2026-11-19T14:02:11+00:00",
+  "from": "2026-11-19T05:00:00Z",
+  "to": "2026-11-20T05:00:00Z",
+  "events": [
+    {
+      "id": "mac:standup",
+      "title": "Standup",
+      "start": "2026-11-19T09:30:00-05:00",
+      "end": "2026-11-19T09:45:00-05:00",
+      "allDay": false,
+      "cancelled": false,
+      "location": "Room 2",
+      "organizer": "Dee",
+      "joinUrl": "https://teams.example/j/1"
+    },
+    {
+      "id": "mac:offsite",
+      "title": "Team offsite",
+      "start": "2026-11-19T00:00:00",
+      "end": "2026-11-20T00:00:00",
+      "allDay": true,
+      "cancelled": false,
+      "location": null,
+      "organizer": null,
+      "joinUrl": null
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+/* The one session indicator family (asks 10-11 A2, components/SessionIndicator.tsx).
+   Shape carries the state; colour is the second channel: running = primary,
+   queued = muted, waiting on you = warning, failed = error, interrupted
+   (Hollow quit mid-turn, P1-40) = ink: nothing failed, paused (P1a) = muted,
+   the default: it waits on no one. Only the running
+   arc moves: one rotation, paused while the window is away (`--ambient-play`,
+   like the hearth), and still under either reduced-motion gate (the OS setting
+   or Settings → Motion), where the arc rests at one o'clock. */
+@layer components {
+.session-indicator { display: inline-flex; flex: none; align-items: center; justify-content: center; line-height: 0; color: var(--muted); }
+.session-indicator svg { display: block; overflow: visible; }
+.session-indicator[data-state="running"] { color: var(--primary); }
+.session-indicator[data-state="queued"] { color: var(--muted); }
+.session-indicator[data-state="waiting"] { color: var(--warning); }
+.session-indicator[data-state="failed"] { color: var(--error); }
+.session-indicator[data-state="interrupted"] { color: var(--ink); }
+.session-indicator-arc { transform-box: view-box; transform-origin: 8px 8px; transform: rotate(30deg); }
+
+/* A collapsed workspace's roll-up: the mark and, past one, a count. */
+.session-rollup { display: inline-flex; flex: none; align-items: center; gap: 3px; color: var(--muted); font: 600 var(--fs-caption)/1 var(--ui); font-variant-numeric: tabular-nums; }
+.session-rollup[data-state="running"] { color: var(--primary); }
+.session-rollup[data-state="waiting"] { color: var(--warning); }
+.session-rollup[data-state="failed"] { color: var(--error); }
+.session-rollup[data-state="interrupted"] { color: var(--ink); }
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .session-indicator-arc { animation: session-indicator-turn 1.6s linear infinite; animation-play-state: var(--ambient-play, running); }
+}
+@keyframes session-indicator-turn { from { transform: rotate(30deg); } to { transform: rotate(390deg); } }
+
+@media (forced-colors: active) {
+  .session-indicator, .session-rollup { color: CanvasText; }
+}
+}

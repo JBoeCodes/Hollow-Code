@@ -1,0 +1,19 @@
+{
+  "_comment": "One answer line, the shape question cards and ask-canvases share (Canvas C4 A2). src-tauri/src/interaction_schema.rs push_line (format_answers' line shape, after \"Answered questions\"; a card's own prompt there runs to PROMPT_MAX) and src/canvas/askAnswer.ts answerLine (an ask-canvas's lines, after \"Answered canvas \\\"<id>\\\":\") are both tested against every case, so the two answer formats cannot drift. line is what follows the newline before it: \"- \" + the label on one line (whitespace collapsed, control characters dropped, at most 200 characters) + \": \" + the value (tabs to spaces, control characters dropped, each line's end trimmed, the whole trimmed), its later lines indented two spaces.",
+  "cases": [
+    {"label":"Which layout?","value":"Grid","line":"- Which layout?: Grid"},
+    {"label":"Why?\n(one line)","value":"First line\n\tsecond\u0007line","line":"- Why? (one line): First line\n   secondline"},
+    {"label":"  Ship   day  ","value":"  Friday  ","line":"- Ship day: Friday"},
+    {"label":"Bell\u0007 name","value":"x","line":"- Bell name: x"},
+    {"label":"Lines","value":"a\r\nb\r\n","line":"- Lines: a\n  b"},
+    {"label":"Empty","value":"","line":"- Empty: "},
+    {"label":"Notes","value":"one\n\n two  ","line":"- Notes: one\n  \n   two"},
+    {"label":"\u00a0Lead\u00a0time\u2003","value":"3\u00a0days","line":"- Lead time: 3\u00a0days"},
+    {"label":"Top","value":"\n\nTop\t\t","line":"- Top: Top"},
+    {"label":"Controls","value":"a\u007fb\u0085c","line":"- Controls: abc"},
+    {"label":"Separator","value":"a\u2028b","line":"- Separator: a\u2028b"},
+    {"label":"Rank","value":"1. Inputs; 2. Draft to the composer","line":"- Rank: 1. Inputs; 2. Draft to the composer"},
+    {"label":"Colon: inside","value":"Speed: High; Cost: Low","line":"- Colon: inside: Speed: High; Cost: Low"},
+    {"label":"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀","value":"x","line":"- 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀: x"}
+  ]
+}

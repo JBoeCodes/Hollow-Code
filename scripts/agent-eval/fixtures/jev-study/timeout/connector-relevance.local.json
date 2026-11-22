@@ -1,0 +1,44 @@
+{
+  "arm": "local",
+  "complete": true,
+  "condition": "connector-relevance",
+  "results": [
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "mail"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "notion"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "plaud"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "blender"
+        },
+        {
+          "attach": false,
+          "basis": "local",
+          "id": "zoom"
+        }
+      ],
+      "engine": "local",
+      "id": "email-cost-update",
+      "latencyMs": 0.1,
+      "note": null,
+      "outcome": "off"
+    }
+  ],
+  "schema": 1
+}

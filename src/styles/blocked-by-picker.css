@@ -1,0 +1,15 @@
+/* "Blocked by" picker (Paperclip PR 11b), used by the Tasks pane and TaskModal.
+   Imported by the component itself, so it loads wherever the picker mounts. */
+@layer components {
+.blocked-by-picker{display:grid;gap:6px;min-width:0}
+.blocked-by-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.blocked-by-chip{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:2px 4px 2px 8px;border:1px solid var(--hairline);border-radius:var(--r-pill);font-size:var(--fs-meta);color:var(--ink)}
+.blocked-by-chip>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.blocked-by-chip>button{border:0;background:none;color:var(--muted);cursor:pointer;padding:0 4px;font-size:var(--fs-body);line-height:1}
+.blocked-by-picker>input{width:100%;min-width:0}
+.blocked-by-options{list-style:none;margin:0;padding:4px;border:1px solid var(--hairline);display:grid;gap:2px;max-height:220px;overflow:auto}
+.blocked-by-options button{display:grid;gap:2px;width:100%;text-align:left;border:0;background:none;padding:6px 8px;cursor:pointer;color:var(--ink);font-size:var(--fs-meta)}
+.blocked-by-options button:hover,.blocked-by-options button:focus-visible{background:var(--primary-soft)}
+.blocked-by-options small{color:var(--muted);font-size:var(--fs-meta)}
+.blocked-by-empty{padding:6px 8px;font-size:var(--fs-meta);color:var(--muted)}
+}

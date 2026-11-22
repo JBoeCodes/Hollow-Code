@@ -1,0 +1,27 @@
+import { expect, test } from './fixtures/test';
+import AxeBuilder from '@axe-core/playwright';
+import { join } from 'node:path';
+for (const theme of ['light', 'dark', 'glass']) test(`checklist studio in ${theme}`, async ({ page }, info) => {
+  await page.addInitScript(t => { localStorage.setItem('theme', t === 'light' ? 'light' : 'dark'); localStorage.setItem('glass', t === 'glass' ? 'on' : 'off'); }, theme);
+  await page.goto('/?mock=1&window=smoke-artifact');
+  const region = page.getByRole('region', { name: 'Canvas kit gallery', exact: true });
+  await region.getByRole('button', { name: 'Expand artifact' }).click();
+  const studio = region.frameLocator('iframe').getByRole('region', { name: 'Checklist studio', exact: true });
+  await region.locator('iframe').scrollIntoViewIfNeeded();
+  await studio.scrollIntoViewIfNeeded();
+  await expect(studio.getByRole('listitem')).toHaveCount(4);
+  expect(await studio.evaluate(el => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
+  expect(await studio.evaluate(el => el.getAnimations({ subtree: true }).length)).toBe(0);
+  const result = await new AxeBuilder({ page }).include('[aria-label="Canvas kit gallery"] iframe').withTags(['wcag2a', 'wcag2aa']).analyze();
+  expect(result.violations.filter(v => v.impact === 'critical' || v.impact === 'serious')).toEqual([]);
+  if (process.env.HOLLOW_LANE_SHOTS) await studio.screenshot({ path: join(process.env.HOLLOW_LANE_SHOTS, `y4-${theme}-${info.project.name}.png`) });
+  const ask = page.getByRole('region', { name: 'Canvas ask gallery', exact: true });
+  await ask.getByRole('button', { name: 'Expand artifact' }).click();
+  const checklist = ask.frameLocator('iframe').locator('hc-checklist');
+  await ask.locator('iframe').scrollIntoViewIfNeeded();
+  await checklist.scrollIntoViewIfNeeded();
+  await expect(checklist.getByRole('radio')).toHaveCount(6);
+  await checklist.getByRole('radio', { name: 'Keyboard navigation: Pass', exact: true }).check();
+  await checklist.getByRole('radio', { name: 'VoiceOver labels: Skip', exact: true }).check();
+  if (process.env.HOLLOW_LANE_SHOTS) await checklist.screenshot({ path: join(process.env.HOLLOW_LANE_SHOTS, `y4-ask-${theme}-${info.project.name}.png`) });
+});

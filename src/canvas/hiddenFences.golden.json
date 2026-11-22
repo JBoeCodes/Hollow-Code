@@ -1,0 +1,204 @@
+{
+  "about": "Shared by src/chatSegments.test.ts (splitHiddenFence) and src-tauri/src/next_step.rs (split, strip, canvas_answers::hidden_blocks): what opens and closes a hidden block (hollow-next, hollow-canvas-answer), the text left without it and each block's lines. A fence starts after optional spaces/tabs with three or more backticks or tildes and an info string without backticks. It closes on a line of at least as many of the same mark plus optional spaces/tabs. Only a bare hidden language is stripped, case-insensitively once the text names it in lower case. Ordinary info strings and attributed reserved fences pair normally and stay whole. Canvas C6 P1; P1-28 ordinary-info repair.",
+  "cases": [
+    {
+      "name": "CRLF hidden fence closes without swallowing the following prose",
+      "lang": "hollow-next",
+      "text": "Before\r\n```hollow-next\r\nNext\r\n```\r\nAfter",
+      "expect": { "text": "Before\r\nAfter", "blocks": [["Next\r"]] }
+    },
+    {
+      "name": "attributed ordinary fence pairs before a hidden suggestion",
+      "lang": "hollow-next",
+      "text": "```ts title=\"a\"\nx\n```\n```hollow-next\nMerge it\n```",
+      "expect": { "text": "```ts title=\"a\"\nx\n```", "blocks": [["Merge it"]] }
+    },
+    {
+      "name": "no-space ordinary info string pairs before a hidden suggestion",
+      "lang": "hollow-next",
+      "text": "```ts:src/a.ts\nx\n```\n```hollow-next\nMerge it\n```",
+      "expect": { "text": "```ts:src/a.ts\nx\n```", "blocks": [["Merge it"]] }
+    },
+    {
+      "name": "a closed answer block and the blank line before it",
+      "lang": "hollow-canvas-answer",
+      "text": "Answered canvas \"a\":\n- Pick: A\n\n```hollow-canvas-answer\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```\n",
+      "expect": {
+        "text": "Answered canvas \"a\":\n- Pick: A",
+        "blocks": [
+          [
+            "{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "a block left open at the end",
+      "lang": "hollow-next",
+      "text": "Done.\n```hollow-next\nShip it",
+      "expect": {
+        "text": "Done.",
+        "blocks": [
+          [
+            "Ship it"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "text after the block stays, other fences stay whole",
+      "lang": "hollow-next",
+      "text": "a\n```rust\nlet x = 1;\n```\n~~~hollow-next\nNext\n~~~\nb",
+      "expect": {
+        "text": "a\n```rust\nlet x = 1;\n```\nb",
+        "blocks": [
+          [
+            "Next"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "text without a block is returned as it is, trailing newline and all",
+      "lang": "hollow-next",
+      "text": "Plain reply\n",
+      "expect": {
+        "text": "Plain reply\n",
+        "blocks": []
+      }
+    },
+    {
+      "name": "naming the language inline is not a block",
+      "lang": "hollow-next",
+      "text": "mentions hollow-next inline\n",
+      "expect": {
+        "text": "mentions hollow-next inline",
+        "blocks": []
+      }
+    },
+    {
+      "name": "a fence quoting a hidden block keeps it as text",
+      "lang": "hollow-canvas-answer",
+      "text": "See:\n````md\n```hollow-canvas-answer\n{}\n```\n````",
+      "expect": {
+        "text": "See:\n````md\n```hollow-canvas-answer\n{}\n```\n````",
+        "blocks": []
+      }
+    },
+    {
+      "name": "a line of backticks with words after it does not open a fence (C4 review minor)",
+      "lang": "hollow-canvas-answer",
+      "text": "```js code```\n```hollow-canvas-answer\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```",
+      "expect": {
+        "text": "```js code```",
+        "blocks": [
+          [
+            "{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "an ordinary info string with spaces quotes a hidden fence",
+      "lang": "hollow-canvas-answer",
+      "text": "``` some words\nkept\n```hollow-canvas-answer\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```\nafter",
+      "expect": {
+        "text": "``` some words\nkept\n```hollow-canvas-answer\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```\nafter",
+        "blocks": []
+      }
+    },
+    {
+      "name": "an info string with attributes is not the hidden language",
+      "lang": "hollow-canvas-answer",
+      "text": "```hollow-canvas-answer {x}\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```\nend",
+      "expect": {
+        "text": "```hollow-canvas-answer {x}\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```\nend",
+        "blocks": []
+      }
+    },
+    {
+      "name": "the language is matched case-insensitively",
+      "lang": "hollow-canvas-answer",
+      "text": "Answered (hollow-canvas-answer):\n```HOLLOW-CANVAS-ANSWER\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```",
+      "expect": {
+        "text": "Answered (hollow-canvas-answer):",
+        "blocks": [
+          [
+            "{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "an upper-case language alone is not looked for (both sides check the lower-case name first)",
+      "lang": "hollow-canvas-answer",
+      "text": "```HOLLOW-CANVAS-ANSWER\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```",
+      "expect": {
+        "text": "```HOLLOW-CANVAS-ANSWER\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```",
+        "blocks": []
+      }
+    },
+    {
+      "name": "indented by spaces or a tab, trailing blanks, a longer closing fence",
+      "lang": "hollow-canvas-answer",
+      "text": "x\n  \t````hollow-canvas-answer  \n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n``````\ny",
+      "expect": {
+        "text": "x\ny",
+        "blocks": [
+          [
+            "{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "a shorter or different closing fence does not close it",
+      "lang": "hollow-canvas-answer",
+      "text": "x\n````hollow-canvas-answer\n{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}\n```\n~~~~\n````\ny",
+      "expect": {
+        "text": "x\ny",
+        "blocks": [
+          [
+            "{\"canvasId\":\"a\",\"revision\":1,\"answers\":{\"pick\":\"A\"}}",
+            "```",
+            "~~~~"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "a non-breaking space before the fence is not a fence",
+      "lang": "hollow-next",
+      "text": "x\n ```hollow-next\nNext\n```\ny",
+      "expect": {
+        "text": "x\n ```hollow-next\nNext\n```\ny",
+        "blocks": []
+      }
+    },
+    {
+      "name": "two backticks are not a fence",
+      "lang": "hollow-next",
+      "text": "``hollow-next\nNext\n``",
+      "expect": {
+        "text": "``hollow-next\nNext\n``",
+        "blocks": []
+      }
+    },
+    {
+      "name": "two blocks, in order",
+      "lang": "hollow-canvas-answer",
+      "text": "```hollow-canvas-answer\n1\n```\nmid\n~~~hollow-canvas-answer\n2\n~~~",
+      "expect": {
+        "text": "mid",
+        "blocks": [
+          [
+            "1"
+          ],
+          [
+            "2"
+          ]
+        ]
+      }
+    }
+  ]
+}

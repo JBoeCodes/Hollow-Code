@@ -1,0 +1,11 @@
+@layer components {
+/* Match the shared rbk-card's components layer. */
+  .rbk-card.canvas-look-card { width: min(640px, 94vw); height: auto; max-height: 88vh; overflow: auto; }
+  .canvas-look-card .rbk-head h2 { flex: 1; }
+  .canvas-look-card .rbk-foot { display: flex; justify-content: flex-end; gap: var(--sp-2); }
+  .canvas-look-swatches { display: flex; gap: var(--sp-2); }
+  .canvas-look-swatches span { width: 24px; height: 24px; border-radius: var(--r-sm); border: 1px solid var(--hairline); }
+  .canvas-look-adjustments { font-size: var(--fs-caption); }
+  .canvas-look-card .chat-artifact { flex-shrink: 0; }
+}
+

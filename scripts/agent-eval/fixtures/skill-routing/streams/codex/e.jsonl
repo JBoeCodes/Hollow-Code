@@ -1,0 +1,2 @@
+{"type":"thread.started","thread_id":"th1"}
+{"type":"item.started","item":{"id":"item_0","type":"command_execution","command":"/bin/zsh -lc \"cat /h/.agents/skills/beta/SKILL.md\"","status":"in_progress"}}

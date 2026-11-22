@@ -1,0 +1,82 @@
+{
+  "id": "run-20261005-0001",
+  "source": "chat",
+  "sourceId": "s-20261005-abcd0001",
+  "startedAt": "2026-10-05T09:58:00Z",
+  "finishedAt": "2026-10-05T10:00:00Z",
+  "status": "success",
+  "changes": [
+    {
+      "vaultPath": "workspaces/local-results-view/outputs/summary.md",
+      "changeType": "modify",
+      "beforeHash": "sha256-summary-before",
+      "afterHash": "sha256-summary-after",
+      "beforeSize": 1800,
+      "afterSize": 2048,
+      "text": true,
+      "notionMirror": false,
+      "beforeCoverage": {
+        "state": "captured"
+      },
+      "afterCoverage": {
+        "state": "captured"
+      },
+      "restoredAt": "2026-10-05T11:00:00Z",
+      "restoredByRunId": "run-20261005-0003",
+      "alsoChangedBy": [
+        "run-20261005-0002"
+      ],
+      "unattributed": true,
+      "unverified": true
+    },
+    {
+      "vaultPath": "workspaces/local-results-view/sources/q3-export.csv",
+      "changeType": "create",
+      "beforeHash": null,
+      "afterHash": null,
+      "beforeSize": null,
+      "afterSize": 3145728,
+      "text": false,
+      "notionMirror": false,
+      "afterUncaptured": true,
+      "beforeCoverage": {
+        "state": "absent"
+      },
+      "afterCoverage": {
+        "state": "uncaptured",
+        "reason": "tooLarge"
+      }
+    },
+    {
+      "vaultPath": "workspaces/local-results-view/notion-brief.md",
+      "changeType": "modify",
+      "beforeHash": null,
+      "afterHash": "sha256-brief-after",
+      "beforeSize": null,
+      "afterSize": 900,
+      "text": true,
+      "notionMirror": true,
+      "beforeNotionId": "notion-page-1",
+      "afterNotionId": "notion-page-1",
+      "beforeUncaptured": true,
+      "beforeCoverage": {
+        "state": "unknown"
+      },
+      "afterCoverage": {
+        "state": "captured"
+      }
+    }
+  ],
+  "flags": [
+    {
+      "kind": "agentInstructions",
+      "path": "workspaces/local-results-view/CLAUDE.md",
+      "changeType": "modify",
+      "detail": null
+    }
+  ],
+  "scope": "workspaces/local-results-view",
+  "overlaps": [
+    "run-20261005-0002"
+  ]
+}

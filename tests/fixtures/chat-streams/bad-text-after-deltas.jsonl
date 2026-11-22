@@ -1,0 +1,5 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"assistantDelta","text":"Hel"}
+{"type":"assistantDelta","text":"lo"}
+{"type":"assistantText","text":"Hello"}
+{"type":"done","sessionId":null}

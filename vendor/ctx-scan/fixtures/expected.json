@@ -1,0 +1,21 @@
+{
+  "about": "What ctx-scan and Hollow's scan_rules.rs must report for each fixture file, scanned as the org layer. line 0 means a path or size finding. Both test suites read this file.",
+  "layer": "org",
+  "files": {
+    "clean/.env.example": [],
+    "clean/org-fact.md": [],
+    "clean/placeholders.md": [],
+    "dirty/machine.md": [{"line": 3, "rule": "machine.macbook", "severity": "block"}],
+    "dirty/new-hire.md": [{"line": 3, "rule": "pii.ssn", "severity": "block"}],
+    "dirty/planted-key.md": [{"line": 5, "rule": "secret.anthropic", "severity": "block"}],
+    "dirty/staff-roster.csv": [{"line": 0, "rule": "file.data_type", "severity": "block"}]
+  },
+  "generated": [
+    {
+      "about": "Written by the tests at run time (not committed): 6 MB of plain text, over the 5 MiB limit.",
+      "path": "generated/big.md",
+      "bytes": 6291456,
+      "expect": [{"line": 0, "rule": "file.too_large", "severity": "block"}]
+    }
+  ]
+}

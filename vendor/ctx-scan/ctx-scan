@@ -1,0 +1,566 @@
+#!/usr/bin/env python3
+"""ctx-scan: check a context repo (or any folder) for secrets, computer facts,
+personal facts, employee data and files that don't belong.
+
+Standard library only; runs under macOS's /usr/bin/python3 (3.9) with no
+installs. Rules come from scan-rules.json beside this script (the same file
+Hollow reads), so the two can't drift.
+
+It never prints a matched value: a finding names the file, line, column and
+rule, nothing from the text itself.
+
+Exit codes: 0 nothing at or above the fail level, 1 findings at the fail level,
+2 a usage or configuration error (bad rules file, unknown layer, missing path,
+or any other failure).
+
+Run `ctx-scan --help` for the options. README.md beside this file has more.
+"""
+
+import argparse
+import fnmatch
+import json
+import math
+import os
+import re
+import subprocess
+import sys
+
+VERSION = "1.0.0"
+SEVERITIES = ("warn", "block")
+CONFIG_NAME = ".context-scan.yml"
+ALLOW_RE = re.compile(r"context-scan:\s{0,3}allow\s{1,3}([A-Za-z0-9_.*-]{1,80})\s{1,3}(\S.{0,300})")
+# An allow on the line above counts only when that line holds nothing else
+# (an optional comment opener, the allow, its reason), so an allowed secret
+# can't also wave through a different one on the next line.
+ALLOW_ONLY_LINE_RE = re.compile(
+    r"^\s{0,40}(<!--|#|//|--|;|/\*|\*)?\s{0,3}context-scan:\s{0,3}allow\s{1,3}([A-Za-z0-9_.*-]{1,80})\s{1,3}(\S.{0,300})$"
+)
+# A committed config can't switch these off (a single line can still allow one).
+UNDISABLEABLE_GROUPS = ("secret", "scan", "file", "pii")
+# Rules a committed config may allow only for one exact path, never by glob or
+# through a group allow: secrets, unreadable files, the size limit, SSNs.
+EXACT_PATH_ONLY_GROUPS = ("secret", "scan")
+EXACT_PATH_ONLY_RULES = ("file.too_large", "pii.ssn")
+REFERENCE_PREFIXES = ("process.env", "os.environ", "env.", "import.meta")
+
+
+def exact_path_only(rule):
+    return rule.group in EXACT_PATH_ONLY_GROUPS or rule.id in EXACT_PATH_ONLY_RULES
+
+
+def has_wildcard(glob):
+    return any(c in glob for c in "*?[")
+SKIP_DIRS = {".git", "node_modules", ".venv", "__pycache__"}
+
+
+class UsageError(Exception):
+    pass
+
+
+# ---------------------------------------------------------------- rules
+
+class Rule(object):
+    def __init__(self, raw):
+        self.id = raw["id"]
+        self.group = raw["group"]
+        self.target = raw["target"]
+        self.message = raw.get("message", "")
+        self.severity = dict(raw.get("severity", {}))
+        for value in self.severity.values():
+            if value not in SEVERITIES:
+                raise UsageError("rule %s: severity must be warn or block" % self.id)
+        self.regex = re.compile(raw["pattern"]) if raw.get("pattern") else None
+        self.exclude = re.compile(raw["exclude"]) if raw.get("exclude") else None
+        self.value_group = raw.get("value_group")
+        self.value_checks = raw.get("value_checks", {})
+        if self.target in ("line", "path") and self.regex is None:
+            raise UsageError("rule %s needs a pattern" % self.id)
+
+    def severity_for(self, layer):
+        return self.severity.get(layer, self.severity.get("*"))
+
+
+class Rules(object):
+    def __init__(self, path):
+        try:
+            with open(path, "r", encoding="utf-8") as fh:
+                raw = json.load(fh)
+        except (OSError, ValueError) as err:
+            raise UsageError("cannot read rules file %s: %s" % (path, err))
+        if raw.get("schema_version") != 1:
+            raise UsageError("rules file %s: unsupported schema_version" % path)
+        self.path = path
+        self.max_file_bytes = int(raw["max_file_bytes"])
+        self.layers = list(raw["layers"])
+        self.placeholder_words = [w.lower() for w in raw.get("placeholder_words", [])]
+        self.groups = dict(raw.get("groups", {}))
+        try:
+            self.rules = [Rule(r) for r in raw["rules"]]
+        except (KeyError, re.error) as err:
+            raise UsageError("rules file %s: bad rule: %s" % (path, err))
+        ids = [r.id for r in self.rules]
+        if len(ids) != len(set(ids)):
+            raise UsageError("rules file %s: duplicate rule ids" % path)
+
+    def by_target(self, target):
+        return [r for r in self.rules if r.target == target]
+
+    def get(self, rule_id):
+        for r in self.rules:
+            if r.id == rule_id:
+                return r
+        return None
+
+
+def entropy(value):
+    if not value:
+        return 0.0
+    counts = {}
+    for ch in value:
+        counts[ch] = counts.get(ch, 0) + 1
+    n = float(len(value))
+    return -sum((c / n) * math.log(c / n, 2) for c in counts.values())
+
+
+def value_passes(rule, match, placeholder_words):
+    """True when the match still looks like a real secret after its checks."""
+    if rule.value_group is None:
+        return True
+    value = match.group(rule.value_group) or ""
+    checks = rule.value_checks
+    if checks.get("letter_and_digit"):
+        if not (any(c.isdigit() for c in value) and any(c.isalpha() for c in value)):
+            return False
+    if checks.get("not_placeholder"):
+        low = value.lower()
+        if any(w in low for w in placeholder_words):
+            return False
+    if "min_entropy" in checks and entropy(value) < float(checks["min_entropy"]):
+        return False
+    if checks.get("not_reference") and is_reference(value):
+        return False
+    return True
+
+
+def is_reference(value):
+    """A value that points somewhere (path, URL, e-mail, env lookup) rather than holding a secret."""
+    if value[:1] in ("/", "~", "$", ".", "{", "%", "<"):
+        return True
+    if "://" in value:
+        return True
+    if value.lower().startswith(REFERENCE_PREFIXES):
+        return True
+    at = value.rfind("@")
+    if at > 0:
+        host = value[at + 1:]
+        tld = host.rsplit(".", 1)[-1]
+        if "." in host and all(c.isalnum() or c in ".-" for c in host) and tld and tld.isalpha():
+            return True
+    return False
+
+
+# ---------------------------------------------------------------- config
+
+def parse_config(path):
+    """A small YAML subset: `key: value`, `key: [a, b]` and `key:` + `- item`."""
+    cfg = {}
+    current = None
+    with open(path, "r", encoding="utf-8") as fh:
+        for number, raw in enumerate(fh, 1):
+            line = raw.rstrip("\n")
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            if stripped.startswith("- "):
+                if current is None:
+                    raise UsageError("%s:%d: list item outside a list" % (path, number))
+                cfg[current].append(_unquote(stripped[2:].strip()))
+                continue
+            if ":" not in stripped or line[:1].isspace():
+                raise UsageError("%s:%d: expected `key: value`" % (path, number))
+            key, value = stripped.split(":", 1)
+            key, value = key.strip(), value.strip()
+            if value.startswith("#"):
+                value = ""
+            if value == "":
+                cfg[key] = []
+                current = key
+            elif value.startswith("[") and value.endswith("]"):
+                inner = value[1:-1].strip()
+                cfg[key] = [_unquote(v.strip()) for v in inner.split(",") if v.strip()] if inner else []
+                current = None
+            else:
+                cfg[key] = _unquote(value.split(" #", 1)[0].strip())
+                current = None
+    return cfg
+
+
+def _unquote(value):
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+        return value[1:-1]
+    return value
+
+
+class Config(object):
+    def __init__(self, raw, rules, source):
+        self.source = source
+        self.layer = raw.get("layer")
+        self.fail_on = raw.get("fail_on")
+        self.disable = set(_as_list(raw.get("disable", [])))
+        self.allow = []
+        for entry in _as_list(raw.get("allow", [])):
+            parts = entry.split(None, 2)
+            if len(parts) < 3:
+                raise UsageError("%s: allow entry needs `<glob> <rule> <reason>`: %r" % (source, entry))
+            glob, name = parts[0], parts[1]
+            rule = rules.get(name)
+            if name == "*":
+                raise UsageError("%s: an allow entry must name a rule or group, not *: %r" % (source, entry))
+            if rule is None and name not in rules.groups:
+                raise UsageError("%s: allow names an unknown rule %r" % (source, name))
+            protected = name in EXACT_PATH_ONLY_GROUPS or (rule is not None and exact_path_only(rule))
+            if protected and has_wildcard(glob):
+                raise UsageError("%s: %s can only be allowed for one exact path, not a glob: %r" % (source, name, entry))
+            self.allow.append((glob, name))
+        for rule_id in self.disable:
+            rule = rules.get(rule_id)
+            if rule is None and rule_id not in rules.groups:
+                raise UsageError("%s: disable names an unknown rule %r" % (source, rule_id))
+            # A committed config may not switch secret, scan or file checks off
+            # for the whole repo; a single line can still say `context-scan: allow`.
+            if rule_id in UNDISABLEABLE_GROUPS or rule_id == "*" or (
+                rule is not None and (rule.group in ("secret", "scan", "file") or exact_path_only(rule))
+            ):
+                raise UsageError("%s: secret, scan, file and SSN rules can't be disabled, only allowed per path or line" % source)
+
+
+def _as_list(value):
+    if isinstance(value, list):
+        return value
+    return [value] if value else []
+
+
+def rule_named(rule, name):
+    return name in (rule.id, rule.group, "*")
+
+
+# ---------------------------------------------------------------- scanning
+
+class Finding(object):
+    __slots__ = ("path", "line", "column", "rule", "group", "severity", "message")
+
+    def __init__(self, path, line, column, rule, severity):
+        self.path = path
+        self.line = line
+        self.column = column
+        self.rule = rule.id
+        self.group = rule.group
+        self.severity = severity
+        self.message = rule.message
+
+    def as_dict(self):
+        return {k: getattr(self, k) for k in self.__slots__}
+
+
+class Scanner(object):
+    def __init__(self, rules, layer, config=None, personal_terms=None):
+        if layer not in rules.layers:
+            raise UsageError("unknown layer %r (one of: %s)" % (layer, ", ".join(rules.layers)))
+        self.rules = rules
+        self.layer = layer
+        self.config = config
+        self.line_rules = self._active(rules.by_target("line"))
+        self.path_rules = self._active(rules.by_target("path"))
+        self.size_rules = self._active(rules.by_target("size"))
+        self.unreadable_rules = self._active(rules.by_target("unreadable"))
+        self.term_rules = []
+        terms = [t for t in (personal_terms or []) if t and t.strip()]
+        for rule in self._active(rules.by_target("personal_terms")):
+            if terms:
+                alternation = "|".join(re.escape(t.strip()) for t in sorted(set(terms), key=len, reverse=True))
+                self.term_rules.append((rule, re.compile(r"(?i)(?<![A-Za-z0-9])(" + alternation + r")(?![A-Za-z0-9])")))
+
+    def _active(self, rules):
+        out = []
+        for rule in rules:
+            if rule.severity_for(self.layer) is None:
+                continue
+            if self.config and any(rule_named(rule, d) for d in self.config.disable):
+                continue
+            out.append(rule)
+        return out
+
+    def _allowed_by_config(self, rel, rule):
+        if not self.config:
+            return False
+        for glob, name in self.config.allow:
+            if exact_path_only(rule) and (has_wildcard(glob) or name != rule.id):
+                continue
+            if rule_named(rule, name) and fnmatch.fnmatch(rel, glob):
+                return True
+        return False
+
+    def scan_file(self, abs_path, rel):
+        findings = []
+        for rule in self.path_rules:
+            if rule.regex.search(rel) and not (rule.exclude and rule.exclude.search(rel)):
+                if not self._allowed_by_config(rel, rule):
+                    findings.append(Finding(rel, 0, 0, rule, rule.severity_for(self.layer)))
+        try:
+            size = os.path.getsize(abs_path)
+            if size > self.rules.max_file_bytes:
+                # Over the limit: reported, and only its first part is read.
+                for rule in self.size_rules:
+                    if not self._allowed_by_config(rel, rule):
+                        findings.append(Finding(rel, 0, 0, rule, rule.severity_for(self.layer)))
+            with open(abs_path, "rb") as fh:
+                data = fh.read(self.rules.max_file_bytes)
+        except OSError:
+            for rule in self.unreadable_rules:
+                findings.append(Finding(rel, 0, 0, rule, rule.severity_for(self.layer)))
+            return findings
+        # Binary and UTF-16 files are read too, with their NUL bytes dropped,
+        # so a key inside one is still found.
+        data = data.replace(b"\x00", b"")
+        # The config names rules (machine.macbook) and paths; only secrets
+        # are looked for in it.
+        only_secrets = os.path.basename(rel) == CONFIG_NAME
+        findings.extend(self.scan_text(data.decode("utf-8", errors="replace"), rel, only_secrets))
+        return findings
+
+    def scan_text(self, text, rel="<text>", only_secrets=False):
+        findings = []
+        previous = ""
+        for number, line in enumerate(text.split("\n"), 1):
+            line = line.rstrip("\r")
+            allows = self._line_allows(line) + self._allow_only_line(previous)
+            taken = []
+            candidates = [(rule, rule.regex) for rule in self.line_rules] + self.term_rules
+            for rule, regex in candidates:
+                if only_secrets and rule.group != "secret":
+                    continue
+                if any(rule_named(rule, a) for a in allows):
+                    continue
+                if self._allowed_by_config(rel, rule):
+                    continue
+                for match in regex.finditer(line):
+                    if rule.target == "line" and not value_passes(rule, match, self.rules.placeholder_words):
+                        continue
+                    start, end = match.span()
+                    if any(start < t_end and t_start < end for t_start, t_end in taken):
+                        continue
+                    taken.append((start, end))
+                    findings.append(Finding(rel, number, start + 1, rule, rule.severity_for(self.layer)))
+            previous = line
+        return findings
+
+    @staticmethod
+    def _line_allows(line):
+        return [m.group(1) for m in ALLOW_RE.finditer(line)]
+
+    @staticmethod
+    def _allow_only_line(line):
+        m = ALLOW_ONLY_LINE_RE.match(line)
+        return [m.group(2)] if m else []
+
+
+# ---------------------------------------------------------------- file lists
+
+def git_toplevel(path):
+    try:
+        out = subprocess.run(
+            ["git", "-C", path, "rev-parse", "--show-toplevel"],
+            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return out.decode("utf-8", "replace").strip() or None
+
+
+def git_files(path):
+    """Tracked plus untracked-not-ignored files under path (what would be committed)."""
+    out = subprocess.run(
+        ["git", "-C", path, "ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "."],
+        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True,
+    ).stdout
+    files = []
+    for entry in out.decode("utf-8", "replace").split("\0"):
+        if entry:
+            files.append(os.path.join(path, entry))
+    return sorted(set(files))
+
+
+def walk_files(path):
+    files = []
+    for root, dirs, names in os.walk(path):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for name in sorted(names):
+            files.append(os.path.join(root, name))
+    return files
+
+
+def collect(paths, all_files):
+    """Yield (absolute path, path shown and matched) for every file to scan."""
+    seen = set()
+    for given in paths:
+        if not os.path.lexists(given):
+            raise UsageError("no such file or folder: %s" % given)
+        if os.path.isdir(given) and not os.path.islink(given):
+            files = None
+            if not all_files and git_toplevel(given):
+                try:
+                    files = git_files(given)
+                except (OSError, subprocess.CalledProcessError):
+                    files = None
+            if files is None:
+                files = walk_files(given)
+            for f in files:
+                rel = os.path.relpath(f, given).replace(os.sep, "/")
+                if f not in seen and not os.path.islink(f) and os.path.isfile(f):
+                    seen.add(f)
+                    yield f, rel
+        elif os.path.isfile(given) and not os.path.islink(given):
+            if given not in seen:
+                seen.add(given)
+                yield given, os.path.normpath(given).replace(os.sep, "/")
+
+
+# ---------------------------------------------------------------- main
+
+def load_personal_terms(path):
+    if not path:
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            raw = json.load(fh)
+    except (OSError, ValueError) as err:
+        raise UsageError("cannot read personal file %s: %s" % (path, err))
+    terms = []
+    for key in ("names", "handles", "emails", "terms"):
+        terms.extend(str(t) for t in raw.get(key, []) if str(t).strip())
+    return terms
+
+
+def find_config(paths):
+    first = paths[0]
+    base = first if os.path.isdir(first) else os.path.dirname(os.path.abspath(first))
+    top = git_toplevel(base)
+    for folder in (base, top):
+        if folder:
+            candidate = os.path.join(folder, CONFIG_NAME)
+            if os.path.isfile(candidate):
+                return candidate
+    return None
+
+
+def default_rules_path():
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), "scan-rules.json")
+
+
+def build_parser():
+    p = argparse.ArgumentParser(
+        prog="ctx-scan",
+        description="Check files for secrets, computer facts, personal facts, employee data and data files. "
+        "Never prints a matched value.",
+    )
+    p.add_argument("paths", nargs="*", default=["."], help="files or folders (default: .)")
+    p.add_argument("--layer", help="home, personal, org, project or vault (default: the config's layer, else project)")
+    p.add_argument("--fail-on", choices=SEVERITIES, help="lowest severity that fails the run (default: the config's, else block)")
+    p.add_argument("--rules", default=None, help="rules file (default: scan-rules.json beside this script)")
+    p.add_argument("--config", default=None, help="config file (default: %s in the folder or its git root)" % CONFIG_NAME)
+    p.add_argument("--no-config", action="store_true", help="ignore any %s" % CONFIG_NAME)
+    p.add_argument("--personal", default=None,
+                   help="your own JSON file of names, handles and e-mails to flag (default: $CTX_SCAN_PERSONAL, "
+                   "else ~/.config/ctx-scan/personal.json if present). Never commit it.")
+    p.add_argument("--all-files", action="store_true", help="walk folders instead of asking git which files it tracks")
+    p.add_argument("--format", choices=("text", "json"), default="text")
+    p.add_argument("--quiet", action="store_true", help="print only findings and the summary line")
+    p.add_argument("--list-rules", action="store_true", help="print the rules and their severity per layer, then exit")
+    p.add_argument("--version", action="version", version="ctx-scan " + VERSION)
+    return p
+
+
+def list_rules(rules, out):
+    out.write("rules: %s\n" % rules.path)
+    out.write("size limit: %d bytes\n" % rules.max_file_bytes)
+    for rule in rules.rules:
+        per = ", ".join("%s=%s" % (layer, rule.severity_for(layer)) for layer in rules.layers if rule.severity_for(layer))
+        out.write("%-30s %-14s %s (%s)\n" % (rule.id, rule.target, rule.message, per))
+
+
+def run(argv, out=sys.stdout, err=sys.stderr):
+    args = build_parser().parse_args(argv)
+    try:
+        rules = Rules(args.rules or default_rules_path())
+        if args.list_rules:
+            list_rules(rules, out)
+            return 0
+        config = None
+        config_path = None if args.no_config else (args.config or find_config(args.paths))
+        if config_path:
+            try:
+                config = Config(parse_config(config_path), rules, config_path)
+            except OSError as e:
+                raise UsageError("cannot read config %s: %s" % (config_path, e))
+        layer = args.layer or (config.layer if config and config.layer else "project")
+        fail_on = args.fail_on or (config.fail_on if config and config.fail_on else "block")
+        if fail_on not in SEVERITIES:
+            raise UsageError("fail_on must be warn or block")
+        personal_path = args.personal or os.environ.get("CTX_SCAN_PERSONAL")
+        if not personal_path:
+            default_personal = os.path.expanduser("~/.config/ctx-scan/personal.json")
+            personal_path = default_personal if os.path.isfile(default_personal) else None
+        scanner = Scanner(rules, layer, config, load_personal_terms(personal_path))
+        findings = []
+        count = 0
+        for abs_path, rel in collect(args.paths, args.all_files):
+            count += 1
+            findings.extend(scanner.scan_file(abs_path, rel))
+    except UsageError as e:
+        err.write("ctx-scan: %s\n" % e)
+        return 2
+    except Exception as e:  # noqa: BLE001 - any other failure is a usage error, never "findings"
+        # Only the error's type: its message could quote file content.
+        err.write("ctx-scan: error: %s (check the rules, config and personal files)\n" % type(e).__name__)
+        return 2
+
+    findings.sort(key=lambda f: (f.path, f.line, f.column, f.rule))
+    failing = [f for f in findings if SEVERITIES.index(f.severity) >= SEVERITIES.index(fail_on)]
+    blocks = sum(1 for f in findings if f.severity == "block")
+    warns = len(findings) - blocks
+    status = "FAIL" if failing else "PASS"
+
+    if args.format == "json":
+        json.dump({
+            "version": VERSION,
+            "layer": layer,
+            "fail_on": fail_on,
+            "files": count,
+            "status": status.lower(),
+            "findings": [f.as_dict() for f in findings],
+            "summary": {"block": blocks, "warn": warns},
+        }, out, indent=2)
+        out.write("\n")
+    else:
+        if not args.quiet:
+            out.write("ctx-scan %s · layer %s · rules %s\n" % (VERSION, layer, os.path.basename(rules.path)))
+        groups_seen = []
+        for f in findings:
+            where = "%s:%d:%d" % (f.path, f.line, f.column) if f.line else f.path
+            out.write("%-5s %s  %s  %s (value not shown)\n" % (f.severity.upper(), where, f.rule, f.message)
+                      if f.group == "secret" else
+                      "%-5s %s  %s  %s\n" % (f.severity.upper(), where, f.rule, f.message))
+            if f.group not in groups_seen:
+                groups_seen.append(f.group)
+        if not args.quiet:
+            for g in groups_seen:
+                if g in rules.groups:
+                    out.write("  %s: %s\n" % (g, rules.groups[g]))
+            if findings:
+                out.write("  A false alarm? Add `context-scan: allow <rule> <reason>` on that line or the line above.\n")
+        out.write("%s: %d files, %d blocking, %d warnings (fails on %s)\n" % (status, count, blocks, warns, fail_on))
+    return 1 if failing else 0
+
+
+if __name__ == "__main__":
+    sys.exit(run(sys.argv[1:]))

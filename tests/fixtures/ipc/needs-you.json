@@ -1,0 +1,37 @@
+{
+  "items": [
+    {
+      "id": "result:workspaces/local-results-view/outputs/brief.md",
+      "kind": "result",
+      "sourceId": "workspaces/local-results-view/outputs/brief.md",
+      "title": "Brief",
+      "detail": "Ready for review",
+      "state": "ready",
+      "at": "2026-10-03T08:46:00Z",
+      "workspaceId": "local-results-view",
+      "sessionKey": "hollow-session-1",
+      "path": "workspaces/local-results-view/outputs/brief.md",
+      "category": "document",
+      "link": null
+    },
+    {
+      "id": "failure:notif-7",
+      "kind": "failure",
+      "sourceId": "notif-7",
+      "title": "Morning brief failed",
+      "detail": null,
+      "state": "unread",
+      "at": "2026-10-03T08:01:00Z",
+      "workspaceId": null,
+      "sessionKey": null,
+      "path": null,
+      "category": "workflow",
+      "link": "workflow:morning-brief"
+    }
+  ],
+  "total": 3,
+  "nextCursor": "opaque-cursor",
+  "unavailable": [
+    "notifications"
+  ]
+}

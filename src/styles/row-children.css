@@ -1,0 +1,19 @@
+/* Nested child chats and the inline rename field in sidebar rows (3.6). */
+@layer components {
+.work-child-row { padding-left:calc(var(--child-depth, 1) * var(--sp-4)); }
+.work-child-row .work-workspace-title { font-size:var(--fs-meta); }
+.work-row-fold { display:inline-flex; align-items:center; gap:2px; flex:none; height:22px; padding:0 4px; border:0; border-radius:var(--r-xs); background:transparent; color:var(--muted); font:inherit; font-size:var(--fs-caption); cursor:pointer; }
+.work-row-fold:hover, .work-row-fold:focus-visible { color:var(--ink); background:var(--fill-hover); }
+.work-row-fold-count { font-variant-numeric:tabular-nums; }
+.work-tree-head .work-row-rename { flex:1; min-width:0; height:var(--row-h); margin:0; padding:0 var(--sp-2); border:1px solid var(--primary); border-radius:var(--r-sm); background:var(--surface-card); color:var(--ink); font:inherit; font-size:var(--fs-body); outline:none; box-shadow:var(--ring); }
+
+/* Multi-select, the bulk bar and the View button (3.5). */
+.work-row-check { flex:none; margin:0 0 0 var(--sp-1); accent-color:var(--primary); }
+.work-tree-head.selected { background:var(--primary-soft); }
+.rail-bulk { display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-1); padding:var(--sp-1) var(--sp-2); margin:0 0 var(--sp-1); border:1px solid var(--hairline); border-radius:var(--r-sm); background:var(--surface-soft); }
+.rail-bulk-count { flex:1 0 100%; color:var(--muted); font-size:var(--fs-caption); }
+.rail-view-btn { position:relative; }
+.rail-view-btn.active { color:var(--primary); }
+.rail-view-dot { position:absolute; top:3px; right:3px; width:6px; height:6px; border-radius:50%; background:var(--primary); }
+.work-rail-subhead { padding:var(--sp-1) var(--sp-2) 0; color:var(--muted); font-size:var(--fs-caption); }
+}

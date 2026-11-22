@@ -1,0 +1,15 @@
+{
+  "id": "launch-order",
+  "title": "Launch order",
+  "revision": 3,
+  "latestRevision": 3,
+  "ask": true,
+  "height": null,
+  "kit": "kit@1",
+  "updatedAt": "2026-11-04T16:31:40.512000+00:00",
+  "source": "<hc-canvas id=\"launch-order\" title=\"Launch order\" ask texture=\"ascii\">\n  <hc-ask title=\"Launch order\" send=\"Use these answers\">\n    <hc-choice name=\"day\" label=\"When?\" required>\n    * This Friday\n    Next week\n    </hc-choice>\n  </hc-ask>\n</hc-canvas>",
+  "body": "<div data-hc-texture-root texture=\"ascii\" style=\"display:contents\">\n  <hc-ask title=\"Launch order\" send=\"Use these answers\">\n    <hc-choice name=\"day\" label=\"When?\" required>\n    * This Friday\n    Next week\n    </hc-choice>\n  </hc-ask>\n</div>",
+  "state": null,
+  "answered": {"revision": 3, "summary": "- When?: This Friday"},
+  "kitSha256": "2f0c6b1e9d8a7c5f4e3d2c1b0a99887766554433221100ffeeddccbbaa998877"
+}

@@ -1,0 +1,71 @@
+/* The Mac mini runner (2026-11-01): Runs on, in a build workspace's Changes
+   tab and a new conversation's empty state (RunsOnControl.tsx). */
+@layer components {
+.runs-on-control { display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap; font-size:var(--fs-meta); color:var(--muted); }
+.runs-on-label { font-weight:600; color:var(--ink); }
+.runs-on-hint { min-width:0; }
+.chat-empty-runs-on { justify-content:center; margin-top:var(--sp-2); }
+/* Overnight N1 (2026-11-02): the runner's state under Settings, Runs on
+   (settings/RunnerStatusBlock.tsx). */
+.runner-status { display:flex; flex-direction:column; gap:var(--sp-1); margin-top:var(--sp-2); font-size:var(--fs-meta); color:var(--muted); }
+.runner-status-head { display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap; }
+.runner-status-state { font-weight:600; color:var(--ink); }
+.runner-status-state[data-state="ready"] { color:var(--success); }
+.runner-status-state[data-state="refusing"] { color:var(--warning); }
+.runner-status-state[data-state="unreachable"], .runner-status-state[data-state="error"] { color:var(--error); }
+.runner-status-facts { display:flex; flex-wrap:wrap; gap:var(--sp-1) var(--sp-3); margin:0; padding:0; list-style:none; font-family:var(--mono); }
+.runner-status-line, .runner-status-why { margin:0; }
+.runner-status .btn[aria-disabled="true"], .runner-status-retry[aria-disabled="true"] { opacity:.6; cursor:progress; }
+.runner-status-retry { margin-top:var(--sp-1); }
+/* Remote runners (2026-11-03): Runs on → On the runner
+   (RunnerAccessControl.tsx) and Settings → Runner GitHub access
+   (settings/RunnerGithubRow.tsx). */
+.runner-access { display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap; flex-basis:100%; }
+.runner-access .cx-check { display:inline-flex; align-items:center; gap:var(--sp-1); color:var(--ink); }
+.runner-access-account { min-width:16rem; }
+.runner-github-token { display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap; margin-top:var(--sp-2); }
+.runner-github-input { min-width:14rem; font-family:var(--mono); }
+.runner-github-saved { font-size:var(--fs-meta); color:var(--success); }
+/* Remote runners 2 (2026-11-03): Settings, Remote runner (Off, Set up,
+   Turn off; settings/RemoteRunnerRow.tsx) and the owner lines under the
+   runner's state (RunnerStatusBlock.tsx). */
+.remote-runner-off { color:var(--ink); }
+.remote-runner-setup { display:flex; flex-direction:column; gap:var(--sp-2); margin-top:var(--sp-2); }
+.remote-runner-note { margin:0; font-size:var(--fs-meta); color:var(--muted); }
+.remote-runner-fields { display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap; }
+.remote-runner-input { min-width:14rem; font-family:var(--mono); }
+.remote-runner-checked { display:flex; flex-direction:column; gap:var(--sp-1); font-size:var(--fs-meta); color:var(--muted); }
+.runner-owner { display:flex; flex-direction:column; gap:var(--sp-1); }
+.runner-owner .btn[aria-disabled="true"] { opacity:.6; cursor:progress; }
+/* Remote runners 3 (2026-11-03): Set up a runner from scratch
+   (settings/RunnerSetupWizard.tsx): fields, the estimate, and each step
+   with its state, its commands and Apply. */
+.runner-setup { display:flex; flex-direction:column; gap:var(--sp-2); margin-top:var(--sp-3); padding-top:var(--sp-3); border-top:1px solid var(--hairline); }
+.runner-setup-fields { display:grid; grid-template-columns:repeat(auto-fill, minmax(14rem, 1fr)); gap:var(--sp-2); }
+.runner-setup-field { display:flex; flex-direction:column; gap:var(--sp-1); min-width:0; }
+.runner-setup-label { font-size:var(--fs-meta); color:var(--muted); }
+.runner-setup-input { font-family:var(--mono); min-width:0; }
+.runner-setup-problems, .runner-setup-notes, .runner-setup-found ul { margin:0; padding-left:1.2em; font-size:var(--fs-meta); }
+.runner-setup-problems { color:var(--warning); }
+.runner-setup-notes { color:var(--muted); }
+.runner-setup-estimate { display:flex; flex-direction:column; gap:var(--sp-1); padding:var(--sp-2) var(--sp-3); border:1px solid var(--hairline); border-radius:var(--r-lg); background:var(--surface-sunken); font-size:var(--fs-meta); }
+.runner-setup-estimate p, .runner-setup-found p, .runner-setup-why { margin:0; }
+.runner-setup-actions, .runner-setup-step-head, .runner-setup-cmd-head { display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap; }
+.runner-setup-note { margin:0; font-size:var(--fs-meta); color:var(--muted); }
+.runner-setup-steps { display:flex; flex-direction:column; gap:var(--sp-2); margin:0; padding:0; list-style:none; }
+.runner-setup-step { display:flex; flex-direction:column; gap:var(--sp-1); padding:var(--sp-2) var(--sp-3); border:1px solid var(--hairline); border-radius:var(--r-lg); }
+.runner-setup-step-title { font-weight:600; color:var(--ink); }
+.runner-setup-change { font-size:var(--fs-meta); color:var(--muted); padding:0 var(--sp-1); border:1px solid var(--hairline); border-radius:var(--r-xs); }
+.runner-setup-why, .runner-setup-found { font-size:var(--fs-meta); color:var(--muted); }
+.runner-setup-found p { color:var(--ink); }
+.runner-setup-cmds summary { cursor:pointer; font-size:var(--fs-meta); color:var(--muted); }
+.runner-setup-cmdlist { display:flex; flex-direction:column; gap:var(--sp-1); margin-top:var(--sp-2); }
+.runner-setup-cmdlist-title { margin:0; font-size:var(--fs-meta); font-weight:600; color:var(--ink); }
+.runner-setup-cmd-head { justify-content:space-between; font-size:var(--fs-meta); color:var(--muted); }
+.runner-setup-pre { margin:0; max-height:16rem; overflow:auto; padding:var(--sp-2); border-radius:var(--r-sm); background:var(--surface-sunken); font-family:var(--mono); font-size:var(--fs-meta); white-space:pre-wrap; overflow-wrap:anywhere; user-select:text; }
+.runner-setup-step-actions { display:flex; gap:var(--sp-2); }
+/* Smart routing 3: Builds and tests' latest decisions. */
+.route-decisions-list { display:flex; flex-direction:column; gap:var(--sp-1); margin:0; padding:0; list-style:none; }
+.route-decisions-when { font-family:var(--mono); }
+.route-decisions-where { font-weight:600; color:var(--ink); }
+}

@@ -1,0 +1,168 @@
+<!-- Canvas C2 K3: the kit@1 gallery. Every component, every tone, one chart
+     of each type, synthetic data only. One source for two readers: the
+     SmokeHarness (`?window=smoke-artifact`, region "Canvas kit gallery")
+     and tests/smoke/canvas-kit-gallery.spec.ts. No scripts,
+     no URLs, nothing that loads. -->
+<main data-fixture="kit-gallery">
+  <h1 style="margin:0 0 8px;font-size:20px">Kit gallery</h1>
+  <p>
+    <hc-badge>Draft</hc-badge>
+    <hc-badge tone="info">Queued</hc-badge>
+    <hc-badge tone="success">Merged</hc-badge>
+    <hc-badge tone="warning">Waiting</hc-badge>
+    <hc-badge tone="danger">Blocked</hc-badge>
+  </p>
+  <hc-callout>Untitled notes show their tone word.</hc-callout>
+  <hc-callout tone="info" title="Info">The bed runs on loopback only.</hc-callout>
+  <hc-callout tone="success" title="Done">All checks passed.</hc-callout>
+  <hc-callout tone="warning" title="Heads up">Install waits for the bed.</hc-callout>
+  <hc-callout tone="danger" title="Stop">The budget is nearly spent.</hc-callout>
+  <hc-details summary="Why a gallery">One page with every kit element, for screenshots and checks.</hc-details>
+  <hc-details summary="Opened details" open>This disclosure starts open.</hc-details>
+  <hc-stats label="Release">
+    <hc-stat label="Bed checks" value="38" delta="0 fail" tone="success"></hc-stat>
+    <hc-stat label="Skipped" value="13" delta="+2"></hc-stat>
+    <hc-stat label="Budget left" value="2.3 KB" delta="-14 B" tone="warning">Of 40 KB.</hc-stat>
+  </hc-stats>
+  <hc-progress label="Plan" value="3" max="5" tone="info"></hc-progress>
+  <hc-progress label="Coverage" value="82" tone="success"></hc-progress>
+  <hc-steps label="Release" current="2">
+    <div label="Spike" when="Oct 3">Exfil matrix</div>
+    <div label="Sandbox" when="Oct 4">Canvas mode</div>
+    <div label="Kit"></div>
+    <div label="Install" status="blocked">Waits for the bed</div>
+  </hc-steps>
+  <hc-bars label="Hours by lane" unit="h">
+    Lane A: 12
+    Lane B: 30
+    Lane C: 7.5
+  </hc-bars>
+  <hc-chart type="line" label="Sessions per day" series="Claude, Codex">
+    Mon: 12, 8
+    Tue: 15, 9
+    Wed: 11, 14
+    Thu: 18, 12
+    Fri: 21, 10
+  </hc-chart>
+  <hc-chart type="bar" label="Checks by suite">
+    Suite | Passed | Skipped
+    Rust | 2,077 | 12
+    Vitest | 1,045 | 0
+    Smoke | 489 | 113
+  </hc-chart>
+  <hc-chart type="area" label="Queue depth" height="160">
+    09:00: 3
+    10:00: 7
+    11:00: 4
+    12:00: 9
+  </hc-chart>
+  <hc-chart type="donut" label="Spend by provider">
+    <table>
+      <tr><th>Provider</th><th>Spend</th></tr>
+      <tr><td>Claude</td><td>$42</td></tr>
+      <tr><td>Codex</td><td>$18</td></tr>
+      <tr><td>Grok</td><td>$6</td></tr>
+    </table>
+  </hc-chart>
+  <hc-table label="Lanes">
+    Lane | Hours | Status
+    Lane A | 12 | done
+    Lane B | 30 | open
+    Lane C | 7.5 | done
+  </hc-table>
+  <hc-compare label="Hosting">
+    <div label="Fly" recommended>Closer to users.</div>
+    <div label="Render">Simpler deploys.</div>
+  </hc-compare>
+  <hc-tabs label="Views">
+    <section label="Summary">First panel text.</section>
+    <section label="Notes">Second panel text.</section>
+  </hc-tabs>
+  <p>File: <hc-file path="outputs/report.md">Report</hc-file></p>
+  <hc-code lang="ts" label="example.ts">
+    // greet the vault
+    const name = "Hollow";
+    return 42;
+  </hc-code>
+  <hc-flow label="Deploy decision">
+    start: Change merged {start}
+    ci: CI green? {decision}
+    ship: Deploy {success}
+    fix: Fix failures {danger}
+    start -> ci
+    ci -> ship: yes
+    ci -> fix: no
+    fix -> ci
+  </hc-flow>
+  <hc-flow label="Request path" direction="right">
+    [Frontend]
+    view: Chat view
+    api: api.ts
+    [Rust backend]
+    cmd: Command
+    db: Store {info}
+    []
+    view -> api: calls
+    api -> cmd -> db: writes
+  </hc-flow>
+<section aria-label="Instruments">
+  <h2>Small signals, exact values</h2>
+  <hc-stats>
+    <hc-stat label="Completed" value="84" delta="Over the week"><hc-sparkline label="Daily completions">Mon: 8
+Tue: 14
+Wed: 10
+Thu: 22
+Fri: 30</hc-sparkline></hc-stat>
+    <hc-gauge label="Capacity used" value="68" max="100" unit="%" tone="info"></hc-gauge>
+  </hc-stats>
+  <hc-timeline label="A week of work">2026-10-12 | Design | 2026-10-13
+2026-10-14 | Build | 2026-10-16
+2026-10-17 | Review
+2026-10-18 | Release</hc-timeline>
+  <hc-heatmap label="Daily activity" unit="turns" start="2026-09-01" end="2026-10-18">2026-09-01: 4
+2026-09-02: 0
+2026-09-03: 8
+2026-09-05: 3
+2026-09-09: 12
+2026-09-10: 8
+2026-09-15: 15
+2026-09-18: 6
+2026-09-22: 9
+2026-09-26: 3
+2026-10-01: 16
+2026-10-05: 8
+2026-10-07: 10
+2026-10-11: 18
+2026-10-14: 11
+2026-10-18: 14</hc-heatmap>
+</section>
+<section aria-label="Checklist studio">
+<hc-checklist label="Release hand checks">[x] Build checked
+[ ] Keyboard navigation
+[ ] VoiceOver labels
+[ ] Review rollback</hc-checklist>
+</section>
+</main>
+
+<section aria-label="Flow studio">
+<h2>From a change to a release</h2>
+<p>Follow the active path. Zoom in to inspect a branch, or Fit to see the whole diagram.</p>
+<hc-flow label="Release route" direction="right" interactive>
+[Build]
+source: Change ready {start}
+checks: Local gate {info}
+[Review]
+review: Review findings? {decision}
+fix: Repair findings {warning}
+[Delivery]
+merge: Merge {success}
+ready: Native checks {end}
+[]
+source -> checks -> review
+review -> fix: needs work
+fix -> checks: recheck
+review -> merge: green {active}
+merge -> ready {active}
+source -> ready: overview
+</hc-flow>
+</section>

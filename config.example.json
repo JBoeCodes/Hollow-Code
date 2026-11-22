@@ -1,0 +1,5 @@
+{
+  "vaultPath": "/absolute/path/to/your/obsidian/vault",
+  "claudeProjectsPath": "/absolute/path/to/.claude/projects",
+  "gitReposPath": "/absolute/path/to/your/projects (optional; defaults to the vault's parent dir; root scanned one level deep for the Today contribution heatmap)"
+}

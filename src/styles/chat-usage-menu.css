@@ -1,0 +1,134 @@
+/* The composer's usage popover (components/ChatUsageMenu.tsx). Imported by
+   that component only, so it rides the chat chunk. Tokens and scale steps. */
+@layer components {
+.chat-composer-right { display: flex; flex: 0 1 auto; min-width: 0; align-items: center; gap: var(--sp-2); }
+/* Overnight 11-12 (C3): the model picker sits here too; it is the one part
+   that shrinks (its name clips), every button keeps its size. */
+.chat-composer-right > * { flex: none; }
+.chat-composer-right > .model-menu { flex: 0 1 auto; min-width: 0; }
+
+.usage-menu { position: relative; display: inline-flex; }
+
+.usage-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: none;
+  cursor: pointer;
+}
+.usage-menu-trigger:hover,
+.usage-menu-trigger[aria-expanded="true"] { background: var(--surface-card); }
+
+.usage-ring-track { fill: none; stroke: var(--hairline); stroke-width: 2.5; }
+.usage-ring-fill {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 9px 9px;
+  transition: stroke-dashoffset var(--t-med) var(--ease);
+}
+.usage-menu-trigger[data-level="ok"] .usage-ring-fill { stroke: var(--ink); }
+.usage-menu-trigger[data-level="high"] .usage-ring-fill { stroke: var(--warning); }
+.usage-menu-trigger[data-level="over"] .usage-ring-fill { stroke: var(--error); }
+
+.usage-menu-pop {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--sp-2));
+  z-index: 80;
+  width: 340px;
+  max-width: calc(100vw - 100px);
+  max-height: min(560px, calc(100vh - 140px));
+  overflow-y: auto;
+  padding: var(--sp-1) 0;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  background: var(--surface-raised);
+  box-shadow: var(--elev-2);
+  font-family: var(--ui);
+  animation: ctx-in var(--t-fast) var(--ease-out) both;
+  transform-origin: bottom right;
+}
+.usage-menu-pop.is-closing { animation: sheet-out 120ms var(--ease-in) forwards; }
+
+.usage-menu-section { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3) var(--sp-4); }
+.usage-menu-section + .usage-menu-section { border-top: 1px solid var(--hairline-soft); }
+
+.usage-menu-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); }
+.usage-menu-head h3 { margin: 0; color: var(--ink); font-size: var(--fs-md); font-weight: 600; }
+.usage-menu-figure { color: var(--muted); font-size: var(--fs-meta); font-variant-numeric: tabular-nums; }
+
+.usage-menu-bar {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: var(--surface-card);
+}
+.usage-menu-bar > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--ink);
+  transition: width var(--t-med) var(--ease);
+}
+.usage-menu-bar[data-level="high"] > span { background: var(--warning); }
+.usage-menu-bar[data-level="over"] > span { background: var(--error); }
+
+.usage-menu-note { margin: 0; color: var(--muted); font-size: var(--fs-meta); line-height: var(--lh-base); }
+.usage-menu-optin { align-self: flex-start; }
+
+.usage-menu-rows {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-1) var(--sp-3);
+  margin: 0;
+  font-size: var(--fs-meta);
+}
+.usage-menu-rows dt { color: var(--muted); }
+.usage-menu-rows dd {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink);
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Repo features R6: What's using it and Cache, collapsed by default. */
+.usage-menu-more { font-size: var(--fs-meta); }
+.usage-menu-more > * + * { margin-top: var(--sp-2); }
+.usage-menu-more > summary { display: flex; align-items: center; gap: var(--sp-1); color: var(--ink); cursor: pointer; list-style: none; }
+.usage-menu-more > summary::-webkit-details-marker { display: none; }
+.usage-menu-more[open] > summary > svg { transform: rotate(90deg); }
+.usage-menu-subhead { margin: var(--sp-1) 0 0; font-size: var(--fs-meta); color: var(--muted); font-weight: 600; }
+.usage-menu-split > span { white-space: nowrap; }
+.usage-menu-split { margin: 0; color: var(--body); line-height: var(--lh-base); font-variant-numeric: tabular-nums; }
+.usage-menu-more h4 { margin: var(--sp-1) 0 0; color: var(--muted); font-size: var(--fs-meta); font-weight: 600; }
+
+.usage-menu-window { display: flex; flex-direction: column; gap: var(--sp-1); }
+.usage-menu-window + .usage-menu-window { margin-top: var(--sp-1); }
+.usage-menu-window-head { display: flex; justify-content: space-between; color: var(--muted); font-size: var(--fs-meta); }
+.usage-menu-window-head strong { color: var(--ink); font-weight: 600; }
+.usage-menu-reset { color: var(--muted); font-size: var(--fs-caption); }
+
+.usage-menu-link {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary);
+  font-size: var(--fs-meta);
+  cursor: pointer;
+}
+.usage-menu-link:hover { text-decoration: underline; }
+}

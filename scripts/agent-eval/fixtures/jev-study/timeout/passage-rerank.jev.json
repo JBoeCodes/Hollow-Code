@@ -1,0 +1,53 @@
+{
+  "arm": "jev",
+  "complete": true,
+  "condition": "passage-rerank",
+  "results": [
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev-fallback",
+          "id": "sync-0911",
+          "kept": true,
+          "reason": "Jev timed out.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "sync-0910",
+          "kept": true,
+          "reason": "Jev timed out.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "decision-0602",
+          "kept": true,
+          "reason": "Jev timed out.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "catalogue-k1",
+          "kept": true,
+          "reason": "Jev timed out.",
+          "score": null
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "vendor-decision",
+      "kept": [
+        "sync-0911",
+        "sync-0910",
+        "decision-0602",
+        "catalogue-k1"
+      ],
+      "latencyMs": 4002.3,
+      "note": null,
+      "outcome": "timeout"
+    }
+  ],
+  "schema": 1
+}

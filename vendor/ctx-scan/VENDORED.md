@@ -1,0 +1,21 @@
+# Vendored: ctx-scan
+
+A copy of `tools/ctx-scan/` for secret and context leak scanning.
+Hollow's `scan_rules.rs` reads `scan-rules.json` and its tests read `fixtures/`;
+`scan_rules::tests::vendored_copy_matches_its_record` checks every hash below.
+
+```
+97da0bf49268d4ee46480c0f6c1808d63d671a54f408eedac38ab9aa5a45818a  README.md
+339722b2eb0fd9ebf058319ba55d8066d97231cb43bb19cdf66bcd76c3832a28  ctx-scan
+912b0fba3d991fb2582a4d1a82d860ebb0c83852e52cdc14eeca6b063d588c89  fixtures/cases.json
+64fdb487e7c447af0a2614af2e351a27592a3e14d159b9509c33b9c23bf17ded  fixtures/clean/.env.example
+f308f757e5b7da5781acc95e8dc6981c212223c3e6e7e58fb5207db70c9a06e8  fixtures/clean/org-fact.md
+8025b961027db0bbbb1d50c02da418fa1b698a5537cb691691152290d27669c1  fixtures/clean/placeholders.md
+9e88ce194b980b3933af9a30f2418e35371904cb5f320841112e207dcd7c5656  fixtures/dirty/machine.md
+376a5885129778be5658a2774c7b2a41d25f9fc11a8a3db7790aaf56ec485afe  fixtures/dirty/new-hire.md
+7f38d50b1acaef965c1bf3e11823e5e0db48620abc93939892a524572f5b5600  fixtures/dirty/planted-key.md
+b8466b942f2b2f36f6d2311bbd9c4b13a3eba3e1257cdde523a468c933bb7f09  fixtures/dirty/staff-roster.csv
+791f1f04ef718eebaf3d59e495c72a638323ddff95b03aa299aa354a946cc851  fixtures/expected.json
+2dab4b1d48ca318781a758af398a6a33b97ef6dc1db638f8498c7f2261ff3686  scan-rules.json
+afdc145b28fb68ea434cdaa3c8f018457a4afe21f750594c8901749cfbb4de93  test_ctx_scan.py
+```

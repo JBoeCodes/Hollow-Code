@@ -1,0 +1,31 @@
+/* Parity 5.3: the Diff tab (file tree, Find, Viewed). Line and hunk styles come from build-changes.css. */
+@layer components {
+.diff-panel { display: flex; flex-direction: column; gap: var(--sp-2); height: 100%; min-height: 0; padding: var(--sp-3); overflow: auto; container-type: inline-size; }
+.dp-bar, .dp-find { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.dp-scope { display: flex; align-items: center; gap: var(--sp-1); min-width: 0; color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.dp-scope select { min-width: 0; max-width: 100%; }
+.dp-find input[type="search"] { flex: 1 1 140px; min-width: 0; height: 28px; padding: 0 var(--sp-2); border: 1px solid var(--hairline-soft); border-radius: var(--r-md); background: var(--surface-soft); color: var(--ink); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.dp-count, .dp-viewed { color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); white-space: nowrap; }
+.dp-viewed { margin-left: auto; }
+.dp-note { margin: 0; }
+.dp-main { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); min-height: 0; }
+@container (min-width: 560px) { .dp-main { grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); align-items: start; } .dp-tree { position: sticky; top: 0; max-height: 70cqh; overflow: auto; } }
+.dp-tree, .dp-tree ul { list-style: none; margin: 0; padding: 0; }
+.dp-tree ul { padding-left: var(--sp-3); }
+.dp-dir { display: flex; align-items: center; gap: var(--sp-1); padding: 2px 0; color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.dp-file-link { display: flex; align-items: center; gap: var(--sp-1); width: 100%; padding: 3px var(--sp-1); border: 0; border-radius: var(--r-md); background: none; color: var(--body); text-align: left; font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); cursor: pointer; }
+.dp-file-link:hover { background: var(--surface-soft); color: var(--ink); }
+.dp-file-link.seen .dp-name { color: var(--muted); text-decoration: line-through; }
+.dp-file-link:focus-visible, .dp-file-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.dp-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dp-stat { margin-left: auto; white-space: nowrap; }
+.dp-files { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.dp-file { border: 1px solid var(--hairline-soft); border-radius: var(--r-lg); overflow: hidden; }
+.dp-file.seen { opacity: 0.75; }
+.dp-file-head { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) var(--sp-2); background: var(--surface-soft); }
+.dp-file-toggle { display: flex; align-items: center; gap: var(--sp-1); flex: 1; min-width: 0; padding: 2px 0; border: 0; background: none; color: var(--ink); text-align: left; font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); cursor: pointer; }
+.dp-path { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dp-check { display: inline-flex; align-items: center; gap: var(--sp-1); color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); cursor: pointer; white-space: nowrap; }
+mark.dp-hit { background: var(--warning-soft, rgba(255, 200, 0, 0.3)); color: inherit; border-radius: 2px; }
+mark.dp-hit.current { outline: 2px solid var(--primary); }
+}

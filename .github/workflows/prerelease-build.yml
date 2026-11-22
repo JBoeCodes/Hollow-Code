@@ -1,0 +1,66 @@
+# Pre-release `tauri build`: the release-mode bundle that ci.yml never makes.
+# `cargo test --lib` doesn't link the release profile (panic=abort, lto, strip),
+# run beforeBuildCommand (model fetch + frontend build) or apply tauri build's
+# own checks, such as refusing mismatched `tauri` crate / `@tauri-apps/api`
+# versions (docs/reference/build-and-ship.md "Build & ship"). This lane does
+# all of that.
+#
+# Never on a PR (a release build takes a long time on a 3-core macOS runner,
+# and the owner asked for fewer CI runs on 2026-10-03): by hand from the Actions
+# tab and on pushes to release/* branches. Run it by hand after changing this
+# file or the pinned toolchain.
+#
+# No secrets. The shipped config signs with the local "Hollow Dev Signing"
+# identity, which a runner doesn't have, so this lane overrides it with an
+# ad-hoc signature ("-"). Nothing is uploaded: the job only proves the bundle
+# builds, verifies and passes its embedding self-test.
+name: prerelease-build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['release/**']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tauri-build:
+    runs-on: macos-14
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: rustup toolchain install "$(sed -n 's/^channel = "\(.*\)"$/\1/p' rust-toolchain.toml)" --profile minimal --component rustfmt,clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+          key: release
+      # The ~133 MB embedding model (scripts/fetch-embed-model.mjs pins its
+      # revision and SHA-256s); the fetch skips files that already verify.
+      - uses: actions/cache@v4
+        with:
+          path: src-tauri/models/bge-small-en-v1.5
+          key: embed-model-${{ hashFiles('scripts/fetch-embed-model.mjs') }}
+      - run: npm ci
+      # The same bundle `npm run tauri:bundle` makes, ad-hoc signed.
+      - run: npx tauri build --ci --bundles app --config '{"bundle":{"macOS":{"signingIdentity":"-"}}}'
+      - name: Verify the bundle
+        run: |
+          app=src-tauri/target/release/bundle/macos/Hollow.app
+          test -d "$app"
+          du -sh "$app"
+          /usr/bin/codesign --verify --deep --strict --verbose=2 "$app"
+          node scripts/source-provenance.mjs --check "$app/Contents/Resources/build-provenance.json"
+          out="$("$app/Contents/MacOS/hollow" embed-selftest)"
+          echo "$out"
+          # default_model_dir() falls back to src-tauri/models, which exists on
+          # this runner, so require the model to have loaded from the bundle.
+          case "$out" in "EMBED_SELFTEST_OK "*"/Contents/MacOS/../Resources/models/"*) ;; *) echo "embed self-test did not load the bundled model"; exit 1 ;; esac

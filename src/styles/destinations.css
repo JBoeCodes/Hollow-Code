@@ -1,0 +1,8 @@
+@layer components {
+/* Destination view tabs (consolidation D, 2026-10-13): the visible route to
+   each primary destination's views (Your work, Tasks, Library, Automations,
+   Review). Built on the shared .ui-tabs; this file only places them. */
+.destination-views { margin: 0 0 var(--sp-3); flex-wrap: wrap; row-gap: var(--sp-1); }
+.your-work { display: flex; flex-direction: column; min-width: 0; }
+}
+

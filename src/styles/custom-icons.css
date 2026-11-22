@@ -1,0 +1,62 @@
+@layer components {
+.custom-icon-rows { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,320px),1fr)); gap: var(--sp-3); margin-top: var(--sp-5); }
+.custom-icon-row { display:flex; align-items:flex-start; gap:var(--sp-4); padding:var(--sp-4); border:1px solid var(--hairline); border-radius:var(--r-lg); background:var(--surface-soft); }
+.custom-icon-current { width:64px; height:64px; display:grid; place-items:center; flex:none; }
+.custom-icon-current img { width:64px;height:64px;object-fit:contain; }
+.custom-icon-copy { min-width:0; }
+.custom-icon-copy h3 { margin:0; font-size:var(--fs-body); }
+.custom-icon-copy p,.custom-icon-note { color:var(--muted); font-size:var(--fs-caption); line-height:1.5; }
+.custom-icon-actions { display:flex;flex-wrap:wrap;gap:var(--sp-2); }
+/* The closed fold's summary, while a row inside has an error or a notice (overnight 11-07 D3). */
+.settings-icons-flag { color:var(--error); font-weight:500; }
+.custom-icon-app { grid-column:1/-1; }
+.custom-icon-app .custom-icon-copy { flex:1; }
+.app-icon-presets { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2);max-width:600px;margin:var(--sp-4) 0; }
+.app-icon-preset { display:flex;flex-direction:column;align-items:center;gap:var(--sp-1);padding:var(--sp-3) var(--sp-2);min-width:0;border:1px solid var(--hairline);border-radius:var(--r-md);background:var(--surface-card);color:var(--ink);font:inherit;font-size:var(--fs-caption);cursor:pointer; }
+.app-icon-preset img { width:64px;height:64px;object-fit:contain; }
+.app-icon-preset small { font-size:var(--fs-caption);color:var(--ink); }
+.app-icon-preset[aria-pressed="true"] { border-color:var(--primary);background:var(--primary-soft);box-shadow:inset 0 0 0 1px var(--primary); }
+.app-icon-preset:focus-visible { outline:2px solid var(--primary);outline-offset:3px; }
+.app-icon-preset[aria-disabled="true"] { cursor:wait; }
+.app-icon-selection { min-height:1.5em; }
+@container hollow-window (max-width: 53.75em) { .app-icon-presets { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+.custom-icon-editor { display:flex;flex-direction:column; }
+.custom-icon-editor .inline-error-toggle { color:var(--ink);opacity:1; }
+.custom-icon-eyebrow { margin:0 0 var(--sp-1);font-size:var(--fs-caption);color:var(--muted); }
+.custom-icon-scroll { overflow:auto;min-height:0;padding:0 var(--sp-5) var(--sp-4); }
+.custom-icon-layout { display:grid;grid-template-columns:minmax(240px,1fr) minmax(280px,1.15fr);gap:var(--sp-5); }
+.custom-icon-controls fieldset { border:0;padding:0;margin:var(--sp-4) 0 0;display:grid;gap:var(--sp-3);min-width:0; }
+.custom-icon-controls label { display:grid;gap:var(--sp-2);font-size:var(--fs-caption);color:var(--ink); }
+.custom-icon-controls select,.custom-icon-controls textarea,.custom-icon-controls input:not([type="range"]):not([type="color"]):not([type="file"]) { width:100%;padding:var(--sp-2);border:1px solid var(--hairline);border-radius:var(--r-sm);background:var(--surface-card);color:var(--ink);font:inherit; }
+.custom-icon-modes { display:flex;gap:var(--sp-2); }
+.custom-icon-modes [aria-pressed="true"] { background:var(--primary-soft);border-color:var(--primary); }
+.custom-icon-preview { min-width:0;border:1px solid var(--hairline);border-radius:var(--r-lg);background:var(--surface-soft);padding:var(--sp-4);align-self:start; }
+.custom-icon-hero { min-height:224px;display:grid;place-items:center;padding:var(--sp-4);text-align:center; }
+.custom-icon-hero img { filter:drop-shadow(0 12px 18px var(--hairline)); }
+.custom-icon-size-strip { display:flex;flex-wrap:wrap;align-items:end;justify-content:center;gap:var(--sp-4);padding:var(--sp-4) 0;border-top:1px solid var(--hairline); }
+.custom-icon-size-strip>div { display:flex;flex-direction:column;align-items:center;gap:var(--sp-2); }
+.custom-icon-size-strip span,.custom-icon-badges span { font-size:var(--fs-caption);color:var(--muted); }
+.custom-icon-badges { display:flex;flex-wrap:wrap;justify-content:space-around;gap:var(--sp-3);border-top:1px solid var(--hairline);padding:var(--sp-4) 0; }
+.custom-icon-badges>div { display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);position:relative; }
+.custom-icon-running b { position:absolute;right:-4px;top:22px;font:600 var(--fs-caption)/1 var(--ui);background:var(--surface-card);color:var(--ink);border:1px solid var(--ink);border-radius:var(--r-pill);padding:2px 4px; }
+/* Generate a logo's picker card (overhaul H2): four options, one picked. */
+.custom-icon-options { padding:var(--sp-3);border:1px solid var(--hairline);border-radius:var(--r-md);background:var(--surface-card); }
+.custom-icon-options [role="radiogroup"] { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2); }
+.custom-icon-option { display:grid;place-items:center;padding:var(--sp-2);border:1px solid var(--hairline);border-radius:var(--r-md);background:var(--surface-soft);cursor:pointer; }
+.custom-icon-option img { width:100%;max-width:72px;height:auto;aspect-ratio:1; }
+.custom-icon-option:has(input:checked) { border-color:var(--primary);background:var(--primary-soft);box-shadow:inset 0 0 0 1px var(--primary); }
+.custom-icon-option:has(input:focus-visible) { outline:2px solid var(--primary);outline-offset:3px; }
+.custom-icon-upload { padding:var(--sp-4);border:1px dashed var(--hairline);border-radius:var(--r-md); }
+.custom-icon-upload p { font-size:var(--fs-caption);color:var(--muted);line-height:1.5; }
+.custom-icon-upload input { max-width:100%;font-size:var(--fs-caption); }
+.main-icon-image { object-fit:contain; }
+@container hollow-window (max-width: 53.75em) { .custom-icon-layout { grid-template-columns:1fr; }.custom-icon-preview{order:-1;}.custom-icon-hero{min-height:144px;}.custom-icon-hero img{width:128px;height:128px;} }
+}
+@layer components {
+/* Match the shared rbk-card dimensions in the components layer. */
+.rbk-card.custom-icon-editor { width:min(880px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);padding:0;background:var(--canvas); }
+.custom-icon-editor>.rbk-head,.custom-icon-editor>.rbk-foot { flex:none;padding:var(--sp-4) var(--sp-5);margin:0; }
+.custom-icon-editor>.rbk-head>div { flex:1; }
+.custom-icon-editor>.rbk-foot { display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--hairline); }
+}
+

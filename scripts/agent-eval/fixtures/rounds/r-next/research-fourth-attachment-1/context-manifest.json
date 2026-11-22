@@ -1,0 +1,138 @@
+{
+  "runId": "run-r-next-research-fourth-attachment-1",
+  "source": "chat",
+  "sessionKey": "s-r-next-research-fourth-attachment-1",
+  "finishedAt": "2026-10-20T10:00:00Z",
+  "manifest": {
+    "schemaVersion": 1,
+    "runId": "run-r-next-research-fourth-attachment-1",
+    "layers": [
+      {
+        "name": "environmentBrief",
+        "bytes": 6000,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "name": "policy",
+        "bytes": 1200,
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      {
+        "name": "retrievalEvidence",
+        "bytes": 4000,
+        "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }
+    ],
+    "retrieval": {
+      "engine": "jev",
+      "candidates": [
+        {
+          "path": "notes/n0.md",
+          "line": 1,
+          "source": "vault",
+          "coverage": "full",
+          "rank": 1,
+          "localScore": 1,
+          "kept": true,
+          "basis": "jev",
+          "bytes": 100,
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        {
+          "path": "notes/n1.md",
+          "line": 1,
+          "source": "vault",
+          "coverage": "full",
+          "rank": 2,
+          "localScore": 1,
+          "kept": true,
+          "basis": "jev",
+          "bytes": 100,
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        {
+          "path": "notes/n2.md",
+          "line": 1,
+          "source": "vault",
+          "coverage": "full",
+          "rank": 3,
+          "localScore": 1,
+          "kept": true,
+          "basis": "jev",
+          "bytes": 100,
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        {
+          "path": "notes/n3.md",
+          "line": 1,
+          "source": "vault",
+          "coverage": "full",
+          "rank": 4,
+          "localScore": 1,
+          "kept": false,
+          "basis": "jev",
+          "bytes": 100,
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        {
+          "path": "notes/n4.md",
+          "line": 1,
+          "source": "vault",
+          "coverage": "full",
+          "rank": 5,
+          "localScore": 1,
+          "kept": false,
+          "basis": "jev",
+          "bytes": 100,
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        }
+      ],
+      "notices": []
+    },
+    "connectors": {
+      "engine": "local",
+      "decisions": [
+        {
+          "id": "mail",
+          "attach": true,
+          "basis": "named"
+        },
+        {
+          "id": "notion",
+          "attach": false,
+          "basis": "local"
+        }
+      ]
+    },
+    "jev": [
+      {
+        "use": "passages",
+        "outcome": "ok",
+        "items": 5,
+        "latencyMs": 420,
+        "costUsd": null
+      },
+      {
+        "use": "connectors",
+        "outcome": "off",
+        "items": 0,
+        "latencyMs": null,
+        "costUsd": null
+      }
+    ],
+    "capabilities": {
+      "ownedServers": [
+        "hollow_vault",
+        "hollow_tasks"
+      ],
+      "connectors": [
+        "mail"
+      ]
+    },
+    "fallbacks": [],
+    "preparation": {
+      "retrievalMs": 600,
+      "connectorsMs": 20
+    }
+  }
+}

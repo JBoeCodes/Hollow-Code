@@ -1,0 +1,21 @@
+@layer components {
+.learning-line { margin-block: var(--sp-3); padding-block: var(--sp-2); font-size: var(--fs-meta); }
+.learning-review { flex: 1; min-width: 0; min-height: 0; overflow: auto; padding: var(--sp-4) var(--page-gutter); align-content: start; grid-auto-rows: max-content; }
+.learning-line p { margin: 0 0 var(--sp-2); }
+.learning-line .work-actions, .learning-review .work-actions { flex-wrap: wrap; }
+.learning-review .review-card { margin-block: var(--sp-3); }
+.learning-review label, .learning-line label { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.learning-review details, .learning-line details { max-width: 100%; }
+.learning-review textarea, .learning-line textarea { width: 100%; min-height: 5rem; }
+.learning-review input:not([type="checkbox"]), .learning-line input:not([type="checkbox"]),
+.learning-review textarea, .learning-line textarea { max-width: 100%; box-sizing: border-box; font: inherit; color: var(--ink); background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-sm); padding: var(--sp-2); }
+.learning-review .review-card { min-width: 0; overflow-wrap: anywhere; }
+.learning-review .review-provenance code { color: inherit; }
+.learning-review blockquote, .learning-line blockquote { white-space: pre-wrap; overflow-wrap: anywhere; }
+.private-memory-text { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 18rem; overflow: auto; }
+.private-memories .review-card > small { display: block; margin-block: var(--sp-2); }
+.private-memories > summary { cursor: pointer; }
+
+/* "N may repeat a saved learning" in the bulk bar. */
+.learning-review .learning-repeats { color: var(--warning); }
+}

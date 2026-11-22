@@ -1,0 +1,7 @@
+{"type": "user", "timestamp": "2026-10-10T10:00:01Z", "message": {"role": "user", "content": "SECRET-MESSAGE-TEXT"}}
+{"type": "assistant", "isSidechain": false, "timestamp": "2026-10-10T10:00:10Z", "uuid": "m1-u", "message": {"id": "m1", "role": "assistant", "content": [{"type": "text", "text": "SECRET-MESSAGE-TEXT"}], "usage": {"input_tokens": 10, "cache_creation_input_tokens": 990, "cache_read_input_tokens": 0, "output_tokens": 40}}}
+{"type": "assistant", "isSidechain": false, "timestamp": "2026-10-10T10:00:11Z", "uuid": "m1-u", "message": {"id": "m1", "role": "assistant", "content": [{"type": "text", "text": "SECRET-MESSAGE-TEXT"}], "usage": {"input_tokens": 10, "cache_creation_input_tokens": 990, "cache_read_input_tokens": 0, "output_tokens": 60}}}
+{"type": "summary", "summary": "no usage here"}
+not json {"usage"
+{"type": "assistant", "isSidechain": false, "timestamp": "2026-10-10T10:00:40Z", "uuid": "m2-u", "message": {"id": "m2", "role": "assistant", "content": [{"type": "text", "text": "SECRET-MESSAGE-TEXT"}], "usage": {"input_tokens": 0, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 9000, "output_tokens": 40}}}
+{"type": "assistant", "isSidechain": false, "timestamp": "2026-10-10T11:01:00Z", "uuid": "m3-u", "message": {"id": "m3", "role": "assistant", "content": [{"type": "text", "text": "SECRET-MESSAGE-TEXT"}], "usage": {"input_tokens": 0, "cache_creation_input_tokens": 2000, "cache_read_input_tokens": 418000, "output_tokens": 150}}}

@@ -1,0 +1,14 @@
+/* Status marks on a chat row (3.3): small words and one dot, after the title and any timer. */
+@layer components {
+.work-row-marks { display:inline-flex; align-items:center; gap:var(--sp-1); flex:none; margin-left:auto; padding-left:var(--sp-1); }
+.work-row-marks:empty { display:none; }
+.work-row-timer ~ .work-row-marks { margin-left:0; }
+.work-row-mark { display:inline-flex; align-items:center; height:16px; padding:0 5px; border-radius:var(--r-xs); background:var(--fill-hover); color:var(--muted); font-size:var(--fs-caption); line-height:1; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.work-row-mark[data-tone="attention"] { background:color-mix(in srgb, var(--warning) 16%, transparent); color:var(--warning); font-weight:600; }
+.work-row-mark[data-tone="info"] { background:var(--primary-soft); color:var(--primary); }
+.work-row-mark[data-tone="open"] { color:var(--success); }
+.work-row-mark[data-tone="merged"] { color:var(--primary); }
+.work-row-mark[data-tone="closed"] { color:var(--error); }
+/* The unread mark is a dot with no words. */
+.work-row-mark[data-mark="unread"] { width:8px; height:8px; padding:0; border-radius:50%; background:var(--primary); }
+}

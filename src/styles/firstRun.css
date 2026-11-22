@@ -1,0 +1,32 @@
+/* The first-run setup sheet (H6, components/FirstRunSheet.tsx) and Import
+   conversations (components/ImportConversations.tsx): lazy, so these rules
+   ride their own chunk. The sheet is the shared SettingsSheet shell. */
+@layer components {
+.first-run { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.first-run-title { margin: 0; }
+.first-run-body { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; border: 0; margin: 0; padding: 0; }
+.first-run-section { border-top: 1px solid var(--hairline-soft); padding-block: var(--sp-2); }
+.first-run-section > summary, .first-run-agent-details > summary { cursor: pointer; padding-block: var(--sp-1); }
+.first-run-agent-details { min-width: 0; overflow-wrap: anywhere; }
+.first-run-agent-details[open] { flex-basis: 100%; }
+.first-run-body h4 { margin: var(--sp-2) 0 0; }
+.first-run-nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); padding-top: var(--sp-2); border-top: 1px solid var(--hairline-soft); }
+.first-run-agent-list { display: grid; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }
+.first-run-agent { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.first-run-agent-name { flex: 1; min-width: 8rem; }
+.first-run-summary { margin: 0; padding-inline-start: var(--sp-4); }
+.first-run-field { display: grid; gap: var(--sp-1); max-width: 28rem; }
+.first-run .work-actions { flex-wrap: wrap; }
+
+.import-conversations { display: grid; gap: var(--sp-2); min-width: 0; }
+.import-source { display: grid; gap: var(--sp-1); padding: var(--sp-2) var(--sp-3); border: 1px solid var(--hairline-soft); border-radius: var(--r-md); min-width: 0; }
+.import-source-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.import-source-head h4 { flex: 1; margin: 0; }
+.import-list { display: grid; gap: var(--sp-1); max-height: 16rem; overflow: auto; margin: 0; padding: 0; list-style: none; }
+.import-entry { display: grid; gap: 2px; min-width: 0; overflow-wrap: anywhere; }
+.import-entry label { display: flex; align-items: baseline; gap: var(--sp-2); }
+.import-entry small { padding-inline-start: 1.6rem; color: var(--muted); }
+.import-entry[data-status="hollowOwn"], .import-entry[data-status="subagent"], .import-entry[data-status="unsupported"] { color: var(--muted); }
+.import-result { margin: 0; }
+.import-failed { margin: 0; padding-inline-start: var(--sp-4); color: var(--error); }
+}

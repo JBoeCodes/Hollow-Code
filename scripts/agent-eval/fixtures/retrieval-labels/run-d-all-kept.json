@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "runId": "run-d-all-kept",
+  "retrieval": {
+    "engine": "jev",
+    "candidates": [
+      {
+        "path": "notes/secret-d1.md",
+        "line": 1,
+        "source": "note",
+        "coverage": "excerpt",
+        "rank": 1,
+        "localScore": 2,
+        "jevScore": 3,
+        "semanticScore": 0.7,
+        "kept": true,
+        "basis": "jev",
+        "bytes": 100,
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "path": "notes/secret-d2.md",
+        "line": 2,
+        "source": "note",
+        "coverage": "excerpt",
+        "rank": 2,
+        "localScore": 1,
+        "jevScore": 3,
+        "kept": true,
+        "basis": "jev",
+        "bytes": 100,
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ]
+  }
+}

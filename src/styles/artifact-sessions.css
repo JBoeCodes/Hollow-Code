@@ -1,0 +1,11 @@
+/* File-scoped continuity, shared by Vault and the project editor. */
+@layer components {
+.artifact-sessions { margin-bottom: var(--sp-5); border: 1px solid var(--hairline); border-radius: var(--r-md); font-size: var(--fs-body); min-width: 0; overflow-wrap: anywhere; }
+.artifact-sessions > summary { cursor: pointer; padding: var(--sp-3); font-weight: 600; }
+.artifact-sessions > summary span { font-weight: 400; color: var(--muted); }
+.artifact-sessions-body { padding: 0 var(--sp-3) var(--sp-3); }
+.artifact-session-card { margin-top: var(--sp-3); padding: var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-sm); }
+.artifact-session-head, .artifact-session-run, .artifact-session-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); justify-content: space-between; margin-top: var(--sp-2); }
+.artifact-session-run span, .artifact-session-run time { display: block; }
+.artifact-sessions-error { color: var(--error); }
+}

@@ -1,0 +1,384 @@
+/* Shared status primitives: meters, status conduits, avatars, sticky group
+   labels, document covers, row quick actions, live dots, card shelves. */
+@layer components {
+
+/* ── Meter: transform: scaleX(var(--pct)) with --pct in 0..1. */
+.meter { display: flex; align-items: center; gap: 8px; }
+.meter-track {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--surface-cream-strong);
+  overflow: hidden;
+}
+.meter-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+  transform: scaleX(var(--pct, 0));
+  background: var(--primary);
+  transition: transform var(--t-slow) var(--ease-out);
+}
+.meter-fill.complete { background: var(--success); }
+
+/* ── Status conduit: a 3px state bar. Workflows map success→ok,
+   running→busy, cancelled→off, error→error, never→never. */
+.status-conduit { width: 3px; flex-shrink: 0; border-radius: var(--r-pill); background: var(--hairline); }
+.status-conduit[data-state="ok"]    { background: var(--success); }
+.status-conduit[data-state="warn"]  { background: var(--warning); }
+.status-conduit[data-state="error"] { background: var(--error); }
+.status-conduit[data-state="busy"]  { background: var(--primary); }
+.status-conduit[data-state="off"]   { background: transparent; box-shadow: inset 0 0 0 1px var(--hairline); }
+.status-conduit[data-state="never"] { background: repeating-linear-gradient(to bottom, var(--hairline) 0 4px, transparent 4px 8px); }
+
+/* ── Hue avatar: --avatar-hue set inline from utils.ts hueFor(). */
+.hue-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-pill);
+  font-family: var(--display);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  color: hsl(var(--avatar-hue, 32) 52% 44%);
+  background: hsl(var(--avatar-hue, 32) 52% 50% / 0.14);
+}
+[data-theme="dark"] .hue-avatar { color: hsl(var(--avatar-hue, 32) 58% 68%); }
+
+/* ── Rail group label: sticky group headers in list rails. A list with
+   sticky labels and j/k navigation gives rows scroll-margin-top: 36px. */
+.rail-group-label {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 14px 5px;
+  background: var(--surface-soft);
+  box-shadow: 0 1px 0 var(--hairline-soft);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.rail-group-count { font-family: var(--mono); font-size: var(--fs-caption); color: var(--muted-soft); }
+
+/* ── Document cover: reader and output headers. */
+.doc-cover {
+  flex: none;
+  position: relative;
+  padding: 20px 36px 16px;
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.doc-cover-title {
+  margin: 8px 0 0;
+  font-family: var(--display);
+  font-size: var(--fs-display);
+  font-weight: 600;
+  letter-spacing: var(--ls-tight);
+  line-height: 1.15;
+  color: var(--ink);
+}
+.doc-cover--inline { background: transparent; border-bottom: none; box-shadow: none; }
+
+/* ── Row quick action: quiet at rest; handlers call stopPropagation(). */
+.row-quick-btn {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-sm);
+  background: var(--surface-card);
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity var(--t-fast) var(--ease), color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease);
+}
+.list-row:hover .row-quick-btn, .row-quick-btn:focus-visible { opacity: 1; }
+.row-quick-btn:hover:not(:disabled) { color: var(--ink); border-color: var(--hairline); }
+.row-quick-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Live dot: a static state dot (no ambient breathing). */
+.live-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--muted-soft);
+  transition: background var(--t-med) var(--ease);
+}
+.live-dot.on { background: var(--primary); }
+.live-dot[data-state="ok"]    { background: var(--success); }
+.live-dot[data-state="warn"]  { background: var(--warning); }
+.live-dot[data-state="error"] { background: var(--error); }
+
+/* ── Ledger cap ── */
+.ledger-cap {
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted-soft);
+  padding: 6px 12px 5px;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+/* ── The keymap card (`?`): every shortcut as a keycap. A modal surface
+   (see the floating-surface list below). */
+.keymap-backdrop {
+  position: fixed;
+  inset: 0;
+  /* Below ConfirmDialog (9000) and the palette (9100): if a confirm
+     fires while the card is open, the question must win the stack. */
+  z-index: 8900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.36);
+  /* Resting declaration matters: the entrance animates blur in with
+     `both` fill, and swapping to the exit animation drops that fill —
+     without this the blur would snap off at the start of the fade. */
+  backdrop-filter: blur(4px);
+  animation: confirm-fade-in 120ms var(--ease-out) both;
+}
+.keymap-backdrop.is-closing { animation: overlay-out 140ms var(--ease-in) forwards; }
+.keymap-backdrop.is-closing .keymap-card { animation: sheet-out 140ms var(--ease-in) forwards; }
+.keymap-card {
+  width: min(700px, 94vw);
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 22px 28px 24px;
+  border: 1px solid var(--hairline-soft);
+  animation: confirm-pop-in var(--t-med) var(--ease-out) both;
+  /* The card takes programmatic focus on open (keyboard scroll + focus
+     containment) — the native ring is wrong on a lifted surface. */
+  outline: none;
+}
+.keymap-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.keymap-head h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+.keymap-esc { font-size: var(--fs-meta); color: var(--muted); }
+.keymap-note { margin: 0 0 var(--sp-2); font-size: var(--fs-meta); color: var(--muted); }
+.keymap-change {
+  margin: 0 0 var(--sp-2);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--fs-meta);
+  color: var(--primary);
+  cursor: pointer;
+}
+.keymap-change:hover { text-decoration: underline; }
+.keymap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 36px;
+  align-items: start;
+}
+@container hollow-window (max-width: 53.75em) { .keymap-grid { grid-template-columns: 1fr; } }
+.keymap-section { padding-bottom: 8px; }
+.keymap-cap { margin: 8px 0 4px; }
+.keymap-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 3.5px 0;
+  font-size: var(--fs-meta);
+  color: var(--ink);
+}
+.keymap-keys { display: flex; gap: 4px; flex: none; }
+.keymap-row kbd,
+.keymap-esc kbd {
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  padding: 2px 6px;
+  border-radius: var(--r-xs);
+  color: var(--muted);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-soft);
+}
+
+/* ── Palette matches: the matched letters take the accent. */
+.palette-row-match {
+  color: var(--primary);
+}
+
+/* ── Exit choreography ──
+   Dismissal settles quickly (exits ~2x faster than entrances) instead
+   of a hard unmount. Driven by `.is-closing` from createExitPhase
+   (components/exit.ts) / the snackbar leaving set. The is-closing
+   rules override the entrance `animation` shorthand by specificity;
+   `forwards` holds the end frame until the deferred unmount. */
+@keyframes overlay-out {
+  to { opacity: 0; backdrop-filter: blur(0); }
+}
+@keyframes sheet-out {
+  to { opacity: 0; transform: translateY(8px) scale(0.97); }
+}
+@keyframes snackbar-out {
+  to { opacity: 0; transform: translateY(10px) scale(0.96); }
+}
+.modal.is-closing .modal-backdrop { animation: overlay-out 150ms var(--ease-in) forwards; }
+.modal.is-closing .modal-content { animation: sheet-out 150ms var(--ease-in) forwards; }
+.confirm-backdrop.is-closing { animation: overlay-out 140ms var(--ease-in) forwards; }
+.confirm-backdrop.is-closing .confirm-dialog { animation: sheet-out 140ms var(--ease-in) forwards; }
+.palette-backdrop.is-closing { animation: overlay-out 140ms var(--ease-in) forwards; }
+.palette-backdrop.is-closing .palette-dialog { animation: sheet-out 140ms var(--ease-in) forwards; }
+.snackbar.is-closing {
+  animation: snackbar-out 170ms var(--ease-in) forwards;
+  transform-origin: bottom left;
+}
+/* A dying surface takes no input: without this, the second press of a
+   double-click lands on the held DOM (re-running a palette action or
+   re-submitting a modal form), and any click aimed at the page during
+   the hold dies on the dead backdrop. */
+.modal.is-closing,
+.confirm-backdrop.is-closing,
+.palette-backdrop.is-closing,
+.keymap-backdrop.is-closing,
+.snackbar.is-closing {
+  pointer-events: none;
+}
+
+/* ── Resting containers: shared hairline and radius, no shadow. */
+.panel,
+.workflow-template-card,
+.chat-composer,
+.toolcalls,
+.md-preview-sheet {
+  border-color: var(--hairline-soft);
+  border-radius: var(--r-lg);
+}
+
+/* ── Floating surfaces: the raised surface plus an elevation step.
+   Popovers and menus use --elev-2; dialogs, the palette and the keymap
+   card use --elev-3. */
+.modal-content,
+.palette-dialog,
+.keymap-card,
+.ctx-menu,
+.slash-popup,
+.notif-toast {
+  background: var(--surface-raised);
+  border-color: var(--hairline);
+  box-shadow: var(--elev-2);
+}
+.modal-content,
+.palette-dialog,
+.keymap-card {
+  border-radius: var(--r-lg);
+  box-shadow: var(--elev-3);
+}
+.confirm-dialog {
+  background: var(--surface-raised);
+  border-color: var(--hairline);
+  box-shadow: var(--elev-3);
+}
+.ctx-menu,
+.slash-popup,
+.notif-toast {
+  border-radius: var(--r-md);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Hollow 3.0 synthesis surfaces
+   ───────────────────────────────────────────────────────────── */
+
+.workflow-debugger-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+}
+.workflow-debugger-sub {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  margin-top: 2px;
+}
+
+.workflow-debugger-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: var(--sp-3);
+}
+.workflow-debugger-grid div,
+.workflow-debugger-run {
+  display: grid;
+  gap: 3px;
+  padding: 8px;
+  border-radius: var(--r-sm);
+  background: var(--surface-soft);
+}
+.workflow-debugger-k {
+  color: var(--muted);
+  font-size: var(--fs-caption);
+  text-transform: none;
+}
+.workflow-debugger-prompt {
+  margin-top: var(--sp-3);
+}
+.workflow-debugger-prompt pre {
+  max-height: 260px;
+  overflow: auto;
+  padding: var(--sp-3);
+  border-radius: var(--r-sm);
+  background: var(--surface-soft);
+  white-space: pre-wrap;
+}
+.workflow-debugger-run {
+  grid-template-columns: 90px 90px 60px minmax(0, 1fr);
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+.workflow-debugger-run b { color: var(--error); }
+
+@container hollow-window (max-width: 68.75em) {
+  .workflow-debugger-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container hollow-window (max-width: 53.75em) {
+  .workflow-debugger-grid {
+    grid-template-columns: 1fr;
+  }
+  .workflow-debugger-run { grid-template-columns: 1fr; }
+}
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+.workflow-cover { padding: var(--sp-5) var(--sp-6); background: var(--surface-card); box-shadow: none; border-bottom: 1px solid var(--hairline); }
+.palette { border-radius: var(--r-lg); border-color: var(--hairline); }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .palette { animation: studio-arrive .45s var(--studio-ease); }
+}
+@container hollow-window (max-width: 68.75em) {
+  .workflow-cover { padding:20px 16px; }
+}
+}

@@ -1,0 +1,10 @@
+{
+  "aps": {
+    "alert": {"title": "Release notes for 5.2", "body": "Drafting the release notes now."},
+    "sound": "default",
+    "thread-id": "s-20261104-6e772c5f",
+    "category": "hollow.turn"
+  },
+  "sessionKey": "s-20261104-6e772c5f",
+  "kind": "turnFinished"
+}

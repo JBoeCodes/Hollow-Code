@@ -1,0 +1,41 @@
+{
+  "kitSha256": "2f0c6b1e9d8a7c5f4e3d2c1b0a99887766554433221100ffeeddccbbaa998877",
+  "canvases": [
+    {
+      "turnId": "s-20261104-6e772c5f-3-assistant",
+      "index": 0,
+      "id": "release-status",
+      "title": "Release status",
+      "ask": false,
+      "height": 480,
+      "revision": 2,
+      "latestRevision": 3,
+      "updatedAt": "2026-11-04T16:20:02.104000+00:00",
+      "answered": null
+    },
+    {
+      "turnId": "s-20261104-6e772c5f-5-assistant",
+      "index": 0,
+      "id": "launch-order",
+      "title": "Launch order",
+      "ask": true,
+      "height": null,
+      "revision": 3,
+      "latestRevision": 3,
+      "updatedAt": "2026-11-04T16:31:40.512000+00:00",
+      "answered": {"revision": 3, "summary": "- When?: This Friday"}
+    },
+    {
+      "turnId": "s-20261104-6e772c5f-6-assistant",
+      "index": 0,
+      "id": "draft-plan",
+      "title": "Draft plan",
+      "ask": false,
+      "height": null,
+      "revision": null,
+      "latestRevision": null,
+      "updatedAt": null,
+      "answered": null
+    }
+  ]
+}

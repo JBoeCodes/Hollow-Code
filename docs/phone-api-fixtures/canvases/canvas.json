@@ -1,0 +1,15 @@
+{
+  "id": "release-status",
+  "title": "Release status",
+  "revision": 3,
+  "latestRevision": 3,
+  "ask": false,
+  "height": 480,
+  "kit": "kit@1",
+  "updatedAt": "2026-11-04T16:20:02.104000+00:00",
+  "source": "<hc-canvas id=\"release-status\" title=\"Release status\" height=\"480\">\n  <hc-stats>\n    <hc-stat label=\"Checks passed\" value=\"41\" tone=\"success\"></hc-stat>\n    <hc-stat label=\"Open bugs\" value=\"2\" tone=\"warning\"></hc-stat>\n  </hc-stats>\n</hc-canvas>",
+  "body": "<div data-hc-texture-root texture=\"dither\" style=\"display:contents\">\n  <hc-stats>\n    <hc-stat label=\"Checks passed\" value=\"41\" tone=\"success\"></hc-stat>\n    <hc-stat label=\"Open bugs\" value=\"2\" tone=\"warning\"></hc-stat>\n  </hc-stats>\n</div>",
+  "state": {"tab": "Week"},
+  "answered": null,
+  "kitSha256": "2f0c6b1e9d8a7c5f4e3d2c1b0a99887766554433221100ffeeddccbbaa998877"
+}

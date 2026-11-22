@@ -1,0 +1,8 @@
+{"type":"runStarted","runId":"r2","sessionKey":"s2","asked":"build it","permissionMode":"auto"}
+{"type":"turnBoundary"}
+{"type":"assistantText","text":"Built."}
+{"type":"result","result":"Built.","costUsd":0.02,"isError":false,"subtype":"success","sessionId":"c-2"}
+{"type":"usage","usage":{},"sessionKey":"s2"}
+{"type":"remoteRun","phase":"back","target":"mini"}
+{"type":"evidenceReceipt","receipt":{}}
+{"type":"done","sessionId":"c-2","sessionKey":"s2"}

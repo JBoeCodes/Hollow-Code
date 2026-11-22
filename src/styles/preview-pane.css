@@ -1,0 +1,75 @@
+/* The Preview pane (components/PreviewPane.tsx, run 15 P1): the app's one
+   right-hand pane, beside the page under the top bar (`.canvas-split` in
+   App.tsx), present only while something is previewed. A2 owns its place
+   and look in the shell; this is the working baseline on today's tokens. In
+   a medium or compact window it takes the page's place (the old
+   exclusive-pane policy); its × is the way back. */
+@layer components {
+.preview-pane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  /* The page beside it keeps at least 360px (SIDE_PANE_CHAT_MIN). */
+  width: min(var(--preview-pane-w, clamp(340px, 42%, 720px)), calc(100% - 360px));
+  min-width: 0;
+  border-left: 1px solid var(--hairline);
+  background: var(--surface-card);
+  overflow: hidden;
+}
+.preview-pane:focus { outline: none; }
+.preview-pane:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.preview-pane > .resize-handle.edge-left { left: 0; width: 6px; z-index: 2; }
+.preview-pane > .resize-handle:focus-visible { outline: none; background: var(--primary); }
+/* One header row (UI clutter pass, 2026-11-06): back, forward, the tabs, New
+   web tab (`.preview-pane-tabset`), then the shown file's controls and close
+   (`.preview-pane-end`).
+   The tabs take the room left and scroll; a pane too narrow for them and the
+   controls wraps the controls with close to a second row, in DOM order, so
+   focus order stays what is seen. */
+.preview-pane-bar { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--sp-1); min-height: 44px; flex: none; padding: 0 var(--sp-2) 0 var(--sp-3); border-bottom: 1px solid var(--hairline); }
+.preview-pane-bar button:disabled { opacity: .4; cursor: default; }
+/* The tabs and New web tab: at least 224px before the controls wrap; inside,
+   the strip is as wide as its tabs and scrolls, and + follows the last tab. */
+.preview-pane-tabset { display: flex; align-items: center; flex: 1 1 0; min-width: min(100%, 224px); align-self: stretch; }
+.preview-tabs { display: grid; flex: 0 1 auto; min-width: 0; align-self: stretch; overflow-x: auto; overflow-y: hidden; }
+.preview-tab-list { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; grid-row: 1; }
+.preview-pane-end { display: flex; align-items: center; gap: var(--sp-1); margin-left: auto; min-height: 43px; }
+.preview-pane-tools { display: flex; align-items: center; }
+.preview-pane-tools:empty { display: none; }
+/* Solid's Portal wraps what ChatPreview puts here in a plain div. */
+.preview-pane-tools > div { display: contents; }
+/* The file's ••• menu ends with its details (kind, size, time, full path):
+   they wrap inside the pane instead of running past its left edge. */
+.preview-pane-tools .studio-action-menu-body { min-width: 200px; width: max-content; max-width: min(400px, calc(var(--preview-pane-now, 360px) - 56px)); }
+.preview-pane-tools .studio-action-menu-body button { white-space: normal; overflow-wrap: anywhere; }
+.preview-pane-tools .studio-action-menu-body button[aria-disabled="true"] { color: var(--muted); font-size: var(--fs-meta); cursor: default; }
+.preview-pane-tools .studio-action-menu-body button[aria-disabled="true"]:hover { background: none; }
+.preview-tab, .preview-tab-close { border: 0; background: transparent; color: var(--muted); cursor: pointer; min-height: 43px; }
+.preview-tab { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2); font: 500 var(--fs-meta) var(--ui); min-width: 0; max-width: 220px; }
+.preview-tab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.preview-tab > svg { flex: none; }
+.preview-tab[aria-selected="true"] { color: var(--primary); box-shadow: inset 0 -2px var(--primary); background: var(--primary-soft); max-width: 360px; }
+.preview-tab:hover, .preview-tab-close:hover { color: var(--ink); background: var(--surface-soft); }
+.preview-tab:focus-visible, .preview-tab-close:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.preview-pane-body { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+/* A build workspace's Changes in the pane (COO rebuild L4). */
+.workspace-preview { flex: 1; min-height: 0; overflow: auto; }
+.preview-pane .chat-preview { flex: 1; min-height: 0; border-left: 0; background: transparent; }
+.preview-empty { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); padding: var(--sp-7) var(--sp-5); text-align: center; color: var(--muted); }
+.preview-empty p { max-width: 340px; margin: 0; font-size: var(--fs-body); line-height: var(--lh-base); }
+.preview-visual { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+/* ExpandedCanvas keeps its class names from the side panel, so its scroller
+   (.side-visual-body) scrolls here too: without it a tall expanded canvas was
+   cut off with no way down (run 15 P2). */
+.preview-visual-body, .side-visual-body { padding: var(--sp-4); min-width: 0; min-height: 0; overflow: auto; }
+.side-expanded-canvas { display: flex; flex-direction: column; flex: 1; min-height: 0; position: relative; }
+.side-canvas-scroll { flex: 1; padding-bottom: 52px; overscroll-behavior: contain; overflow-anchor: none; }
+.side-canvas-back { position: absolute; z-index: 2; bottom: var(--sp-3); right: var(--sp-4); display: inline-flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-pill); background: var(--surface-raised); color: var(--ink); font: 500 var(--fs-meta) var(--ui); box-shadow: var(--elev-1); cursor: pointer; }
+.side-canvas-back:hover { border-color: var(--primary); }
+@container hollow-window (max-width: 68.75em) {
+  .canvas-split:has(> .preview-pane) > .page { display: none; }
+  .canvas-split > .preview-pane { flex: 1; width: auto; border-left: 0; }
+  .canvas-split > .preview-pane > .resize-handle { display: none; }
+}
+}

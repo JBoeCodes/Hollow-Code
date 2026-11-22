@@ -1,0 +1,35 @@
+@layer components {
+/* These notices take space, so neither view actions nor the focus trap sit
+   underneath a global fixed stack. An empty shelf takes no space. */
+.view-toast-region {
+  display: none;
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: min(28vh, 220px);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.view-toast-region:has(.snackbar, .notif-toast) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.view-toast-region .snackbar-stack,
+.view-toast-region .notif-toast-stack {
+  position: static;
+  max-width: none;
+  width: 100%;
+  z-index: auto;
+}
+.view-toast-region .snackbar-stack {
+  max-height: none;
+  overflow: visible;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+}
+.view-toast-region .snackbar {
+  min-width: 0;
+  max-width: none;
+}
+}

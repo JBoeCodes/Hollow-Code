@@ -1,0 +1,41 @@
+/* Settings, Background work, Automation windows (overnight Spare S10). Imported
+   by src/settings/AutomationWindowsPanel.tsx only, so it rides that lazy
+   chunk. Tokens only: light, dark and glass come from the theme. */
+@layer components {
+.aw-panel { display: flex; flex-direction: column; gap: var(--sp-2); padding-top: var(--sp-2); }
+.aw-zone { margin: 0; color: var(--muted); font-size: var(--fs-meta); line-height: var(--lh-base); }
+.aw-zone strong { color: var(--body); font-weight: 500; }
+.aw-list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.aw-window { padding: var(--sp-3) 0; border-top: 1px solid var(--hairline-soft); }
+.aw-window:first-child { border-top: 0; }
+.aw-fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.aw-legend { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-2); padding: 0; margin-bottom: var(--sp-2); }
+.aw-title { color: var(--ink); font: 500 var(--fs-body)/1.35 var(--ui); }
+.aw-code, .aw-mono { font-family: var(--mono); font-size: var(--fs-caption); }
+.aw-code { color: var(--muted); }
+.aw-fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-3); }
+.aw-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.aw-field-k { color: var(--muted); font-size: var(--fs-caption); }
+.aw-field-title { flex: 1 1 200px; max-width: 280px; }
+.aw-field-name { flex: 0 1 180px; }
+.aw-field-time .settings-input { width: auto; min-width: 7.5rem; }
+/* Several days may be on, so "off" reads quieter than the single-choice
+   segmented control's resting state. */
+.aw-days > button { height: 28px; padding: 0 var(--sp-2); font-size: var(--fs-meta); color: var(--muted); }
+.aw-days > button[aria-pressed="true"] { color: var(--ink); font-weight: 600; }
+.aw-days > button:focus-visible { outline: none; box-shadow: var(--ring); }
+/* A new window's name field and Remove go after the hours, so the label,
+   days and hours line up across windows. */
+.aw-field-name { order: 5; }
+.aw-row-end { order: 6; margin-left: auto; display: inline-flex; align-items: center; gap: var(--sp-2); }
+.aw-uses { color: var(--muted); font-size: var(--fs-meta); }
+.aw-confirm { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin: var(--sp-2) 0 0; padding: var(--sp-2) var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--surface-soft); color: var(--body); font-size: var(--fs-meta); }
+.aw-confirm > span { flex: 1 1 260px; }
+.aw-note { margin: var(--sp-2) 0 0; color: var(--muted); font-size: var(--fs-meta); line-height: var(--lh-base); max-width: var(--measure); }
+.aw-summary { color: var(--body); }
+.aw-automation-links { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-2); }
+.aw-automation-links .btn { white-space: normal; overflow-wrap: anywhere; }
+.aw-actions { align-items: center; }
+.aw-status { flex: 1 1 200px; margin: 0; color: var(--muted); font-size: var(--fs-meta); }
+.aw-panel .settings-input[aria-invalid="true"] { border-color: var(--error); }
+}

@@ -1,0 +1,17 @@
+/* A saved canvas's Attach to issue… (A19): find an issue, pick it, attach a
+   copy. Loaded with its lazy dialog. */
+@layer components {
+.aci-card { width: min(560px, 94vw); max-height: min(560px, 88vh); }
+.aci-card .rbk-head h2 { flex: 1; }
+.aci-body { display: flex; flex-direction: column; gap: var(--sp-2); flex: 1; min-height: 0; }
+.aci-label { margin: 0; font-size: var(--fs-meta); font-weight: 600; color: var(--muted); }
+.aci-issues { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; min-height: 120px; }
+.aci-issue { display: flex; gap: var(--sp-2); width: 100%; text-align: left; padding: var(--sp-2) var(--sp-3); border: 0; border-radius: var(--r-sm); background: none; color: var(--ink); font: inherit; cursor: pointer; }
+.aci-issue:hover { background: var(--surface-soft); }
+.aci-issue.on { background: var(--primary-soft-strong); font-weight: 600; }
+.aci-issue:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.aci-key { flex: none; color: var(--muted); font-variant-numeric: tabular-nums; }
+.aci-foot { display: flex; align-items: center; gap: var(--sp-3); justify-content: flex-end; }
+.aci-said { flex: 1; font-size: var(--fs-meta); color: var(--body); }
+.aci-said.is-error { color: var(--error); }
+}

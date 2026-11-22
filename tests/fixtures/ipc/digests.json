@@ -1,0 +1,43 @@
+[
+  {
+    "workspaceId": "local-results-view",
+    "reentry": {
+      "asOf": "2026-10-05T12:00:00Z",
+      "nextStep": null,
+      "openItems": [],
+      "openItemCount": null,
+      "lastRun": null,
+      "gaps": [
+        "No SOURCES.md yet."
+      ]
+    },
+    "latestResult": {
+      "path": "workspaces/local-results-view/outputs/summary.md",
+      "title": "Summary",
+      "kind": "document",
+      "modified": "2026-10-05T10:05:00Z",
+      "review": "ready"
+    },
+    "resultCount": 4,
+    "awaitingReview": 1,
+    "lastActivityAt": "2026-10-05T10:05:00Z"
+  },
+  {
+    "workspaceId": "local-q3-review",
+    "reentry": {
+      "asOf": "2026-10-05T12:00:00Z",
+      "nextStep": null,
+      "openItems": [],
+      "openItemCount": null,
+      "lastRun": null,
+      "gaps": [
+        "No SOURCES.md yet."
+      ]
+    },
+    "latestResult": null,
+    "resultCount": 0,
+    "awaitingReview": 0,
+    "lastActivityAt": null,
+    "resultsError": "Results review state could not be read"
+  }
+]

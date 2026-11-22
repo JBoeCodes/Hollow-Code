@@ -1,0 +1,27 @@
+{
+ "schemaVersion": 1,
+ "runId": "run-D",
+ "layers": [
+  {
+   "name": "workspace",
+   "bytes": 1000,
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "name": "profile",
+   "bytes": 600,
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "preparation": {
+  "timeline": {
+   "origin": "admission",
+   "totalMs": 400,
+   "phases": []
+  }
+ },
+ "compiler": {
+  "entry": "appSession",
+  "session": "reset"
+ }
+}

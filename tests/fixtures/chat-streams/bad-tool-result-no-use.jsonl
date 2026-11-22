@@ -1,0 +1,6 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"session","sessionId":"thread-9"}
+{"type":"toolResult","id":"item_404","content":"orphan","isError":false}
+{"type":"result","result":"x","costUsd":null,"isError":false,"subtype":"success","sessionId":"thread-9"}
+{"type":"usage","usage":{}}
+{"type":"done","sessionId":"thread-9"}

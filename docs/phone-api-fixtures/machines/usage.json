@@ -1,0 +1,35 @@
+{
+  "usageApi": 1,
+  "machineId": "m-8d21c4be90f17a3e",
+  "observedAt": "2026-11-15T20:41:12Z",
+  "accounts": [
+    {
+      "key": "ak-5c0b8e21d47f9a36",
+      "provider": "claude",
+      "label": "Claude Code login",
+      "billing": "Acme",
+      "routed": true,
+      "loadPercent": 42.5,
+      "blocked": false,
+      "blockedUntil": null,
+      "sevenDayResetsAt": "2026-11-19T04:00:00Z",
+      "measuredAt": "2026-11-15T20:41:07Z",
+      "recentPicks": 2,
+      "lastPickedAt": "2026-11-15T20:40:55Z"
+    },
+    {
+      "key": "ak-91e4f0c2a8d35b77",
+      "provider": "codex",
+      "label": "Codex (ChatGPT Team)",
+      "billing": "Acme",
+      "routed": true,
+      "loadPercent": 18.0,
+      "blocked": false,
+      "blockedUntil": null,
+      "sevenDayResetsAt": null,
+      "measuredAt": "2026-11-15T20:12:40Z",
+      "recentPicks": 0,
+      "lastPickedAt": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "about": "BI1 routing cases over the shared library ~/.agents/skills. Each prompt names the one skill that should fire (expect; null when none should) and the near misses it is easily confused with. Synthetic prompts only.",
+  "cases": [
+    { "id": "dd-one-pager", "prompt": "Make me a one-pager PDF summarising this quarter's reading list, something I can print and pin up.", "expect": "dithered-design", "confusable": ["slideshow", "anatomy"] },
+    { "id": "dd-deck", "prompt": "Turn my notes on the garden irrigation project into a short presentation deck I can share with my neighbours.", "expect": "dithered-design", "confusable": ["slideshow", "hyperframes"] },
+    { "id": "dd-poster", "prompt": "Design a poster for the book club's winter meetup with a strong visual style.", "expect": "dithered-design", "confusable": ["anatomy", "motion-graphics"] },
+    { "id": "anatomy-figure", "prompt": "Draw an isometric illustration of how a message queue works, as a physical machine, for my blog post.", "expect": "anatomy", "confusable": ["dithered-design", "motion-graphics"] },
+    { "id": "anatomy-diagram", "prompt": "I need an interactive SVG figure explaining a rate limiter as a real object for our docs page.", "expect": "anatomy", "confusable": ["dithered-design"] },
+    { "id": "hf-explainer", "prompt": "Make a 30 second animated video from this HTML landing page I wrote.", "expect": "hyperframes", "confusable": ["product-launch-video", "motion-graphics", "general-video"] },
+    { "id": "hf-render", "prompt": "My HyperFrames composition will not render; can you validate the project and fix it?", "expect": "hyperframes", "confusable": ["hyperframes-cli", "hyperframes-core"] },
+    { "id": "launch-video", "prompt": "Turn our product's marketing page URL into a launch promo video for social.", "expect": "product-launch-video", "confusable": ["hyperframes", "pr-to-video", "general-video"] },
+    { "id": "pr-video", "prompt": "Make a short changelog video explaining what pull request owner/repo#42 changed.", "expect": "pr-to-video", "confusable": ["product-launch-video", "faceless-explainer"] },
+    { "id": "faceless", "prompt": "Turn this article about soil microbes into a narrated explainer video with no footage or presenter.", "expect": "faceless-explainer", "confusable": ["general-video", "slideshow"] },
+    { "id": "slideshow-video", "prompt": "Make a video slideshow from these twelve holiday photos with captions and a gentle transition between each.", "expect": "slideshow", "confusable": ["dithered-design", "general-video"] },
+    { "id": "motion-title", "prompt": "Create an animated title card and lower-third overlay for my podcast episode.", "expect": "motion-graphics", "confusable": ["hyperframes", "anatomy"] },
+    { "id": "humanize-email", "prompt": "This draft newsletter reads like a chatbot wrote it. Make it sound like a person.", "expect": "humanizer", "confusable": [] },
+    { "id": "humanize-review", "prompt": "Edit this paragraph to remove the AI writing tells: the inflated words, the rule of three and the em dashes.", "expect": "humanizer", "confusable": [] },
+    { "id": "invoice-excel", "prompt": "Convert this vendor invoice PDF into an Excel workbook with the line items and totals reconciled.", "expect": "invoice-valet", "confusable": [] },
+    { "id": "media-sfx", "prompt": "Find a royalty-free whoosh sound effect and background music for my HyperFrames project and add them to its ledger.", "expect": "media-use", "confusable": ["hyperframes-audio", "hyperframes"] },
+    { "id": "none-code", "prompt": "Explain the difference between a mutex and a semaphore in two sentences.", "expect": null, "confusable": [] },
+    { "id": "none-email", "prompt": "Write a two line reply thanking Sam for the meeting notes.", "expect": null, "confusable": ["humanizer"] },
+    { "id": "none-math", "prompt": "What is 17 percent of 2,340?", "expect": null, "confusable": ["invoice-valet"] },
+    { "id": "none-chart-talk", "prompt": "In one sentence, when is a bar chart better than a pie chart?", "expect": null, "confusable": ["dithered-design", "anatomy"] }
+  ]
+}

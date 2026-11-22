@@ -1,0 +1,70 @@
+/* Long-conversation navigation (next-level P04): find, the outline's button,
+   bounded rendering and the provider-switch note. Owned by ChatBody; the
+   outline rail and its card are in chat-outline-rail.css. */
+@layer components {
+.chat-scroll-wrap { position: relative; container: chat-wrap / size; }
+.chat-main { container-name: chat-column; }
+.chat-navigation { display: flex; flex: none; align-items: center; gap: var(--sp-1); padding-inline: var(--sp-4); }
+.chat-recovery-controls { display: contents; }
+.chat-nav-btn { display: grid; place-items: center; width: 26px; height: 26px; padding: 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--muted); cursor: pointer; }
+.chat-nav-btn:hover:not(:disabled), .chat-nav-btn[aria-pressed="true"] { background: var(--fill-selected); color: var(--ink); }
+.chat-nav-btn:disabled { opacity: .4; cursor: default; }
+/* Stop reading, while a reply is read aloud (overnight 11-07, D1): in the
+   chat's top row, so it is there when the reply's own row has scrolled away. */
+.chat-nav-btn.chat-nav-reading { grid-auto-flow: column; width: auto; gap: var(--sp-1); padding: 0 var(--sp-2); color: var(--primary); font: 500 var(--fs-meta)/1 var(--ui); }
+.chat-topbar-controls { display: flex; align-items: center; min-width: 0; gap: var(--sp-2); }
+/* Only a chat name gives the slot width to fill and to give up (its ellipsis);
+   the branch, status and ⋯ keep their boxes, and with no name the breadcrumb
+   gives up width first, as before (shell-workspace.css). A slot that shrank
+   whenever chat controls were in it slid the branch under the right cluster
+   at narrow widths. */
+.top-bar-page-actions:has(.chat-topbar-controls .chat-title-row) { flex: 1 1 auto; }
+.top-bar-page-actions:has(.chat-topbar-controls .chat-title-row) .work-topbar-actions { flex: none; }
+.top-bar-left:has(.chat-topbar-controls .chat-title-row) .top-bar-crumbs { display: none; }
+.top-bar-page-actions > .chat-topbar-controls { display: flex; order: -1; min-width: 0; }
+.chat-topbar-controls .chat-title-row { max-width: 100%; margin: 0; }
+.chat-find { position: absolute; top: var(--sp-2); right: calc(var(--sp-4) + 66px); z-index: 7; display: flex; align-items: center; gap: var(--sp-1); width: min(420px, calc(100% - 120px)); height: 32px; padding: 0 var(--sp-1) 0 var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--surface-raised); box-shadow: var(--elev-2); color: var(--muted); }
+.chat-find input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font: var(--fs-body) var(--ui); outline: none; padding: 0; box-shadow: none; }
+.chat-find-count { flex: none; color: var(--muted); font-size: var(--fs-meta); font-variant-numeric: tabular-nums; }
+.turn.turn-hit, .chat-run-step.turn-hit { outline: 2px solid var(--primary-soft-strong); outline-offset: 6px; border-radius: var(--r-md); }
+/* Find's matches in the words themselves (overnight 11-04, C4;
+   findHighlight.ts): every match, and the current turn's more strongly. */
+::highlight(chat-find) { background-color: color-mix(in srgb, var(--warning) 24%, transparent); }
+::highlight(chat-find-current) { background-color: color-mix(in srgb, var(--warning) 44%, transparent); color: var(--ink); }
+@media (forced-colors: active) {
+  ::highlight(chat-find) { background-color: Mark; color: MarkText; }
+  ::highlight(chat-find-current) { background-color: Highlight; color: HighlightText; }
+}
+.turn-footer-reading { color: var(--primary); }
+.chat-show-earlier { display: flex; align-items: center; gap: var(--sp-2); margin: 0 auto var(--sp-4); padding: var(--sp-1) var(--sp-3); border: 1px solid var(--hairline-soft); border-radius: var(--r-pill); background: var(--surface-card); color: var(--body-strong); font: 500 var(--fs-meta)/1.4 var(--ui); cursor: pointer; }
+.chat-show-later { margin: var(--sp-4) auto 0; }
+.chat-show-earlier:hover { border-color: var(--hairline); color: var(--ink); }
+.chat-show-earlier small { color: var(--muted); font-weight: 400; }
+.chat-visit-mark { display: flex; align-items: center; gap: var(--sp-3); margin: var(--sp-4) 0 var(--sp-2); color: var(--primary); font: 500 var(--fs-meta)/1.4 var(--ui); }
+.chat-visit-mark::before, .chat-visit-mark::after { content: ''; flex: 1; height: 1px; background: color-mix(in srgb, var(--primary) 35%, transparent); }
+.chat-visit-mark::after { order: 3; }
+.chat-visit-mark-label { order: 2; }
+.chat-visit-mark-dismiss { order: 4; border: 0; background: none; padding: 0 var(--sp-1); color: var(--muted); font: inherit; cursor: pointer; }
+.chat-visit-mark-dismiss:hover { color: var(--ink); }
+.chat-visit-mark-dismiss:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-sm); }
+.chat-provider-switch { display: flex; align-items: center; gap: var(--sp-2); margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-3); border-radius: var(--r-sm); background: var(--amber-soft); color: var(--body-strong); font-size: var(--fs-meta); line-height: 1.4; }
+.chat-provider-switch > svg { flex: none; color: var(--warning); }
+/* Canvas C4 A2: a canvas's answers wait for the person when the composer already holds text. */
+.chat-canvas-confirm { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-3); border-radius: var(--r-sm); background: var(--amber-soft); color: var(--body-strong); font-size: var(--fs-meta); line-height: 1.4; }
+.chat-canvas-confirm > svg { flex: none; color: var(--warning); }
+.chat-canvas-confirm > span { flex: 1 1 14em; min-width: 0; }
+/* The open chat's name (overnight 11-07, D1): at the left of the tools' slim
+   row, so a chat with tools gains no height. The ⋯ stays faintly visible and
+   is the visible route to Rename…; a double-click on the name is the shortcut. */
+.chat-title-row { display: flex; flex: 0 1 auto; align-items: center; gap: 2px; min-width: 0; max-width: min(70%, 560px); margin: var(--sp-1) 0 0 var(--sp-3); }
+/* The name's text lines up with the thread's: a workspace conversation's
+   `.chat-scroll` keeps 32px of side padding at every width (workbench.css, which
+   outranks the narrow-width rules of chat-workspace.css), and the nav row's 16px
+   plus this 12px margin plus the name's own 4px make the same 32. A narrow
+   window or column therefore needs no rule of its own: it had two (4px, then
+   -4px) that moved the name off the thread. */
+.chat-title { min-width: 0; overflow: hidden; padding: 2px var(--sp-1); color: var(--ink); font: 600 var(--fs-body)/1.4 var(--ui); letter-spacing: var(--ls-tight); text-overflow: ellipsis; white-space: nowrap; }
+.chat-title-row .more-btn { flex: none; width: 24px; height: 24px; color: var(--muted); opacity: .6; }
+.chat-title-row:hover .more-btn, .chat-title-row:focus-within .more-btn { opacity: 1; }
+.chat-title-input { flex: 1; width: min(420px, 100%); min-width: 8em; height: 28px; margin: 0; padding: 0 var(--sp-2); border: 1px solid var(--primary); border-radius: var(--r-xs); background: var(--surface-card); color: var(--ink); font: 600 var(--fs-body)/1.4 var(--ui); outline: none; box-shadow: var(--ring); }
+}

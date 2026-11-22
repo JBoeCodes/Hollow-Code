@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "runId": "run-b",
+  "retrieval": {
+    "engine": "jev",
+    "candidates": [
+      {
+        "path": "notes/secret-b1.md",
+        "line": 1,
+        "source": "note",
+        "coverage": "excerpt",
+        "rank": 1,
+        "localScore": 4,
+        "jevScore": 0,
+        "kept": false,
+        "basis": "jev",
+        "reason": "secret reason text",
+        "bytes": 100,
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "path": "notes/secret-b2.md",
+        "line": 2,
+        "source": "note",
+        "coverage": "excerpt",
+        "rank": 2,
+        "localScore": 1,
+        "jevScore": 3,
+        "semanticScore": 0.91,
+        "kept": true,
+        "basis": "jev",
+        "bytes": 100,
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "path": "notes/secret-b3.md",
+        "line": 3,
+        "source": "note",
+        "coverage": "excerpt",
+        "rank": 3,
+        "localScore": 4,
+        "jevScore": 0,
+        "semanticScore": 0.64,
+        "kept": false,
+        "basis": "jev",
+        "reason": "secret reason text",
+        "bytes": 100,
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ]
+  }
+}

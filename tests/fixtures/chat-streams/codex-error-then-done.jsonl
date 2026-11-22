@@ -1,0 +1,5 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"assistantText","text":"Trying."}
+{"type":"error","message":"Codex failed to start"}
+{"type":"usage","usage":{}}
+{"type":"done","sessionId":null}

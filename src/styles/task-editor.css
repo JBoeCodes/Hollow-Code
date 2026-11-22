@@ -1,0 +1,75 @@
+/* Task editor (components/TaskEditor.tsx): the one task form, in the Tasks pane and TaskModal. */
+@layer components {
+.task-editor-form { display: grid; gap: var(--sp-3); font: var(--fs-body)/var(--lh-base) var(--ui); color: var(--ink); }
+.task-editor form.task-editor-form { padding: var(--sp-5) var(--sp-5) var(--sp-4); }
+.task-field { display: grid; gap: 6px; min-width: 0; margin: 0; }
+.task-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); }
+.task-priority { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 2px; border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--surface-soft); width: fit-content; max-width: 100%; }
+.task-priority-opt { min-height: 30px; padding: 4px var(--sp-3); border: 1px solid transparent; border-radius: var(--r-xs); background: transparent; color: var(--body); font: 500 var(--fs-meta)/var(--lh-base) var(--ui); cursor: pointer; }
+.task-priority-opt:hover:not(:disabled) { background: var(--primary-soft); color: var(--ink); }
+.task-priority-opt[aria-checked="true"] { background: var(--surface-card); color: var(--ink); border-color:var(--hairline); font-weight: 600; }
+.task-editor-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; padding-top: var(--sp-3); border-top: 1px solid var(--hairline-soft); }
+.task-editor-foot-left, .task-editor-foot-right { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.task-editor-foot-right { margin-left: auto; }
+.task-form-problem { color: var(--muted); font-size: var(--fs-meta); }
+.task-editor-heading { margin: var(--sp-2) 0 var(--sp-3); font: 600 var(--fs-lg)/1.3 var(--ui); letter-spacing: var(--ls-tight); color: var(--ink); }
+.task-detail .task-editor-form { padding: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .skills-detail > * { animation: pq-view-in 180ms var(--studio-ease); }
+}
+/* In the Tasks pane the form is part of the pane, not a card inside it
+   (`panel` marks the surface; it must not pick up the resting .panel box). */
+.task-editor-form.panel { padding: 0; border: 0; background: none; }
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+/* ── Shared task editor (TaskEditor.tsx, audit H02) ─────────────────────── */
+.task-editor-form .task-create-note, .task-draft-note { margin: 0; color: var(--muted); font-size: var(--fs-meta); }
+.task-field > span:first-child { color: var(--body-strong); font-size: var(--fs-meta); font-weight: 600; }
+.task-field > span small { font-weight: 400; }
+.task-editor-form input:not([type=checkbox]), .task-editor-form textarea {
+  width: 100%; min-height: var(--control-h); padding: 6px var(--sp-3); color: var(--ink); background: var(--surface-card);
+  border: 1px solid var(--hairline); border-radius: var(--r-md); font: var(--fs-body)/var(--lh-base) var(--ui); box-shadow: none; resize: vertical;
+}
+.task-editor-form textarea[rows="2"] { font-size: var(--fs-md); font-weight: 500; }
+.task-editor-form input:focus, .task-editor-form textarea:focus { outline: none; border-color: var(--primary); box-shadow: var(--ring); }
+.task-editor-form :is(input, textarea)[aria-invalid="true"],
+.task-editor-form :is(input, textarea)[aria-invalid="true"]:focus { border-color: var(--error); }
+.task-field-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@container (max-width: 420px) {
+  .task-field-grid, .task-field-grid.three { grid-template-columns: 1fr; }
+}
+@container hollow-window (max-width: 53.75em) {
+  .task-field-grid, .task-field-grid.three { grid-template-columns: 1fr; }
+}
+.task-priority-opt.p1[aria-checked="true"] { color: var(--error); }
+.task-priority-opt.p2[aria-checked="true"] { color: var(--warning); }
+.task-editor-form .task-more { border: 0; border-top: 1px solid var(--hairline-soft); border-bottom: 1px solid var(--hairline-soft); border-radius: 0; padding: 0; background: none; }
+.task-editor-form .task-more[open] { padding-bottom: var(--sp-3); display: grid; gap: var(--sp-3); }
+.task-editor-form .task-more > summary { display: flex; align-items: baseline; gap: var(--sp-2); padding: var(--sp-3) 0; cursor: pointer; font-weight: 600; color: var(--body-strong); list-style-position: inside; }
+.task-editor-form .task-more > summary small { color: var(--muted); font-weight: 400; font-size: var(--fs-meta); }
+.task-form-problem.attempted { color: var(--error); }
+.task-editor.modal-content { width: min(640px, calc(100vw - 32px)); max-height: calc(100vh - 64px); overflow-y: auto; }
+.task-editor .modal-head { padding: var(--sp-4) var(--sp-5); }
+.task-editor .modal-head h2 { font: 600 var(--fs-lg) var(--ui); letter-spacing: var(--ls-tight); }
+.task-editor .close-btn { width: 30px; height: 30px; border-radius: var(--r-md); font-size: var(--fs-xl); line-height: 1; }
+/* Sheet and panel share one label style: no inherited uppercase eyebrow
+   treatment from older modal/panel rules. */
+.task-editor-form .task-field > span:first-child,
+.task-editor-form .task-more > summary,
+.task-editor-form .task-more > summary small,
+.task-editor-form .form-label { text-transform: none; letter-spacing: 0; font-family: var(--ui); }
+.task-editor-form .task-create-note { border: 0; padding: 0; background: none; }
+}
+@layer components {
+/* Where the task came from (consolidation G, 2026-10-13). */
+.task-origin-note { margin: 0 0 var(--sp-2); color: var(--muted); font-size: var(--fs-meta); }
+.task-origin-k { color: var(--body); font-weight: 600; }
+/* How a task and its source relate (plan completion item 4): copied plan
+   text, or a promise that stays open. */
+.task-origin-relation { display: block; margin-top: 2px; color: var(--muted); font-size: var(--fs-meta); font-weight: 400; }
+/* X21: a failed project-list refresh, compact under the Project field. */
+.task-field > .refresh-notice { margin: 4px 0 0; padding: 4px 8px; gap: 8px; }
+}
+

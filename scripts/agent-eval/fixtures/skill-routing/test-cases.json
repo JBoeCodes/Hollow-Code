@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "about": "Test cases for scripts/agent-eval-skill-routing.test.mjs; the recorded streams in streams/ answer them.",
+  "cases": [
+    {
+      "id": "a",
+      "prompt": "Prompt for alpha.",
+      "expect": "alpha",
+      "confusable": [
+        "beta"
+      ]
+    },
+    {
+      "id": "b",
+      "prompt": "Prompt for beta.",
+      "expect": "beta",
+      "confusable": [
+        "alpha"
+      ]
+    },
+    {
+      "id": "c",
+      "prompt": "Prompt for alpha again.",
+      "expect": "alpha",
+      "confusable": []
+    },
+    {
+      "id": "d",
+      "prompt": "Prompt that needs no skill.",
+      "expect": null,
+      "confusable": [
+        "beta"
+      ]
+    },
+    {
+      "id": "e",
+      "prompt": "Prompt for beta again.",
+      "expect": "beta",
+      "confusable": [
+        "alpha"
+      ]
+    },
+    {
+      "id": "f",
+      "prompt": "Prompt for alpha, run failed.",
+      "expect": "alpha",
+      "confusable": []
+    },
+    {
+      "id": "g",
+      "prompt": "Prompt for beta, run cut off.",
+      "expect": "beta",
+      "confusable": []
+    }
+  ]
+}

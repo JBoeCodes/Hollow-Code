@@ -1,0 +1,31 @@
+@layer components {
+/* Needs you (overnight 11-08 S3): pages/Review.tsx. Waiting keeps its own
+   styles; this places them in the page, which scrolls under its header. */
+.review-page { display: flex; flex-direction: column; flex: 1; min-height: 0; min-width: 0; }
+.review-body { flex: 1; min-height: 0; overflow-y: auto; padding: 0 var(--page-gutter) var(--sp-6); }
+.waiting-view { position: static; width: 100%; max-width: 980px; max-height: none; box-shadow: none; border: 0; background: transparent; padding: 0; }
+/* Stable kind groups share the reading surface; failures lead in data order. */
+.waiting-view .waiting-group { margin-block: var(--sp-4); padding: 0; gap: 0; border: 0; border-top: 1px solid var(--hairline); border-radius: 0; background: var(--surface-card); box-shadow: none; }
+.waiting-view .waiting-group[data-group="failures"] { border-inline-start: 3px solid var(--error); }
+.waiting-view .notif-day-sep { background: var(--surface-soft); color: var(--ink); font-size: var(--fs-body); text-transform: none; letter-spacing: normal; padding: var(--sp-2) var(--sp-3); }
+.waiting-view .waiting-item { padding: var(--sp-2) var(--sp-3); }
+.waiting-view .activity-item strong { white-space: normal; overflow-wrap: anywhere; line-height: var(--lh-base); }
+.waiting-view .waiting-item + .waiting-item { border-top: 1px solid var(--hairline-soft); padding-top: var(--sp-2); }
+.waiting-loading { margin-block: var(--sp-3); padding: var(--sp-3); border: 0; border-top: 1px solid var(--hairline); border-radius: 0; background: var(--surface-card); }
+.waiting-loading::before { content: ''; display: block; width: 30%; height: var(--sp-2); margin-bottom: var(--sp-2); border-radius: var(--r-sm); background: var(--surface-soft); }
+.waiting-loading .ui-skeleton-bar { height: var(--row-h); animation: none; }
+.waiting-view .waiting-empty { padding-block: var(--sp-6); }
+}
+
+@layer components {
+.app-messages { margin-block: var(--sp-4); }
+.app-messages h3 { font-size: var(--fs-body); margin: 0; }
+.app-message-list { list-style: none; margin: 0; padding: 0; }
+.app-message-row { display: flex; align-items: flex-start; gap: var(--sp-3); padding-block: var(--sp-3); border-bottom: 1px solid var(--hairline); }
+.app-message-row > div { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.app-message-row > button { flex-shrink: 0; }
+.app-message-row p { margin: var(--sp-1) 0; white-space: pre-wrap; }
+.app-message-row time { margin-inline-start: var(--sp-2); color: var(--muted); font-size: var(--fs-caption); }
+.app-message-state { font-weight: 600; font-size: var(--fs-caption); }
+.app-message-row pre { white-space: pre-wrap; overflow-wrap: anywhere; font: var(--fs-caption) var(--mono); }
+}

@@ -1,0 +1,1450 @@
+{
+  "schema": 1,
+  "condition": "connector-relevance",
+  "about": "Judged connector relevance (Jev use 1, connectors). Each item is a request and the connector candidates a turn would consider; `relevant` are the ones a judge says the request needs (for a genuinely ambiguous request, every acceptable one), `named` the ones it names explicitly (never droppable), `kind` the case it tests (plain, ambiguous, paraphrase, explicit, cardinality: more than 24 candidates, none: no connector needed). Synthetic, from the bed's Kestrel vocabulary. Outputs per arm: decisions [{ id, attach }], one per candidate.",
+  "items": [
+    {
+      "id": "email-cost-update",
+      "kind": "plain",
+      "request": "Email the steering group the Kestrel cost update.",
+      "candidates": [
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        },
+        {
+          "id": "plaud",
+          "name": "Plaud",
+          "description": "List and read meeting recordings and transcripts."
+        },
+        {
+          "id": "blender",
+          "name": "Blender",
+          "description": "Create and edit 3D scenes."
+        },
+        {
+          "id": "zoom",
+          "name": "Zoom",
+          "description": "Schedule and join video meetings."
+        }
+      ],
+      "relevant": [
+        "mail"
+      ],
+      "named": []
+    },
+    {
+      "id": "plaud-site-walk",
+      "kind": "explicit",
+      "request": "Use plaud to find the recording of the Canal yard site walk.",
+      "candidates": [
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "plaud",
+          "name": "Plaud",
+          "description": "List and read meeting recordings and transcripts."
+        },
+        {
+          "id": "zoom",
+          "name": "Zoom",
+          "description": "Schedule and join video meetings."
+        }
+      ],
+      "relevant": [
+        "plaud"
+      ],
+      "named": [
+        "plaud"
+      ]
+    },
+    {
+      "id": "named-past-24",
+      "kind": "cardinality",
+      "request": "Use kestrel-gauges to read the latest tank levels.",
+      "candidates": [
+        {
+          "id": "tool-01",
+          "name": "Tool 01",
+          "description": "Synthetic connector 1: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-02",
+          "name": "Tool 02",
+          "description": "Synthetic connector 2: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-03",
+          "name": "Tool 03",
+          "description": "Synthetic connector 3: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-04",
+          "name": "Tool 04",
+          "description": "Synthetic connector 4: file storage for a made-up service."
+        },
+        {
+          "id": "tool-05",
+          "name": "Tool 05",
+          "description": "Synthetic connector 5: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-06",
+          "name": "Tool 06",
+          "description": "Synthetic connector 6: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-07",
+          "name": "Tool 07",
+          "description": "Synthetic connector 7: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-08",
+          "name": "Tool 08",
+          "description": "Synthetic connector 8: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-09",
+          "name": "Tool 09",
+          "description": "Synthetic connector 9: file storage for a made-up service."
+        },
+        {
+          "id": "tool-10",
+          "name": "Tool 10",
+          "description": "Synthetic connector 10: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-11",
+          "name": "Tool 11",
+          "description": "Synthetic connector 11: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-12",
+          "name": "Tool 12",
+          "description": "Synthetic connector 12: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-13",
+          "name": "Tool 13",
+          "description": "Synthetic connector 13: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-14",
+          "name": "Tool 14",
+          "description": "Synthetic connector 14: file storage for a made-up service."
+        },
+        {
+          "id": "tool-15",
+          "name": "Tool 15",
+          "description": "Synthetic connector 15: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-16",
+          "name": "Tool 16",
+          "description": "Synthetic connector 16: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-17",
+          "name": "Tool 17",
+          "description": "Synthetic connector 17: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-18",
+          "name": "Tool 18",
+          "description": "Synthetic connector 18: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-19",
+          "name": "Tool 19",
+          "description": "Synthetic connector 19: file storage for a made-up service."
+        },
+        {
+          "id": "tool-20",
+          "name": "Tool 20",
+          "description": "Synthetic connector 20: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-21",
+          "name": "Tool 21",
+          "description": "Synthetic connector 21: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-22",
+          "name": "Tool 22",
+          "description": "Synthetic connector 22: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-23",
+          "name": "Tool 23",
+          "description": "Synthetic connector 23: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-24",
+          "name": "Tool 24",
+          "description": "Synthetic connector 24: file storage for a made-up service."
+        },
+        {
+          "id": "tool-25",
+          "name": "Tool 25",
+          "description": "Synthetic connector 25: issue tracker for a made-up service."
+        },
+        {
+          "id": "kestrel-gauges",
+          "name": "Kestrel gauges",
+          "description": "Read level sensor values for the Kestrel sites."
+        }
+      ],
+      "relevant": [
+        "kestrel-gauges"
+      ],
+      "named": [
+        "kestrel-gauges"
+      ]
+    },
+    {
+      "id": "steering-slot",
+      "kind": "plain",
+      "request": "Find a free hour next week for the steering group review and put it in everyone's diary.",
+      "candidates": [
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "calendar",
+          "name": "Google Calendar",
+          "description": "Read and create calendar events and invitations."
+        },
+        {
+          "id": "zoom",
+          "name": "Zoom",
+          "description": "Schedule and join video meetings."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        }
+      ],
+      "relevant": [
+        "calendar"
+      ],
+      "named": []
+    },
+    {
+      "id": "crews-moved-visit",
+      "kind": "ambiguous",
+      "request": "Let the field crews know the Canal yard visit moved to Thursday.",
+      "candidates": [
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        },
+        {
+          "id": "calendar",
+          "name": "Google Calendar",
+          "description": "Read and create calendar events and invitations."
+        },
+        {
+          "id": "plaud",
+          "name": "Plaud",
+          "description": "List and read meeting recordings and transcripts."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        }
+      ],
+      "relevant": [
+        "slack",
+        "mail"
+      ],
+      "named": []
+    },
+    {
+      "id": "github-firmware-bug",
+      "kind": "explicit",
+      "request": "Open a GitHub issue for the gateway firmware 2.4 bug.",
+      "candidates": [
+        {
+          "id": "github",
+          "name": "GitHub",
+          "description": "Read and update code repositories, issues and pull requests."
+        },
+        {
+          "id": "linear",
+          "name": "Linear",
+          "description": "Track issues, projects and cycles for a software team."
+        },
+        {
+          "id": "jira",
+          "name": "Jira",
+          "description": "Track tickets and sprints."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        }
+      ],
+      "relevant": [
+        "github"
+      ],
+      "named": [
+        "github"
+      ]
+    },
+    {
+      "id": "gauges-hill",
+      "kind": "explicit",
+      "request": "Ask kestrel-gauges for the Hill reservoir level this morning.",
+      "candidates": [
+        {
+          "id": "kestrel-gauges",
+          "name": "Kestrel gauges",
+          "description": "Read level sensor values for the Kestrel sites."
+        },
+        {
+          "id": "weather",
+          "name": "Weather",
+          "description": "Forecasts and weather history for a place."
+        },
+        {
+          "id": "maps",
+          "name": "Maps",
+          "description": "Look up places, routes and travel times."
+        },
+        {
+          "id": "sheets",
+          "name": "Google Sheets",
+          "description": "Read and edit spreadsheets."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        }
+      ],
+      "relevant": [
+        "kestrel-gauges"
+      ],
+      "named": [
+        "kestrel-gauges"
+      ]
+    },
+    {
+      "id": "no-tool-summary",
+      "kind": "none",
+      "request": "Summarise the attached site survey in three bullets.",
+      "candidates": [
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        },
+        {
+          "id": "plaud",
+          "name": "Plaud",
+          "description": "List and read meeting recordings and transcripts."
+        },
+        {
+          "id": "zoom",
+          "name": "Zoom",
+          "description": "Schedule and join video meetings."
+        },
+        {
+          "id": "drive",
+          "name": "Google Drive",
+          "description": "Find, read and share files and folders."
+        }
+      ],
+      "relevant": [],
+      "named": []
+    },
+    {
+      "id": "pilot-page-ceiling",
+      "kind": "plain",
+      "request": "Update the Kestrel pilot page in our wiki with the new budget ceiling.",
+      "candidates": [
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        },
+        {
+          "id": "drive",
+          "name": "Google Drive",
+          "description": "Find, read and share files and folders."
+        },
+        {
+          "id": "sheets",
+          "name": "Google Sheets",
+          "description": "Read and edit spreadsheets."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        }
+      ],
+      "relevant": [
+        "notion"
+      ],
+      "named": []
+    },
+    {
+      "id": "brackets-call",
+      "kind": "ambiguous",
+      "request": "What did people say in Tuesday's recorded call about brackets?",
+      "candidates": [
+        {
+          "id": "plaud",
+          "name": "Plaud",
+          "description": "List and read meeting recordings and transcripts."
+        },
+        {
+          "id": "zoom",
+          "name": "Zoom",
+          "description": "Schedule and join video meetings."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        }
+      ],
+      "relevant": [
+        "plaud"
+      ],
+      "named": []
+    },
+    {
+      "id": "halvard-paid",
+      "kind": "ambiguous",
+      "request": "Check whether Halvard has paid the September invoice.",
+      "candidates": [
+        {
+          "id": "stripe",
+          "name": "Stripe",
+          "description": "Payments, invoices and customers."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "hubspot",
+          "name": "HubSpot",
+          "description": "CRM: contacts, companies and deals."
+        },
+        {
+          "id": "sheets",
+          "name": "Google Sheets",
+          "description": "Read and edit spreadsheets."
+        }
+      ],
+      "relevant": [
+        "stripe"
+      ],
+      "named": []
+    },
+    {
+      "id": "brightline-contact",
+      "kind": "plain",
+      "request": "Add Brightline's sales contact to our CRM.",
+      "candidates": [
+        {
+          "id": "hubspot",
+          "name": "HubSpot",
+          "description": "CRM: contacts, companies and deals."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "sheets",
+          "name": "Google Sheets",
+          "description": "Read and edit spreadsheets."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        }
+      ],
+      "relevant": [
+        "hubspot"
+      ],
+      "named": []
+    },
+    {
+      "id": "rain-canal",
+      "kind": "plain",
+      "request": "Will it rain at Canal yard on Thursday morning?",
+      "candidates": [
+        {
+          "id": "weather",
+          "name": "Weather",
+          "description": "Forecasts and weather history for a place."
+        },
+        {
+          "id": "maps",
+          "name": "Maps",
+          "description": "Look up places, routes and travel times."
+        },
+        {
+          "id": "calendar",
+          "name": "Google Calendar",
+          "description": "Read and create calendar events and invitations."
+        },
+        {
+          "id": "kestrel-gauges",
+          "name": "Kestrel gauges",
+          "description": "Read level sensor values for the Kestrel sites."
+        }
+      ],
+      "relevant": [
+        "weather"
+      ],
+      "named": []
+    },
+    {
+      "id": "depot-drive",
+      "kind": "plain",
+      "request": "How long is the drive from North depot to Hill reservoir?",
+      "candidates": [
+        {
+          "id": "maps",
+          "name": "Maps",
+          "description": "Look up places, routes and travel times."
+        },
+        {
+          "id": "weather",
+          "name": "Weather",
+          "description": "Forecasts and weather history for a place."
+        },
+        {
+          "id": "calendar",
+          "name": "Google Calendar",
+          "description": "Read and create calendar events and invitations."
+        },
+        {
+          "id": "drive",
+          "name": "Google Drive",
+          "description": "Find, read and share files and folders."
+        }
+      ],
+      "relevant": [
+        "maps"
+      ],
+      "named": []
+    },
+    {
+      "id": "figma-export",
+      "kind": "explicit",
+      "request": "Export the dashboard mock-up from the Figma file for the report.",
+      "candidates": [
+        {
+          "id": "figma",
+          "name": "Figma",
+          "description": "Read design files, frames and comments."
+        },
+        {
+          "id": "drive",
+          "name": "Google Drive",
+          "description": "Find, read and share files and folders."
+        },
+        {
+          "id": "blender",
+          "name": "Blender",
+          "description": "Create and edit 3D scenes."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        }
+      ],
+      "relevant": [
+        "figma"
+      ],
+      "named": [
+        "figma"
+      ]
+    },
+    {
+      "id": "mount-render",
+      "kind": "plain",
+      "request": "Render the sensor mount model from a new angle for the slide.",
+      "candidates": [
+        {
+          "id": "blender",
+          "name": "Blender",
+          "description": "Create and edit 3D scenes."
+        },
+        {
+          "id": "figma",
+          "name": "Figma",
+          "description": "Read design files, frames and comments."
+        },
+        {
+          "id": "drive",
+          "name": "Google Drive",
+          "description": "Find, read and share files and folders."
+        },
+        {
+          "id": "sheets",
+          "name": "Google Sheets",
+          "description": "Read and edit spreadsheets."
+        }
+      ],
+      "relevant": [
+        "blender"
+      ],
+      "named": []
+    },
+    {
+      "id": "readings-to-dana",
+      "kind": "explicit",
+      "request": "Pull the readings from kestrel-gauges into the shared spreadsheet and email it to Dana.",
+      "candidates": [
+        {
+          "id": "kestrel-gauges",
+          "name": "Kestrel gauges",
+          "description": "Read level sensor values for the Kestrel sites."
+        },
+        {
+          "id": "sheets",
+          "name": "Google Sheets",
+          "description": "Read and edit spreadsheets."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "drive",
+          "name": "Google Drive",
+          "description": "Find, read and share files and folders."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        },
+        {
+          "id": "weather",
+          "name": "Weather",
+          "description": "Forecasts and weather history for a place."
+        }
+      ],
+      "relevant": [
+        "kestrel-gauges",
+        "sheets",
+        "mail"
+      ],
+      "named": [
+        "kestrel-gauges"
+      ]
+    },
+    {
+      "id": "zoom-50th",
+      "kind": "cardinality",
+      "request": "Check the Zoom recording settings for the weekly sync.",
+      "candidates": [
+        {
+          "id": "tool-01",
+          "name": "Tool 01",
+          "description": "Synthetic connector 1: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-02",
+          "name": "Tool 02",
+          "description": "Synthetic connector 2: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-03",
+          "name": "Tool 03",
+          "description": "Synthetic connector 3: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-04",
+          "name": "Tool 04",
+          "description": "Synthetic connector 4: file storage for a made-up service."
+        },
+        {
+          "id": "tool-05",
+          "name": "Tool 05",
+          "description": "Synthetic connector 5: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-06",
+          "name": "Tool 06",
+          "description": "Synthetic connector 6: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-07",
+          "name": "Tool 07",
+          "description": "Synthetic connector 7: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-08",
+          "name": "Tool 08",
+          "description": "Synthetic connector 8: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-09",
+          "name": "Tool 09",
+          "description": "Synthetic connector 9: file storage for a made-up service."
+        },
+        {
+          "id": "tool-10",
+          "name": "Tool 10",
+          "description": "Synthetic connector 10: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-11",
+          "name": "Tool 11",
+          "description": "Synthetic connector 11: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-12",
+          "name": "Tool 12",
+          "description": "Synthetic connector 12: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-13",
+          "name": "Tool 13",
+          "description": "Synthetic connector 13: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-14",
+          "name": "Tool 14",
+          "description": "Synthetic connector 14: file storage for a made-up service."
+        },
+        {
+          "id": "tool-15",
+          "name": "Tool 15",
+          "description": "Synthetic connector 15: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-16",
+          "name": "Tool 16",
+          "description": "Synthetic connector 16: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-17",
+          "name": "Tool 17",
+          "description": "Synthetic connector 17: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-18",
+          "name": "Tool 18",
+          "description": "Synthetic connector 18: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-19",
+          "name": "Tool 19",
+          "description": "Synthetic connector 19: file storage for a made-up service."
+        },
+        {
+          "id": "tool-20",
+          "name": "Tool 20",
+          "description": "Synthetic connector 20: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-21",
+          "name": "Tool 21",
+          "description": "Synthetic connector 21: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-22",
+          "name": "Tool 22",
+          "description": "Synthetic connector 22: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-23",
+          "name": "Tool 23",
+          "description": "Synthetic connector 23: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-24",
+          "name": "Tool 24",
+          "description": "Synthetic connector 24: file storage for a made-up service."
+        },
+        {
+          "id": "tool-25",
+          "name": "Tool 25",
+          "description": "Synthetic connector 25: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-26",
+          "name": "Tool 26",
+          "description": "Synthetic connector 26: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-27",
+          "name": "Tool 27",
+          "description": "Synthetic connector 27: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-28",
+          "name": "Tool 28",
+          "description": "Synthetic connector 28: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-29",
+          "name": "Tool 29",
+          "description": "Synthetic connector 29: file storage for a made-up service."
+        },
+        {
+          "id": "tool-30",
+          "name": "Tool 30",
+          "description": "Synthetic connector 30: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-31",
+          "name": "Tool 31",
+          "description": "Synthetic connector 31: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-32",
+          "name": "Tool 32",
+          "description": "Synthetic connector 32: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-33",
+          "name": "Tool 33",
+          "description": "Synthetic connector 33: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-34",
+          "name": "Tool 34",
+          "description": "Synthetic connector 34: file storage for a made-up service."
+        },
+        {
+          "id": "tool-35",
+          "name": "Tool 35",
+          "description": "Synthetic connector 35: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-36",
+          "name": "Tool 36",
+          "description": "Synthetic connector 36: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-37",
+          "name": "Tool 37",
+          "description": "Synthetic connector 37: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-38",
+          "name": "Tool 38",
+          "description": "Synthetic connector 38: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-39",
+          "name": "Tool 39",
+          "description": "Synthetic connector 39: file storage for a made-up service."
+        },
+        {
+          "id": "tool-40",
+          "name": "Tool 40",
+          "description": "Synthetic connector 40: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-41",
+          "name": "Tool 41",
+          "description": "Synthetic connector 41: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-42",
+          "name": "Tool 42",
+          "description": "Synthetic connector 42: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-43",
+          "name": "Tool 43",
+          "description": "Synthetic connector 43: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-44",
+          "name": "Tool 44",
+          "description": "Synthetic connector 44: file storage for a made-up service."
+        },
+        {
+          "id": "tool-45",
+          "name": "Tool 45",
+          "description": "Synthetic connector 45: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-46",
+          "name": "Tool 46",
+          "description": "Synthetic connector 46: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-47",
+          "name": "Tool 47",
+          "description": "Synthetic connector 47: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-48",
+          "name": "Tool 48",
+          "description": "Synthetic connector 48: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-49",
+          "name": "Tool 49",
+          "description": "Synthetic connector 49: file storage for a made-up service."
+        },
+        {
+          "id": "zoom",
+          "name": "Zoom",
+          "description": "Schedule and join video meetings."
+        }
+      ],
+      "relevant": [
+        "zoom"
+      ],
+      "named": [
+        "zoom"
+      ]
+    },
+    {
+      "id": "frost-past-24",
+      "kind": "cardinality",
+      "request": "Is frost likely at the Hill reservoir site tonight?",
+      "candidates": [
+        {
+          "id": "tool-01",
+          "name": "Tool 01",
+          "description": "Synthetic connector 1: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-02",
+          "name": "Tool 02",
+          "description": "Synthetic connector 2: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-03",
+          "name": "Tool 03",
+          "description": "Synthetic connector 3: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-04",
+          "name": "Tool 04",
+          "description": "Synthetic connector 4: file storage for a made-up service."
+        },
+        {
+          "id": "tool-05",
+          "name": "Tool 05",
+          "description": "Synthetic connector 5: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-06",
+          "name": "Tool 06",
+          "description": "Synthetic connector 6: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-07",
+          "name": "Tool 07",
+          "description": "Synthetic connector 7: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-08",
+          "name": "Tool 08",
+          "description": "Synthetic connector 8: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-09",
+          "name": "Tool 09",
+          "description": "Synthetic connector 9: file storage for a made-up service."
+        },
+        {
+          "id": "tool-10",
+          "name": "Tool 10",
+          "description": "Synthetic connector 10: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-11",
+          "name": "Tool 11",
+          "description": "Synthetic connector 11: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-12",
+          "name": "Tool 12",
+          "description": "Synthetic connector 12: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-13",
+          "name": "Tool 13",
+          "description": "Synthetic connector 13: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-14",
+          "name": "Tool 14",
+          "description": "Synthetic connector 14: file storage for a made-up service."
+        },
+        {
+          "id": "tool-15",
+          "name": "Tool 15",
+          "description": "Synthetic connector 15: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-16",
+          "name": "Tool 16",
+          "description": "Synthetic connector 16: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-17",
+          "name": "Tool 17",
+          "description": "Synthetic connector 17: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-18",
+          "name": "Tool 18",
+          "description": "Synthetic connector 18: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-19",
+          "name": "Tool 19",
+          "description": "Synthetic connector 19: file storage for a made-up service."
+        },
+        {
+          "id": "tool-20",
+          "name": "Tool 20",
+          "description": "Synthetic connector 20: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-21",
+          "name": "Tool 21",
+          "description": "Synthetic connector 21: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-22",
+          "name": "Tool 22",
+          "description": "Synthetic connector 22: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-23",
+          "name": "Tool 23",
+          "description": "Synthetic connector 23: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-24",
+          "name": "Tool 24",
+          "description": "Synthetic connector 24: file storage for a made-up service."
+        },
+        {
+          "id": "tool-25",
+          "name": "Tool 25",
+          "description": "Synthetic connector 25: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-26",
+          "name": "Tool 26",
+          "description": "Synthetic connector 26: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-27",
+          "name": "Tool 27",
+          "description": "Synthetic connector 27: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "weather",
+          "name": "Weather",
+          "description": "Forecasts and weather history for a place."
+        },
+        {
+          "id": "tool-28",
+          "name": "Tool 28",
+          "description": "Synthetic connector 28: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-29",
+          "name": "Tool 29",
+          "description": "Synthetic connector 29: file storage for a made-up service."
+        },
+        {
+          "id": "tool-30",
+          "name": "Tool 30",
+          "description": "Synthetic connector 30: issue tracker for a made-up service."
+        }
+      ],
+      "relevant": [
+        "weather"
+      ],
+      "named": []
+    },
+    {
+      "id": "post-25th",
+      "kind": "cardinality",
+      "request": "Post the vendor decision for the steering group in the team chat.",
+      "candidates": [
+        {
+          "id": "tool-01",
+          "name": "Tool 01",
+          "description": "Synthetic connector 1: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-02",
+          "name": "Tool 02",
+          "description": "Synthetic connector 2: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-03",
+          "name": "Tool 03",
+          "description": "Synthetic connector 3: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-04",
+          "name": "Tool 04",
+          "description": "Synthetic connector 4: file storage for a made-up service."
+        },
+        {
+          "id": "tool-05",
+          "name": "Tool 05",
+          "description": "Synthetic connector 5: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-06",
+          "name": "Tool 06",
+          "description": "Synthetic connector 6: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-07",
+          "name": "Tool 07",
+          "description": "Synthetic connector 7: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-08",
+          "name": "Tool 08",
+          "description": "Synthetic connector 8: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-09",
+          "name": "Tool 09",
+          "description": "Synthetic connector 9: file storage for a made-up service."
+        },
+        {
+          "id": "tool-10",
+          "name": "Tool 10",
+          "description": "Synthetic connector 10: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-11",
+          "name": "Tool 11",
+          "description": "Synthetic connector 11: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-12",
+          "name": "Tool 12",
+          "description": "Synthetic connector 12: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-13",
+          "name": "Tool 13",
+          "description": "Synthetic connector 13: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-14",
+          "name": "Tool 14",
+          "description": "Synthetic connector 14: file storage for a made-up service."
+        },
+        {
+          "id": "tool-15",
+          "name": "Tool 15",
+          "description": "Synthetic connector 15: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-16",
+          "name": "Tool 16",
+          "description": "Synthetic connector 16: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-17",
+          "name": "Tool 17",
+          "description": "Synthetic connector 17: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-18",
+          "name": "Tool 18",
+          "description": "Synthetic connector 18: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-19",
+          "name": "Tool 19",
+          "description": "Synthetic connector 19: file storage for a made-up service."
+        },
+        {
+          "id": "tool-20",
+          "name": "Tool 20",
+          "description": "Synthetic connector 20: issue tracker for a made-up service."
+        },
+        {
+          "id": "tool-21",
+          "name": "Tool 21",
+          "description": "Synthetic connector 21: calendar events for a made-up service."
+        },
+        {
+          "id": "tool-22",
+          "name": "Tool 22",
+          "description": "Synthetic connector 22: spreadsheet cells for a made-up service."
+        },
+        {
+          "id": "tool-23",
+          "name": "Tool 23",
+          "description": "Synthetic connector 23: chat channels for a made-up service."
+        },
+        {
+          "id": "tool-24",
+          "name": "Tool 24",
+          "description": "Synthetic connector 24: file storage for a made-up service."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        }
+      ],
+      "relevant": [
+        "slack"
+      ],
+      "named": []
+    },
+    {
+      "id": "share-budget-note",
+      "kind": "ambiguous",
+      "request": "Share the budget note with the steering group.",
+      "candidates": [
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        },
+        {
+          "id": "drive",
+          "name": "Google Drive",
+          "description": "Find, read and share files and folders."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        }
+      ],
+      "relevant": [
+        "mail",
+        "drive"
+      ],
+      "named": []
+    },
+    {
+      "id": "readme-typo",
+      "kind": "paraphrase",
+      "request": "Fix the typo in the README of the firmware repo.",
+      "candidates": [
+        {
+          "id": "github",
+          "name": "GitHub",
+          "description": "Read and update code repositories, issues and pull requests."
+        },
+        {
+          "id": "linear",
+          "name": "Linear",
+          "description": "Track issues, projects and cycles for a software team."
+        },
+        {
+          "id": "drive",
+          "name": "Google Drive",
+          "description": "Find, read and share files and folders."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        }
+      ],
+      "relevant": [
+        "github"
+      ],
+      "named": []
+    },
+    {
+      "id": "zoom-halvard",
+      "kind": "explicit",
+      "request": "Schedule a Zoom call with Halvard for Friday afternoon.",
+      "candidates": [
+        {
+          "id": "zoom",
+          "name": "Zoom",
+          "description": "Schedule and join video meetings."
+        },
+        {
+          "id": "calendar",
+          "name": "Google Calendar",
+          "description": "Read and create calendar events and invitations."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        }
+      ],
+      "relevant": [
+        "zoom",
+        "calendar"
+      ],
+      "named": [
+        "zoom"
+      ]
+    },
+    {
+      "id": "dana-emailed",
+      "kind": "paraphrase",
+      "request": "Remind me what Dana emailed about mounting brackets.",
+      "candidates": [
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        },
+        {
+          "id": "plaud",
+          "name": "Plaud",
+          "description": "List and read meeting recordings and transcripts."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        }
+      ],
+      "relevant": [
+        "mail"
+      ],
+      "named": []
+    },
+    {
+      "id": "draft-not-send",
+      "kind": "plain",
+      "request": "Draft a reply to the vendor about the firmware date, but don't send it yet.",
+      "candidates": [
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "slack",
+          "name": "Slack",
+          "description": "Read and post in team chat channels."
+        },
+        {
+          "id": "github",
+          "name": "GitHub",
+          "description": "Read and update code repositories, issues and pull requests."
+        },
+        {
+          "id": "calendar",
+          "name": "Google Calendar",
+          "description": "Read and create calendar events and invitations."
+        }
+      ],
+      "relevant": [
+        "mail"
+      ],
+      "named": []
+    },
+    {
+      "id": "decoy-levels-word",
+      "kind": "ambiguous",
+      "request": "Explain the levels of approval the budget ceiling needs.",
+      "candidates": [
+        {
+          "id": "kestrel-gauges",
+          "name": "Kestrel gauges",
+          "description": "Read level sensor values for the Kestrel sites."
+        },
+        {
+          "id": "notion",
+          "name": "Notion",
+          "description": "Read and edit pages and databases."
+        },
+        {
+          "id": "mail",
+          "name": "Mail",
+          "description": "Read, draft and send email."
+        },
+        {
+          "id": "sheets",
+          "name": "Google Sheets",
+          "description": "Read and edit spreadsheets."
+        }
+      ],
+      "relevant": [],
+      "named": []
+    }
+  ]
+}

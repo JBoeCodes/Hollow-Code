@@ -1,0 +1,76 @@
+[
+  {
+    "projectAgentKey": "s-project-7b1d1e19d222f79ab29a218320c8f9f1fdd651a8c6714076",
+    "workspaceId": "local-results-view",
+    "total": 3,
+    "sessions": [
+      {
+        "key": "s-20261005-abcd0001",
+        "title": "Draft the summary",
+        "agent": "codex",
+        "harnessSessionId": "codex-thread-9",
+        "cwd": "/Users/fixture/vault/workspaces/local-results-view",
+        "createdAt": "2026-10-05T09:58:00Z",
+        "lastActivityAt": "2026-10-05T10:05:00Z",
+        "endedAt": null,
+        "turnCount": 2,
+        "parentKey": null,
+        "forkKind": null,
+        "adopted": false,
+        "stints": [
+          {
+            "agent": "claude",
+            "harnessSessionId": "claude-session-1",
+            "startedAt": "2026-10-05T09:58:00Z",
+            "endedAt": "2026-10-05T10:00:00Z",
+            "reason": "agent changed"
+          },
+          {
+            "agent": "codex",
+            "harnessSessionId": "codex-thread-9",
+            "startedAt": "2026-10-05T10:00:00Z",
+            "endedAt": null,
+            "reason": null
+          }
+        ],
+        "resumable": "native"
+      },
+      {
+        "key": "s-20261005-abcd0002",
+        "title": "Check the totals",
+        "agent": "claude",
+        "harnessSessionId": null,
+        "cwd": "/Users/fixture/vault/workspaces/local-results-view",
+        "createdAt": "2026-10-05T10:01:00Z",
+        "lastActivityAt": "2026-10-05T10:03:00Z",
+        "endedAt": "2026-10-05T10:03:00Z",
+        "turnCount": 1,
+        "parentKey": null,
+        "forkKind": null,
+        "adopted": false,
+        "stints": [],
+        "resumable": "briefOnly"
+      }
+    ],
+    "changes": [
+      {
+        "key": "s-20261005-abcd0001",
+        "additions": 120,
+        "deletions": 8
+      }
+    ],
+    "startedBy": [
+      {
+        "key": "s-20261005-abcd0002",
+        "parent": "s-20261005-abcd0001"
+      }
+    ]
+  },
+  {
+    "projectAgentKey": "s-project-d9b2b5be44ae3d0dbfdd093752d29e67e3f4928b41c9c413",
+    "workspaceId": "local-q3-review",
+    "total": 0,
+    "sessions": [],
+    "changes": []
+  }
+]

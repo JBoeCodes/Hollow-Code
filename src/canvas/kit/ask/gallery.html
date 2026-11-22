@@ -1,0 +1,39 @@
+<main data-fixture="kit-ask-gallery">
+<p>Synthetic questions that use every ask input once.</p>
+<hc-ask title="Release choices" send="Send answers">
+<hc-choice name="ship-day" label="When should the release ship?" required>
+* Friday, after the bed passes
+Monday, with a second look
+Hold until the next wave
+</hc-choice>
+<hc-multi name="checks" label="Which checks must pass first?" max="3">
+* Bed rows
+Smoke halves
+Bundle budget
+Manual VoiceOver pass
+</hc-multi>
+<hc-range name="budget" label="Kit budget" min="16" max="32" step="2" value="24" unit="KB"></hc-range>
+<hc-rank name="order" label="Build order">
+Inputs
+Draft to the composer
+Lock after sending
+Waiting on you
+</hc-rank>
+<hc-text name="notes" label="Anything else?" long maxlength="400" placeholder="Optional"></hc-text>
+<hc-date name="install" label="Install date" min="2026-10-01" max="2026-12-31"></hc-date>
+<hc-matrix name="fit" label="Rate each option" options="Low | Medium | High" required>
+Speed
+Cost
+Risk
+</hc-matrix>
+<hc-pick name="week" label="Pick the busiest week" unit="tasks">
+Week 1: 12
+Week 2: 8
+Week 3: 15
+</hc-pick>
+<hc-checklist name="hand-checks" label="Hand checks">
+Keyboard navigation
+VoiceOver labels
+</hc-checklist>
+</hc-ask>
+</main>

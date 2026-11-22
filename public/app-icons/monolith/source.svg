@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img"><title>Monolith / dark</title><defs>
+ <linearGradient id="tile" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#2b2931"/><stop offset="1" stop-color="#101015"/></linearGradient>
+ <linearGradient id="edge" x1=".1" y1="0" x2=".9" y2="1"><stop stop-color="#fff" stop-opacity=".36"/><stop offset=".45" stop-color="#fff" stop-opacity=".03"/><stop offset="1" stop-color="#fff" stop-opacity=".13"/></linearGradient>
+ <linearGradient id="arch" x1=".2" y1="0" x2=".8" y2="1"><stop stop-color="#fff5df"/><stop offset=".42" stop-color="#d1c7b6"/><stop offset="1" stop-color="#958671"/></linearGradient>
+ <linearGradient id="spill" x1=".5" y1="0" x2=".5" y2="1"><stop stop-color="#fff5df" stop-opacity=".6"/><stop offset="1" stop-color="#d1c7b6" stop-opacity="0"/></linearGradient>
+ <radialGradient id="aura"><stop stop-color="#d1c7b6" stop-opacity=".28"/><stop offset="1" stop-color="#958671" stop-opacity="0"/></radialGradient>
+ <linearGradient id="inside" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#41344f"/><stop offset="1" stop-color="#131018"/></linearGradient>
+ <filter id="soft" x="-.6" y="-.6" width="2.2" height="2.2"><feGaussianBlur stdDeviation="24"/></filter>
+ <filter id="shadow" x="-.5" y="-.4" width="2" height="2"><feDropShadow dx="0" dy="16" stdDeviation="16" flood-opacity=".5"/></filter>
+ </defs><g id="background" data-layer="background"><path d="M298 80H726C878 80 944 146 944 298V726C944 878 878 944 726 944H298C146 944 80 878 80 726V298C80 146 146 80 298 80Z" fill="url(#tile)"/><path d="M298 80H726C878 80 944 146 944 298V726C944 878 878 944 726 944H298C146 944 80 878 80 726V298C80 146 146 80 298 80Z" fill="none" stroke="url(#edge)" stroke-width="5"/><path d="M302 89H722" stroke="#fff" opacity=".08" stroke-width="3"/></g>
+<g id="glow" data-layer="glow"><ellipse cx="512" cy="512" rx="310" ry="350" fill="url(#aura)" opacity=".5"/></g>
+<g id="glyph" data-layer="glyph"><g filter="url(#shadow)"><path d="M272 772V450C272 317 380 209 513 209S754 317 754 450V772H600V455C600 407 561 368 513 368S426 407 426 455V772Z" fill="url(#arch)"/><path d="M272 772H426L452 742H304Z" fill="#958671"/><path d="M600 772H754L725 742H628Z" fill="#958671"/><path d="M426 772V455C426 407 465 368 513 368S600 407 600 455V772L628 742V454C628 391 577 340 514 340S400 391 400 454V742Z" fill="#958671" opacity=".64"/><path d="M272 772V450C272 317 380 209 513 209S754 317 754 450V468C744 346 641 250 516 250S286 351 284 476V772Z" fill="#fff5df" opacity=".38"/></g></g>
+<g id="light" data-layer="light"><path d="M278 753V450C278 320 383 215 513 215S748 320 748 450" fill="none" stroke="#fff5df" stroke-width="5" opacity=".75"/></g></svg>

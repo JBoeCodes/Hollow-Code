@@ -1,0 +1,887 @@
+{
+ "about": "Line cases both scanners must agree on. Each case's text is its parts joined. A part \"@seq:N\" expands at run time to N characters: for i in 0..N, ALPHABET[(i*7+3) % 62] with ALPHABET = 0-9, a-z, A-Z. Every value is fabricated; secret shapes are split across parts so no provider's push protection sees a key-shaped string in this file.",
+ "alphabet": "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+ "cases": [
+  {
+   "name": "anthropic key",
+   "layer": "org",
+   "parts": [
+    "key: sk-",
+    "ant-api03-FIXTURE-not-a-real-key-0000"
+   ],
+   "expect": [
+    "secret.anthropic"
+   ]
+  },
+  {
+   "name": "anthropic oauth token",
+   "layer": "personal",
+   "parts": [
+    "CLAUDE_CODE_OAUTH_TOKEN=sk-",
+    "ant-oat01-",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.anthropic"
+   ]
+  },
+  {
+   "name": "openai project key",
+   "layer": "project",
+   "parts": [
+    "sk-",
+    "proj-",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.openai"
+   ]
+  },
+  {
+   "name": "openai legacy key",
+   "layer": "project",
+   "parts": [
+    "key sk-",
+    "@seq:48"
+   ],
+   "expect": [
+    "secret.openai"
+   ]
+  },
+  {
+   "name": "github classic pat",
+   "layer": "org",
+   "parts": [
+    "gh",
+    "p_",
+    "@seq:36"
+   ],
+   "expect": [
+    "secret.github"
+   ]
+  },
+  {
+   "name": "github fine-grained pat",
+   "layer": "org",
+   "parts": [
+    "github_",
+    "pat_",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.github"
+   ]
+  },
+  {
+   "name": "aws access key id",
+   "layer": "org",
+   "parts": [
+    "AK",
+    "IA",
+    "FIXTURE0NOTREAL0"
+   ],
+   "expect": [
+    "secret.aws_access_key"
+   ]
+  },
+  {
+   "name": "aws secret key",
+   "layer": "org",
+   "parts": [
+    "aws_secret_",
+    "access_key = ",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.aws_secret_key"
+   ]
+  },
+  {
+   "name": "stripe live key",
+   "layer": "org",
+   "parts": [
+    "sk_",
+    "live_",
+    "@seq:30"
+   ],
+   "expect": [
+    "secret.stripe"
+   ]
+  },
+  {
+   "name": "stripe restricted key",
+   "layer": "org",
+   "parts": [
+    "rk_",
+    "live_",
+    "@seq:30"
+   ],
+   "expect": [
+    "secret.stripe"
+   ]
+  },
+  {
+   "name": "stripe webhook secret",
+   "layer": "org",
+   "parts": [
+    "wh",
+    "sec_",
+    "@seq:32"
+   ],
+   "expect": [
+    "secret.stripe"
+   ]
+  },
+  {
+   "name": "square access token",
+   "layer": "org",
+   "parts": [
+    "SQUARE_ACCESS_TOKEN=",
+    "EA",
+    "AA",
+    "@seq:60"
+   ],
+   "expect": [
+    "secret.square"
+   ]
+  },
+  {
+   "name": "square app secret",
+   "layer": "org",
+   "parts": [
+    "sq0",
+    "csp-",
+    "@seq:43"
+   ],
+   "expect": [
+    "secret.square"
+   ]
+  },
+  {
+   "name": "cloudflare token",
+   "layer": "org",
+   "parts": [
+    "CLOUDFLARE_API_TOKEN=",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.cloudflare"
+   ]
+  },
+  {
+   "name": "slack bot token",
+   "layer": "org",
+   "parts": [
+    "xo",
+    "xb-",
+    "1234567890-",
+    "@seq:24"
+   ],
+   "expect": [
+    "secret.slack"
+   ]
+  },
+  {
+   "name": "linear key",
+   "layer": "org",
+   "parts": [
+    "lin_",
+    "api_",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.linear"
+   ]
+  },
+  {
+   "name": "notion token",
+   "layer": "org",
+   "parts": [
+    "ntn_",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.notion"
+   ]
+  },
+  {
+   "name": "google api key",
+   "layer": "org",
+   "parts": [
+    "AI",
+    "za",
+    "@seq:35"
+   ],
+   "expect": [
+    "secret.google"
+   ]
+  },
+  {
+   "name": "google client secret",
+   "layer": "org",
+   "parts": [
+    "GOC",
+    "SPX-",
+    "@seq:28"
+   ],
+   "expect": [
+    "secret.google"
+   ]
+  },
+  {
+   "name": "private key header",
+   "layer": "org",
+   "parts": [
+    "-----BEGIN OPENSSH ",
+    "PRIVATE KEY-----"
+   ],
+   "expect": [
+    "secret.private_key"
+   ]
+  },
+  {
+   "name": "rsa private key header",
+   "layer": "personal",
+   "parts": [
+    "-----BEGIN RSA ",
+    "PRIVATE KEY-----"
+   ],
+   "expect": [
+    "secret.private_key"
+   ]
+  },
+  {
+   "name": "jwt",
+   "layer": "org",
+   "parts": [
+    "ey",
+    "J",
+    "@seq:20",
+    ".ey",
+    "J",
+    "@seq:30",
+    ".",
+    "@seq:25"
+   ],
+   "expect": [
+    "secret.jwt"
+   ]
+  },
+  {
+   "name": "password in url",
+   "layer": "org",
+   "parts": [
+    "postgres://app:",
+    "@seq:20",
+    "@db.example.net/app"
+   ],
+   "expect": [
+    "secret.url_password"
+   ]
+  },
+  {
+   "name": "bearer token",
+   "layer": "org",
+   "parts": [
+    "Authorization: Bearer ",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.bearer"
+   ]
+  },
+  {
+   "name": "password assignment",
+   "layer": "org",
+   "parts": [
+    "DB_PASSWORD=",
+    "@seq:24"
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "quoted secret in json",
+   "layer": "project",
+   "parts": [
+    "{\"client_secret\": \"",
+    "@seq:32",
+    "\"}"
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "assignment with provider key reports once",
+   "layer": "org",
+   "parts": [
+    "ANTHROPIC_API_KEY=sk-",
+    "ant-api03-",
+    "@seq:40"
+   ],
+   "expect": [
+    "secret.anthropic"
+   ]
+  },
+  {
+   "name": "two keys on one line",
+   "layer": "org",
+   "parts": [
+    "a sk-",
+    "ant-api03-",
+    "@seq:30",
+    " b gh",
+    "p_",
+    "@seq:36"
+   ],
+   "expect": [
+    "secret.anthropic",
+    "secret.github"
+   ]
+  },
+  {
+   "name": "allow comment skips a placeholder secret",
+   "layer": "org",
+   "parts": [
+    "TOKEN=",
+    "@seq:30",
+    "  # context-scan: allow secret.assignment documented test value"
+   ],
+   "expect": []
+  },
+  {
+   "name": "allow comment without reason does not count",
+   "layer": "org",
+   "parts": [
+    "TOKEN=",
+    "@seq:30",
+    "  # context-scan: allow secret.assignment"
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "allow comment for another rule does not count",
+   "layer": "org",
+   "parts": [
+    "TOKEN=",
+    "@seq:30",
+    "  # context-scan: allow machine.macbook wrong rule"
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "memory guard's classic",
+   "layer": "personal",
+   "parts": [
+    "password = Hunter2hunter2hunter2"
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "allow on a line with code does not cover the next line",
+   "layer": "org",
+   "parts": [
+    "TOKEN=",
+    "@seq:30",
+    "  # context-scan: allow secret.assignment documented test value\nTOKEN=",
+    "@seq:28"
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "allow on its own comment line covers the next line",
+   "layer": "org",
+   "parts": [
+    "# context-scan: allow secret.assignment documented test value\nTOKEN=",
+    "@seq:30"
+   ],
+   "expect": []
+  },
+  {
+   "name": "password with symbols",
+   "layer": "org",
+   "parts": [
+    "password = \"Tr0ub4dor&3x",
+    "@seq:10",
+    "#zz\""
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "openrouter key",
+   "layer": "org",
+   "parts": [
+    "sk-",
+    "or-v1-",
+    "@seq:48"
+   ],
+   "expect": [
+    "secret.openai"
+   ]
+  },
+  {
+   "name": "hyphenated sk key",
+   "layer": "org",
+   "parts": [
+    "key sk-",
+    "live-",
+    "@seq:30"
+   ],
+   "expect": [
+    "secret.sk_key"
+   ]
+  },
+  {
+   "name": "slack webhook",
+   "layer": "org",
+   "parts": [
+    "https://hooks.",
+    "slack.com/services/T0FIXTURE/B0FIXTURE/",
+    "@seq:24"
+   ],
+   "expect": [
+    "secret.slack"
+   ]
+  },
+  {
+   "name": "slack app token",
+   "layer": "org",
+   "parts": [
+    "xa",
+    "pp-1-A0FIXTURE-",
+    "@seq:30"
+   ],
+   "expect": [
+    "secret.slack"
+   ]
+  },
+  {
+   "name": "basic auth header",
+   "layer": "org",
+   "parts": [
+    "Authorization: Basic ",
+    "@seq:28",
+    "=="
+   ],
+   "expect": [
+    "secret.basic_auth"
+   ]
+  },
+  {
+   "name": "npm token",
+   "layer": "org",
+   "parts": [
+    "np",
+    "m_",
+    "@seq:36"
+   ],
+   "expect": [
+    "secret.other_provider"
+   ]
+  },
+  {
+   "name": "hugging face token",
+   "layer": "org",
+   "parts": [
+    "h",
+    "f_",
+    "@seq:34"
+   ],
+   "expect": [
+    "secret.other_provider"
+   ]
+  },
+  {
+   "name": "sendgrid key",
+   "layer": "org",
+   "parts": [
+    "S",
+    "G.",
+    "@seq:22",
+    ".",
+    "@seq:43"
+   ],
+   "expect": [
+    "secret.other_provider"
+   ]
+  },
+  {
+   "name": "url after a keyword",
+   "layer": "org",
+   "parts": [
+    "token: https://docs.example.com/api/v2/auth"
+   ],
+   "expect": []
+  },
+  {
+   "name": "author is not a keyword",
+   "layer": "org",
+   "parts": [
+    "author: https://github.com/someone2024/repo"
+   ],
+   "expect": []
+  },
+  {
+   "name": "email after a keyword",
+   "layer": "org",
+   "parts": [
+    "password: jane.doe1985@example.com"
+   ],
+   "expect": []
+  },
+  {
+   "name": "working directory path",
+   "layer": "org",
+   "parts": [
+    "pwd = /srv/project-v2/src/main"
+   ],
+   "expect": []
+  },
+  {
+   "name": "env reference",
+   "layer": "org",
+   "parts": [
+    "password: process.env.DB_PASS_V2_VALUE"
+   ],
+   "expect": []
+  },
+  {
+   "name": "basic in prose",
+   "layer": "org",
+   "parts": [
+    "basic configuration/setup1234567890"
+   ],
+   "expect": []
+  },
+  {
+   "name": "password with an at sign",
+   "layer": "org",
+   "parts": [
+    "password = Tr0ub@dor-",
+    "@seq:12"
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "placeholder replace-me",
+   "layer": "org",
+   "parts": [
+    "AUTH_SECRET=\"replace-me-with-a-real-32-byte-secret\""
+   ],
+   "expect": []
+  },
+  {
+   "name": "placeholder ci",
+   "layer": "org",
+   "parts": [
+    "AUTH_SECRET=ci-placeholder-secret-0123456789"
+   ],
+   "expect": []
+  },
+  {
+   "name": "placeholder your key",
+   "layer": "org",
+   "parts": [
+    "API_KEY=your-api-key-goes-here-1234"
+   ],
+   "expect": []
+  },
+  {
+   "name": "env var reference",
+   "layer": "org",
+   "parts": [
+    "Authorization: Bearer $GITHUB_TOKEN"
+   ],
+   "expect": []
+  },
+  {
+   "name": "url password from env",
+   "layer": "org",
+   "parts": [
+    "postgresql://app:${DB_PASSWORD}@db/app"
+   ],
+   "expect": []
+  },
+  {
+   "name": "short password value",
+   "layer": "org",
+   "parts": [
+    "password: hunter2"
+   ],
+   "expect": []
+  },
+  {
+   "name": "low entropy value",
+   "layer": "org",
+   "parts": [
+    "token = aaaaaaaa11111111"
+   ],
+   "expect": []
+  },
+  {
+   "name": "repeated short pattern still counts",
+   "layer": "org",
+   "parts": [
+    "STRIPE_API_KEY=k9Zx2k9Zx2k9Zx2k9Zx2k9Zx2k9Zx2"
+   ],
+   "expect": [
+    "secret.assignment"
+   ]
+  },
+  {
+   "name": "prose about tokens",
+   "layer": "org",
+   "parts": [
+    "A token is any string the CLI prints; keep it in a 0600 file."
+   ],
+   "expect": []
+  },
+  {
+   "name": "macbook in org",
+   "layer": "org",
+   "parts": [
+    "Runs on the MacBook Air."
+   ],
+   "expect": [
+    "machine.macbook"
+   ]
+  },
+  {
+   "name": "macbook in project warns",
+   "layer": "project",
+   "parts": [
+    "Runs on the MacBook Air."
+   ],
+   "expect": [
+    "machine.macbook"
+   ]
+  },
+  {
+   "name": "macbook in personal is fine",
+   "layer": "personal",
+   "parts": [
+    "Runs on the MacBook Air."
+   ],
+   "expect": []
+  },
+  {
+   "name": "mac mini",
+   "layer": "org",
+   "parts": [
+    "The Mac mini runs the builds."
+   ],
+   "expect": [
+    "machine.mac_mini"
+   ]
+  },
+  {
+   "name": "owner path",
+   "layer": "org",
+   "parts": [
+    "Logs are in /Users/pat/Library/Logs."
+   ],
+   "expect": [
+    "machine.owner_absolute_path"
+   ]
+  },
+  {
+   "name": "placeholder owner path",
+   "layer": "org",
+   "parts": [
+    "Logs are in /Users/<name>/Library/Logs."
+   ],
+   "expect": []
+  },
+  {
+   "name": "dotfile path",
+   "layer": "org",
+   "parts": [
+    "Edit ~/.claude/settings.json."
+   ],
+   "expect": [
+    "machine.home_relative_path"
+   ]
+  },
+  {
+   "name": "portable product path",
+   "layer": "org",
+   "parts": [
+    "Clone to ~/Hollow/Context/org."
+   ],
+   "expect": []
+  },
+  {
+   "name": "tailnet host",
+   "layer": "org",
+   "parts": [
+    "ssh builder.tail1a2b3c.ts.net"
+   ],
+   "expect": [
+    "machine.hostname"
+   ]
+  },
+  {
+   "name": "lan host",
+   "layer": "org",
+   "parts": [
+    "open http://printer.local/"
+   ],
+   "expect": [
+    "machine.hostname"
+   ]
+  },
+  {
+   "name": "localhost is fine",
+   "layer": "org",
+   "parts": [
+    "open http://localhost:3000/"
+   ],
+   "expect": []
+  },
+  {
+   "name": "private ip",
+   "layer": "org",
+   "parts": [
+    "NAS at 192.168.0.20"
+   ],
+   "expect": [
+    "machine.private_ipv4"
+   ]
+  },
+  {
+   "name": "tailnet ip",
+   "layer": "org",
+   "parts": [
+    "peer 100.101.102.103"
+   ],
+   "expect": [
+    "machine.private_ipv4"
+   ]
+  },
+  {
+   "name": "public ip is fine",
+   "layer": "org",
+   "parts": [
+    "DNS 8.8.8.8"
+   ],
+   "expect": []
+  },
+  {
+   "name": "core count",
+   "layer": "org",
+   "parts": [
+    "It has 18 cores and 36 GB of RAM."
+   ],
+   "expect": [
+    "machine.capacity",
+    "machine.capacity"
+   ]
+  },
+  {
+   "name": "cap variable",
+   "layer": "org",
+   "parts": [
+    "set CARGO_BUILD_JOBS=8"
+   ],
+   "expect": [
+    "machine.cap_variable"
+   ]
+  },
+  {
+   "name": "hollow-slot",
+   "layer": "org",
+   "parts": [
+    "run it through hollow-slot"
+   ],
+   "expect": [
+    "machine.hollow_slot"
+   ]
+  },
+  {
+   "name": "private email",
+   "layer": "org",
+   "parts": [
+    "write to pat.example@gmail.com"
+   ],
+   "expect": [
+    "personal.private_email"
+   ]
+  },
+  {
+   "name": "work email is fine",
+   "layer": "org",
+   "parts": [
+    "write to ops@example.com"
+   ],
+   "expect": []
+  },
+  {
+   "name": "ssn",
+   "layer": "personal",
+   "parts": [
+    "SSN 123-45-6789"
+   ],
+   "expect": [
+    "pii.ssn"
+   ]
+  },
+  {
+   "name": "ssn without dashes",
+   "layer": "org",
+   "parts": [
+    "SSN: 123456789"
+   ],
+   "expect": [
+    "pii.ssn"
+   ]
+  },
+  {
+   "name": "phone number is not an ssn",
+   "layer": "org",
+   "parts": [
+    "call 555-123-4567"
+   ],
+   "expect": []
+  },
+  {
+   "name": "date is not an ssn",
+   "layer": "org",
+   "parts": [
+    "on 2026-11-13"
+   ],
+   "expect": []
+  },
+  {
+   "name": "salary in org warns",
+   "layer": "org",
+   "parts": [
+    "Her salary is listed in the HR system."
+   ],
+   "expect": [
+    "pii.salary_or_hr"
+   ]
+  },
+  {
+   "name": "salary in project is fine",
+   "layer": "project",
+   "parts": [
+    "Her salary is listed in the HR system."
+   ],
+   "expect": []
+  }
+ ]
+}

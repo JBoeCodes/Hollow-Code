@@ -1,0 +1,6 @@
+{
+  "revision": 3,
+  "answers": {"budget": 20, "day": "This Friday", "order": ["Docs", "Beta", "Pricing page"]},
+  "summary": "What goes out first?: Docs, Beta, Pricing page\nLaunch budget: 20 k$\nWhen?: This Friday",
+  "clientMessageId": "6f1c2a9e-0b7d-4c55-9a51-2f3e8d7c4b10"
+}

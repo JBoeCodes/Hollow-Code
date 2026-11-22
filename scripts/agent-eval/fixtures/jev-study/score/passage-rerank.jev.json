@@ -1,0 +1,174 @@
+{
+  "arm": "jev",
+  "complete": true,
+  "condition": "passage-rerank",
+  "results": [
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev",
+          "id": "sync-0911",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        },
+        {
+          "basis": "jev",
+          "id": "sync-0910",
+          "kept": false,
+          "reason": "Jev rated it unrelated (0 of 3, below 1).",
+          "score": 0.0
+        },
+        {
+          "basis": "jev",
+          "id": "decision-0602",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        },
+        {
+          "basis": "jev",
+          "id": "catalogue-k1",
+          "kept": false,
+          "reason": "Jev rated it unrelated (0 of 3, below 1).",
+          "score": 0.0
+        }
+      ],
+      "engine": "jev",
+      "id": "vendor-decision",
+      "kept": [
+        "sync-0911",
+        "decision-0602"
+      ],
+      "latencyMs": 1.0,
+      "note": "2 lower-relevance passage(s) were left out by the context prioritizer.",
+      "outcome": "ok"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev",
+          "id": "cadence-new",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        },
+        {
+          "basis": "jev",
+          "id": "cadence-old",
+          "kept": false,
+          "reason": "Jev rated it unrelated (0 of 3, below 1).",
+          "score": 0.0
+        },
+        {
+          "basis": "jev",
+          "id": "plan-report",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        }
+      ],
+      "engine": "jev",
+      "id": "cadence-now",
+      "kept": [
+        "cadence-new",
+        "plan-report"
+      ],
+      "latencyMs": 0.5,
+      "note": "1 lower-relevance passage(s) were left out by the context prioritizer.",
+      "outcome": "ok"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev",
+          "id": "cadence-new",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        },
+        {
+          "basis": "jev",
+          "id": "cadence-old",
+          "kept": false,
+          "reason": "Jev rated it unrelated (0 of 3, below 1).",
+          "score": 0.0
+        },
+        {
+          "basis": "jev",
+          "id": "plan-report",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        }
+      ],
+      "engine": "jev",
+      "id": "cadence-before",
+      "kept": [
+        "cadence-new",
+        "plan-report"
+      ],
+      "latencyMs": 0.5,
+      "note": "1 lower-relevance passage(s) were left out by the context prioritizer.",
+      "outcome": "ok"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev",
+          "id": "committed",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        },
+        {
+          "basis": "jev",
+          "id": "ceiling",
+          "kept": false,
+          "reason": "Jev rated it unrelated (0 of 3, below 1).",
+          "score": 0.0
+        },
+        {
+          "basis": "jev",
+          "id": "eur-rule",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        },
+        {
+          "basis": "jev",
+          "id": "catalogue-k2",
+          "kept": false,
+          "reason": "Jev rated it unrelated (0 of 3, below 1).",
+          "score": 0.0
+        },
+        {
+          "basis": "jev",
+          "id": "sync-0908",
+          "kept": true,
+          "reason": null,
+          "score": 3.0
+        }
+      ],
+      "engine": "jev",
+      "id": "ceiling-amount",
+      "kept": [
+        "committed",
+        "eur-rule",
+        "sync-0908"
+      ],
+      "latencyMs": 0.6,
+      "note": "2 lower-relevance passage(s) were left out by the context prioritizer.",
+      "outcome": "ok"
+    }
+  ],
+  "schema": 1
+}

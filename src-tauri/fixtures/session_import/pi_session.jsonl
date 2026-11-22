@@ -1,0 +1,9 @@
+{"type":"session","version":3,"id":"pi-sample","timestamp":"2026-11-19T09:00:00Z","cwd":"/Users/sample/Projects/demo"}
+{"type":"model_change","id":"m1","parentId":null,"timestamp":"2026-11-19T09:00:01Z","modelId":"example"}
+{"type":"message","id":"u1","parentId":"m1","timestamp":"2026-11-19T09:00:02Z","message":{"role":"user","content":"Inspect the example"}}
+{"type":"message","id":"old","parentId":"u1","timestamp":"2026-11-19T09:00:03Z","message":{"role":"assistant","content":[{"type":"text","text":"The abandoned answer"}]}}
+{"type":"message","id":"a1","parentId":"u1","timestamp":"2026-11-19T09:00:04Z","message":{"role":"assistant","content":[{"type":"thinking","thinking":"SECRET_REASONING"},{"type":"toolCall","id":"call1","name":"read","arguments":{"path":"example.txt"}}]}}
+{"type":"message","id":"t1","parentId":"a1","timestamp":"2026-11-19T09:00:05Z","message":{"role":"toolResult","toolCallId":"call1","toolName":"read","content":[{"type":"text","text":"example content"}],"isError":false}}
+{"type":"message","id":"a2","parentId":"t1","timestamp":"2026-11-19T09:00:06Z","message":{"role":"assistant","content":[{"type":"text","text":"The selected answer"}]}}
+{"type":"custom","id":"x1","parentId":"a2","timestamp":"2026-11-19T09:00:07Z","data":{"instruction":"do not copy extension state"}}
+{"type":"session_info","id":"n1","parentId":"x1","timestamp":"2026-11-19T09:00:08Z","name":"Pi import example"}

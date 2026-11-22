@@ -1,0 +1,319 @@
+/* ─────────────────────────────────────────────────────────────
+   CALENDAR PAGE — split layout: hourly time-grid for today on top,
+   6-day agenda strip below. Matches the existing list aesthetic
+   (compact rows, mono right-side meta, terracotta accents) while
+   adding a Google-Cal-ish grid for the present day where overlap
+   readability matters most.
+   ───────────────────────────────────────────────────────────── */
+@layer components {
+/* ── Segmented toggles — file-tab style ──────────────────────
+   The pill-bar is out. Now each toggle is a flat row of mono labels
+   with a single hairline beneath; the active one gets an amber
+   underline. Reads as terminal tabs (k9s / lazygit / btop). */
+.seg-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  border-radius: 0;
+  padding: 0;
+  gap: 0;
+  width: fit-content;
+  overflow: visible;
+}
+.seg-toggle-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 0;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 32px;
+  position: relative;
+  transition: color var(--t-fast) var(--ease);
+}
+/* The underline draws in from the center outward as a gradient bar
+   that extends past the button edges, with a soft glow above. Reads
+   as the cursor *pointing* at the active tab — a TUI selection. */
+.seg-toggle-btn::after {
+  content: '';
+  position: absolute;
+  left: -4px; right: -4px; bottom: -1px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--primary) 25%,
+    var(--primary) 75%,
+    transparent 100%
+  );
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--t-med) var(--ease-spring);
+  /* Slight vertical bloom that lights up the text above. */
+  filter: blur(0);
+}
+.seg-toggle-btn.active::after {
+  box-shadow: none;
+}
+.seg-toggle-btn:hover {
+  color: var(--body-strong);
+  background: transparent;
+}
+.seg-toggle-btn.active {
+  color: var(--primary);
+  background: transparent;
+  font-weight: 600;
+  box-shadow: none;
+}
+.seg-toggle-btn.active::after {
+  transform: scaleX(1);
+}
+.seg-toggle-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+/* ── Filter / preset chips ──────────────────────────────────
+   Small standalone pills above lists (Skills filter). */
+.chip {
+  font-variant-numeric: var(--type-numeric);
+  appearance: none;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--body);
+  cursor: pointer;
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  letter-spacing: var(--ls-caps);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--motion-base);
+}
+.chip:hover:not(:disabled) {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.chip:active:not(:disabled) {
+  background: var(--fill-selected);
+  color: var(--ink);
+}
+.chip.active:active:not(:disabled) { border-color: var(--body-strong); }
+.chip:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.chip.active {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ── Empty / hint state ─────────────────────────────────────
+   One italic, muted, centered look for every "nothing here yet"
+   block. Pages still use their own class names (.email-empty,
+   .ingest-log-empty, .graph-empty, .cal-day-empty, .brief-empty,
+   .hint) — we just normalize them here. */
+.empty-state,
+.viewer > .hint,
+.split-list .hint,
+.chat-main .hint {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-style: normal;
+  color: var(--muted-soft);
+  text-align: center;
+  margin: 0;
+  padding: 28px 18px;
+  line-height: var(--lh-base);
+  letter-spacing: 0;
+  position: relative;
+}
+/* Rich empty states (Tasks / Projects): a headline plus a how-to hint.
+   The inner paragraphs get their own rhythm and a readable measure. */
+.empty-state p { margin: 0 auto; max-width: 520px; }
+.empty-state p + p { margin-top: 8px; }
+.empty-state .hint { color: var(--muted-soft); }
+.empty-state code {
+  font-family: var(--mono);
+  color: var(--ink);
+  background: var(--surface-soft);
+  border-radius: var(--r-xs);
+  padding: 0 3px;
+}
+
+/* ── Search inputs in split-asides ──────────────────────────
+   Vault, Chat, Skills, and Email all have a search/filter input
+   at the top of their left aside. Same look for all of them. */
+.split-search input {
+  width: 100%;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xs);
+  padding: 6px 10px;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  height: 30px;
+  transition: border-color var(--t-fast) var(--ease),
+              box-shadow   var(--t-fast) var(--ease);
+}
+.split-search {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.split-search input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+}
+
+/* ── Page-header actions row ────────────────────────────────
+   When several controls coexist in the header (Calendar's view
+   toggle + buttons, Chat's selects + button), keep them aligned
+   on the same baseline and breathing on the same gap. */
+
+/* ─────────────────────────────────────────────────────────────
+   RESIZE HANDLE — left-edge variant for right-anchored panels
+   (chat panel). The default handle hangs off the right edge of
+   a left-aside; this one mirrors it.
+   ───────────────────────────────────────────────────────────── */
+.resize-handle.edge-left {
+  right: auto;
+  left: -2px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   APP CHAT PANEL — right-side Claude chat aside that sits as a
+   sibling of .canvas in the app shell. Toggled with ⌘⇧C or the
+   message icon in the TopBar; auto-hides on the /chat page.
+   ───────────────────────────────────────────────────────────── */
+.chat-panel-iconbtn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  width: 24px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  line-height: var(--lh-flat);
+  padding: 0;
+  transition: color var(--t-fast) var(--ease),
+              background var(--t-fast) var(--ease);
+}
+.chat-panel-iconbtn:hover:not(:disabled) {
+  background: var(--surface-card);
+  color: var(--ink);
+}
+.chat-panel-iconbtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.chat-panel-iconbtn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+/* Compact composer/transcript variants — used by ChatBody inside
+   the side panel. Tighter padding so the narrow column doesn't
+   waste pixels on margins. */
+.chat-scroll-compact {
+  padding: 16px 14px 8px;
+  max-width: 100%;
+}
+.chat-input-compact {
+  padding: 10px 12px 14px;
+  max-width: 100%;
+}
+.chat-input-compact textarea {
+  font-size: var(--fs-body);
+  min-height: 36px;
+}
+.chat-input-compact .chat-send { height: 28px; padding: 0 12px; font-size: var(--fs-meta); }
+
+/* ─────────────────────────────────────────────────────────────
+   PAGE CONTEXT PILL — sits between the transcript and the input
+   form. Surfaces "Claude sees a snapshot of <Tab> with each
+   message"; click to toggle the auto-inject on/off.
+   ───────────────────────────────────────────────────────────── */
+.chat-context-pill-row {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 40px 4px;
+  max-width: 920px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.chat-context-pill-row-compact {
+  padding: 0 12px 4px;
+  max-width: 100%;
+}
+.chat-context-pill {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  color: var(--muted);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease),
+              background var(--t-fast) var(--ease);
+}
+.chat-context-pill:hover {
+  border-color: var(--primary);
+  color: var(--ink);
+}
+.chat-context-pill.off {
+  opacity: 0.55;
+  text-decoration: line-through;
+  text-decoration-color: var(--muted-soft);
+}
+.chat-context-pill .pill-label {
+  font-weight: 600;
+  color: var(--ink);
+}
+.chat-context-pill.off .pill-label { color: var(--muted); }
+.chat-context-pill .pill-sep { color: var(--muted-soft); }
+.chat-context-pill .pill-summary {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+}

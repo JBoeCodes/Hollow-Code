@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- The hollow:// URL scheme (Linear's Custom link, 2026-11-11,
+	     src-tauri/src/linear_link.rs). The deep-link plugin writes this same
+	     key on macOS; without the crate the OS hands the URL to the running
+	     app as RunEvent::Opened, beside the markdown files. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.hollow.app.link</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>hollow</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Hollow reads the calendars you choose for Agenda and meeting preparation. It never creates or changes events.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Hollow reads the calendars you choose for Agenda and meeting preparation. It never creates or changes events.</string>
+	<!-- Tauri merges this file into the generated bundle Info.plist.
+	     Required for the computer-control Tier-2 verbs: AppleScript against
+	     another app (read browser tabs, quit an app) sends Apple Events, and
+	     macOS only shows the per-app Automation consent prompt when the
+	     responsible app declares this usage description. -->
+	<key>NSAppleEventsUsageDescription</key>
+	<string>Hollow's agent uses AppleScript for actions you approve, like reading browser tabs or quitting an app. Each action shows an Allow/Deny dialog first.</string>
+	<!-- Push-to-talk (overnight 10-11 B7, src-tauri/src/dictation.rs):
+	     macOS ends an app that asks for these without a usage string.
+	     Recognition is on-device only; no audio leaves the Mac. -->
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Hollow turns what you say into text in the message box, on this Mac only. Your voice is never sent to a network service.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Hollow listens only while you hold or press the dictate key or the microphone button, to type what you say into the message box.</string>
+	<!-- The Preview pane's web mode (run 15 P2, src-tauri/src/browser_pane.rs):
+	     App Transport Security refuses plain-http sites in a web view (error
+	     -1022, a blank page). This lifts it for web view content only, never
+	     app-wide (no NSAllowsArbitraryLoads). -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

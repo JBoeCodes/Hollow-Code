@@ -1,0 +1,14 @@
+{
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "queueId": 42,
+  "sessionKey": "s-20261118-abc",
+  "steer": {
+    "afterTools": 1,
+    "at": "2026-11-18T10:00:00Z",
+    "id": "st-1",
+    "state": "sent",
+    "text": "also"
+  },
+  "type": "steer"
+}

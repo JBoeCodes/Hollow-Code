@@ -1,0 +1,283 @@
+{
+  "arm": "jev",
+  "complete": true,
+  "condition": "connector-relevance",
+  "results": [
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "mail"
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "notion",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "plaud",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "blender",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "zoom",
+          "reason": "Jev returned an invalid response."
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "email-cost-update",
+      "latencyMs": 1.3,
+      "note": "Jev returned an invalid response.",
+      "outcome": "malformed"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "mail",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "plaud"
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "zoom",
+          "reason": "Jev returned an invalid response."
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "plaud-site-walk",
+      "latencyMs": 0.8,
+      "note": "Jev returned an invalid response.",
+      "outcome": "malformed"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-01",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-02",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-03",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-04",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-05",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-06",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-07",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-08",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-09",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-10",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-11",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-12",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-13",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-14",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-15",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-16",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-17",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-18",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-19",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-20",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-21",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-22",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-23",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "tool-24",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "beyond-limit",
+          "id": "tool-25",
+          "reason": "Jev scores at most 24 connectors per request; this one was not among those sent."
+        },
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "kestrel-gauges"
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "named-past-24",
+      "latencyMs": 2.2,
+      "note": "Jev returned an invalid response.",
+      "outcome": "malformed"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "mail",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "calendar",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "zoom",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "notion",
+          "reason": "Jev returned an invalid response."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "slack",
+          "reason": "Jev returned an invalid response."
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "steering-slot",
+      "latencyMs": 0.9,
+      "note": "Jev returned an invalid response.",
+      "outcome": "malformed"
+    }
+  ],
+  "schema": 1
+}

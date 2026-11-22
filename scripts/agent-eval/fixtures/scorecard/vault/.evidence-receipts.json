@@ -1,0 +1,81 @@
+{
+ "schemaVersion": 1,
+ "receipts": [
+  {
+   "runId": "run-A",
+   "source": "chat",
+   "startedAt": "2026-10-10T10:00:00Z",
+   "status": "success",
+   "phaseTimings": {
+    "queueWaitMs": 100,
+    "spawnMs": 500,
+    "firstTextMs": 1000,
+    "turnMs": 3000,
+    "baselineSnapshotMs": 10,
+    "finalizeDiffMs": 20
+   }
+  },
+  {
+   "runId": "run-B",
+   "source": "chat",
+   "startedAt": "2026-10-10T11:00:00Z",
+   "status": "success",
+   "phaseTimings": {
+    "queueWaitMs": 200,
+    "spawnMs": 1000,
+    "firstTextMs": 2000,
+    "turnMs": 6000,
+    "baselineSnapshotMs": 20,
+    "finalizeDiffMs": 40
+   }
+  },
+  {
+   "runId": "run-C",
+   "source": "chat",
+   "startedAt": "2026-10-10T12:00:00Z",
+   "status": "cancelled",
+   "phaseTimings": {
+    "queueWaitMs": 300,
+    "spawnMs": 1500,
+    "firstTextMs": 3000,
+    "turnMs": 9000,
+    "baselineSnapshotMs": 30,
+    "finalizeDiffMs": 60
+   }
+  },
+  {
+   "runId": "run-D",
+   "source": "chat",
+   "startedAt": "2026-10-10T13:00:00Z",
+   "status": "success",
+   "phaseTimings": {
+    "queueWaitMs": 400,
+    "spawnMs": 2000,
+    "firstTextMs": 4000,
+    "turnMs": 12000,
+    "baselineSnapshotMs": 40,
+    "finalizeDiffMs": 80
+   }
+  },
+  {
+   "runId": "run-E",
+   "source": "chat",
+   "startedAt": "2026-10-10T14:00:00Z",
+   "status": "error",
+   "phaseTimings": {
+    "queueWaitMs": 500,
+    "spawnMs": 2500,
+    "firstTextMs": 5000,
+    "turnMs": 15000,
+    "baselineSnapshotMs": 50,
+    "finalizeDiffMs": 100
+   }
+  },
+  {
+   "runId": "run-F",
+   "source": "chat",
+   "startedAt": "2026-10-10T15:00:00Z",
+   "status": "success"
+  }
+ ]
+}

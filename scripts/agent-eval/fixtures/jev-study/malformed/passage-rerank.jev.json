@@ -1,0 +1,180 @@
+{
+  "arm": "jev",
+  "complete": true,
+  "condition": "passage-rerank",
+  "results": [
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev-fallback",
+          "id": "sync-0911",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "sync-0910",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "decision-0602",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "catalogue-k1",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "vendor-decision",
+      "kept": [
+        "sync-0911",
+        "sync-0910",
+        "decision-0602",
+        "catalogue-k1"
+      ],
+      "latencyMs": 0.8,
+      "note": null,
+      "outcome": "malformed"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev-fallback",
+          "id": "cadence-new",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "cadence-old",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "plan-report",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "cadence-now",
+      "kept": [
+        "cadence-new",
+        "cadence-old",
+        "plan-report"
+      ],
+      "latencyMs": 0.6,
+      "note": null,
+      "outcome": "malformed"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev-fallback",
+          "id": "cadence-new",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "cadence-old",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "plan-report",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "cadence-before",
+      "kept": [
+        "cadence-new",
+        "cadence-old",
+        "plan-report"
+      ],
+      "latencyMs": 0.6,
+      "note": null,
+      "outcome": "malformed"
+    },
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "basis": "jev-fallback",
+          "id": "committed",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "ceiling",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "eur-rule",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "catalogue-k2",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        },
+        {
+          "basis": "jev-fallback",
+          "id": "sync-0908",
+          "kept": true,
+          "reason": "Jev returned an invalid response.",
+          "score": null
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "ceiling-amount",
+      "kept": [
+        "committed",
+        "ceiling",
+        "eur-rule",
+        "catalogue-k2",
+        "sync-0908"
+      ],
+      "latencyMs": 0.6,
+      "note": null,
+      "outcome": "malformed"
+    }
+  ],
+  "schema": 1
+}

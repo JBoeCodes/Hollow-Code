@@ -1,0 +1,10 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"session","sessionId":"grok-3"}
+{"type":"turnBoundary"}
+{"type":"assistantDelta","text":"Running."}
+{"type":"toolUse","name":"shell","input":{"cmd":"ls"}}
+{"type":"turnBoundary"}
+{"type":"assistantDelta","text":"Listed."}
+{"type":"result","result":"Listed.","costUsd":null,"isError":false,"subtype":"success","sessionId":"grok-3"}
+{"type":"usage","usage":{}}
+{"type":"done","sessionId":"grok-3"}

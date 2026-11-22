@@ -1,0 +1,12 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"session","sessionId":"c-1"}
+{"type":"turnBoundary"}
+{"type":"assistantDelta","text":"Looking"}
+{"type":"assistantDelta","text":" now."}
+{"type":"toolUse","id":"toolu_1","name":"Read","input":{"file_path":"a.md"}}
+{"type":"toolResult","id":"toolu_1","content":"ok","isError":false}
+{"type":"turnBoundary"}
+{"type":"assistantDelta","text":"Done."}
+{"type":"result","result":"Done.","costUsd":0.01,"isError":false,"subtype":"success","sessionId":"c-1"}
+{"type":"usage","usage":{},"sessionKey":"s1"}
+{"type":"done","sessionId":"c-1","sessionKey":"s1"}

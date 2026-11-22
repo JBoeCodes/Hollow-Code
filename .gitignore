@@ -1,0 +1,76 @@
+# secrets / personal data — never commit
+config.json
+data/notion/
+
+# node
+node_modules/
+# Both forms on purpose. The trailing-slash rule matches only a real directory,
+# so a git worktree that SYMLINKS node_modules at the main checkout (the same
+# trick CARGO_TARGET_DIR uses to reuse the warm cache) shows up as untracked
+# and is one `git add -A` away from being committed.
+node_modules
+npm-debug.log*
+
+# os
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+*.swp
+.codex/
+
+# claude code session-state / transient lockfiles (keep .claude/launch.json
+# tracked because it carries shared shortcuts, but the lock files are
+# per-process runtime state that should never be committed).
+.claude/scheduled_tasks.lock
+.claude/*.tmp
+.claude/sessions/
+
+# Local scratch (agents' notes, reconcile trees). Smoke specs once saved
+# screenshots here while three of them were tracked, so a smoke run dirtied
+# the tree and gate-record skipped its record (overnight 2026-10-15 H1).
+.context/
+
+# build artifacts
+dist/
+build/
+src-tauri/target/
+# A cargo target under a literal "~" folder: an unexpanded tilde in
+# CARGO_TARGET_DIR (17.9 GB of these under five worktrees by 2026-10-09).
+# check-cargo-target.mjs and build.rs refuse such a target now; this keeps
+# any that slip through out of `git add -A`.
+/~/
+/src-tauri/~/
+src-tauri/gen/
+out/
+*.dmg
+*.AppImage
+*.pkg
+
+# stashed pre-rewrite frontend / Node sidecar (kept in git history)
+legacy/
+
+# orphaned legacy sidecar binary (removed; never re-commit the 60MB blob)
+src-tauri/binaries/server-*
+
+# bundled embedding model weights (~133MB). Kept out of git and fetched +
+# SHA-256-verified at build time by scripts/fetch-embed-model.mjs. The DIR
+# itself stays tracked (.gitkeep) because tauri-build's build.rs validates
+# `bundle.resources: ["models/"]` on every cargo build — a missing dir fails
+# even `cargo test` (and CI doesn't run the fetch). See docs/history/SEMANTIC_SEARCH_PLAN.md.
+src-tauri/models/*
+!src-tauri/models/.gitkeep
+
+# Playwright output
+playwright-report/
+test-results/
+.playwright-cli/
+output/playwright/
+
+# Generated, bundled dirty-source fingerprint
+src-tauri/build-provenance.json
+
+# Private plaintext names for the identifier guard (BG3): keep them outside the repo; this is a safety net
+scripts/identifier-names*.txt

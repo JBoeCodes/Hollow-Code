@@ -1,0 +1,130 @@
+/* A hollow-canvas fence in a reply (ChatMessage → ChatCanvas, Canvas C3):
+   the skeleton while it draws, the broken state with its source and
+   "Ask to fix", the saved-copy note, and the version label with its
+   list of revisions (wave 2 C2). The frame itself is a
+   .chat-artifact (HtmlArtifact). Static on purpose: no animation to gate. */
+@layer components {
+.chat-canvas { box-sizing:border-box; width:100%; max-width:100%; margin:var(--sp-3) 0; }
+.chat-canvas .chat-artifact { margin:0; }
+.chat-canvas-skeleton { display:grid; place-items:center; box-sizing:border-box; width:100%; padding:var(--sp-3); max-height:640px; margin:var(--sp-3) 0; border:1px dashed var(--hairline); border-radius:var(--r-lg); background:var(--surface-soft); color:var(--muted); font-size:var(--fs-body); }
+.chat-canvas .chat-canvas-skeleton { margin:0; }
+.chat-canvas-skeleton strong { color:var(--body-strong); font-weight:600; }
+.chat-artifact-title.canvas-title { overflow:hidden; min-width:0; color:var(--ink); font-weight:600; text-overflow:ellipsis; white-space:nowrap; }
+.chat-artifact-version { flex-shrink:0; padding:0 6px; border-radius:var(--r-pill); background:var(--primary-soft); color:var(--primary); font:600 var(--fs-caption) var(--mono); }
+.chat-canvas-note { margin:var(--sp-1) 0 0; color:var(--muted); font-size:var(--fs-meta); }
+.chat-canvas-versions { display:inline-flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:0; }
+button.chat-artifact-version { display:inline-flex; align-items:center; gap:2px; border:0; cursor:pointer; }
+button.chat-artifact-version:hover { background:var(--primary-soft-strong); }
+.chat-canvas-versions-caret { display:inline-flex; align-items:center; flex:none; }
+.chat-canvas-version-list { display:inline-flex; flex-wrap:wrap; gap:4px; }
+.chat-canvas-version { padding:0 6px; border:1px solid var(--hairline); border-radius:var(--r-pill); background:var(--surface-raised); color:var(--body); font:600 var(--fs-caption) var(--mono); cursor:pointer; }
+.chat-canvas-version[aria-pressed="true"] { border-color:var(--primary); background:var(--primary-soft); color:var(--primary); }
+.chat-canvas-version-tag { color:var(--muted); font-weight:400; }
+.chat-canvas-back { padding:0; border:0; background:none; color:var(--primary); font:inherit; text-decoration:underline; cursor:pointer; }
+:is(button.chat-artifact-version, .chat-canvas-version, .chat-canvas-back):focus-visible { outline:2px solid var(--primary); outline-offset:1px; }
+.chat-canvas-broken { box-sizing:border-box; max-width:100%; display:flex; flex-direction:column; gap:var(--sp-2); margin:var(--sp-3) 0; padding:12px 14px; border:1px solid var(--hairline); border-left:3px solid var(--warning); border-radius:var(--r-lg); background:var(--surface-raised); }
+.chat-canvas .chat-canvas-broken { margin:var(--sp-2) 0 0; }
+.chat-canvas-broken-head { display:flex; align-items:center; gap:6px; color:var(--ink); font-size:var(--fs-body); }
+.chat-canvas-broken-head > svg { flex-shrink:0; color:var(--warning); }
+.chat-canvas-broken-reason { margin:0; color:var(--body); font-size:var(--fs-meta); overflow-wrap:anywhere; }
+.chat-canvas-broken .chat-codeblock { margin:0; max-height:280px; overflow:auto; }
+.chat-canvas-source summary { color:var(--muted); font-size:var(--fs-meta); cursor:pointer; }
+.chat-canvas-fix { align-self:flex-start; display:inline-flex; align-items:center; gap:6px; }
+.side-visual-body .chat-canvas { margin:0; }
+}
+@layer components {
+/* Ask-canvas state (Canvas C4 A2): host-drawn, so a canvas script can't fake it. */
+.chat-canvas-ask-state { display:flex; align-items:center; gap:var(--sp-2); margin:var(--sp-2) 0 0; padding:var(--sp-2) 0; border-top:1px solid var(--hairline); color:var(--body); font-size:var(--fs-meta); }
+.chat-canvas-ask-state > svg { flex-shrink:0; }
+.chat-canvas-ask-state[data-ask-state="waiting"] > svg { color:var(--primary); }
+.chat-canvas-ask-state[data-ask-state="answered"] > svg { color:var(--success); }
+}
+
+/* The canvas host contract (plan L3 X7–X9, 2026-10-14; review U canvases),
+   for every host's head (HtmlArtifact): the permission boundary before
+   anything is refused, the saved state and an older version in words, and
+   Read as text. The internet-on tag keeps `.chat-artifact-net`'s warning tone. */
+@layer components {
+.chat-artifact-perm { flex-shrink:0; padding:1px 6px; border:1px solid var(--hairline); border-radius:var(--r-sm); color:var(--muted); font:500 var(--fs-caption) var(--ui); white-space:nowrap; }
+.chat-artifact-perm.chat-artifact-net { color:var(--warning); font-weight:600; }
+.chat-artifact-state { flex-shrink:0; color:var(--muted); font:400 var(--fs-caption) var(--ui); white-space:nowrap; }
+.chat-artifact-older { padding:0 6px; border-radius:var(--r-pill); background:var(--surface-soft); color:var(--body-strong); font-weight:600; }
+.chat-artifact-text { box-sizing:border-box; max-height:640px; overflow:auto; padding:12px 16px; color:var(--ink); font-size:var(--fs-body); line-height:1.55; }
+.chat-artifact.expanded .chat-artifact-text, .side-visual-body .chat-artifact-text { max-height:none; }
+.chat-artifact-text:focus-visible { outline:2px solid var(--primary); outline-offset:-2px; }
+.chat-artifact-text p, .chat-artifact-text ul, .chat-artifact-text ol, .chat-artifact-text pre, .chat-artifact-text table { margin:0 0 var(--sp-2); }
+.chat-artifact-text ul, .chat-artifact-text ol { padding-left:1.3em; }
+.chat-artifact-text .chat-artifact-text-heading { margin-top:var(--sp-3); color:var(--body-strong); font-weight:600; }
+.chat-artifact-text .chat-artifact-text-heading:first-child { margin-top:0; }
+.chat-artifact-text table { border-collapse:collapse; font-size:var(--fs-meta); }
+.chat-artifact-text caption { text-align:left; color:var(--muted); padding-bottom:2px; }
+.chat-artifact-text :is(th, td) { padding:3px 8px; border:1px solid var(--hairline); text-align:left; }
+.chat-artifact-text pre { overflow-x:auto; font:var(--fs-meta)/1.5 var(--mono); white-space:pre-wrap; }
+.chat-artifact-text-note { color:var(--muted); font-size:var(--fs-meta); }
+}
+@layer components {
+/* Ask-canvas Send (question cards, 2026-10-14): Hollow's own button under the
+   frame; its click is what sends the canvas's answers. */
+.chat-ask-send { position:relative; display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; padding:8px 10px; border-top:1px solid var(--hairline); }
+.chat-ask-send-note { color:var(--muted); font:400 var(--fs-caption) var(--ui); }
+.chat-ask-send-status { flex:1 1 100%; margin:0; font:400 var(--fs-caption) var(--ui); color:var(--ink); }
+/* Empty: kept for screen readers (a live region must exist before it speaks), takes no room. */
+.chat-ask-send-status[data-empty] { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.chat-ask-send-status[data-tone="success"] { color:var(--success); }
+.chat-ask-send-status[data-tone="warning"] { color:var(--warning); }
+.chat-ask-send-status[data-tone="danger"] { color:var(--error); }
+.chat-ask-send-btn[aria-disabled="true"] { opacity:.6; cursor:progress; }
+/* Off because the answers wait in the message box, not because a send is going. */
+.chat-ask-send-btn[data-held] { cursor:default; }
+}
+
+@layer components {
+.chat-canvas-layout {
+  margin-block: var(--sp-2);
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+.chat-canvas-layout summary { cursor: pointer; }
+.chat-canvas-layout li { margin-block: var(--sp-1); }
+/* Repo ideas 2026-10-27 #1: one row, a heading per part when it holds more
+   than one (a diagram, the hand-written HTML and CSS). */
+.chat-canvas-layout-head { margin-block: var(--sp-2) 0; color: var(--body-strong); font-weight: 600; }
+.chat-canvas-design strong { color: var(--body-strong); font-weight: 600; }
+.chat-canvas-fix { display: block; }
+}
+/* Side-panel canvases only. Inline replies retain their complete head. */
+@layer components {
+.chat-artifact.artifact-compact { position: relative; overflow: visible; container-type: inline-size; }
+.artifact-compact > .chat-artifact-slot { border-radius: inherit; overflow: hidden; }
+.artifact-compact .studio-action-menu-body {
+  min-width: 0;
+  width: min(340px, calc(100cqi - 16px));
+  max-height: min(480px, 60vh);
+  overflow: auto;
+}
+.artifact-compact .studio-action-menu-body button { white-space: normal; overflow-wrap: anywhere; }
+.artifact-compact > .chat-artifact-head {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 4px;
+  z-index: 3;
+  gap: 4px;
+  padding: 2px 4px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  background: var(--surface-card);
+}
+.artifact-compact .chat-artifact-perm { display: inline-flex; align-items: center; min-height: 24px; }
+.artifact-compact > .artifact-ask { padding-inline-end: 76px; }
+.artifact-compact-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 76px 8px 8px;
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--hairline);
+}
+.artifact-compact[data-view="code"] > .chat-artifact-code,
+.artifact-compact[data-view="text"] > .chat-artifact-text { padding-block-start: 40px; }
+}

@@ -1,0 +1,30 @@
+{
+  "defaultAgent": "claude",
+  "models": {
+    "claude": "opus"
+  },
+  "efforts": {
+    "claude": "high"
+  },
+  "codexNoOutputTimeoutMin": null,
+  "noOutputTimeoutMin": {
+    "claude": 45,
+    "grok": null
+  },
+  "deadlineMin": {
+    "codex": 120
+  },
+  "canvases": "most",
+  "compactWindow": 400000,
+  "whenOut": "codex",
+  "runsOn": "runner",
+  "unattendedRunsOn": "same",
+  "buildsOn": "runner",
+  "appBuildsOn": "runner",
+  "runnerDefaultsFrozen": true,
+  "moveOnSleep": false,
+  "cooDispatcher": "off",
+  "acp": {
+    "grok": true
+  }
+}

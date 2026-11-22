@@ -1,0 +1,164 @@
+/*
+ * Chat behaviour layer (frontier F5/F6, 2026-09-29). Component-owned: loaded
+ * by ChatBody. Core tokens only (the programme's CSS rule): the visual system
+ * files are being rewritten by another track, so nothing here edits them.
+ */
+/* Components layer. The last block is `@layer shell`: this file's exceptions to
+   the app-wide focus ring and disabled cursor (styles/shell.css). */
+@layer components {
+/* The transcript takes focus on click so Esc can stop a running turn from
+   it (F6); a mouse click shows no ring, keyboard focus still does. */
+.chat-scroll:focus:not(:focus-visible) { outline: none; }
+
+/* ── Finished run fold (F5; C1 11-12): "Worked for 1m 10s ›" over a hairline ── */
+.chat-run-fold { margin: 0 0 var(--sp-3); border-radius: 0; background: transparent; border-bottom: 1px solid var(--hairline-soft); box-shadow: none; }
+.chat-run-fold-head {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-left: calc(-1 * var(--sp-2));
+  padding: var(--sp-1) var(--sp-2);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  font-variant-numeric: var(--type-numeric);
+  max-width: 100%;
+  flex-wrap: wrap;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.chat-run-fold-head:hover { color: var(--body); background: var(--surface-soft); }
+.chat-run-fold-caret { display: inline-flex; color: var(--muted-soft); transition: transform var(--t-fast) var(--ease); }
+.chat-run-fold.open .chat-run-fold-caret { transform: rotate(90deg); }
+.chat-run-fold-failed { color: var(--error); }
+.chat-run-fold-body {
+  display: grid;
+  gap: var(--sp-1);
+  margin: var(--sp-1) 0 var(--sp-2) var(--sp-1);
+  padding-left: var(--sp-3);
+  border-left: 1px solid var(--hairline-soft);
+}
+.chat-run-step { display: grid; gap: var(--sp-1); }
+.chat-run-fold-body .chat-run-narration { color: var(--muted); font-size: var(--fs-body); }
+.chat-run-fold-body .chat-tool-ledger { margin: 0; }
+
+/* ── Tool rows (F5): state only while running or failed ─────────────── */
+/* The expand caret read as a stray dot on every row: show it only on
+   hover, keyboard focus or when the row is open. */
+.chat-scroll .toolcall-caret { opacity: 0; transition: opacity var(--t-fast) var(--ease); }
+.chat-scroll .toolcall-head:hover .toolcall-caret,
+.chat-scroll .toolcall-head:focus-visible .toolcall-caret,
+.chat-scroll .toolcall-toggle:focus-visible ~ .toolcall-caret,
+.chat-scroll .toolcall.open .toolcall-caret { opacity: 1; }
+.chat-scroll .toolcall.st-done .toolcall-status { display: none; }
+
+/* ── Streaming caret (F5): only where text is arriving right now. ChatBody
+   sets `.typing` from streamCaret.ts, not from `.streaming`, which stays on
+   for every segment of a live run. ── */
+.chat-msg.typing > .md-view:last-child > :is(p, h1, h2, h3, h4, h5, h6):last-child::after,
+.chat-msg.typing > .md-view:last-child > :is(ul, ol):last-child > li:last-child::after {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: var(--sp-1);
+  vertical-align: text-bottom;
+  border-radius: var(--r-xs);
+  background: var(--primary);
+}
+/* The live-line glint reuses the existing caret; text never fades or moves. */
+html[data-experimental-active="true"] .chat-msg.typing > .md-view:last-child > :is(p, h1, h2, h3, h4, h5, h6):last-child::after,
+html[data-experimental-active="true"] .chat-msg.typing > .md-view:last-child > :is(ul, ol):last-child > li:last-child::after {
+  background: linear-gradient(135deg, var(--primary), var(--primary-soft-strong), var(--primary));
+  animation: chat-caret-pulse 2.4s var(--ease-soft) infinite;
+  animation-play-state: var(--ambient-play, running);
+}
+@keyframes chat-caret-pulse { 50% { opacity: 0.45; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-experimental-active] .chat-msg.typing > .md-view:last-child > :is(p, h1, h2, h3, h4, h5, h6):last-child::after,
+  html[data-experimental-active] .chat-msg.typing > .md-view:last-child > :is(ul, ol):last-child > li:last-child::after { animation: none; }
+}
+html[data-motion="reduced"] .chat-msg.typing > .md-view:last-child > :is(p, h1, h2, h3, h4, h5, h6):last-child::after,
+html[data-motion="reduced"] .chat-msg.typing > .md-view:last-child > :is(ul, ol):last-child > li:last-child::after { animation: none; }
+
+/* ── Jump to latest (F5) and Back to canvas (10-11) ────────────────── */
+.chat-jump-latest,
+.chat-back-canvas {
+  position: absolute;
+  left: 50%;
+  bottom: var(--sp-3);
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  background: var(--surface-raised);
+  color: var(--body);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-tight);
+  box-shadow: 0 var(--sp-1) var(--sp-4) color-mix(in srgb, var(--ink) 14%, transparent);
+  transform: translateX(-50%);
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.chat-jump-latest:hover,
+.chat-back-canvas:hover { color: var(--ink); border-color: var(--primary); }
+/* Above "Jump to latest" when both show. */
+.chat-back-canvas.stacked { bottom: calc(var(--sp-3) + var(--sp-6) + var(--sp-1)); }
+
+/* Short threads share the tools band so recovery never covers a turn action.
+   The flex-sized wrapper supplies a definite height; query its descendants. */
+@container chat-wrap (max-height: 20em) {
+  .chat-navigation:has(~ .chat-recovery-controls > button) { min-height: calc(var(--sp-1) + 2em); }
+  .chat-recovery-controls { position: absolute; top: var(--sp-1); left: var(--sp-4); right: var(--sp-4); display: flex; gap: var(--sp-1); }
+  .chat-recovery-controls > button { position: static; transform: none; min-width: 0; white-space: nowrap; }
+  .chat-recovery-controls > button > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .chat-recovery-controls > button > svg { flex: none; }
+  .chat-scroll-wrap > .chat-scroll { padding-block: var(--sp-1); }
+}
+
+/* ── Context chips (F5): text, no emoji ──────────────────────────────── */
+.chat-context-chips .chat-context-pill {
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-2);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-tight);
+}
+.chat-context-chips .chat-context-pill:hover { color: var(--body); border-color: var(--hairline); background: var(--surface-soft); }
+.chat-context-chips .chat-context-pill.off { opacity: 1; text-decoration: none; color: var(--muted-soft); }
+.chat-context-chips .pill-state {
+  padding: 0 var(--sp-1);
+  border-radius: var(--r-xs);
+  background: var(--surface-soft);
+  color: var(--muted);
+}
+
+/* ── Hover actions (F5): copy, feedback and the menu under a reply ──── */
+/* Older replies show them on hover or keyboard focus; the latest reply, a
+   reply you voted on, and one being read aloud keep them. File chips always show. */
+.chat-scroll .turn-footer-actions { display: inline-flex; align-items: center; gap: var(--sp-1); transition: opacity var(--t-fast) var(--ease); }
+/* Overnight 11-12 (C2): an older reply's row shows on hover or focus; it
+   keeps its box (opacity), so nothing moves and specs still find it. */
+/* The hiding rule names hover and focus itself, so its weight never beats the reveal. */
+.chat-scroll .turn:not(:hover) .turn-footer:not(.latest):not(.voted):not(.reading) .turn-footer-actions:not(:focus-within) { opacity: 0; }
+.chat-scroll .turn:hover .turn-footer-actions,
+.chat-scroll .turn-footer-actions:focus-within { opacity: 1; }
+}
+@layer shell {
+/* Exceptions to the app-wide focus ring (styles/shell.css): these buttons keep their own offset. */
+.chat-run-fold-head:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.chat-jump-latest:focus-visible,
+.chat-back-canvas:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+}

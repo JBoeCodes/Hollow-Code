@@ -1,0 +1,16 @@
+{
+  "actions": [
+    {
+      "type": "com.hollow.app.companion.new-chat",
+      "title": "New chat",
+      "symbol": "square.and.pencil",
+      "link": "hollow://new"
+    },
+    {
+      "type": "com.hollow.app.companion.waiting",
+      "title": "Waiting on you",
+      "symbol": "questionmark.bubble",
+      "link": "hollow://waiting"
+    }
+  ]
+}

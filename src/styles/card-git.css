@@ -1,0 +1,22 @@
+@layer components {
+/* Parity 5.2: the card's git rows (branch, changes, commit and push). */
+.side-card-git { display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-2) 0; border-bottom: 1px solid var(--hairline-soft); }
+.side-card-git .studio-action-menu > summary { display: inline-flex; align-items: center; gap: var(--sp-1); width: auto; max-width: 100%; height: 28px; padding: 0 var(--sp-2); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.side-card-marks-chip { flex: none; color: var(--muted); }
+.side-card-branch { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.side-card-git, .side-card-header { position: relative; }
+.side-card-git .studio-action-menu, .side-card-header .studio-action-menu { position: static; }
+.side-card-git .studio-action-menu-body, .side-card-header .studio-action-menu-body { left: 0; right: 0; width: auto; min-width: 0; max-width: none; max-height: 40vh; overflow: auto; }
+.side-card-git .studio-action-menu-body button { white-space: normal; text-align: left; overflow-wrap: anywhere; }
+.side-card-changes { display: flex; align-items: baseline; gap: var(--sp-1); width: 100%; margin: 0; padding: 2px var(--sp-2); border: 0; border-radius: var(--r-md); background: none; color: var(--muted); text-align: left; font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); cursor: pointer; }
+.side-card-changes:hover { background: var(--surface-soft); color: var(--ink); }
+.side-card-changes:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.side-card-diff-add { color: var(--success); }
+.side-card-diff-del { color: var(--error); }
+.side-card-git-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); }
+.side-card-commit { display: inline-flex; align-items: center; gap: var(--sp-1); height: 28px; padding: 0 var(--sp-2); border: 1px solid var(--hairline-soft); border-radius: var(--r-md); background: var(--surface-soft); color: var(--ink); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); cursor: pointer; }
+.side-card-commit:hover:not(:disabled) { background: var(--fill-hover); }
+.side-card-commit:disabled { color: var(--muted); cursor: default; }
+.side-card-commit:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.side-card-empty-note { margin: var(--sp-1) 0 0; color: var(--muted); font: 400 var(--fs-body)/var(--lh-tight) var(--ui); }
+}

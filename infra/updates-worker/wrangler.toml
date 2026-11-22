@@ -1,0 +1,25 @@
+# Hollow updates Worker (row U3; deployed by U11, never from this repo by an
+# agent). Placeholder names only: no account id, no secrets. The Worker needs
+# no secret at all: the only credential it checks is the per-person token,
+# and the bucket holds just the tokens' SHA-256 hashes (people.json).
+name = "hollow-updates"
+main = "src/worker.js"
+compatibility_date = "2026-11-01"
+
+# Served only on the route below: no public *.workers.dev name and no
+# per-version preview URLs (either would bypass the route's zone settings).
+workers_dev = false
+preview_urls = false
+routes = [
+  { pattern = "updates.example.com/*", zone_name = "example.com" },
+]
+
+# Install links carry the token in the URL (/install/<token>, and the DMG
+# link's ?token=), so request logging stays off: Workers Logs would record
+# those URLs. Turn it on only with URL redaction in place.
+[observability]
+enabled = false
+
+[[r2_buckets]]
+binding = "UPDATES"
+bucket_name = "hollow-updates"

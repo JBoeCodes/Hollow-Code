@@ -1,0 +1,25 @@
+{
+  "trackerTaskOptionalFields": {
+    "statusType": "started",
+    "trackerKey": "ENG-1",
+    "trackerUrl": "https://linear.app/example/issue/ENG-1",
+    "trackerLinked": true,
+    "notionLinked": true,
+    "priority": "P2",
+    "sourceLabel": {
+      "kind": "tracked",
+      "text": "Tracked in Linear",
+      "providerName": "Linear",
+      "url": "https://linear.app/example/issue/ENG-1",
+      "openLabel": "Open in Linear",
+      "since": null,
+      "wasTracked": null,
+      "wasTrackedUrl": null
+    }
+  },
+  "legacyStatusWrite": {
+    "ref": "vault:tasks/tracker-i1.md",
+    "expectedHash": "replace-with-the-last-read-contentHash",
+    "status": "Delivered"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "arm": "exact",
+  "complete": true,
+  "condition": "proposal-dedup",
+  "results": [
+    {
+      "basis": "none",
+      "calls": 0,
+      "costUsd": 0,
+      "id": "cadence-learning",
+      "latencyMs": 0.0,
+      "note": null,
+      "of": null,
+      "outcome": "off",
+      "verdict": "new"
+    }
+  ],
+  "schema": 1
+}

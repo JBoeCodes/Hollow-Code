@@ -1,0 +1,92 @@
+@layer components {
+/* Mid-turn steering (2026-10-21, src/chatSteer.ts). While a turn runs the
+   composer keeps a send button that names what Enter does (Steer now, Queue
+   for after, Stop and send), a Send options menu and Stop. The person's
+   steers sit inline in the running reply; held sends wait under it. */
+
+.chat-main .chat-send.chat-send-busy,
+.chat-send.chat-send-busy {
+  width: auto;
+  min-width: 30px;
+  border-radius: var(--r-pill);
+  padding: 0 var(--sp-3);
+  gap: var(--sp-1);
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.chat-send-busy-label { font-size: var(--fs-meta); font-weight: 600; }
+/* A narrow composer bar keeps the icon; the button's name says Steer now. */
+@container composer-bar (max-width: 30rem) {
+  .chat-send-busy-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+.chat-send-options { display: inline-flex; }
+/* Opens upward from the composer, as its other menus do, and scrolls inside
+   itself in a short window or at Largest text. */
+.chat-send-options .studio-action-menu-body {
+  top: auto;
+  bottom: calc(100% + var(--sp-2));
+  width: max-content;
+  min-width: min(280px, calc(100vw - 40px));
+  max-width: min(420px, calc(100vw - 40px));
+  max-height: min(60vh, 420px);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.chat-send-options .studio-action-menu-body button { white-space: normal; text-align: left; }
+.chat-stop { min-height: 30px; }
+/* P1a PR 2: Pause beside Stop, Resume where they were once paused. */
+.chat-pause { min-height: 30px; white-space: nowrap; }
+.chat-resume { min-height: 30px; display: inline-flex; align-items: center; gap: var(--sp-1); white-space: nowrap; }
+/* P1c: Resume at... beside Resume: the set time, the toggle, and its panel
+   of presets, a custom time and Clear time, wrapping under the composer. */
+.chat-resume-at { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); }
+.chat-resume-at-time { color: var(--muted); font-size: var(--fs-meta); white-space: nowrap; }
+.chat-resume-at-toggle { white-space: nowrap; }
+.chat-resume-at-panel { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); flex-basis: 100%; }
+.chat-resume-at-custom { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-meta); color: var(--muted); }
+.chat-resume-at-error { color: var(--error); font-size: var(--fs-meta); flex-basis: 100%; }
+
+.chat-busy-hint {
+  margin: var(--sp-1) var(--sp-2) 0;
+  white-space: normal;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+/* A steer: the person's own words, attributed, inside the running reply. */
+.chat-steer-row {
+  margin-left: auto;
+  max-width: 88%;
+  border: 1px dashed var(--hairline);
+  border-radius: var(--r-lg);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface-soft);
+}
+.chat-steer-head { display: flex; flex-wrap: wrap; gap: var(--sp-1); font-size: var(--fs-meta); color: var(--muted); }
+.chat-steer-who { font-weight: 600; color: var(--ink); }
+.chat-steer-text { font-size: var(--fs-body); white-space: pre-wrap; overflow-wrap: anywhere; margin-top: var(--sp-1); }
+.chat-steer-state { font-size: var(--fs-meta); color: var(--muted); margin-top: var(--sp-1); }
+/* A refused steer's two ways on (P1-30), in the chat and the drawer. */
+.chat-steer-actions { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin-top: var(--sp-1); }
+
+/* Sends held for after the running turn. */
+.chat-held-list { list-style: none; margin: var(--sp-2) 0; padding: 0; display: grid; gap: var(--sp-1); }
+.chat-held-chip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-left: auto;
+  max-width: 88%;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xs);
+  padding: var(--sp-1) var(--sp-2);
+}
+.chat-held-kind { font-weight: 600; }
+.chat-held-text { flex: 1 1 12ch; min-width: 0; color: var(--ink); overflow-wrap: anywhere; }
+}
+

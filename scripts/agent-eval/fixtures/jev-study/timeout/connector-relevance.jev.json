@@ -1,0 +1,48 @@
+{
+  "arm": "jev",
+  "complete": true,
+  "condition": "connector-relevance",
+  "results": [
+    {
+      "calls": 1,
+      "costUsd": null,
+      "decisions": [
+        {
+          "attach": true,
+          "basis": "named",
+          "id": "mail"
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "notion",
+          "reason": "Jev timed out."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "plaud",
+          "reason": "Jev timed out."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "blender",
+          "reason": "Jev timed out."
+        },
+        {
+          "attach": false,
+          "basis": "local-fallback",
+          "id": "zoom",
+          "reason": "Jev timed out."
+        }
+      ],
+      "engine": "jev-fallback",
+      "id": "email-cost-update",
+      "latencyMs": 4001.8,
+      "note": "Jev timed out.",
+      "outcome": "timeout"
+    }
+  ],
+  "schema": 1
+}

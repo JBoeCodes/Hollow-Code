@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"id-221"}
+{"type":"turn.started"}
+{"type":"item.started","item":{"id":"item_1","type":"mcp_tool_call","server":"hollow_questions","tool":"ask_user_questions","arguments":{"mode":"questions","questions":[]},"result":null,"error":null,"status":"in_progress"}}
+{"type":"item.completed","item":{"id":"item_1","type":"mcp_tool_call","server":"hollow_questions","tool":"ask_user_questions","arguments":{"mode":"questions","questions":[]},"result":{"content":[{"type":"text","text":"questions mode needs at least one question"}],"structured_content":null},"error":null,"status":"completed"}}
+{"type":"turn.completed","usage":{"input_tokens":20000,"cached_input_tokens":10000,"cache_write_input_tokens":0,"output_tokens":40,"reasoning_output_tokens":0}}

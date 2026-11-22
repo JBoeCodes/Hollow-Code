@@ -1,0 +1,180 @@
+{
+  "arm": "local",
+  "complete": true,
+  "condition": "passage-rerank",
+  "results": [
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "basis": "local",
+          "id": "sync-0911",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "sync-0910",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "decision-0602",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "catalogue-k1",
+          "kept": true,
+          "reason": null,
+          "score": null
+        }
+      ],
+      "engine": "local",
+      "id": "vendor-decision",
+      "kept": [
+        "sync-0911",
+        "sync-0910",
+        "decision-0602",
+        "catalogue-k1"
+      ],
+      "latencyMs": 0.3,
+      "note": null,
+      "outcome": "off"
+    },
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "basis": "local",
+          "id": "cadence-new",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "cadence-old",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "plan-report",
+          "kept": true,
+          "reason": null,
+          "score": null
+        }
+      ],
+      "engine": "local",
+      "id": "cadence-now",
+      "kept": [
+        "cadence-new",
+        "cadence-old",
+        "plan-report"
+      ],
+      "latencyMs": 0.0,
+      "note": null,
+      "outcome": "off"
+    },
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "basis": "local",
+          "id": "cadence-new",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "cadence-old",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "plan-report",
+          "kept": true,
+          "reason": null,
+          "score": null
+        }
+      ],
+      "engine": "local",
+      "id": "cadence-before",
+      "kept": [
+        "cadence-new",
+        "cadence-old",
+        "plan-report"
+      ],
+      "latencyMs": 0.0,
+      "note": null,
+      "outcome": "off"
+    },
+    {
+      "calls": 0,
+      "costUsd": 0,
+      "decisions": [
+        {
+          "basis": "local",
+          "id": "committed",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "ceiling",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "eur-rule",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "catalogue-k2",
+          "kept": true,
+          "reason": null,
+          "score": null
+        },
+        {
+          "basis": "local",
+          "id": "sync-0908",
+          "kept": true,
+          "reason": null,
+          "score": null
+        }
+      ],
+      "engine": "local",
+      "id": "ceiling-amount",
+      "kept": [
+        "committed",
+        "ceiling",
+        "eur-rule",
+        "catalogue-k2",
+        "sync-0908"
+      ],
+      "latencyMs": 0.0,
+      "note": null,
+      "outcome": "off"
+    }
+  ],
+  "schema": 1
+}

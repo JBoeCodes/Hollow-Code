@@ -1,0 +1,717 @@
+/* Base layer: reset, document defaults, shared keyframes and primitives.
+   Tokens live in tokens.css. */
+@layer base {
+/* ── Alignment, trust, and recovery ──────────────────────────────────────
+   These surfaces deliberately reuse Settings' cards and controls. The
+   additional rules are structural: review queues and history must remain
+   readable at desktop width and collapse to one column on narrow windows. */
+.learning-review,
+.history-recovery {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* A review item's card, opened in the "waiting on you" surface; it takes
+   focus so its e/a/r/z keys work. */
+.review-inbox-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.review-inbox-title {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.review-inbox-title span {
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.review-key-hint {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: var(--fs-caption);
+}
+
+/* Automation permission reviews: the structured diff of what changed. */
+.review-permission-diff {
+  display: grid;
+  gap: var(--sp-2);
+  margin: var(--sp-2) 0;
+  min-width: 0;
+}
+.review-permission-row {
+  display: grid;
+  grid-template-columns: minmax(96px, max-content) minmax(0, 1fr);
+  gap: var(--sp-2);
+  align-items: baseline;
+  font-size: var(--fs-meta);
+}
+.review-permission-field { color: var(--muted); text-transform: capitalize; }
+.review-permission-value { display: flex; flex-wrap: wrap; gap: var(--sp-1); min-width: 0; overflow-wrap: anywhere; font-family: var(--mono); }
+.review-permission-before { color: var(--muted); }
+.review-permission-after { color: var(--ink); font-weight: 600; }
+.review-permission-chip {
+  padding: 1px var(--sp-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+/* Neutral on purpose: whether an addition widens or narrows access depends on
+   the list (allowed vs disallowed); the card's escalation flag says which. */
+.review-permission-chip.added { color: var(--ink); background: var(--surface-soft); }
+.review-permission-chip.removed { color: var(--muted); text-decoration: line-through; }
+.review-permission-prompt { display: grid; gap: var(--sp-1); min-width: 0; }
+.review-permission-note { color: var(--muted); font-size: var(--fs-caption); }
+.review-permission-pre {
+  margin: 0;
+  max-height: 180px;
+  overflow: auto;
+  padding: var(--sp-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  background: var(--canvas);
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+@container hollow-window (max-width: 53.75em) {
+  .review-permission-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+.review-card {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--surface-soft) 92%, transparent);
+}
+
+.review-card-head,
+.review-card-actions,
+.review-supersede,
+.history-detail-head,
+.history-preview-head,
+.history-storage-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-card-head,
+.history-detail-head,
+.history-preview-head { justify-content: space-between; }
+
+.review-statement {
+  margin: 10px 0;
+  color: var(--ink);
+  line-height: var(--lh-prose);
+  white-space: pre-wrap;
+}
+
+/* Memory provenance (next-level P18): from which run, saved where, what it
+   replaces or was replaced by. A compact two-column list, no box. */
+.review-provenance {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 2px var(--sp-3);
+  margin: 0 0 var(--sp-2);
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+.review-provenance dt { color: var(--muted); }
+.review-provenance dd { margin: 0; color: var(--body); overflow-wrap: anywhere; }
+.review-card-chips { display: inline-flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-1); }
+.review-card[data-used="true"] { border-color: color-mix(in srgb, var(--success) 40%, var(--hairline)); }
+.learning-used { margin: 0 0 var(--sp-2); }
+
+.review-evidence {
+  margin: 10px 0;
+  padding: 9px 11px;
+  border-left: 2px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.review-edit-label {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.review-edit-label input,
+.review-edit-label textarea,
+.review-supersede select {
+  width: 100%;
+  min-width: 0;
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  background: var(--canvas);
+  padding: 9px 10px;
+  font: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.review-editor { display: grid; gap: 8px; }
+.review-inbox-card .settings-state-chip { align-self: flex-start; }
+.review-source-link { margin-top: 3px; font-size: var(--fs-meta); }
+
+.review-card-actions { justify-content: flex-end; margin-top: 12px; }
+.review-supersede { margin-top: 10px; }
+.settings-empty { padding: 18px; color: var(--muted); text-align: center; }
+.settings-error { color: var(--error); font-size: var(--fs-meta); }
+
+.history-storage-strip {
+  flex-wrap: wrap;
+  padding: var(--sp-3) 0;
+  border: 0;
+  border-block: 1px solid var(--hairline);
+  border-radius: 0;
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+
+.history-storage-strip .btn { margin-left: auto; }
+.history-active-warning { color: var(--accent-amber); font-weight: 600; }
+.history-notion-warning { margin: 10px 0; }
+.history-run-flags { margin: 10px 0; }
+.history-unrecoverable { margin: 10px 0; }
+.history-overlaps { margin: 10px 0; }
+.history-overlap-links { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.history-flag-list {
+  margin: 0;
+  padding-left: var(--sp-4);
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  overflow-wrap: anywhere;
+}
+
+.history-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, .7fr) minmax(300px, 1.3fr);
+  gap: 12px;
+  min-width: 0;
+}
+
+.history-run-list,
+.history-run-detail {
+  min-width: 0;
+  max-height: 430px;
+  overflow: auto;
+  border: 0;
+  border-block: 1px solid var(--hairline);
+  border-radius: 0;
+  background: var(--material-solid);
+  box-shadow: none;
+}
+
+.history-run-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 8px;
+  padding: 11px 12px;
+  color: var(--ink);
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  background: transparent;
+  cursor: pointer;
+}
+
+.history-run-row:hover,
+.history-run-row.active { background: var(--fill-selected); }
+.history-run-row.active { box-shadow: inset 3px 0 var(--primary); }
+.history-run-row:is(:hover, .active) .history-run-meta { color: var(--ink); }
+.history-run-row:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.history-run-source { min-width: 0; overflow-wrap: anywhere; font-weight: 600; line-height: var(--lh-base); }
+.history-run-meta { min-width: 0; overflow-wrap: anywhere; color: var(--muted); font-size: var(--fs-caption); font-variant-numeric: tabular-nums; }
+.history-run-row .settings-state-chip { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+
+.history-run-detail { padding: 12px; }
+.history-change-list { display: grid; gap: 7px; margin-top: 12px; }
+.history-change-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  border-radius: 0;
+}
+.history-change-kind {
+  padding: 2px 5px;
+  border-radius: var(--r-pill);
+  color: var(--muted);
+  background: color-mix(in srgb, var(--muted) 10%, transparent);
+  font: 600 var(--fs-caption)/1.4 var(--mono);
+  text-transform: uppercase;
+}
+.history-change-kind.create { color: var(--success); }
+.history-change-kind.delete { color: var(--error); }
+.history-change-path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+.history-change-size { color: var(--muted); font: var(--fs-caption) var(--mono); }
+
+.history-preview {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+}
+.history-preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; min-width: 0; }
+.history-preview-grid > div { min-width: 0; }
+.history-preview-label { display: block; margin-bottom: 5px; color: var(--muted); font-size: var(--fs-caption); font-weight: 600; text-transform: none; }
+.history-preview pre {
+  max-height: 340px;
+  margin: 0;
+  overflow: auto;
+  padding: 10px;
+  border-radius: var(--r-sm);
+  background: var(--canvas);
+  color: var(--ink);
+  font: var(--fs-meta)/var(--lh-base) var(--mono);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@container hollow-window (max-width: 53.75em) {
+  .history-layout,
+  .history-preview-grid { grid-template-columns: 1fr; }
+  .history-run-list { max-height: 230px; }
+  .history-change-row { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .history-change-size { grid-column: 2; }
+  .history-change-row .btn { grid-row: 2; }
+  .history-change-row .btn:last-child { grid-column: 3; }
+  .review-card-head,
+  .review-card-actions,
+  .review-supersede,
+  .history-detail-head { align-items: stretch; flex-direction: column; }
+  .review-card-actions .btn,
+  .review-supersede .btn,
+  .history-detail-head .btn { width: 100%; }
+}
+
+.receipt-recall-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* ============== RESET ============== */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+input, select, textarea, button { font-family: inherit; }
+
+body {
+  font-optical-sizing: var(--type-optical);
+  background: var(--canvas);
+  color: var(--body);
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  line-height: var(--lh-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  transition: background var(--t-med) var(--ease), color var(--t-med) var(--ease);
+}
+
+/* Mono surfaces keep the distinct-glyph TTY feel; ligatures stay off. */
+code, pre, kbd {
+  font-variant-ligatures: none;
+}
+
+::selection { background: var(--primary-soft-strong); color: var(--ink); }
+::placeholder { color: var(--muted-soft); opacity: 1; }
+
+/* Quiet rounded scrollbar, no track chrome. */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  /* Was --hairline, the border colour, which made the thumb invisible against
+     a panel edge. The transparent border insets the paint inside the 8px
+     gutter so the thumb reads as a thumb rather than filling the track. */
+  background: var(--muted-soft);
+  border: 2px solid transparent;
+  background-clip: content-box;
+  border-radius: var(--r-pill);
+  transition: background var(--t-fast) var(--ease);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* ── The ambient pause switch ──
+   Every infinite ambient animation opts in by declaring
+   `animation-play-state: var(--ambient-play, running)` immediately AFTER
+   its `animation:` shorthand. Order is load-bearing: the shorthand resets
+   play-state to `running`, so the explicit declaration must come second.
+   Omitting the line IS the opt-out, which is how live-work indicators
+   (spinners, streaming cursors, running-workflow pills, drop targets)
+   keep moving while the window is banked.
+   Session arcs and the chat working mark intentionally opt in and pause
+   while away; their static identity still shows that work is running.
+
+   Why an opt-in property rather than one blanket rule: CSS cannot select
+   on `animation-iteration-count: infinite`, and a
+   `body.is-away * { animation-play-state: paused !important }` sweep would
+   freeze one-shot animations mid-flight — stagger-in and page-enter
+   carry `both`/`forwards` fill,
+   so blurring the window during a transition would leave rows stuck
+   half-transparent and offset until refocus.
+
+   Unitless keyword, not colour-bearing, so it stays out of
+   CUSTOM_VAR_KEYS / deriveCustomVars.
+   scripts/check-css-tokens.mjs enforces the opt-in so a new ambient rule
+   cannot silently skip it. */
+body.is-away { --ambient-play: paused; }
+
+/* Cross-page entry — every page mounts with a subtle slide + fade
+   so navigation feels deliberate instead of abrupt. */
+@keyframes page-enter {
+  from { transform: translateY(8px); }
+  to   { transform: translateY(0); }
+}
+
+/* Staggered list row entry — used inline with --i CSS variable. */
+@keyframes stagger-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Side-slide (column entries, breadcrumbs, chips that materialize). */
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Badge / count "ping" — used when a numeric value changes. */
+@keyframes badge-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+/* Subtle glow ring — for newly-completed actions, success checkboxes. */
+@keyframes celebrate {
+  0%   { box-shadow: 0 0 0 0 var(--primary-soft-strong); }
+  60%  { box-shadow: 0 0 0 6px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* Generic shimmer for skeleton/loading bars. */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* Status pulse — ONLY for work in progress (a busy dot, a running pill).
+   Resting states never animate. */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+/* Ambient breathing — used on connection indicators, "in progress" dots. */
+@keyframes breathe {
+  0%, 100% { opacity: 0.35; transform: scale(0.9); }
+  50%      { opacity: 1;    transform: scale(1.0); }
+}
+
+/* ── Spinner ──
+   A small ring: a conic arc in the primary colour, rotating.
+   Component wrapper in components/Spinner.tsx. */
+.spinner-ring {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  vertical-align: -1px;
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg, transparent 0%, var(--primary) 80%, transparent 80%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), var(--black) calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), var(--black) calc(100% - 2px));
+  animation: spinner-turn 800ms linear infinite;
+}
+@keyframes spinner-turn {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Row and control structure. Rows anchor their hover-revealed actions
+   (position: relative); hover colour belongs to each row's own rule. */
+.session-row,
+.settings-row,
+.workflow-row,
+.workflow-template-card,
+.notif-row,
+.activity-row,
+.palette-row,
+.list-row,
+.panel-link,
+.chip,
+.seg-toggle button,
+.snackbar-action,
+.snackbar-close,
+.notif-row-icon-btn,
+.notif-toast-close,
+.activity-dock-clear {
+  position: relative;
+  isolation: isolate;
+  transition:
+    background-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease);
+}
+
+/* ── Focus: one ring everywhere. Controls get a 2px accent outline; text
+   fields an accent border with the soft --ring (an outline would be
+   clipped by the scrolling panes most fields sit in). */
+:where(button, a, summary, [role="button"], [role="tab"], [role="option"], [role="menuitem"], [tabindex]):focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-offset);
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[contenteditable="true"]:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+}
+
+/* ── Theme flash — radial ink reveal ──
+   When the theme toggles, store.ts attaches a `.theme-flash` overlay
+   that paints the OLD theme's canvas color on top of the document, then
+   adds `.is-revealing` to peel itself away as a shrinking circle anchored
+   at the click origin (--reveal-x, --reveal-y). The growing circular
+   "hole" reveals the NEW theme that's already been applied to the
+   document beneath. */
+.theme-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  /* Start fully covering everything from the click origin. */
+  clip-path: circle(var(--reveal-r, 200vmax) at var(--reveal-x, 50%) var(--reveal-y, 50%));
+}
+.theme-flash.is-revealing {
+  animation: theme-reveal 600ms var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+}
+@keyframes theme-reveal {
+  from { clip-path: circle(var(--reveal-r, 200vmax) at var(--reveal-x, 50%) var(--reveal-y, 50%)); }
+  to   { clip-path: circle(0px at var(--reveal-x, 50%) var(--reveal-y, 50%)); }
+}
+
+/* ── Cold-boot cascade ──
+   On the first paint of a session (main.tsx sets `.is-booting` on <html>)
+   the workspace settles into place once.
+
+   ONE entrance, not four. The rail, top bar and chat panel used to
+   arrive on their own staged delays (0 / 140 / 360ms), which built a
+   chain running to 840ms of surfaces and 1000ms of bloom — and the
+   Tauri window is already deferred ~150ms before it is shown, so
+   nobody watched them assemble anyway. They are simply in place when
+   the window appears.
+
+   Duration is shared with main.tsx's BOOT_MS via --boot-ms, so the
+   class-strip and the animation can no longer disagree. The fallback
+   is required: check-css-tokens.mjs fails a bare var(). */
+html.is-booting .canvas > *:not(.top-bar):not(.ambient-layer) {
+  animation: boot-canvas var(--boot-ms, 420ms) var(--ease-out) both;
+}
+@keyframes boot-canvas {
+  from { transform: translateY(14px); }
+  to   { transform: translateY(0); }
+}
+
+/* ============== FORM BASELINE ==============
+   Generic input / textarea / select defaults so any form field looks
+   correct without per-form CSS. Components opt out by setting their
+   own background / border. */
+
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="url"],
+input[type="tel"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea,
+select {
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  color: var(--ink);
+  background: var(--material-solid);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  padding: 8px 12px;
+  outline: none;
+  box-shadow: var(--elev-edge);
+  transition: border-color var(--t-fast) var(--ease),
+              box-shadow   var(--t-fast) var(--ease),
+              background   var(--t-fast) var(--ease);
+}
+textarea {
+  line-height: var(--lh-prose);
+  resize: vertical;
+}
+input[type="text"]:hover,
+input[type="search"]:hover,
+input[type="email"]:hover,
+input[type="number"]:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--surface-cream-strong);
+}
+input[type="text"]:focus,
+input[type="search"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+}
+/* Soft live-invalid state for parsed free-text fields (e.g. the TaskModal
+   time field) — warns while typing without blocking the form the way
+   native constraint validation does. */
+input[type="text"].invalid,
+input[type="text"].invalid:focus {
+  border-color: var(--error);
+  box-shadow: 0 0 0 2px var(--error-soft);
+}
+input:disabled, textarea:disabled, select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Checkbox / radio: the system control in the accent colour. */
+input[type="checkbox"], input[type="radio"] {
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* Search inputs get a subtle inset clear-icon styling. */
+input[type="search"]::-webkit-search-cancel-button { cursor: pointer; }
+
+/* ============== APP SHELL ============== */
+
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+/* Positioned and isolated so the ambient layer (styles/motion.css) sits above
+   the canvas colour and below every page. `overflow: clip`, not `hidden`
+   (10-11 top-bar fix): the ambient layer reaches 20% past the column's edges,
+   and a `hidden` box is still a scroll container, so a focus or
+   scrollIntoView in the chat slid the whole column, top bar and all, up
+   under the window edge. A clipped box can't be scrolled at all. */
+.canvas { position: relative; isolation: isolate; flex: 1; min-width: 0; background: var(--canvas); display: flex; flex-direction: column; overflow: hidden; overflow: clip; border-radius: 0; box-shadow: none; }
+.history-storage { margin-bottom: var(--sp-3); font-size: var(--fs-meta); color: var(--muted); }
+.history-technical { margin-top: 4px; font-size: var(--fs-caption); }
+
+/* Folded from the shell pass (P2, 2026-09-30): form and motion defaults, shared by several stylesheets. */
+input, textarea, select { accent-color: var(--primary); }
+/* Choreography. Functional surfaces start fully visible; transforms never
+   change layout, and the hero performance lasts once rather than forever. */
+@keyframes studio-arrive { from { transform: translateY(8px); } to { transform: translateY(0); } }
+/* ── Motion (audit motion contract) ─────────────────────────────────────
+   transform/opacity only; functional content visible on the first frame;
+   finite; gated by system Reduce Motion and the app preference. Explains
+   navigation (panel views), selection, arrival of real output and a run's
+   completion; never implies progress that isn't happening. */
+@keyframes pq-view-in { from { transform: translateY(6px); } to { transform: none; } }
+}
+
+/* ── Motion preferences — the last layer, so they beat every component rule.
+   !important is kept here and ONLY here (scripts/check-css-tokens.mjs allows it
+   inside these two gates): CodeMirror's unlayered theme and any inline style
+   outrank a layered normal declaration, and a user's motion preference must
+   win over both. */
+@layer a11y {
+@media (prefers-reduced-motion: reduce), (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  html[data-experimental-active="true"] .main-indicator[data-state="waiting"] .main-orb-aura { animation:none; }
+}
+/* Core ink is AA on each opaque surface, including custom palettes. Inline
+   custom hairlines must yield too. More contrast also removes desktop bleed. */
+@media (prefers-contrast: more) {
+  :root {
+    --hairline: var(--ink) !important;
+    --hairline-soft: var(--ink) !important;
+    --ring: 0 0 0 3px var(--ink) !important;
+    --glass-border: var(--ink) !important;
+    --glass-border-strong: var(--ink) !important;
+  }
+  :focus-visible { outline-color: var(--ink) !important; }
+  .ui-state:is([data-kind="empty"], [data-kind="filtered"], [data-kind="loading"]) { border-color: var(--ink); }
+}
+@media (forced-colors: active) {
+  .ui-state:is([data-kind="empty"], [data-kind="filtered"], [data-kind="loading"]) { border-color: CanvasText; }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root[data-glass] {
+    --glass-chrome: var(--surface-soft);
+    --glass-panel: var(--surface-card);
+    --glass-raised: var(--surface-raised);
+    --glass-well: var(--canvas);
+    --glass-well-strong: var(--canvas);
+    /* Floating chrome stays raised when its Glass reading well goes opaque. */
+    --material-glass-strong: var(--surface-raised);
+    --glass-blur: 0px;
+    --glass-blur-heavy: 0px;
+    --glass-text-halo: none;
+  }
+  html[data-glass] body { background: var(--canvas); }
+}
+/* Hidden, in every layer (a utility, so it sits last). */
+.hidden { display: none; }
+/* Visually hidden, still read by screen readers. A utility, so it sits in
+   the last layer and wins over any component rule on the same element. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+/* Respect users who don't want motion. The animation-delay zero
+   matters as much as the duration: staggered entrances (the --i
+   pattern) use `both` fill, so a surviving delay would hold rows
+   invisible at the from-frame for the full stagger. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+:root[data-motion="reduced"] *, :root[data-motion="reduced"] *::before, :root[data-motion="reduced"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

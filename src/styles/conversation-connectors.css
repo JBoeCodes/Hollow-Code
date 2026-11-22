@@ -1,0 +1,5 @@
+@layer components {
+.composer-resources { display: inline-flex; flex: none; }
+.composer-resources .studio-action-menu.start .studio-action-menu-body { left: var(--resources-shift, 0px); width: var(--resources-width, 320px); min-width: 0; bottom: calc(100% + var(--sp-2)); top: auto; max-width: calc(100vw - 16px); }
+.composer-resources .studio-action-menu-body button { white-space: normal; overflow-wrap: anywhere; }
+}

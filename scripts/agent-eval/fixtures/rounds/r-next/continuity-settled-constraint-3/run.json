@@ -1,0 +1,66 @@
+{
+  "key": "continuity-settled-constraint-3",
+  "task": "continuity-settled-constraint",
+  "slice": "continuity",
+  "rep": 3,
+  "status": "done",
+  "startedAt": "2026-10-20T09:00:00.000Z",
+  "endedAt": "2026-10-20T09:02:30.000Z",
+  "queue": {
+    "id": 19,
+    "status": "done",
+    "error": null,
+    "requestedAt": "2026-10-20T09:00:00.900Z",
+    "claimedAt": "2026-10-20T09:00:01.000Z",
+    "finishedAt": "2026-10-20T09:02:21.900Z"
+  },
+  "transcript": {
+    "sessionKey": "s-r-next-continuity-settled-constraint-3",
+    "nativeSessionId": "native-continuity-settled-constraint-3",
+    "historyRunId": "run-r-next-continuity-settled-constraint-3",
+    "queueId": 19,
+    "sessionRecord": "session-record.md"
+  },
+  "sessionFolders": [],
+  "composer": {
+    "workspace": "eval-outcome",
+    "agent": "claude",
+    "model": "opus",
+    "effort": "High",
+    "mode": "Edits only"
+  },
+  "cost": {
+    "turnCostUsd": null,
+    "otherCostUsd": 0,
+    "costUsd": null,
+    "knownCostUsd": 0,
+    "inputTokens": 2000,
+    "cachedInputTokens": 18000,
+    "outputTokens": 400,
+    "models": [
+      "claude-opus-5-5"
+    ],
+    "rows": []
+  },
+  "pendingCards": 0,
+  "artifacts": {
+    "created": [
+      "workspaces/eval-outcome/outputs/cost-update.md"
+    ],
+    "modified": [],
+    "deleted": []
+  },
+  "reverted": {
+    "removed": 1,
+    "restored": 0
+  },
+  "facts": {
+    "contains": [],
+    "absent": [],
+    "pass": true
+  },
+  "context": {
+    "status": "present",
+    "file": "context-manifest.json"
+  }
+}

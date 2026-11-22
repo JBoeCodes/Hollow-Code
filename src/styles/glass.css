@@ -1,0 +1,107 @@
+/* ============================================================
+   LIQUID GLASS  —  the third theme (frosted "Regular"-weight material)
+   ============================================================
+   A structural OVERLAY, not a palette swap. It rides on top of the
+   light/dark polarity (which still owns ink/body/syntax/semantic) via a
+   separate `data-glass` attribute, so every `[data-theme="dark"]` rule and
+   `theme()` consumer is untouched. The rules live in the `glass`
+   cascade layer, after `components`, so they win over component surfaces
+   without selector escalation; the `html[data-glass]` prefix only scopes them.
+
+   The depth model has three layers, each doing what it's best at:
+     1. NATIVE VIBRANCY (NSVisualEffectView, applied in Rust behind the
+        transparent window) blurs the real DESKTOP — so the big full-bleed
+        areas just go CSS-transparent and let it show. Cheap.
+     2. CSS backdrop-filter blurs APP pixels — reserved for floating chrome
+        that overlaps other app content (modals, popovers, the chat panel
+        over a page). The only place a CSS blur is worth its cost.
+     3. ADAPTIVE SCRIMS — flat, more-opaque fills behind long-form text, so
+        reading stays legible over an arbitrary wallpaper. No blur (they're
+        nested inside an already-blurred parent).
+
+   Deliberately does NOT redefine --canvas / the color tokens: htmlSandbox.ts
+   reads --canvas into sandboxed iframes (email reader, HTML artifacts) and
+   needs it OPAQUE. Glass overrides backgrounds, never the --canvas value. */
+@layer glass {
+/* ── (1) Big shell areas → transparent so native vibrancy shows ── */
+html[data-glass] body { background: transparent; }
+/* The conversation-first shell paints the canvas colour on its own frame
+   (`workbench.css`, `shell.css`): without these the window stayed opaque and
+   glass looked like plain light/dark (P1, 2026-09-30). */
+html[data-glass] .hollow-shell,
+html[data-glass] .work-page,
+html[data-glass] .work-conversation,
+html[data-glass] .canvas,
+html[data-glass] .page,
+html[data-glass] .page.active,
+html[data-glass] .page-header,
+html[data-glass] .page-body,
+html[data-glass] .viewer {
+  background: transparent;
+}
+/* Rail / top-bar / list asides — thinnest chrome tint, NO css blur (the
+   NSVisualEffectView behind the webview already blurs the desktop here). */
+html[data-glass] .top-bar,
+html[data-glass] .work-rail,
+html[data-glass] .split-aside {
+  background: var(--glass-chrome);
+  box-shadow: var(--glass-spec-top);
+  border-color: var(--glass-border);
+}
+/* A compact rail overlaps app text, not the native desktop. Keep its reading
+   plane opaque instead of compositing the page through its navigation. */
+@container hollow-window (max-width: 53.75em) {
+  html[data-glass] .work-rail:not(.collapsed) { background: var(--surface-soft); }
+}
+/* Short chrome text gets a faint halo so it survives over a busy wallpaper. */
+html[data-glass] .top-bar,
+html[data-glass] .page-header h1,
+html[data-glass] .page-header h2 {
+  text-shadow: var(--glass-text-halo);
+}
+
+/* ── (2a) Resting cards → clear-glass treatment, NO per-element blur ──
+   These can tile in large counts; blurring each would blow the WKWebView
+   budget. The specular edge sells the glass over the native desktop blur. */
+html[data-glass] .panel,
+html[data-glass] .chat-composer,
+html[data-glass] .workflow-template-card,
+html[data-glass] .md-preview-sheet {
+  background: var(--material-glass);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-spec-top), var(--glass-spec-bot), var(--glass-ring);
+}
+/* The chosen theme keeps its accent edge over the glass border. */
+/* Automation rows carry schedule and recovery text on a stable reading plane. */
+html[data-glass] .workflows-split .split-aside { background: var(--material-solid); box-shadow: none; }
+
+/* ── (2b) Lifted / floating chrome → CSS backdrop-filter + specular edge ──
+   These float over APP content, so they genuinely blur app pixels. */
+/* Reading-heavy dialogs, palette, context menu and notices use the opaque
+   raised plane even in Glass. Their text never competes with app content. */
+html[data-glass] .keymap-card,
+html[data-glass] .slash-popup {
+  background: var(--material-glass-strong);
+  backdrop-filter: blur(var(--glass-blur-heavy)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness));
+  -webkit-backdrop-filter: blur(var(--glass-blur-heavy)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness));
+  border-color: var(--glass-border-strong);
+  box-shadow: var(--glass-lift), var(--glass-spec-top), var(--glass-ring);
+  transform: translateZ(0);   /* promote to its own layer */
+  contain: paint;
+}
+
+/* ── (3) Adaptive scrims → reading / text wells (legibility floor, no blur) ──
+   Floors are hard regardless of how clear the chrome is: ≥0.78 light /
+   ≥0.80 dark; ≥0.90 for code & email. */
+html[data-glass] .md-preview-body,
+html[data-glass] .vault-editor-host {
+  background: var(--glass-well);
+}
+/* Chat tool ledgers are quiet outlines (and one-call turns bare step rows),
+   so only standalone ledgers such as run receipts get the scrim. */
+html[data-glass] .toolcalls:not(.chat-tool-ledger) {
+  background: var(--glass-well-strong);
+}
+
+/* Settings sections are the page itself, not glass cards. */
+}

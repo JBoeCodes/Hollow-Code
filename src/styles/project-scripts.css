@@ -1,0 +1,29 @@
+@layer components {
+/* Project scripts (parity 4.5): the card's section, its editor and the Preview tab. */
+.script-chord { font: 500 var(--fs-caption)/1 var(--mono); color: var(--muted); background: var(--surface-soft); border-radius: var(--r-xs); padding: 2px 5px; }
+.script-output { display: flex; flex-direction: column; gap: var(--sp-2); height: 100%; min-height: 0; padding: var(--sp-3); }
+.script-output-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); flex-wrap: wrap; }
+.script-output-title { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.script-output-title strong { font-size: var(--fs-md); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.script-output-state { font-size: var(--fs-meta); color: var(--muted); }
+.script-output-state[data-state="running"] { color: var(--success); }
+.script-output-actions { display: flex; gap: var(--sp-2); }
+.script-output-command { font: var(--fs-meta)/var(--lh-tight) var(--mono); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.script-output-error { margin: 0; color: var(--error); font-size: var(--fs-meta); }
+.script-output-log { flex: 1; min-height: 0; margin: 0; overflow: auto; padding: var(--sp-2); border-radius: var(--r-md); background: var(--surface-soft); color: var(--body); font: var(--fs-meta)/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.script-output-log:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+
+.scripts-section { display: flex; flex-direction: column; gap: var(--sp-1); }
+.scripts-head { display: flex; align-items: center; justify-content: space-between; }
+.scripts-head h3 { margin: 0; font-size: var(--fs-meta); font-weight: 600; color: var(--muted); }
+.scripts-row { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.scripts-row-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-body); }
+.scripts-empty { margin: 0; color: var(--muted); font-size: var(--fs-meta); }
+
+.scripts-editor { display: flex; flex-direction: column; gap: var(--sp-3); }
+.scripts-editor label { display: flex; flex-direction: column; gap: var(--sp-1); font-size: var(--fs-meta); color: var(--muted); }
+.scripts-editor textarea, .scripts-editor input, .scripts-editor select { font: var(--fs-body)/var(--lh-tight) var(--ui); color: var(--ink); }
+.scripts-editor textarea { font-family: var(--mono); min-height: 4.5em; resize: vertical; }
+.scripts-chord-note { margin: 0; font-size: var(--fs-meta); color: var(--muted); }
+.scripts-error { margin: 0; color: var(--error); font-size: var(--fs-meta); }
+}

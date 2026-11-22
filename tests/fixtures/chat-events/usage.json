@@ -1,0 +1,11 @@
+{
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "queueId": 42,
+  "sessionKey": "s-20261118-abc",
+  "type": "usage",
+  "usage": {
+    "inputTokens": 10,
+    "outputTokens": 5
+  }
+}

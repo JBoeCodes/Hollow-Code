@@ -1,0 +1,28 @@
+{
+  "round": "r-base",
+  "mode": "real",
+  "seed": 7,
+  "repeats": 3,
+  "budgetUsd": 20,
+  "spentUsd": 5.6,
+  "order": [
+    "memory-current-2",
+    "research-fourth-attachment-1",
+    "continuity-settled-constraint-1",
+    "memory-current-1",
+    "research-fourth-attachment-3",
+    "continuity-settled-constraint-2",
+    "research-fourth-attachment-2",
+    "memory-current-3",
+    "continuity-settled-constraint-3"
+  ],
+  "skipped": 0,
+  "stopped": {
+    "reason": "$5.60 spent + $0.80, the largest run so far, would pass the $6.00 budget",
+    "before": "continuity-settled-constraint-3"
+  },
+  "candidate": {
+    "commit": "52cbfdf8"
+  },
+  "runs": []
+}

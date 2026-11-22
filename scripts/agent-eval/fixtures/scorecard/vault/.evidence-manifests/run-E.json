@@ -1,0 +1,22 @@
+{
+ "schemaVersion": 1,
+ "runId": "run-E",
+ "layers": [
+  {
+   "name": "workspace",
+   "bytes": 400,
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "preparation": {
+  "timeline": {
+   "origin": "admission",
+   "totalMs": 500,
+   "phases": []
+  }
+ },
+ "compiler": {
+  "entry": "appSession",
+  "session": "resume"
+ }
+}

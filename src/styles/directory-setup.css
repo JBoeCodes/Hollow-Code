@@ -1,0 +1,95 @@
+@layer components {
+.directory-setup { max-width: 900px; min-width: 0; padding: 20px 0; }
+.directory-setup p { line-height: 1.55; overflow-wrap: anywhere; }
+.directory-fields { display: grid; gap: 24px; margin: 24px 0; }
+.directory-fields label { display: grid; gap: 8px; font-weight: 600; min-width: 0; }
+.directory-fields label > span { font-weight: 400; color: var(--muted); font-size: var(--fs-body); }
+.directory-fields label > div { display: flex; gap: 8px; min-width: 0; }
+.directory-fields input { flex: 1; min-width: 0; width: 100%; padding: 10px; }
+.directory-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.directory-status { margin-top: 20px; padding: 16px; border: 1px solid var(--hairline); border-radius: var(--r-lg); }
+.directory-onboarding { max-width: 900px; margin: auto; padding: 40px 24px; height: 100vh; overflow-y: auto; }
+.connected-files { margin-top: 20px; }
+.connected-file-text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--fs-body); }
+@container hollow-window (max-width: 53.75em) { .directory-fields label > div { flex-direction: column; } .directory-onboarding { padding: 24px 16px; } }
+
+.connected-files { display:flex; flex-direction:column; min-height:0; flex:1; }
+.connected-files > .work-actions, .connected-files > .work-muted { margin-left:20px; margin-right:20px; }
+.connected-file-text { padding:20px; }
+.directory-fields input { background:var(--canvas); color:var(--ink); border:1px solid var(--hairline); border-radius:var(--r-sm); }
+
+#settings-vault .settings-actions { flex-wrap:wrap; }
+/* In Settings the setup reads as the section's rows: label and description
+   left, the field right, hairlines between; the connected-projects summary is
+   a group under a hairline, not a card. First-run onboarding keeps the
+   stacked form. */
+#settings-vault .directory-setup { max-width: none; padding: 0; }
+#settings-vault .directory-fields { margin: 0; gap: 0; }
+#settings-vault .directory-fields label {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 55%);
+  align-items: center;
+  column-gap: var(--sp-5);
+  row-gap: 2px;
+  padding: var(--sp-3) 0;
+  border-top: 1px solid var(--hairline-soft);
+  color: var(--ink);
+  font: 500 var(--fs-body)/1.35 var(--ui);
+}
+#settings-vault .directory-fields label > span { grid-column: 1; font-size: var(--fs-meta); }
+#settings-vault .directory-fields label > div { grid-column: 2; grid-row: 1 / span 2; }
+#settings-vault .directory-fields input { padding: 6px 10px; }
+#settings-vault .directory-layout,
+#settings-vault .directory-existing,
+#settings-vault .directory-actions { margin: 0; padding: var(--sp-3) 0; border-top: 1px solid var(--hairline-soft); }
+#settings-vault .directory-existing .directory-fields { margin: var(--sp-2) 0 0; }
+#settings-vault .directory-existing summary { font: 500 var(--fs-body) var(--ui); color: var(--ink); }
+#settings-vault .directory-status { margin-top: var(--sp-5); padding: var(--sp-5) 0 0; border: 0; border-top: 1px solid var(--hairline); border-radius: 0; }
+#settings-vault .directory-status strong { color: var(--ink); font: 600 var(--fs-body)/1.3 var(--ui); }
+#settings-vault .directory-status p { margin: var(--sp-2) 0 0; color: var(--muted); font-size: var(--fs-meta); }
+.directory-setup h2 { color:var(--ink); }
+/* First run: three numbered steps, the last one optional (next-level P18). */
+.directory-next { margin:0 0 var(--sp-5); padding:0 0 0 var(--sp-5); display:grid; gap:var(--sp-2); font-size:var(--fs-body); }
+.directory-next li { padding-left:var(--sp-1); }
+.directory-next strong { color:var(--ink); font-weight:600; margin-right:var(--sp-1); }
+.directory-next span { color:var(--muted); }
+
+.directory-layout { list-style:none; margin:0 0 20px; padding:0; display:grid; gap:6px; }
+.directory-layout li { display:flex; gap:12px; align-items:baseline; min-width:0; font-size:var(--fs-body); }
+.directory-layout strong { min-width:72px; }
+.directory-layout span { color:var(--muted); overflow-wrap:anywhere; font-family:var(--mono); font-size:var(--fs-meta); }
+.directory-existing { margin:0 0 20px; }
+.directory-existing summary { cursor:pointer; font-weight:600; }
+.directory-existing .directory-fields { margin:16px 0 0; }
+.directory-setup code { font-family:var(--mono); font-size:var(--fs-meta); }
+.source-coverage { margin: 0 0 var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-lg); background: var(--surface-card); }
+.source-coverage[data-state="partial"] { border-color: color-mix(in srgb, var(--warning) 45%, var(--hairline)); }
+.source-coverage-line { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-2) var(--sp-3); }
+.source-coverage-details { border-top: 1px solid var(--hairline-soft); padding: 0 var(--sp-3) var(--sp-3); }
+.source-coverage-project { padding: var(--sp-2) 0; border-top: 1px solid var(--hairline-soft); }
+.source-coverage-project:first-of-type { border-top: 0; }
+.source-coverage-project-head { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; font-size: var(--fs-meta); }
+.source-coverage-folders, .source-coverage-notes { list-style: none; margin: var(--sp-1) 0 0; padding: 0; display: grid; gap: 2px; }
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+/* ── Library: coverage line and dense rows (H03, R02) ───────────────────── */
+.source-coverage-line > svg { flex: none; color: var(--accent-teal); }
+.source-coverage[data-state="partial"] .source-coverage-line > svg { color: var(--warning); }
+.source-coverage-line p { flex: 1; margin: 0; font-size: var(--fs-meta); color: var(--body); line-height: 1.5; }
+.source-coverage-details > summary { cursor: pointer; padding: var(--sp-2) 0; font: 600 var(--fs-meta) var(--ui); color: var(--body-strong); }
+.source-coverage-project-head span { color: var(--muted); }
+.source-coverage-project .work-muted { margin: var(--sp-1) 0; font-size: var(--fs-meta); }
+.source-coverage-folders li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--sp-3); min-height: 30px; padding: 0 var(--sp-2); border-radius: var(--r-sm); font: var(--fs-meta) var(--mono); }
+.source-coverage-folders li:hover { background: var(--surface-soft); }
+.source-coverage-folders li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.source-coverage-folders li small { color: var(--muted); font-family: var(--ui); }
+.source-coverage-notes li { font-size: var(--fs-meta); color: var(--body); overflow-wrap: anywhere; }
+}
+@layer components {
+/* Next-level P07: last successful refresh, direct lookups, reader match. */
+.source-coverage-refreshed { margin-left: var(--sp-2); color: var(--muted); font-size: var(--fs-caption); white-space: nowrap; }
+.connected-direct-head { margin: var(--sp-2) var(--sp-3) var(--sp-1); font-size: var(--fs-caption); }
+.connected-file-match { background: var(--accent-wash); color: inherit; border-radius: var(--r-sm); box-shadow: 0 0 0 2px var(--accent-wash); }
+}
+

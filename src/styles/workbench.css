@@ -1,0 +1,602 @@
+@layer components {
+.work-rail-project-heading { display:flex; align-items:center; justify-content:space-between; padding-right:var(--sp-1); }
+.work-rail-project-heading .work-rail-label { padding-bottom:var(--sp-3); }
+.work-rail.collapsed .work-rail-project-heading { display:none; }
+.project-create-backdrop { padding:var(--sp-4); }
+.work-create.project-create-dialog { display:flex; flex-direction:column; align-items:stretch; gap:0; width:min(560px,100%); max-height:calc(100dvh - 2 * var(--sp-4)); margin:0; padding:0; overflow:hidden; color:var(--ink); background:var(--surface-card); border-color:var(--hairline); box-shadow:var(--elev-edge); }
+.project-create-dialog .work-create-head { padding:var(--sp-5) var(--sp-5) var(--sp-4); flex-shrink:0; }
+.project-create-dialog .work-create-head p { margin:0; }
+.project-create-fields { min-height:0; overflow:auto; padding:0 var(--sp-5) var(--sp-3); }
+.project-create-options summary { cursor:pointer; color:var(--muted); font-size:var(--fs-meta); padding:var(--sp-2) 0; }
+.project-create-options .work-starters { margin:var(--sp-3) 0; }
+.project-create-options .work-kind { margin-bottom:var(--sp-3); }
+.project-create-options .work-muted { line-height:1.5; }
+.project-create-footer { flex-shrink:0; border-top:1px solid var(--hairline); padding:var(--sp-3) var(--sp-5) var(--sp-4); }
+.project-create-footer p { margin:0 0 var(--sp-3); }
+.project-create-footer .work-actions { justify-content:flex-end; }
+.project-destination-card { padding:var(--sp-5); display:flex; flex-direction:column; gap:var(--sp-3); }
+.work-page{display:flex;flex-direction:column;min-height:0;height:100%}
+.work-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.work-muted{font-size:var(--fs-meta);color:var(--body)}
+.work-status{font-size:var(--fs-meta);color:var(--primary);margin-right:8px}
+.work-error{margin:12px 24px;padding:12px;background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-md);color:var(--ink);overflow-wrap:anywhere}
+.work-create{border:1px solid var(--hairline)}
+.work-create h2{font:500 var(--fs-xl) var(--ui);margin:0 0 18px}
+.work-create label{display:grid;flex-direction:column;gap:6px;margin-bottom:15px;font-size:var(--fs-meta);font-weight:600;color:var(--body-strong);}
+.work-create input,.work-create textarea,.library-search,.library-list select{font:inherit;border:1px solid var(--hairline);border-radius:var(--r-sm);background:var(--canvas);color:var(--ink);padding:9px 11px;width:100%;min-width:0}
+.work-create textarea{resize:vertical}
+.work-overview{padding:24px 28px;overflow:auto;max-width:1100px;width:100%}
+.work-empty{max-width:580px;padding:38px 28px}
+.work-empty h2{font:500 var(--fs-xl)/1.4 var(--ui);letter-spacing:var(--ls-tight);margin:0 0 12px}
+.work-empty h3{font:500 var(--fs-lg) var(--ui)}
+.work-empty p{color:var(--body);line-height:1.7;margin:0 0 20px}
+.work-file{padding:0 26px 24px;min-width:0}
+.work-file-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:15px 0;margin-bottom:16px;border-bottom:1px solid var(--hairline);font-size:var(--fs-meta);overflow:visible;position:relative;}
+.work-file-name{margin-right:auto;color:var(--body);overflow-wrap:anywhere}
+.work-file .md{max-width:760px;margin:0 auto}
+.work-file iframe{min-height:440px}
+.work-text{white-space:pre-wrap;overflow-wrap:anywhere;font:var(--fs-body)/1.65 var(--mono);font-size:var(--fs-body);}
+.work-source-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 24px;border-bottom:1px solid var(--hairline)}
+.library-layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:0;flex:1}
+.library-list{overflow:auto;min-width:0;border-right:1px solid var(--hairline);padding:15px}
+.library-list select{margin-top:9px;font-size:var(--fs-meta)}
+.library-count{padding:12px 0 6px;color:var(--muted);font-size:var(--fs-meta)}
+.library-item{display:block;text-align:left;width:100%;background:transparent;border:0;border-radius:var(--r-sm);padding:10px;color:var(--ink);cursor:pointer}
+.library-item strong{display:block}
+.library-item small{display:block;font-size:var(--fs-meta);color:var(--muted);overflow-wrap:anywhere;margin-top:4px}
+.library-item.selected,.library-item:hover{background:var(--primary-soft)}
+.library-reader{min-width:0;overflow:auto;background:var(--surface-card);}
+.library-back{display:none}
+.work-rail.rail{position:relative;isolation:isolate;border-right:1px solid var(--hairline);display:flex;flex-direction:column;box-shadow:var(--elev-edge)}
+.work-brand{font:600 var(--fs-lg) var(--ui)}
+.work-nav-row{display:flex;align-items:center;width:100%;background:transparent;cursor:pointer;text-align:left}
+.work-nav-row span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.work-nav-row:hover{background:color-mix(in srgb, var(--ink) 5%, transparent);}
+.work-nav-row:disabled{opacity:.5;cursor:default}
+.work-rail.collapsed .work-brand strong,.work-rail.collapsed .work-nav-row > span:not(.session-rollup),.work-rail.collapsed kbd,.work-rail.collapsed .work-rail-label,.work-rail.collapsed .work-workspace-row{display:none}
+.work-rail.collapsed .work-nav-row{justify-content:center}
+
+.work-overview>.work-actions>input{font:inherit;color:var(--ink);background:var(--canvas);padding:8px;border:1px solid var(--hairline);border-radius:var(--r-sm);max-width:100%}
+
+/* Conversation-first shell. The inspector is supporting context; the composer
+   remains mounted when a narrow window switches between the two surfaces. */
+.hollow-shell { background:var(--canvas); }
+/* Paint content immediately: native WebKit can retain the transparent first
+   frame of entrance animations until the window is resized. */
+/* Transparent over the canvas (same colour), so the ambient layer behind the
+   page column shows (overnight 10-11 B1). */
+.work-page { background:transparent; overflow:hidden; padding:0; animation:none; }
+.work-active .work-header { padding:var(--sp-3) var(--sp-5); min-height:0; gap:var(--sp-3); }
+.work-active .work-header h1 { font-size:var(--fs-md); margin:0; letter-spacing:var(--ls-tight); display:flex; align-items:center; gap:var(--sp-2); font-weight:600; line-height:1.3; }
+.work-status { display:inline-flex; align-items:center; gap:6px; color:var(--body); margin:0 4px 0 0; }
+.work-status[data-state="running"] { color:var(--primary); }
+.work-status[data-state="waiting"] { color:var(--warning); }
+.work-status[data-state="failed"] { color:var(--error); }
+.work-status[data-state="queued"] { color:var(--muted); }
+.work-create { flex-shrink:0; max-height:65%; overflow:auto; margin:var(--sp-4) var(--page-gutter) 0; padding:var(--sp-5) var(--sp-6); border-radius:var(--r-lg); background:var(--surface-card); border-color:var(--primary-soft-strong); box-shadow:none; max-width:none; display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); column-gap:var(--sp-6); row-gap:var(--sp-3); align-items:start; }
+.work-create h2 { margin-bottom:8px; font-size:var(--fs-xl); letter-spacing:var(--ls-tight); }
+.work-create>.work-muted { margin-bottom:24px; line-height:1.6; }
+.work-create input:focus,.work-create textarea:focus { outline:2px solid var(--primary-soft-strong); border-color:var(--primary); }
+.work-overview { max-width:1320px; padding:24px 32px 48px; margin:0 auto; }
+.work-search { display:flex; align-items:center; gap:8px; width:260px; padding:8px 12px; border:1px solid var(--hairline); border-radius:var(--r-md); color:var(--muted); background:var(--surface-card); }
+.work-search input { min-width:0; width:100%; border:0; background:transparent; color:var(--ink); font:var(--fs-meta) var(--ui); outline:none; padding:0; box-shadow:none; }
+.work-search:focus-within { outline:2px solid var(--primary-soft-strong); border-color:var(--primary); }
+.work-section-heading { display:flex; gap:12px; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.work-section-heading h2 { font:500 var(--fs-md) var(--ui); margin:0; }
+.work-section-heading>span { font-size:var(--fs-meta); color:var(--muted); }
+.work-desk { display:grid; grid-template-columns:minmax(0,1fr); flex:1; min-height:0; overflow:hidden; }
+/* Side chat (7.6): the pane takes a column beside the conversation; a narrow window gives it the whole desk (styles/side-chat.css). */
+.work-desk.has-side-chat { grid-template-columns:minmax(0,1fr) var(--side-chat-w,24rem); position:relative; }
+@container hollow-window (max-width: 53.75em) { .work-desk.has-side-chat { grid-template-columns:minmax(0,1fr); } }
+.work-conversation.chat-main { display:flex; flex-direction:column; min-width:0; min-height:0; background:var(--canvas); container-type:inline-size; }
+.work-conversation .chat-scroll-wrap { flex:1; min-height:0; display:flex; flex-direction:column; }
+/* Chat fills its pane (2026-10-07, restored 2026-11-01): the side gutter only. */
+.work-conversation.chat-main .chat-scroll { flex:1; width:100%; padding:var(--sp-5) var(--sp-6); overflow:auto; }
+.work-conversation.chat-main .chat-empty { padding:var(--sp-4) 0; width:100%; max-width:none; gap:var(--sp-2); margin:auto; }
+.work-conversation.chat-main .chat-empty-title { max-width:none; font:600 var(--fs-xl)/1.25 var(--ui); letter-spacing:var(--ls-tight); color:var(--ink); margin:0; }
+.work-conversation.chat-main .chat-empty-sub { font-size:var(--fs-body); max-width:none; color:var(--muted); margin:0; }
+.work-conversation.chat-main .chat-empty-suggestions { display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); width:100%; gap:var(--sp-2); margin-top:var(--sp-4); }
+.work-conversation.chat-main .chat-suggestion>span { gap:4px; }
+.work-conversation .chat-empty-teamwork,.work-conversation .chat-context-pill-row,.work-conversation .chat-preview-chip-row { display:none; }
+.work-conversation.chat-main .chat-input { width:100%; padding:var(--sp-3) var(--sp-6) var(--sp-4); margin:0 auto; flex-shrink:0; }
+.work-conversation.chat-main .chat-composer { background:var(--surface-card); border:1px solid var(--hairline); border-radius:var(--r-lg); box-shadow:none; transition:border-color var(--t-fast); }
+.work-conversation.chat-main .chat-input textarea { min-height:64px; font-size:var(--fs-md); line-height:1.6; }
+/* Short windows start the box one line tall (overnight 11-04, C2; chat-workspace.css). */
+@media (max-height: 560px) { .work-conversation.chat-main .chat-input textarea { min-height:0; } }
+/* The context label gives way before the model name does (2026-11-01):
+   it shrinks first, then shows only its folder icon (its name keeps the words).
+   It never clips below that icon button, which must stay clickable. */
+.work-conversation .chat-compose-help { color:var(--muted); position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+.work-source-actions select { max-width:100%; background:var(--canvas); color:var(--ink); border:1px solid var(--hairline); padding:7px; }
+.work-source-actions label { min-width:0; display:flex; gap:8px; align-items:center; }
+.work-rail.rail { width:var(--rail-w); min-width:var(--rail-w); background:var(--surface-soft); padding:0 var(--sp-2) var(--sp-2); gap:var(--sp-1); overflow:hidden; }
+.work-brand { padding:0 var(--sp-1) 0 var(--sp-2); display:flex; align-items:center; justify-content:space-between; height:44px; min-height:44px; margin:0; flex-shrink:0; }
+.work-brand strong { display:flex; gap:var(--sp-2); align-items:center; font-weight:600; letter-spacing:var(--ls-tight); font-size:var(--fs-body); font-optical-sizing:var(--type-optical); }
+.work-brand-mark { width:22px; height:22px; display:grid; place-items:center; background:transparent; color:var(--canvas); border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-sm); font:600 var(--fs-xl) var(--ui); box-shadow:none; }
+.work-brand .btn { opacity:.65; }
+.work-nav-row { padding:0 var(--sp-2); min-height:30px; border-radius:var(--r-sm); gap:var(--sp-2); margin:0; height:30px; border:0; font:500 var(--fs-body)/1 var(--ui); color:var(--body-strong); transition:background var(--t-fast) var(--ease-soft); }
+.work-rail-label { letter-spacing:var(--ls-caps); padding:var(--sp-3) var(--sp-2) var(--sp-1); font:500 var(--fs-caption)/1.4 var(--mono); text-transform:uppercase; color:var(--muted); }
+.work-workspace-row { margin:1px 0; }
+.work-rail-bottom { border-top:1px solid var(--hairline-soft); border-color:var(--hairline-soft); display:flex; align-items:center; gap:2px; height:44px; min-height:44px; margin-top:auto; padding:0 var(--sp-1); padding-top:var(--sp-2); }
+.work-rail.collapsed { width:var(--rail-w-collapsed); min-width:var(--rail-w-collapsed); }
+.library-layout { grid-template-columns:280px minmax(0,1fr); }
+.library-list { padding:20px 16px; background:var(--canvas); }
+.library-item { padding:14px 12px; border-radius:var(--r-md); }
+.library-item strong { overflow-wrap:anywhere; font-size:var(--fs-body); font-weight:500; color:var(--ink); }
+.library-back { display:inline-flex; margin:12px 24px 0; }
+.library-reader .work-file { padding-top:0; }
+.library-page:not(.library-has-file) .library-layout { display:block; overflow:auto; }
+.library-page:not(.library-has-file) .library-list { border:0; padding:var(--sp-2) var(--page-gutter) var(--sp-5); max-width:none; margin:0; }
+.library-page:not(.library-has-file) .library-search { max-width:420px; margin-right:12px; }
+/* P1-19: the folder picker stacks under the search field (and By meaning) in the browse state. */
+.library-page:not(.library-has-file) .library-list>.library-folder { display:flex; width:max-content; max-width:230px; margin-top:var(--sp-2); }
+.library-page:not(.library-has-file) .library-results { margin-top:var(--sp-1); }
+.library-page:not(.library-has-file) .library-item { background:transparent; border:0; padding:6px var(--sp-3); min-height:40px; position:relative; transition:border-color var(--t-fast) var(--ease); flex-direction:column; border-bottom:1px solid var(--hairline-soft); border-radius:var(--r-sm); transform:none; display:grid; grid-template-columns:auto minmax(0, 1fr) auto; column-gap:var(--sp-2); align-items:center; }
+.library-page:not(.library-has-file) .library-reader { display:none; }
+/* Detail surfaces earn space only after there is something to inspect. */
+@container hollow-window (max-width: 68.75em) {
+  .work-status-words { display:none; }
+  .work-overview { padding:24px; }
+}
+/* The links into Waiting on you (permission changes, failing automations,
+   budget pauses) sit above the split so they show at every width. The
+   wrapper has no box of its own: it is empty (zero height) until a review
+   exists, so the Automations layout is unchanged in the common case. */
+.workflow-permission-reviews { flex:0 0 auto; display:grid; gap:var(--sp-2); }
+.workflow-permission-reviews > .waiting-link { margin:var(--sp-3) var(--sp-6) 0; width:auto; }
+.workflow-browse-back { display:none; }
+@container hollow-window (max-width: 68.75em) {
+  .workflow-browse-back { display:inline-flex; margin:16px; }
+  .workflow-permission-reviews > .waiting-link { margin:var(--sp-2) var(--sp-4) 0; }
+}
+.workflow-open { min-width:0; border:0; background:none; color:inherit; text-align:left; padding:0; cursor:pointer; font:inherit; }
+/* Paperclip PR 15b: a watchdog's minutes input beside its Off box (every agent since merged plan slice 3). */
+.settings-watchdog { display:flex; gap:12px; align-items:center; min-width:0; }
+.settings-watchdog .settings-input { flex:1; }
+.settings-watchdog-off { display:flex; gap:6px; align-items:center; font-size:var(--fs-meta); white-space:nowrap; }
+/* COO rebuild L7: Models the CFO may use, one group of checkboxes per agent. */
+.cfo-allow { display:grid; gap:var(--sp-2); margin-top:var(--sp-2); }
+.cfo-allow-agent { display:flex; flex-wrap:wrap; gap:var(--sp-1) var(--sp-3); align-items:center; border:0; margin:0; padding:0; min-width:0; }
+.cfo-allow-agent legend { padding:0; margin-bottom:var(--sp-1); }
+.cfo-budget { display:grid; gap:var(--sp-1); margin:var(--sp-2) 0; }
+.cfo-budget-input { width:6rem; }
+
+
+/* Rail tree: a workspace header with its conversations nested beneath. */
+.work-tree { margin:var(--sp-1) 0 var(--sp-2); }
+.work-tree-head { display:flex; align-items:center; gap:2px; border-radius:var(--r-xs); }
+.work-tree-head.current { background:var(--fill-hover); }
+.work-tree-head.current .work-workspace-title { color:var(--ink); font-weight:600; }
+.work-tree-head .work-workspace-row { flex:1; min-width:0; margin:0; }
+.work-tree-head .work-row-actions { flex-shrink:0; color:var(--muted); }
+.work-tree-head .work-row-actions:hover,.work-tree-head .work-row-actions:focus-visible { color:var(--ink); }
+/* Moving conversations (2026-09-30): a project row a dragged conversation
+   hovers over, and the row in flight. */
+.work-tree-head.session-drop-target { background:var(--primary-soft-strong); box-shadow:inset 0 0 0 1px var(--primary); }
+.work-tree-head.session-drop-target .work-workspace-row { color:var(--ink); }
+.session-dragging { opacity:.45; }
+.studio-ask { display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-2); max-width:720px; margin-top:var(--sp-4); padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3); border:1px solid var(--hairline); border-radius:var(--r-lg); background:var(--surface-card); color:var(--muted); }
+.studio-ask:focus-within { border-color:var(--primary); box-shadow:var(--ring); }
+.studio-ask textarea { flex:1; min-width:0; border:0; background:transparent; color:var(--ink); font:var(--fs-body) var(--ui); line-height:1.4; outline:none; padding:var(--sp-1) 0; box-shadow:none; resize:none; }
+/* The scope's context sentence under the field (P1-11), aligned with its text. */
+.studio-ask-hint { flex:0 0 100%; margin:0; padding-left:calc(16px + var(--sp-2)); font-size:var(--fs-meta); color:var(--muted); }
+.work-rail.collapsed .work-tree { display:none; }
+
+/* Text field in the shared confirm dialog (showPrompt, e.g. rename). */
+.confirm-input { display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-meta); color: var(--muted); }
+.confirm-input input { font: inherit; font-size: var(--fs-body); color: var(--ink); background: var(--surface-soft); border: 1px solid var(--hairline); border-radius: var(--r-sm); padding: 8px 10px; }
+.confirm-input input:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+/* Checklist dialogs (Suggest workspaces to archive…): a long list scrolls. */
+.confirm-checklist { display: flex; flex-direction: column; gap: 4px; max-height: 50vh; overflow-y: auto; }
+.confirm-check { display: flex; align-items: flex-start; gap: 8px; padding: 6px 4px; border-radius: var(--r-sm); cursor: pointer; }
+.confirm-check:hover { background: var(--surface-soft); }
+.confirm-check input { margin-top: 3px; }
+.confirm-check-text { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-body); color: var(--ink); }
+.confirm-check-text small { font-size: var(--fs-meta); color: var(--muted); }
+/* A checklist's aside (P1-40: agent-started chats to open): rows with a
+   button each and nothing to tick. */
+.confirm-aside { display: flex; flex-direction: column; gap: 4px; }
+.confirm-aside-heading { margin: 0; font-size: var(--fs-meta); font-weight: 600; color: var(--ink); }
+.confirm-aside-note { margin: 0; font-size: var(--fs-meta); color: var(--muted); }
+.confirm-aside .confirm-checklist { margin: 0; padding: 0; list-style: none; max-height: 30vh; }
+.confirm-aside .confirm-check { align-items: center; cursor: default; }
+.confirm-aside .confirm-check-text { flex: 1; min-width: 0; }
+
+/* Build workspaces (build_workspaces.rs): kind switch, repo fields, branch chip. */
+.work-kind { display:inline-flex; gap:2px; padding:2px; margin:0 0 15px; border:1px solid var(--hairline); border-radius:var(--r-md); }
+.work-kind button { display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:var(--fs-meta); padding:6px 12px; border:0; border-radius:var(--r-sm); background:none; color:var(--body); cursor:pointer; }
+.work-kind button[aria-checked="true"] { background:var(--primary-soft); color:var(--ink); }
+.work-build-fields { padding:14px 16px 1px; margin:0 0 15px; border:1px solid var(--hairline); border-radius:var(--r-md); }
+.work-build-fields > p { margin:0 0 12px; }
+.work-build-repo { display:flex; gap:var(--sp-2); align-items:center; flex-wrap:wrap; }
+.work-build-repo select { flex:1; font:inherit; border:1px solid var(--hairline); border-radius:var(--r-sm); background:var(--canvas); color:var(--ink); padding:8px 10px; min-width:0; }
+.work-branch { display:inline-flex; align-items:center; gap:5px; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:var(--fs-meta) var(--mono); color:var(--body); padding:3px 8px; margin-right:6px; border:1px solid var(--hairline); border-radius:var(--r-pill); }
+.work-branch.gone { color:var(--muted); border-style:dashed; }
+/* A build workspace's branch opens its Changes in the Preview pane (COO rebuild L4). */
+button.work-branch { background:none; cursor:pointer; }
+button.work-branch:hover:not(:disabled) { border-color:var(--primary); color:var(--ink); }
+button.work-branch:disabled { cursor:default; }
+/* ── Project row state (Conductor-style) ─────────────────────────────
+   A build workspace's branch glyph, tinted by its PR's state. */
+.work-workspace-git { display:inline-flex; flex:none; color:var(--muted); }
+.work-workspace-git.open { color:var(--success); }
+.work-workspace-git.merged { color:var(--primary); }
+.work-workspace-git.closed { color:var(--error); }
+/* The selected fill weakens metadata contrast; keep status words readable. */
+.work-workspace-row .work-workspace-title { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+/* Twin titles say where each comes from (consolidation E). */
+.work-workspace-row .work-workspace-origin { flex: 0 1 auto; min-width: 0; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: var(--fs-caption); }
+/* A project's roll-up badge (A1) sits at the row's end. */
+.work-workspace-row .session-rollup { margin-left:auto; padding-left:var(--sp-1); }
+/* A running row's live elapsed time (3.1): tabular digits in a lane at the
+   row's end, so the title doesn't shift as it ticks. */
+.work-workspace-row .work-row-timer { flex:none; margin-left:auto; padding-left:var(--sp-1); min-width:32px; text-align:right; color:var(--muted); font-size:var(--fs-caption); font-variant-numeric:tabular-nums; }
+.work-workspace-row .work-row-timer ~ .session-rollup { margin-left:0; }
+/* Shelves (3.1): the Working, Snoozed and Settled groups sit at the bottom of
+   the sidebar's scroll, under everything else; they are last in the DOM, so
+   focus order is the drawn order. The first shelf takes the free space above
+   it (margin-top:auto); the rest follow it without a gap. */
+.work-rail-scroll > .rail-shelf { margin-top:auto; padding-top:var(--sp-2); }
+.work-rail-scroll > .rail-shelf ~ .rail-shelf { margin-top:0; padding-top:0; }
+.studio-loading { display: flex; align-items: center; justify-content: center; gap: var(--sp-3); padding: var(--sp-7); color: var(--muted); min-height: 120px; flex-wrap: wrap; }
+.studio-loading-mark { width: 16px; height: 22px; border: 2px solid var(--primary); border-radius: var(--r-lg) var(--r-lg) var(--r-xs) var(--r-xs); background: var(--primary-soft); }
+.studio-starters { min-width: 0; }
+.studio-starter-icon { display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: var(--sp-2); color: var(--primary); background: var(--primary-soft); border-radius: var(--r-md); }
+.work-build-path { display: block; margin-top: 4px; color: var(--muted); font: var(--fs-caption) var(--mono); overflow-wrap: anywhere; }
+.work-build-none { flex: 1 1 280px; }
+.work-create-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-4); }
+.work-starters { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.library-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: var(--sp-2); row-gap: 1px; min-height: 40px; padding: 6px var(--sp-3); }
+.library-row > .library-tag { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+.library-tag { padding: 1px 6px; border: 1px solid var(--hairline); border-radius: var(--r-pill); color: var(--muted); font-size: var(--fs-caption); white-space: nowrap; }
+/* Home: one list of workspaces built from ListRow (frontier polish). Rows
+   are hairline-divided, neutral on hover; the pin appears on hover/focus. */
+.studio-home .work-list { display: grid; border-top: 1px solid var(--hairline-soft); }
+.studio-work-row { position: relative; border-bottom: 1px solid var(--hairline-soft); }
+.studio-work-row > .work-card { min-height: 48px; padding-right: 80px; border-radius: 0; }
+.studio-work-row > .work-card .ui-row-icon { width: 24px; height: 24px; }
+.studio-work-row > .work-card .ui-row-trailing { display: flex; align-items: center; gap: var(--sp-3); }
+.work-card-status { padding: 1px 8px; border: 1px solid var(--hairline-soft); border-radius: var(--r-pill); color: var(--body); font-size: var(--fs-caption); }
+.work-card-status:empty { display: none; }
+.work-card-status.is-blocked { color: var(--warning); }
+/* Pin and the row's "⋯" are always visible, quiet until hovered
+   (consolidation D: no hover-only or right-click-only actions). */
+.work-more-btn { flex: none; }
+.studio-home .ui-empty { padding: var(--sp-6) 0; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .studio-work-row { animation: pq-row-in 180ms var(--ease-out) backwards; animation-delay: calc(min(var(--studio-index, 0), 8) * 15ms); }
+}
+.library-page:not(.library-has-file) .library-item > .library-tag { grid-column: 3; grid-row: 1 / span 2; }
+.top-bar-page-actions { display: contents; }
+.work-topbar-actions { display: inline-flex; align-items: center; gap: var(--sp-2); margin-right: var(--sp-2); }
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+.hollow-mark { display: block; width: 100%; height: 100%; object-fit: contain; }
+.studio-brand-name { display: grid; gap: var(--sp-1); font-size: var(--fs-body); font-weight: 600; letter-spacing: var(--ls-tight); }
+.studio-brand-name small { font-size: var(--fs-caption); letter-spacing: 0; color: var(--muted); font-weight: 400; display: none; }
+/* Home: a deliberate brand moment, then compact, useful work. */
+.studio-home { width: 100%; display: flex; flex-direction: column; max-width: none; padding: 0 var(--sp-6) var(--sp-6); gap: var(--sp-4); }
+.studio-home .work-section-heading { margin-bottom: var(--sp-4); }
+.studio-home .work-section-heading h2 { font-size: var(--fs-md); color: var(--ink); }
+.studio-starter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--sp-2); }
+.studio-starter { position: relative; display: flex; flex-direction: column; align-items: flex-start; text-align: left; color: var(--ink); cursor: pointer; transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease); min-height: 0; padding: var(--sp-3); gap: 2px var(--sp-3); border: 1px solid var(--hairline-soft); border-radius: var(--r-md); background: var(--surface-card); box-shadow: none; }
+.studio-starter > span:not(.studio-starter-icon) { line-height: 1.6; max-width: 190px; font-size: var(--fs-meta); color: var(--muted); }
+.studio-starter > svg { position: absolute; right: var(--sp-4); top: var(--sp-5); color: var(--muted); }
+.work-conversation.chat-main .chat-suggestion { transition: border-color var(--t-fast) var(--ease); }
+.studio-library-file-icon { color: var(--primary); margin-bottom: var(--sp-3); }
+.library-has-file .studio-library-file-icon { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .page > :not(.page-retained),
+  :root:not([data-motion="reduced"]) .page > .page-retained > * { animation: studio-arrive .45s var(--studio-ease); }
+}
+:root[data-motion="reduced"] .studio-starter:hover, :root[data-motion="reduced"] .library-item:hover { transform: none; }
+:root[data-motion="reduced"] .chat-suggestion:hover { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .studio-starter:hover, .chat-suggestion:hover, .library-item:hover { transform: none; }
+}
+/* The overlay sidebar's own close (consolidation lane B): only where it
+   covers the top bar's toggle. */
+.work-rail-close { display: none; }
+@container hollow-window (max-width: 53.75em) {
+  .work-rail:not(.collapsed) { position: absolute; inset: 0 auto 0 0; z-index: 100; box-shadow: var(--elev-3); }
+  .work-rail:not(.collapsed) .work-rail-close { display: inline-grid; place-items: center; }
+}
+.work-file .md { font-size: var(--fs-md); line-height: var(--lh-reading); }
+.work-file .md h1 { font: 600 var(--fs-xl)/1.35 var(--ui); letter-spacing: var(--ls-tight); }
+.work-file .md h2 { font: 600 var(--fs-lg)/1.4 var(--ui); letter-spacing: var(--ls-tight); }
+.work-file .md h3 { font: 600 var(--fs-md)/1.45 var(--ui); }
+.work-build-repo .hs-select { flex: 1 1 280px; }
+/* ── Library search (H09) ──────────────────────────────────────────────── */
+.library-results.updating { opacity: .6; transition: opacity 160ms ease; }
+.work-create > * { grid-column: 1 / -1; }
+.work-create > label:has(textarea[aria-label="Desired result"]) { grid-column: 1; grid-row: span 2; }
+.work-create > label:has(input[aria-label="Workspace name"]), .work-create > .work-kind { grid-column: 2; }
+.work-create-head h2 { margin: 0 0 var(--sp-2); }
+.work-starters > span { color: var(--muted); font-size: var(--fs-meta); margin-right: var(--sp-1); }
+.work-starters button { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-pill); background: var(--surface-soft); color: var(--body); font: 500 var(--fs-meta) var(--ui); cursor: pointer; }
+.work-starters button:hover { border-color: var(--primary); color: var(--ink); }
+.work-starters button[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-soft); color: var(--ink); }
+.work-create label > .work-muted { display: inline; font-weight: 400; }
+.work-create .work-kind { margin: 0; justify-self: start; }
+@container hollow-window (max-width: 68.75em) {
+  .work-create { grid-template-columns: minmax(0, 1fr); padding: var(--sp-4); }
+  .work-create > label:has(textarea[aria-label="Desired result"]), .work-create > label:has(input[aria-label="Workspace name"]), .work-create > .work-kind { grid-column: 1; grid-row: auto; }
+}
+.library-row > strong { grid-column: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.library-row > small { grid-column: 1; color: var(--muted); font-size: var(--fs-caption); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.library-page .connected-files { padding: var(--sp-4) var(--page-gutter); }
+@keyframes pq-row-in { from { transform: translateY(6px); } to { transform: none; } }
+/* Library results are a dense list, not 132px cards (H03): name, location
+   and reader state per 40px row, several columns on wide windows. */
+.library-page .library-group-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: var(--sp-2) var(--sp-3); align-content: start; }
+/* Folder groups (2026-10-01): one heading per folder, evidence folded. */
+.library-group + .library-group { margin-top: var(--sp-3); }
+.library-group-head { margin: 0; font: inherit; }
+.library-group-head > button { display: flex; align-items: center; gap: var(--sp-2); width: 100%; padding: var(--sp-2) var(--sp-1); border: 0; background: none; color: var(--ink); font-size: var(--fs-body); font-weight: 600; text-align: left; cursor: pointer; border-radius: var(--r-sm); }
+.library-group-head > button:hover { background: var(--primary-soft); }
+.library-group-head > button > svg { color: var(--muted); transition: transform var(--t-fast) var(--ease); flex: none; }
+.library-group-head > button[aria-expanded="true"] > svg { transform: rotate(90deg); }
+.library-group-head > button > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.library-group-head > button > small { color: var(--muted); font-size: var(--fs-meta); font-weight: 400; font-variant-numeric: tabular-nums; }
+.library-group-more { margin: var(--sp-1) 0 0 var(--sp-1); }
+.library-page:not(.library-has-file) .library-item:hover { transform: none; background: transparent; }
+.library-page:not(.library-has-file) .library-row:hover { background: linear-gradient(var(--primary-soft), var(--primary-soft)), var(--material-solid); }
+.library-page:not(.library-has-file) .library-item > .studio-library-file-icon { grid-row: 1 / span 2; margin: 0; }
+.library-page:not(.library-has-file) .library-item > strong { grid-column: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.library-page:not(.library-has-file) .library-item > small, .library-page:not(.library-has-file) .library-item > span:not(.library-tag):not(.studio-library-file-icon) { grid-column: 2; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: var(--fs-caption); }
+/* The collapsed (icon) rail stacks the icon buttons. */
+.work-rail.collapsed .work-brand { flex-direction: column; gap: var(--sp-1); height: auto; min-height: 0; padding: var(--sp-2) 0; }
+.work-rail.collapsed .work-rail-bottom { flex-direction: column; height: auto; padding: var(--sp-2) 0; }
+.work-active .work-header .project-icon[data-size=card] { width: 20px; height: 20px; }
+.work-active .work-header .project-icon[data-size=card] img,
+.work-active .work-header .project-icon[data-size=card] svg { width: 20px; height: 20px; }
+/* The open workspace's controls live in the top bar; its header line is
+   kept only for screen readers (the breadcrumb names the workspace). */
+.work-header.work-header-slim { position: absolute; width: 1px; height: 1px; min-height: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+/* The title stays a real box (1px), so the page's heading is still found by its name; flex min-width:0 would otherwise collapse it to nothing. */
+.work-header-slim .page-title-block, .work-header-slim .page-title { min-width: 1px; min-height: 1px; }
+/* Collapsed rail under the overlay title bar (2026-09-29). The traffic lights
+   (x 16–68) are wider than the 60px icon rail. Widening the rail to fit them
+   made it too big (user), so the rail's top 44px joins the title strip
+   instead: canvas background, the top bar's hairline continued across it, and
+   the rail's own edge line starting below the strip. The lights then sit on one
+   continuous toolbar, as in Finder or Xcode, and the top bar only needs to clear
+   the 8px they overhang. */
+html[data-chrome="overlay"] .work-rail.collapsed {
+  position: relative;
+  border-right-color: transparent;
+  background: linear-gradient(to bottom, var(--canvas) 0 44px, var(--surface-soft) 44px);
+}
+html[data-chrome="overlay"] .work-rail.collapsed::before,
+html[data-chrome="overlay"] .work-rail.collapsed::after { content: ''; position: absolute; pointer-events: none; }
+html[data-chrome="overlay"] .work-rail.collapsed::before { top: 43px; left: 0; right: 0; height: 1px; background: var(--hairline-soft); }
+html[data-chrome="overlay"] .work-rail.collapsed::after { top: 44px; bottom: 0; right: 0; width: 1px; background: var(--hairline); }
+html[data-chrome="overlay"] .work-rail.collapsed + .canvas .top-bar { padding-left: var(--sp-5); }
+.work-rail .work-brand {
+  height: 44px; min-height: 44px; padding: 0 var(--sp-1) 0 var(--sp-2); margin: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  -webkit-user-select: none; user-select: none;
+}
+html[data-chrome="overlay"] .work-rail .work-brand { padding-left: 76px; }
+/* The brand row holds the name only (asks 10-11 A3: its actions moved to the top bar). */
+html[data-chrome="overlay"] .work-rail:not(.collapsed) .work-brand { padding-right: var(--sp-2); }
+html[data-chrome="overlay"] .work-rail:not(.collapsed) .work-brand strong { gap: var(--sp-1); }
+/* At large text scales the name gives way (ellipsis). */
+.work-rail:not(.collapsed) .work-brand strong { min-width: 0; overflow: hidden; }
+.work-rail:not(.collapsed) .work-brand .studio-brand-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html[data-chrome="overlay"] .work-rail.collapsed .work-brand { padding-top: var(--sp-7); padding-left: 0; }
+.work-rail .work-brand strong { gap: var(--sp-2); font: 600 var(--fs-body)/1 var(--ui); letter-spacing: 0; }
+.work-rail .work-brand-mark { width: 18px; height: 18px; }
+.work-rail .studio-brand-name { font-size: var(--fs-body); }
+.work-nav-row > svg { width: 15px; height: 15px; color: var(--muted); }
+.work-nav-row.selected { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); border: 0; }
+.work-nav-row.selected > svg { color: var(--ink); }
+.work-rail-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; }
+.work-rail .work-brand, .work-rail-bottom { flex-shrink: 0; }
+.studio-starters .work-section-heading h2 { font: 500 var(--fs-meta)/1 var(--ui); color: var(--muted); letter-spacing: 0; text-transform: none; }
+.studio-starter > svg:last-child { display: none; }
+.studio-starter strong { font: 500 var(--fs-body)/1.3 var(--ui); }
+.work-conversation.chat-main .chat-composer:focus-within {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--hairline));
+  box-shadow: var(--ring);
+}
+/* ── Labelled destinations (next-level P01). The four daily tools are named
+   rows with their ⌘ digit, above the workspace tree; Settings is the one row
+   in the bottom bar. Collapsed, they are the icon column. */
+.work-rail-primary { display: flex; flex-direction: column; gap: 1px; flex-shrink: 0; padding: 0 0 var(--sp-2); border-bottom: 1px solid var(--hairline-soft); }
+.work-rail .work-nav-row { height: var(--row-h); min-height: var(--row-h); }
+.work-primary-row > span:not(.session-rollup) { flex: 1; min-width: 0; }
+.work-primary-key { flex: none; margin-left: auto; padding: 0; border: 0; background: none; color: var(--muted-soft); font: 500 var(--fs-caption)/1 var(--ui); font-variant-numeric: tabular-nums; opacity: 0; transition: opacity var(--t-fast) var(--ease); }
+.work-primary-row:hover .work-primary-key, .work-primary-row:focus-visible .work-primary-key { opacity: 1; }
+/* Review's waiting count (consolidation D): always visible; "–" while unknown (P1-14). */
+.work-primary-count { flex: none; margin-left: auto; min-width: 18px; padding: 1px 6px; border-radius: var(--r-pill); background: var(--fill-selected); color: var(--ink); font: 600 var(--fs-caption)/1.4 var(--ui); font-variant-numeric: tabular-nums; text-align: center; }
+.work-primary-count + .work-primary-key { margin-left: var(--sp-1); }
+/* Review's drafts as their own quiet word beside the label, never in the
+   count (P1-14, D3); hidden with the label in the collapsed rail. */
+.work-primary-note { margin-left: var(--sp-1); color: var(--muted-soft); font: 500 var(--fs-caption)/1 var(--ui); white-space: nowrap; }
+.work-rail.collapsed .work-primary-row { position: relative; }
+.work-rail.collapsed .work-primary-count { position: absolute; top: 2px; right: 2px; min-width: 14px; padding: 0 3px; font-size: var(--fs-caption); }
+.work-primary-row.selected { background: var(--fill-selected); color: var(--ink); }
+.work-primary-row.selected > svg { color: var(--primary); }
+.work-rail-bottom .work-primary-row { flex: 1; }
+/* The sidebar's Pinned group (2026-10-21). A pinned row's pin sits where the
+   old pin glyph did, quiet: a mark, not a control, since 2026-11-06 (Unpin is
+   in the row's menus). A dragged pin shows where it lands as a line above or
+   below a header. */
+.work-tree-pin { flex: 0 0 auto; display: grid; place-items: center; width: 24px; height: 24px; color: var(--muted-soft); }
+.work-tree-head.pin-drop-before { box-shadow: inset 0 2px 0 var(--primary); }
+.work-tree-head.pin-drop-after { box-shadow: inset 0 -2px 0 var(--primary); }
+/* Collapsed, the Pinned group is a column of workspace icons on top. */
+.work-rail-pinned-mini { display: none; }
+.work-rail.collapsed .work-rail-pinned-mini { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: var(--sp-1) 0; }
+.work-rail-pinned-mini-row { position: relative; display: grid; place-items: center; width: 100%; height: var(--row-h); padding: 0; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--body-strong); cursor: pointer; }
+.work-rail-pinned-mini-row:hover:not(:disabled) { background: var(--primary-soft); }
+.work-rail-pinned-mini-row.selected { background: var(--fill-selected); }
+.work-rail-pinned-mini-row:disabled { opacity: .5; cursor: default; }
+.work-rail-pinned-mini-row > .session-rollup,
+.work-rail.collapsed .work-primary-row > .session-rollup { position:absolute; right:1px; bottom:1px; padding:1px; background:var(--surface-card); border-radius:var(--r-sm); }
+.work-rail-list-error { display:flex; align-items:center; flex-wrap:wrap; gap:var(--sp-1); padding:var(--sp-2); font-size:var(--fs-caption); }
+.work-rail-list-error > [role="alert"] { display:flex; align-items:center; gap:var(--sp-1); color:var(--error); }
+.work-rail-list-error-text { overflow-wrap:anywhere; }
+.work-rail-loading { display:grid; gap:var(--sp-2); padding:var(--sp-2); }
+.work-rail-loading > i { display:block; height:var(--row-h); border-radius:var(--r-sm); background:var(--fill-selected); }
+.work-rail.collapsed .work-rail-list-error { justify-content:center; padding:var(--sp-1); }
+.work-rail.collapsed .work-rail-list-error-text { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.work-workspace-row > span:first-of-type { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.work-rail.collapsed .work-primary-row > span:not(.session-rollup), .work-rail.collapsed .work-primary-key { display: none; }
+.work-rail.collapsed .work-primary-row { justify-content: center; padding: 0; }
+.work-rail.collapsed .work-rail-primary { align-items: center; border-bottom: 0; }
+/* Static selection belongs to the row itself: no observer or layout reads. */
+.work-rail-primary, .work-rail-scroll { position: relative; isolation: isolate; }
+.work-primary-row.selected { position:relative; background:var(--fill-selected); }
+.work-primary-row.selected::before { content:''; position:absolute; inset:var(--sp-2) auto var(--sp-2) 0; width:2px; background:var(--primary); pointer-events:none; }
+.work-rail.collapsed .work-primary-row.selected::before { display:none; }
+@media (forced-colors: active) {
+  .work-primary-row.selected { outline:1px solid Highlight; outline-offset:-2px; }
+  .work-primary-row.selected::before { background:Highlight; }
+}
+
+@container hollow-window (max-width: 53.75em) {
+  /* The branch name stays in the chip's tooltip and the Workspace view's
+     Changes section. The group never wraps under the bar: the title
+     truncates instead (run 15 P1). */
+  .work-topbar-actions .work-branch { max-width: 28px; flex: none; overflow: hidden; white-space: nowrap; color: transparent; }
+  .work-topbar-actions .work-branch > svg { color: var(--muted); flex: none; }
+  .work-topbar-actions { gap: var(--sp-1); margin-right: 0; flex-wrap: nowrap; }
+}
+/* A workspace page does not play the page-arrival motion. */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .work-page { animation: none; }
+}
+}
+@layer shell {
+
+/* Exceptions to the app-wide disabled cursor and focus ring (styles/shell.css):
+   the rail's icon buttons keep a plain cursor and an inset ring. */
+/* The sidebar's section headings (overnight 11-04 S1): an inset ring, which
+   the scrolling list would otherwise clip on the left. */
+.work-rail-section-toggle:focus-visible { outline:var(--focus-outline); outline-offset:-2px; }
+}
+@layer components {
+/* Shared dialog shell. The backdrop and card are used by Export, custom icons,
+   new projects, Time Machine, project destination, canvas look,
+   prep packs and conflict copies. Runbooks, the map and the night queue were
+   cut overnight 11-08 S4. */
+.rbk-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 8400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(4px);
+  animation: confirm-fade-in 120ms var(--ease-out) both;
+}
+.rbk-backdrop.is-closing { animation: overlay-out 140ms var(--ease-in) forwards; pointer-events: none; }
+.rbk-card {
+  display: flex;
+  flex-direction: column;
+  width: min(1100px, 94vw);
+  height: min(760px, 88vh);
+  padding: var(--sp-3) var(--sp-4);
+  gap: var(--sp-2);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+  animation: confirm-pop-in var(--t-med) var(--ease-out) both;
+  outline: none;
+}
+.rbk-head { display: flex; align-items: center; gap: var(--sp-3); }
+.rbk-head h2 { margin: 0; font-size: var(--fs-lg); color: var(--ink); }
+.rbk-legend { flex: 1; font-size: var(--fs-meta); color: var(--muted); }
+.rbk-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 2fr;
+  gap: var(--sp-3);
+}
+.rbk-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  border-right: 1px solid var(--hairline-soft);
+  padding-right: var(--sp-2);
+}
+.rbk-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--sp-1) var(--sp-2);
+  width: 100%;
+  padding: var(--sp-2);
+  border: 1px solid var(--material-edge);
+  border-radius: var(--r-md);
+  background: var(--material-solid);
+  box-shadow: var(--elev-edge);
+  margin-bottom: var(--sp-2);
+  color: var(--body);
+  text-align: left;
+  cursor: pointer;
+}
+.rbk-row:hover { background: var(--surface-sunken); }
+.rbk-row.is-active { background: linear-gradient(var(--primary-soft), var(--primary-soft)), var(--material-solid); }
+.rbk-list > :last-child .rbk-row { margin-bottom: 0; }
+.rbk-row.is-active .rbk-row-meta { color: var(--ink); }
+.rbk-row-title { font-size: var(--fs-body); color: var(--ink); overflow-wrap: anywhere; font-weight: 500; }
+.rbk-row-meta { grid-column: 1; font-size: var(--fs-meta); color: var(--muted); }
+.rbk-row .ui-pill { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+.rbk-detail { overflow-y: auto; min-width: 0; padding: var(--sp-3); border: 1px solid var(--material-edge); border-radius: var(--r-lg); background: var(--material-solid); box-shadow: var(--elev-edge); }
+.rbk-note code { font-family: var(--mono); font-size: var(--fs-meta); color: var(--muted); }
+.rbk-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: var(--sp-2) 0; }
+.rbk-note { margin: var(--sp-1) 0; font-size: var(--fs-meta); color: var(--muted); list-style: none; }
+.rbk-note.is-error { color: var(--error); }
+.rbk-body[hidden] { display: none; }
+@container hollow-window (max-width: 53.75em) {
+  .rbk-body { grid-template-columns: 1fr; }
+  .rbk-list { border-right: 0; border-bottom: 1px solid var(--hairline-soft); max-height: 30vh; }
+}
+}
+
+@layer components {
+/* The sidebar (overnight 11-04 S1; L8, 11-10; L1, 11-12): the pages, a
+   foldable Recent heading, one row per project and a draggable edge. */
+.work-rail-project-heading { display:flex; align-items:center; gap:2px; padding-right:var(--sp-1); margin-top:var(--sp-2); }
+.work-rail-section-toggle { display:inline-flex; align-items:center; gap:var(--sp-1); min-width:0; margin-right:auto; padding:0 var(--sp-1) 0 0; border:0; border-radius:var(--r-xs); background:transparent; color:var(--muted); cursor:pointer; }
+.work-rail-section-toggle .work-rail-label { padding:var(--sp-2) 0 var(--sp-2) var(--sp-2); }
+/* Quiet but visible (consolidation D: no hover-only controls). */
+.work-rail-section-toggle > svg { opacity:.5; transition:opacity var(--t-fast) var(--ease); }
+.work-rail-project-heading:hover .work-rail-section-toggle > svg, .work-rail-section-toggle:focus-visible > svg, .work-rail-section-toggle[aria-expanded="false"] > svg { opacity:1; }
+.work-rail-section-toggle:hover .work-rail-label { color:var(--body); }
+/* Project rows (one row, one highlight since 2026-11-06; no fold arrow and
+   no ⋯ since 2026-11-07; L8, 11-10: a click opens the project's lead, no
+   conversation list, no +; a right-click shows the menu). The whole row
+   takes the hover fill; the icon never moves; its live state is its badge. */
+.work-tree > .work-tree-head { position:relative; border-radius:var(--r-sm); transition:background var(--t-fast) var(--ease-soft); }
+.work-tree > .work-tree-head:hover:not(.session-drop-target) { background:var(--fill-hover); }
+.work-tree > .work-tree-head > .work-workspace-row:hover { background:transparent; }
+/* Search chats (overnight 11-04 S2): the field and its results in the
+   sidebar's place; the rows underneath are hidden, not unmounted. */
+.work-rail-primary[hidden], .work-rail-scroll[hidden] { display:none; }
+.work-rail-search { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; }
+.work-rail-search-field { display:flex; align-items:center; gap:var(--sp-2); flex:none; height:var(--row-h); margin:0 0 var(--sp-2); padding:0 2px 0 var(--sp-2); border:1px solid var(--primary); border-radius:var(--r-sm); background:var(--surface-card); color:var(--muted); box-shadow:var(--ring); }
+.work-rail-search-field input { flex:1; min-width:0; padding:0; border:0; background:transparent; color:var(--ink); font:inherit; font-size:var(--fs-body); outline:none; box-shadow:none; }
+.work-rail-search-field .icon-btn { flex:none; width:24px; height:24px; }
+.work-rail-search-results { flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; display:flex; flex-direction:column; gap:1px; }
+.work-rail-search-row { display:flex; align-items:center; gap:var(--sp-2); min-height:var(--row-h); padding:var(--sp-1) var(--sp-2); border-radius:var(--r-sm); color:var(--body); font-size:var(--fs-meta); cursor:pointer; }
+.work-rail-search-row > svg { flex:none; color:var(--muted); }
+.work-rail-search-row.active { background:var(--fill-selected); color:var(--ink); }
+.work-rail-search-row > small { flex:none; max-width:40%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--muted); font-size:var(--fs-caption); }
+.work-rail-search-text { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+.work-rail-search-title { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.work-rail-search-snippet { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--muted); font-size:var(--fs-caption); }
+.work-rail-search-everything { margin-top:var(--sp-1); }
+.work-rail-search-everything kbd { flex:none; margin-left:auto; padding:0; border:0; background:none; color:var(--muted-soft); font:500 var(--fs-caption)/1 var(--ui); }
+.work-rail-search-hint { margin:var(--sp-1) var(--sp-2) var(--sp-2); color:var(--muted); font-size:var(--fs-meta); }
+.work-rail > .resize-handle { right:0; width:6px; }
+.work-rail > .resize-handle:focus-visible { outline:none; background:var(--primary); }
+@container hollow-window (max-width: 53.75em) { .work-rail > .resize-handle { display:none; } }
+}

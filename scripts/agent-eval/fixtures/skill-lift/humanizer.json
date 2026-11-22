@@ -1,0 +1,335 @@
+{
+  "schema": 1,
+  "skill": "humanizer",
+  "about": "NV4 lift suite for the humanizer skill: 9 rewrites of synthetic text full of AI writing tells (graded by score.mjs rules: no em dash, none of the case's tell words, the fact kept) and 3 negative cases the skill does not apply to. Synthetic content only.",
+  "cases": [
+    {
+      "id": "newsletter",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nIn today's fast-paced world, our garden club stands as a testament to community \u2014 a vibrant tapestry of neighbours. We meet on Thursdays at 6 pm.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "fast-paced world",
+            "testament",
+            "vibrant",
+            "tapestry"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "Thursday"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "product-note",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nOur new kettle doesn't just boil water \u2014 it unlocks a seamless, transformative tea experience. It holds 1.7 litres.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "seamless",
+            "transformative",
+            "unlock"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "1.7"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "team-update",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nLet's delve into this week's pivotal milestones. Notably, the team shipped the export button, a crucial step on our journey. Two bugs remain open.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "delve",
+            "pivotal",
+            "crucial",
+            "journey"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "two bugs",
+            "2 bugs"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "bio",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nSam is a passionate, results-driven leader who seamlessly navigates the ever-evolving landscape of logistics \u2014 fostering innovation at every turn. Sam has worked in shipping for 12 years.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "passionate",
+            "results-driven",
+            "ever-evolving",
+            "landscape",
+            "fostering"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "12 years",
+            "twelve years"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "recipe-intro",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nThis soup is more than a meal \u2014 it is a heartwarming testament to the enduring magic of winter. It takes 40 minutes.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "testament",
+            "enduring",
+            "magic"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "40 minutes",
+            "forty minutes"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "event",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nJoin us for an unforgettable evening that seamlessly blends music, community, and connection, a truly vibrant celebration. Tickets are 15 dollars.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "unforgettable",
+            "seamlessly",
+            "vibrant",
+            "truly"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "15",
+            "fifteen"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "apology",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nWe deeply apologize for any inconvenience this may have caused. Rest assured, your satisfaction is our top priority \u2014 and we are committed to excellence. Your refund was sent on Monday.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "rest assured",
+            "top priority",
+            "committed to excellence"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "Monday"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nIn conclusion, the study underscores the pivotal role of sleep, highlighting its multifaceted impact on memory, mood, and focus. The study followed 300 adults.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "in conclusion",
+            "underscores",
+            "pivotal",
+            "multifaceted"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "300"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "cover-letter",
+      "prompt": "Rewrite this so it reads like a person wrote it. Keep every fact. Reply with the rewritten text only.\n\nI am thrilled to embark on this exciting journey with your esteemed organization \u2014 a beacon of innovation. I have five years of nursing experience.",
+      "rules": [
+        {
+          "id": "no-em-dash",
+          "kind": "absent",
+          "pattern": "\u2014",
+          "why": "em dashes are a tell the skill removes"
+        },
+        {
+          "id": "no-tell-words",
+          "kind": "absent",
+          "any": [
+            "thrilled",
+            "embark",
+            "journey",
+            "esteemed",
+            "beacon"
+          ],
+          "why": "the inflated words the skill removes"
+        },
+        {
+          "id": "keeps-fact",
+          "kind": "contains",
+          "any": [
+            "five years",
+            "5 years"
+          ],
+          "why": "the rewrite keeps the facts"
+        }
+      ]
+    },
+    {
+      "id": "neg-percent",
+      "negative": true,
+      "prompt": "What is 17 percent of 2,340? Reply with the number only.",
+      "rules": [
+        {
+          "id": "answer",
+          "kind": "contains",
+          "pattern": "397[.,]8",
+          "why": "17% of 2,340 is 397.8"
+        }
+      ]
+    },
+    {
+      "id": "neg-json",
+      "negative": true,
+      "prompt": "Reply with exactly this JSON and nothing else: {\"ok\": true}",
+      "rules": [
+        {
+          "id": "json",
+          "kind": "contains",
+          "any": [
+            "{\"ok\": true}"
+          ],
+          "why": "the JSON comes back unchanged"
+        }
+      ]
+    },
+    {
+      "id": "neg-colors",
+      "negative": true,
+      "prompt": "Name the three primary colours of light, comma separated, lower case.",
+      "rules": [
+        {
+          "id": "colours",
+          "kind": "inOrder",
+          "items": [
+            "red",
+            "green",
+            "blue"
+          ],
+          "why": "red, green, blue"
+        }
+      ]
+    }
+  ]
+}

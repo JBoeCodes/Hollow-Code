@@ -1,0 +1,17 @@
+{
+  "about": "Wall-clock upper bounds in Rust tests still tighter than scripts/check-timing-asserts.mjs allows, when it landed (S23, 2026-10-17). Keyed by path and trimmed line text. Only shrinks (check-timing-asserts.test.mjs pins the count): fix one (paused clock, or a cause assert and a wide bound, or a `// timing: <reason>` comment) and delete its entry; never add one for a new bound.",
+  "allowed": [
+    {
+      "path": "src-tauri/src/retrieval_broker.rs",
+      "text": "took < Duration::from_millis(1200),"
+    },
+    {
+      "path": "src-tauri/src/retrieval_broker.rs",
+      "text": "assert!((150..1200).contains(&mark.ms), \"{mark:?}\");"
+    },
+    {
+      "path": "src-tauri/src/workspace_connections.rs",
+      "text": "t0.elapsed() < std::time::Duration::from_secs(4),"
+    }
+  ]
+}

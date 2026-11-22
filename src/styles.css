@@ -1,0 +1,25 @@
+/*
+ * Ordered stylesheet manifest.
+ *
+ * Import order is the prior monolithic cascade order. Keep it stable unless a
+ * visual change is intentional and browser-verified; later files are allowed
+ * to refine earlier tokens and shared primitives.
+ */
+/* `shell` holds only the app-wide element affordances (styles/shell.css) and
+   the components' deliberate exceptions to them; see docs/reference/styling.md → The cascade. */
+@layer tokens, base, components, shell, glass, a11y;
+
+@import './styles/tokens.css';
+@import './styles/foundations.css';
+@import './styles/ui.css';
+@import './styles/motion-kit.css';
+@import './styles/shell-workspace.css';
+@import './styles/vault-inbox-chat.css';
+@import './styles/library-today.css';
+@import './styles/settings-graph.css';
+@import './styles/calendar-shared.css';
+@import './styles/workflows.css';
+@import './styles/notifications-people.css';
+@import './styles/effects-glass.css';
+@import './styles/glass.css';
+@import './styles/artifact-sessions.css';

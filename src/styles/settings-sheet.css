@@ -1,0 +1,16 @@
+@layer components {
+/* Match the shared rbk-card's components layer. */
+  .rbk-card.settings-sheet { width: min(720px, 94vw); height: auto; max-height: 88vh; overflow: hidden; }
+  .settings-sheet .rbk-head h2 { flex: 1; }
+  .settings-sheet-body { min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: var(--sp-2); }
+  .settings-sheet-body > * { flex-shrink: 0; }
+  .settings-sheet .settings-role-fields { width: 100%; max-width: none; }
+  .settings-sheet .theme-list { margin-top: 0; }
+}
+
+/* "Where things went" (Settings PR 9): the old-to-new list in a sheet. */
+@layer components {
+  .where-went-group h3 { margin: 1rem 0 .25rem; font-size: 1rem; }
+  .where-went-group ul { margin: 0; padding-left: 1.1rem; }
+  .where-went-group li { margin: .15rem 0; }
+}

@@ -1,0 +1,236 @@
+/* Mission Control (overnight 10-11 B2, components/MissionControl.tsx): the
+   overlay, the orbit sky and the turn cards. Loaded with its lazy chunk.
+   Satellites orbit with CSS only: one rotation per satellite, counter-rotated
+   inside so the provider mark stays upright; paused with the window away
+   (the ambient switch) and still under either motion gate. */
+@layer components {
+
+/* Your work → Activity since consolidation D (2026-10-13): in the page. */
+.mc-view { display: flex; min-width: 0; }
+.mc-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: min(720px, calc(100vh - 180px));
+  padding: 0 0 var(--sp-4);
+  gap: var(--sp-2);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+}
+/* The strip sits on the page's own gutter, under the title and tabs (overnight 11-07 D3: it ran edge to edge, its Tracks / Orbit / List switch against the window's edge). */
+.mc-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--page-gutter); border-bottom: 1px solid var(--hairline); }
+/* Glass needs one opaque reading plane behind the header and its notices. */
+html[data-glass] .mc-card { background: var(--surface-card); }
+.mc-stats { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: 0 auto 0 0; color: var(--muted); font-size: var(--fs-meta); }
+.mc-stats span { white-space: nowrap; }
+.mc-views { flex-shrink: 0; }
+/* P1b: Pause all and Resume all, beside the layout switch. */
+.mc-head-actions { display: inline-flex; flex-wrap: wrap; gap: var(--sp-1); }
+.mc-stats b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.mc-note { margin: 0; padding-inline: var(--page-gutter); color: var(--muted); font-size: var(--fs-meta); }
+.mc-note.is-error { color: var(--error); }
+.mc-body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: var(--sp-3); overflow-y: auto; }
+.running-background { flex: none; min-width: 0; padding-inline: var(--sp-3); border-bottom: 1px solid var(--hairline); }
+.running-background .activity-dock-head { flex-wrap: wrap; gap: var(--sp-2); padding: var(--sp-2) 0; background: transparent; }
+.running-background h3 { margin: 0; font-size: var(--fs-meta); font-weight: 600; }
+.running-background .activity-dock-list { overflow: visible; }
+.running-background .activity-row { padding-inline: 0; }
+.running-background .activity-name { flex-wrap: wrap; }
+.running-background .activity-name > span:first-child,
+.running-background .activity-detail,
+.running-background .activity-result { overflow-wrap: anywhere; white-space: pre-wrap; }
+
+/* ── Orbit view: the sky, and the selected turn's card beside it. */
+.mc-orbit-view { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--sp-3); min-height: 420px; flex: 1; }
+.mc-sky {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: 0;
+  border: 1px solid var(--hairline-soft);
+  background:
+    radial-gradient(1px 1px at 12% 22%, color-mix(in srgb, var(--ink) 45%, transparent) 50%, transparent 51%),
+    radial-gradient(1px 1px at 38% 74%, color-mix(in srgb, var(--ink) 35%, transparent) 50%, transparent 51%),
+    radial-gradient(1px 1px at 61% 16%, color-mix(in srgb, var(--ink) 40%, transparent) 50%, transparent 51%),
+    radial-gradient(1px 1px at 84% 58%, color-mix(in srgb, var(--ink) 30%, transparent) 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 88%, color-mix(in srgb, var(--ink) 35%, transparent) 50%, transparent 51%),
+    radial-gradient(1px 1px at 92% 12%, color-mix(in srgb, var(--ink) 40%, transparent) 50%, transparent 51%),
+    radial-gradient(1px 1px at 48% 42%, color-mix(in srgb, var(--ink) 25%, transparent) 50%, transparent 51%),
+    radial-gradient(1px 1px at 72% 86%, color-mix(in srgb, var(--ink) 35%, transparent) 50%, transparent 51%),
+    radial-gradient(60% 60% at 50% 50%, color-mix(in srgb, var(--primary) 7%, transparent), transparent 75%),
+    var(--canvas);
+}
+.mc-system {
+  --r1: 62px;
+  --r2: 100px;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.mc-star {
+  position: absolute;
+  left: -14px;
+  top: -14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-card);
+  border: 4px solid var(--primary);
+  box-shadow: none;
+}
+.mc-star.is-automations { border-color: var(--warning); }
+.mc-star-title {
+  position: absolute;
+  top: calc(var(--r1) + var(--sp-3));
+  left: 0;
+  translate: -50% 0;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--body-strong);
+  font: 500 var(--fs-meta)/1.3 var(--ui);
+  text-align: center;
+}
+.mc-system:has(.mc-ring.is-outer) .mc-star-title { top: calc(var(--r2) + var(--sp-2)); }
+.mc-star-title .session-rollup { margin-left: var(--sp-1); vertical-align: -2px; }
+/* A card's state in the session-indicator family (asks 10-11 A2). */
+.mc-state { display: inline-flex; flex: none; align-items: center; gap: 6px; color: var(--muted); font: 500 var(--fs-meta)/1 var(--ui); white-space: nowrap; }
+.mc-state[data-state="running"] { color: var(--primary); }
+.mc-state[data-state="waiting"] { color: var(--warning); }
+.mc-state[data-state="failed"] { color: var(--error); }
+.mc-state[data-state="interrupted"] { color: var(--ink); }
+.mc-ring { position: absolute; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); pointer-events: none; }
+.mc-ring.is-inner { left: calc(-1 * var(--r1)); top: calc(-1 * var(--r1)); width: calc(2 * var(--r1)); height: calc(2 * var(--r1)); }
+.mc-ring.is-outer { left: calc(-1 * var(--r2)); top: calc(-1 * var(--r2)); width: calc(2 * var(--r2)); height: calc(2 * var(--r2)); border-style: dashed; }
+.mc-orbit { position: absolute; left: 0; top: 0; width: 0; height: 0; rotate: var(--a, 0deg); }
+.mc-sat {
+  position: absolute;
+  left: var(--r1);
+  top: 0;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: var(--surface-raised);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 14%, transparent);
+  transition: box-shadow var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.mc-orbit.is-outer .mc-sat { left: var(--r2); box-shadow: none; border-style: dashed; background: var(--surface-soft); }
+.mc-sat:hover, .mc-sat.selected { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft-strong); }
+.mc-sat-face { display: grid; place-items: center; rotate: calc(-1 * var(--a, 0deg)); }
+:root:not([data-motion="reduced"]) .mc-orbit:not(.is-still) {
+  animation: mc-orbit var(--period, 16s) linear infinite;
+  animation-play-state: var(--ambient-play, running);
+}
+:root:not([data-motion="reduced"]) .mc-orbit:not(.is-still) .mc-sat-face {
+  animation: mc-orbit-back var(--period, 16s) linear infinite;
+  animation-play-state: var(--ambient-play, running);
+}
+@keyframes mc-orbit { to { transform: rotate(360deg); } }
+@keyframes mc-orbit-back { to { transform: rotate(-360deg); } }
+.mc-detail { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+
+/* ── List view and the cards. */
+.mc-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+.mc-turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  border-radius: 0;
+  background: var(--surface-card);
+  outline: none;
+}
+.mc-turn.selected { box-shadow: inset 3px 0 var(--primary); }
+.mc-turn:focus-visible { box-shadow: var(--ring); }
+.mc-turn.selected:focus-visible { box-shadow: inset 3px 0 var(--primary), var(--ring); }
+.mc-turn-head { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.mc-turn-mark { display: grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--fill-hover); }
+.mc-turn-what { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.mc-turn-what strong, .mc-turn-what small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-turn-what strong { color: var(--ink); font: 600 var(--fs-body)/1.3 var(--ui); }
+.mc-turn-what small { color: var(--muted); font-size: var(--fs-meta); }
+.mc-turn-phase { margin: 0; color: var(--body-strong); font-size: var(--fs-meta); }
+.mc-turn-tool { display: flex; align-items: center; gap: var(--sp-1); margin: 0; color: var(--muted); font: var(--fs-meta)/1.4 var(--mono); min-width: 0; }
+.mc-turn-tool span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-turn-lines { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: var(--sp-1) var(--sp-2); list-style: none; border-radius: var(--r-sm); background: var(--surface-soft); }
+.mc-turn-lines li { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--body); font-size: var(--fs-meta); line-height: 1.5; }
+.mc-turn-lines li:last-child { color: var(--ink); }
+.mc-turn-quiet { margin: 0; color: var(--muted); font-size: var(--fs-meta); font-style: italic; }
+.mc-turn-error { margin: 0; color: var(--error); font-size: var(--fs-meta); }
+.mc-turn-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-1); color: var(--muted); font-size: var(--fs-meta); }
+.mc-turn-clock { font-variant-numeric: tabular-nums; }
+.mc-turn-actions { display: flex; gap: var(--sp-1); margin-left: auto; }
+
+/* ── Empty and finished. */
+.mc-empty { display: grid; place-items: center; gap: var(--sp-2); min-height: 260px; color: var(--muted); font-size: var(--fs-body); text-align: center; }
+.mc-empty p { margin: 0; max-width: 46ch; }
+.mc-finished h3 { margin: 0 0 var(--sp-1); color: var(--body-strong); font: 600 var(--fs-body)/1.3 var(--ui); }
+.mc-finished ul { margin: 0; padding: 0; list-style: none; }
+.mc-done-row { display: flex; align-items: center; gap: var(--sp-2); min-height: var(--row-h); border-bottom: 1px solid var(--hairline-soft); font-size: var(--fs-body); }
+.mc-done-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); }
+.mc-done-meta { color: var(--muted); font-size: var(--fs-meta); font-variant-numeric: tabular-nums; }
+.mc-quiet { margin: 0; color: var(--muted); font-size: var(--fs-meta); }
+
+@container hollow-window (max-width: 68.75em) {
+  .mc-orbit-view { grid-template-columns: minmax(0, 1fr); }
+}
+@media (forced-colors: active) {
+  .mc-star, .mc-star.is-automations { background: CanvasText; box-shadow: none; }
+  .mc-sky { background: Canvas; }
+  .mc-turn.selected, .mc-sat.selected { outline: 2px solid Highlight; outline-offset: 2px; }
+}
+
+}
+
+@layer components {
+/* Sequence tracks keep long names in text and all exact details in the selected card. */
+.mc-tracks-view { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--sp-3); align-items: start; }
+.mc-tracks { min-width: 0; padding: var(--sp-3); border: 0; border-top: 1px solid var(--hairline); border-radius: 0; background: var(--surface-card); }
+.mc-track-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-3); margin-bottom: var(--sp-3); }
+.mc-track-heading h3 { margin: 0 0 var(--sp-1); color: var(--ink); font: 600 var(--fs-lg)/1.2 var(--ui); }
+.mc-track-heading p, .mc-track-footnote { margin: 0; max-width: 48ch; color: var(--muted); font-size: var(--fs-meta); }
+.mc-track-cost { display: flex; flex-direction: column; gap: var(--sp-1); color: var(--muted); font-size: var(--fs-meta); }
+.mc-track-cost strong { font: 600 var(--fs-xl)/1.2 var(--ui); color: var(--ink); font-variant-numeric: tabular-nums; }
+.mc-cost-rail { fill: var(--hairline); } .mc-cost-known { fill: var(--primary); }
+.mc-track-lane { margin-bottom: var(--sp-3); }
+.mc-track-lane > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+.mc-track-lane h4 { margin: 0; color: var(--ink); font: 600 var(--fs-body)/1.4 var(--ui); overflow-wrap: anywhere; }
+.mc-track-lane > header > span { color: var(--muted); font-size: var(--fs-meta); }
+.mc-track-segments { display: flex; overflow-x: auto; padding: var(--sp-2) 3px; }
+.mc-track-segment { display: flex; flex-direction: column; flex: 0 0 180px; min-width: 0; gap: 2px; padding: var(--sp-2) 0; border: 1px solid transparent; border-radius: var(--r-md); background: transparent; color: var(--body-strong); text-align: left; cursor: pointer; }
+.mc-track-segment > span, .mc-track-segment > strong, .mc-track-segment > small { padding-inline: var(--sp-2); }
+.mc-track-segment > strong { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font: 500 var(--fs-body)/1.4 var(--ui); }
+.mc-track-phase, .mc-track-segment > small { color: var(--muted); font: var(--fs-meta)/1.4 var(--ui); }
+.mc-track-tool-word { font-size: var(--fs-caption); }
+.mc-track-segment:hover { background: var(--fill-hover); }
+.mc-track-segment[aria-current="true"] { background: var(--primary-soft); border-color: var(--primary); }
+.mc-track-segment:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.mc-track-wire { stroke: var(--hairline); stroke-width: 2; }
+.mc-track-block { fill: var(--surface-raised); stroke: var(--hairline); }
+.mc-track-segment[data-state="running"] .mc-track-block, .mc-track-segment[data-state="starting"] .mc-track-block { fill: var(--primary-soft-strong); stroke: var(--primary); }
+.mc-track-segment[data-state="queued"] .mc-track-block { stroke-dasharray: 3 3; }
+.mc-track-segment[data-state="done"] .mc-track-block { fill: var(--success-soft); stroke: var(--success); }
+.mc-track-segment[data-state="failed"] .mc-track-block, .mc-track-segment[data-state="interrupted"] .mc-track-block { stroke: var(--error); }
+.mc-track-check { stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.mc-track-spark { fill: var(--primary); }
+@keyframes mc-track-travel { to { transform: translateX(154px); } }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .mc-track-spark { animation: mc-track-travel 2.4s linear infinite; animation-play-state: paused; }
+  :root:not([data-motion="reduced"]) .mc-track-segment[data-visible="true"] .mc-track-spark { animation-play-state: var(--ambient-play, running); }
+}
+@container hollow-window (max-width: 68.75em) { .mc-tracks-view { grid-template-columns: minmax(0, 1fr); } }
+@media (forced-colors: active) { .mc-track-block, .mc-track-wire, .mc-track-check { stroke: CanvasText; } .mc-track-spark, .mc-cost-known { fill: Highlight; } .mc-track-segment[aria-current="true"] { outline: 2px solid Highlight; } }
+}

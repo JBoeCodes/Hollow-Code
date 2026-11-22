@@ -1,0 +1,609 @@
+{
+ "_note": "Frozen from main b0ed05aea (Settings PR 1). The ids contract: old links, palette rows, doctor fixSection values and settings.get filters keep landing. Remap here (and in resolveSettingsTarget) when sections move. Rust SECTION_ALIASES must match aliases.",
+ "sections": [
+  "interface",
+  "defaults",
+  "connectors",
+  "operator",
+  "automation",
+  "usage",
+  "system"
+ ],
+ "parts": {
+  "shortcuts": "interface",
+  "chat": "defaults",
+  "accounts": "defaults",
+  "selfhosted": "defaults",
+  "skills": "defaults",
+  "companions": "connectors",
+  "vault": "system",
+  "history": "system",
+  "indexes": "system"
+ },
+ "aliases": {
+  "capture": "connectors",
+  "cadence": "connectors",
+  "doctor": "system",
+  "customization": "defaults",
+  "agenttools": "connectors",
+  "teamwork": "connectors",
+  "computer": "connectors",
+  "m365write": "connectors",
+  "startup": "automation",
+  "routines": "automation",
+  "heartbeat": "automation",
+  "appearance": "interface",
+  "notifications": "interface",
+  "paths": "system",
+  "debug": "system",
+  "setup": "system",
+  "feedback": "usage",
+  "context": "system",
+  "vaultsearch": "system",
+  "learning": "operator",
+  "companions": "connectors",
+  "imports": "connectors",
+  "shortcuts": "interface",
+  "chat": "defaults",
+  "accounts": "defaults",
+  "skills": "defaults",
+  "indexes": "system",
+  "vault": "system",
+  "history": "system",
+  "selfhosted": "defaults"
+ },
+ "aliasControls": {
+  "feedback": "Budgets",
+  "context": "Context prioritizer",
+  "vaultsearch": "Search by meaning",
+  "learning": "Memory",
+  "companions": "Companion devices",
+  "paths": "Hollow folder",
+  "setup": "Hollow folder",
+  "shortcuts": "Keyboard shortcuts",
+  "chat": "Chat",
+  "accounts": "Accounts",
+  "skills": "Skills",
+  "indexes": "Search & indexes",
+  "vault": "Hollow folder",
+  "history": "History & recovery",
+  "selfhosted": "Self-hosted models"
+ },
+ "controls": [
+  {
+   "section": "interface",
+   "label": "Appearance"
+  },
+  {
+   "section": "interface",
+   "label": "App icon"
+  },
+  {
+   "section": "interface",
+   "label": "COO icon"
+  },
+  {
+   "section": "interface",
+   "label": "Texture"
+  },
+  {
+   "section": "interface",
+   "label": "Ambient motion"
+  },
+  {
+   "section": "interface",
+   "label": "Motion"
+  },
+  {
+   "section": "interface",
+   "label": "Density"
+  },
+  {
+   "section": "interface",
+   "label": "Text size"
+  },
+  {
+   "section": "interface",
+   "label": "In-app pop-ups"
+  },
+  {
+   "section": "interface",
+   "label": "macOS system notifications"
+  },
+  {
+   "section": "interface",
+   "label": "Proactive nudges"
+  },
+  {
+   "section": "interface",
+   "label": "Keyboard shortcuts",
+   "part": "shortcuts",
+   "heading": true
+  },
+  {
+   "section": "interface",
+   "label": "Use keyboard shortcuts",
+   "part": "shortcuts"
+  },
+  {
+   "section": "interface",
+   "label": "Change",
+   "part": "shortcuts"
+  },
+  {
+   "section": "interface",
+   "label": "Reset all to defaults",
+   "part": "shortcuts"
+  },
+  {
+   "section": "interface",
+   "label": "Keys inside a surface",
+   "part": "shortcuts"
+  },
+  {
+   "section": "defaults",
+   "label": "Default agent"
+  },
+  {
+   "section": "defaults",
+   "label": "When an agent runs out"
+  },
+  {
+   "section": "defaults",
+   "label": "Remote runner"
+  },
+  {
+   "section": "defaults",
+   "label": "Runs on"
+  },
+  {
+   "section": "defaults",
+   "label": "Builds and tests"
+  },
+  {
+   "section": "defaults",
+   "label": "App builds"
+  },
+  {
+   "section": "defaults",
+   "label": "Overnight and worker chats"
+  },
+  {
+   "section": "defaults",
+   "label": "Models"
+  },
+  {
+   "section": "defaults",
+   "label": "Reasoning effort"
+  },
+  {
+   "section": "defaults",
+   "label": "Effort"
+  },
+  {
+   "section": "defaults",
+   "label": "Models the CFO may use"
+  },
+  {
+   "section": "defaults",
+   "label": "No-output watchdog"
+  },
+  {
+   "section": "defaults",
+   "label": "Run deadline"
+  },
+  {
+   "section": "defaults",
+   "label": "Extraction model"
+  },
+  {
+   "section": "defaults",
+   "label": "Agent updates"
+  },
+  {
+   "section": "defaults",
+   "label": "Runtime capabilities"
+  },
+  {
+   "section": "defaults",
+   "label": "Chat",
+   "part": "chat",
+   "heading": true
+  },
+  {
+   "section": "defaults",
+   "label": "Canvases",
+   "part": "chat"
+  },
+  {
+   "section": "defaults",
+   "label": "Enter sends a message",
+   "part": "chat"
+  },
+  {
+   "section": "defaults",
+   "label": "Retitle new chats",
+   "part": "chat"
+  },
+  {
+   "section": "defaults",
+   "label": "Permission mode for new chats",
+   "part": "chat"
+  },
+  {
+   "section": "defaults",
+   "label": "Accounts",
+   "part": "accounts",
+   "heading": true
+  },
+  {
+   "section": "defaults",
+   "label": "Claude",
+   "part": "accounts"
+  },
+  {
+   "section": "defaults",
+   "label": "Resume on another account when one runs out",
+   "part": "accounts"
+  },
+  {
+   "section": "defaults",
+   "label": "Other providers",
+   "part": "accounts"
+  },
+  {
+   "section": "defaults",
+   "label": "Jev (TypeSafe)",
+   "part": "accounts"
+  },
+  {
+   "section": "defaults",
+   "label": "Self-hosted models",
+   "part": "selfhosted",
+   "heading": true
+  },
+  {
+   "section": "defaults",
+   "label": "Add a self-hosted model",
+   "part": "selfhosted"
+  },
+  {
+   "section": "defaults",
+   "label": "Use the Qwen on Cloud Run preset",
+   "part": "selfhosted"
+  },
+  {
+   "section": "defaults",
+   "label": "Background jobs",
+   "part": "selfhosted"
+  },
+  {
+   "section": "defaults",
+   "label": "Skills",
+   "part": "skills",
+   "heading": true
+  },
+  {
+   "section": "defaults",
+   "label": "New skill",
+   "part": "skills"
+  },
+  {
+   "section": "defaults",
+   "label": "Import skill",
+   "part": "skills"
+  },
+  {
+   "section": "defaults",
+   "label": "Available to",
+   "part": "skills"
+  },
+  {
+   "section": "connectors",
+   "label": "Task tracker"
+  },
+  {
+   "section": "connectors",
+   "label": "Services"
+  },
+  {
+   "section": "connectors",
+   "label": "Agenda calendar"
+  },
+  {
+   "section": "connectors",
+   "label": "Service health"
+  },
+  {
+   "section": "connectors",
+   "label": "Built into Hollow"
+  },
+  {
+   "section": "connectors",
+   "label": "Your connectors"
+  },
+  {
+   "section": "connectors",
+   "label": "Add connectors"
+  },
+  {
+   "section": "connectors",
+   "label": "Recordings"
+  },
+  {
+   "section": "connectors",
+   "label": "Recordings in Hollow"
+  },
+  {
+   "section": "connectors",
+   "label": "Companion devices",
+   "part": "companions",
+   "heading": true
+  },
+  {
+   "section": "connectors",
+   "label": "Pair a device",
+   "part": "companions"
+  },
+  {
+   "section": "connectors",
+   "label": "iPhone app",
+   "part": "companions"
+  },
+  {
+   "section": "connectors",
+   "label": "Backend for the web app",
+   "part": "companions"
+  },
+  {
+   "section": "connectors",
+   "label": "What the backend copies",
+   "part": "companions"
+  },
+  {
+   "section": "operator",
+   "label": "Share with agents"
+  },
+  {
+   "section": "operator",
+   "label": "Your profile"
+  },
+  {
+   "section": "operator",
+   "label": "Ready to add"
+  },
+  {
+   "section": "operator",
+   "label": "Memory"
+  },
+  {
+   "section": "operator",
+   "label": "Learning suggestions"
+  },
+  {
+   "section": "automation",
+   "label": "Run at login"
+  },
+  {
+   "section": "automation",
+   "label": "Keep running when I close the window"
+  },
+  {
+   "section": "automation",
+   "label": "Scheduled automations"
+  },
+  {
+   "section": "automation",
+   "label": "Automation windows"
+  },
+  {
+   "section": "automation",
+   "label": "Chats running at once"
+  },
+  {
+   "section": "automation",
+   "label": "Chats at once in one workspace"
+  },
+  {
+   "section": "automation",
+   "label": "Run queue"
+  },
+  {
+   "section": "automation",
+   "label": "Silent heartbeat"
+  },
+  {
+   "section": "automation",
+   "label": "COO check-ins"
+  },
+  {
+   "section": "automation",
+   "label": "Act on its own"
+  },
+  {
+   "section": "automation",
+   "label": "Start fresh after an hour away"
+  },
+  {
+   "section": "automation",
+   "label": "Largest swarm (chats)"
+  },
+  {
+   "section": "automation",
+   "label": "Swarm parts at once"
+  },
+  {
+   "section": "automation",
+   "label": "Swarm model"
+  },
+  {
+   "section": "usage",
+   "label": "Usage by day"
+  },
+  {
+   "section": "usage",
+   "label": "Budgets"
+  },
+  {
+   "section": "usage",
+   "label": "Reserve for your own prompts"
+  },
+  {
+   "section": "usage",
+   "label": "Extra usage for unattended work"
+  },
+  {
+   "section": "usage",
+   "label": "Budget for each subagent"
+  },
+  {
+   "section": "usage",
+   "label": "Project budgets"
+  },
+  {
+   "section": "usage",
+   "label": "COO daily hard stop"
+  },
+  {
+   "section": "usage",
+   "label": "Overnight cap"
+  },
+  {
+   "section": "usage",
+   "label": "Value this month"
+  },
+  {
+   "section": "system",
+   "label": "Capability doctor"
+  },
+  {
+   "section": "system",
+   "label": "Backup evidence"
+  },
+  {
+   "section": "system",
+   "label": "Disk space"
+  },
+  {
+   "section": "system",
+   "label": "Settings file"
+  },
+  {
+   "section": "system",
+   "label": "Diagnostics bundle"
+  },
+  {
+   "section": "system",
+   "label": "Build identity"
+  },
+  {
+   "section": "system",
+   "label": "Developer readouts"
+  },
+  {
+   "section": "system",
+   "label": "Runtime"
+  },
+  {
+   "section": "system",
+   "label": "Folders agents can run tools from"
+  },
+  {
+   "section": "system",
+   "label": "Startup warm-up"
+  },
+  {
+   "section": "system",
+   "label": "Launch calls"
+  },
+  {
+   "section": "system",
+   "label": "Hollow's databases"
+  },
+  {
+   "section": "system",
+   "label": "Debug logs"
+  },
+  {
+   "section": "system",
+   "label": "Prices"
+  },
+  {
+   "section": "system",
+   "label": "Advanced"
+  },
+  {
+   "section": "system",
+   "label": "Hollow folder",
+   "part": "vault",
+   "heading": true
+  },
+  {
+   "section": "system",
+   "label": "Bring existing folders",
+   "part": "vault"
+  },
+  {
+   "section": "system",
+   "label": "Start locally",
+   "part": "vault"
+  },
+  {
+   "section": "system",
+   "label": "History & recovery",
+   "part": "history",
+   "heading": true
+  },
+  {
+   "section": "system",
+   "label": "Automated-write runs",
+   "part": "history"
+  },
+  {
+   "section": "system",
+   "label": "Conversation history",
+   "part": "history"
+  },
+  {
+   "section": "system",
+   "label": "Search & indexes",
+   "part": "indexes",
+   "heading": true
+  },
+  {
+   "section": "system",
+   "label": "Search inside project files",
+   "part": "indexes"
+  },
+  {
+   "section": "system",
+   "label": "Search by meaning",
+   "part": "indexes"
+  },
+  {
+   "section": "system",
+   "label": "Index my vault for semantic search",
+   "part": "indexes"
+  },
+  {
+   "section": "system",
+   "label": "Indexing progress",
+   "part": "indexes"
+  },
+  {
+   "section": "system",
+   "label": "Context prioritizer",
+   "part": "indexes"
+  },
+  {
+   "section": "system",
+   "label": "Jev relevance model",
+   "part": "indexes"
+  },
+  {
+   "section": "system",
+   "label": "Jev duplicate check",
+   "part": "indexes"
+  }
+ ]
+}

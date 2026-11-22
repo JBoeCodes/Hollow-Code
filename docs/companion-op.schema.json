@@ -1,0 +1,758 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hollow.local/companion-op.schema.json",
+  "title": "Hollow companion protocol v1 (docs/COMPANION_PROTOCOL.md)",
+  "$defs": {
+    "envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "v",
+        "deviceId",
+        "opId",
+        "payload",
+        "sig"
+      ],
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+        },
+        "opId": {
+          "type": "string",
+          "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "payload": {
+          "type": "string",
+          "description": "The payload JSON, signed as these exact UTF-8 bytes"
+        },
+        "sig": {
+          "type": "string",
+          "description": "base64 of the 64-byte ECDSA P-256/SHA-256 r||s"
+        }
+      }
+    },
+    "payload": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "opId": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "kind": {
+              "const": "task.create"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "status": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "priority": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[Pp][1-4]$"
+            },
+            "due": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "dueTime": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "durationMin": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 1440
+            },
+            "recurrence": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "labels": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 20
+            },
+            "description": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "projectUrl": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "v",
+            "opId",
+            "deviceId",
+            "at",
+            "kind",
+            "title"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "opId": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "kind": {
+              "const": "task.update"
+            },
+            "ref": {
+              "type": "string",
+              "pattern": "^vault:tasks/.+\\.md$"
+            },
+            "baseHash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "fields": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": false,
+              "properties": {
+                "title": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "to": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "priority": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "to": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "due": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "to": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "dueTime": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "to": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "labels": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "items": {
+                        "type": "string"
+                      },
+                      "maxItems": 20
+                    },
+                    "to": {
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "items": {
+                        "type": "string"
+                      },
+                      "maxItems": 20
+                    }
+                  }
+                },
+                "description": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "from": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "to": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "v",
+            "opId",
+            "deviceId",
+            "at",
+            "kind",
+            "ref",
+            "baseHash",
+            "fields"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "opId": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "kind": {
+              "const": "task.set_status"
+            },
+            "ref": {
+              "type": "string",
+              "pattern": "^vault:tasks/.+\\.md$"
+            },
+            "baseHash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "from": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "to": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 60
+            }
+          },
+          "required": [
+            "v",
+            "opId",
+            "deviceId",
+            "at",
+            "kind",
+            "ref",
+            "baseHash",
+            "to"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "opId": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "kind": {
+              "const": "task.comment"
+            },
+            "ref": {
+              "type": "string",
+              "pattern": "^vault:tasks/.+\\.md$"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "v",
+            "opId",
+            "deviceId",
+            "at",
+            "kind",
+            "ref",
+            "text"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "opId": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "kind": {
+              "const": "note.create"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "description": "One line (whitespace runs become one space)"
+            },
+            "body": {
+              "type": "string",
+              "maxLength": 49152,
+              "description": "At most 48 KiB as UTF-8; the whole op must fit 64 KiB"
+            },
+            "folder": {
+              "enum": [
+                "notes",
+                "library/notes"
+              ]
+            }
+          },
+          "required": [
+            "v",
+            "opId",
+            "deviceId",
+            "at",
+            "kind",
+            "title"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "opId": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "kind": {
+              "const": "note.edit"
+            },
+            "ref": {
+              "type": "string",
+              "pattern": "^vault:(notes|library/notes)/.+\\.md$"
+            },
+            "baseHash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "body": {
+              "type": "string",
+              "maxLength": 49152,
+              "description": "At most 48 KiB as UTF-8; the whole op must fit 64 KiB"
+            }
+          },
+          "required": [
+            "v",
+            "opId",
+            "deviceId",
+            "at",
+            "kind",
+            "ref",
+            "baseHash",
+            "body"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "opId": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "kind": {
+              "const": "note.append"
+            },
+            "ref": {
+              "type": "string",
+              "pattern": "^vault:(notes|library/notes)/.+\\.md$"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            }
+          },
+          "required": [
+            "v",
+            "opId",
+            "deviceId",
+            "at",
+            "kind",
+            "ref",
+            "text"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "opId": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "deviceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "kind": {
+              "const": "workspace.append"
+            },
+            "workspace": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-][A-Za-z0-9._-]{0,95}$"
+            },
+            "file": {
+              "enum": [
+                "plan",
+                "brief"
+              ]
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000,
+              "description": "One line (whitespace runs become one space)"
+            }
+          },
+          "required": [
+            "v",
+            "opId",
+            "deviceId",
+            "at",
+            "kind",
+            "workspace",
+            "file",
+            "text"
+          ]
+        }
+      ]
+    },
+    "pairRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "v",
+        "deviceId",
+        "name",
+        "platform",
+        "publicKey",
+        "at",
+        "proof"
+      ],
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "platform": {
+          "enum": [
+            "macos",
+            "ios",
+            "ipados",
+            "watchos",
+            "web"
+          ]
+        },
+        "publicKey": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string"
+        },
+        "proof": {
+          "type": "string"
+        }
+      }
+    },
+    "deviceStatus": {
+      "type": "object",
+      "required": [
+        "v",
+        "deviceId",
+        "status",
+        "at"
+      ],
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "platform": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "paired",
+            "refused",
+            "revoked"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "at": {
+          "type": "string"
+        }
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "required": [
+        "v",
+        "opId",
+        "deviceId",
+        "at",
+        "status",
+        "applied",
+        "conflicts"
+      ],
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "opId": {
+          "type": "string",
+          "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "deviceId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+        },
+        "at": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "applied",
+            "partial",
+            "conflict",
+            "refused"
+          ]
+        },
+        "ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contentHash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "applied": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "field",
+              "base",
+              "device",
+              "mac"
+            ]
+          }
+        },
+        "task": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

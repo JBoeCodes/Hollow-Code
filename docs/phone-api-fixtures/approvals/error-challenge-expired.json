@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "challenge_expired",
+    "message": "That step took too long. Ask for a new challenge and try again."
+  }
+}

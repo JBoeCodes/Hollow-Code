@@ -1,0 +1,7 @@
+@layer components {
+.reply-math { overflow-x: auto; padding-block: var(--sp-2); }
+.reply-alert { border-left: 3px solid var(--primary); padding: var(--sp-2) var(--sp-3); margin-block: var(--sp-3); background: var(--surface-soft); }
+.reply-alert > strong { display: block; color: var(--body-strong); }
+.reply-alert-warning, .reply-alert-caution { border-left-color: var(--warning); }
+.reply-thread-chip { display: inline-flex; padding: var(--sp-half) var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-sm); background: var(--surface-card); color: var(--primary); }
+}

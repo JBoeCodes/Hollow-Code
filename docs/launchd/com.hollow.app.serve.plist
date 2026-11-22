@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  hollow serve as a LaunchDaemon (M1 PR 4). A TEMPLATE: write-serve-daemon.sh
+  beside it fills the @...@ fields and prints the sudo steps; the runbook is
+  docs/HEADLESS_SERVE.md. Installed as /Library/LaunchDaemons/com.hollow.app.serve.plist,
+  root:wheel 0644. Nothing in the repo loads it.
+
+  - A daemon, not an agent: it starts at boot once FileVault is unlocked, with
+    no login, and launchd runs it as UserName (never root).
+  - KeepAlive SuccessfulExit=false: a crash (non-zero) restarts after
+    ThrottleInterval; a clean stop (SIGTERM, exit 0) stays stopped until a
+    kickstart. Exit 75 (another Hollow owns the data folder or the vault's
+    run queue), 78 (no usable config.json or vault) and 2 (bad arguments)
+    are non-zero too, so they retry every 60 s and log a line or two each
+    time: the daemon starts by itself once the cause is fixed.
+  - ExitTimeOut 60: launchd's SIGTERM lets serve settle live runs first; the
+    default 20 s can cut that short before SIGKILL.
+  - ProcessType Standard: Background would throttle CPU and disk for serve
+    and every agent CLI it starts.
+  - The log is /var/log/hollow-serve.log, a root-owned folder: launchd may
+    open it as root before it switches to UserName, so a log path inside the
+    user's home would let that user plant a symlink and have root create or
+    append to any file. The sudo steps pre-create it (owned by UserName,
+    0600); launchd does not create or rotate it.
+  - TMPDIR is a folder of the user's own under @BASE@ (the script makes it).
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.hollow.app.serve</string>
+  <key>UserName</key><string>@USER@</string>
+  <key>GroupName</key><string>staff</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>@BINARY@</string>
+    <string>serve</string>
+    <string>--data-dir</string>
+    <string>@DATA_DIR@</string>
+    <string>--config</string>
+    <string>@CONFIG@</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>HOME</key><string>@HOME@</string>
+    <key>USER</key><string>@USER@</string>
+    <key>LOGNAME</key><string>@USER@</string>
+    <key>PATH</key><string>@HOME@/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>LANG</key><string>en_US.UTF-8</string>
+    <key>TMPDIR</key><string>@BASE@/tmp/</string>
+  </dict>
+  <key>WorkingDirectory</key><string>@DATA_DIR@</string>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key><false/>
+  </dict>
+  <key>ThrottleInterval</key><integer>60</integer>
+  <key>ExitTimeOut</key><integer>60</integer>
+  <key>ProcessType</key><string>Standard</string>
+  <key>SoftResourceLimits</key>
+  <dict>
+    <key>NumberOfFiles</key><integer>8192</integer>
+  </dict>
+  <key>StandardOutPath</key><string>/var/log/hollow-serve.log</string>
+  <key>StandardErrorPath</key><string>/var/log/hollow-serve.log</string>
+</dict>
+</plist>

@@ -1,0 +1,25 @@
+@layer components {
+  .doorway-landscape {
+    flex: none;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+  }
+  .doorway-landscape--home {
+    height: clamp(160px, 25vw, 300px);
+    max-height: 32vh;
+    margin-bottom: var(--sp-2);
+  }
+  .doorway-landscape--chat {
+    width: min(100%, 400px);
+    height: clamp(112px, 18vw, 180px);
+    max-height: 24vh;
+    margin-bottom: var(--sp-3);
+  }
+  @media (max-height: 650px) {
+    .doorway-landscape--home { height: 130px; }
+    .doorway-landscape--chat { height: 100px; }
+  }
+}

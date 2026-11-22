@@ -1,0 +1,47 @@
+/* The which-key card (five asks A4): bottom centre, above the page and
+   below dialogs; it never takes focus or the pointer. */
+@layer components {
+.which-key {
+  position: fixed;
+  left: 50%;
+  bottom: var(--sp-6);
+  transform: translateX(-50%);
+  z-index: 8300;
+  min-width: 320px;
+  max-width: min(640px, 92vw);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  box-shadow: var(--elev-2);
+  color: var(--body);
+  font-size: var(--fs-meta);
+  pointer-events: none;
+}
+.which-key-head { display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-2); color: var(--ink); font-weight: 600; }
+.which-key-esc { margin-left: auto; color: var(--muted); font-weight: 400; }
+.which-key-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-1) var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.which-key-grid li { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.which-key-grid span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.which-key kbd {
+  min-width: 20px;
+  text-align: center;
+  font-family: var(--mono);
+  padding: 0 var(--sp-1);
+  border-radius: var(--r-xs);
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
+  color: var(--ink);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .which-key { animation: confirm-fade-in 120ms var(--ease-out) both; }
+}
+@media (forced-colors: active) { .which-key { border-color: CanvasText; } }
+}

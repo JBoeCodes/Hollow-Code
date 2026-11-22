@@ -1,0 +1,15 @@
+{
+  "version": "0.6.1234",
+  "notes": "What's new, as plain text",
+  "pub_date": "2026-11-15T12:00:00Z",
+  "platforms": {
+    "darwin-aarch64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZQ==",
+      "url": "https://updates.example.com/builds/0.6.1234/Hollow.app.tar.gz"
+    }
+  },
+  "channel": "nightly",
+  "commit": "0123456789abcdef0123456789abcdef01234567",
+  "buildId": "nightly-20261115-120000",
+  "schema": { "sessions": 42, "tasks": 7 }
+}

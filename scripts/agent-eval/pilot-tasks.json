@@ -1,0 +1,241 @@
+{
+  "about": "Agent effectiveness pilot suite (E1). Labelled tasks for `node scripts/test-bed.mjs pilot` in the bed's Eval outcome workspace (scripts/test-bed-vault.mjs), scored by scripts/agent-eval/score.mjs. Each task's prompt is the exact message the pilot sends ({vault} becomes the bed vault's absolute path). Each asks for its answer in a named file under the workspace's outputs/, so the score reads that artifact, never the reply. `score.rules` are deterministic over the artifact; `judged` holds the fixture evidence, a reference answer that must pass and answers that must fail. Synthetic content only. docs/history/AGENT_EFFECTIVENESS.md \"Evaluation harness\".",
+  "schema": 1,
+  "tasks": [
+    {
+      "id": "simple-outcome",
+      "slice": "simple",
+      "facet": "one-line answer from the workspace brief",
+      "workspace": "eval-outcome",
+      "prompt": "In one sentence, what is this workspace's outcome? Write the sentence to outputs/outcome.md.",
+      "timeoutMin": 10,
+      "score": {
+        "artifact": "outputs/outcome.md",
+        "rules": [
+          { "id": "names-kestrel", "kind": "contains", "any": ["Kestrel"], "why": "the outcome is about the Kestrel pilot" },
+          { "id": "field-pilot", "kind": "contains", "any": ["field pilot", "pilot"], "why": "it is a field pilot" },
+          { "id": "three-sites", "kind": "contains", "pattern": "\\b(three|3)\\b[^.\\n]{0,40}\\bsites?\\b", "why": "at three sites" }
+        ]
+      },
+      "judged": {
+        "answer": "Run the Kestrel field pilot at three synthetic sites and report what it shows.",
+        "evidence": [{ "path": "workspaces/eval-outcome/WORKSPACE.md", "quote": "Run the Kestrel field pilot at three synthetic sites and report what it shows." }],
+        "fails": [{ "text": "Answer the steering group's questions.", "because": "the next step, not the outcome" }]
+      }
+    },
+    {
+      "id": "research-fourth-attachment",
+      "slice": "research",
+      "facet": "the fact is in the fourth attached file by name",
+      "workspace": "eval-outcome",
+      "prompt": "What is the approved budget ceiling for the Kestrel pilot? Write the figure and the name of the file it comes from to outputs/budget.md.",
+      "timeoutMin": 15,
+      "score": {
+        "artifact": "outputs/budget.md",
+        "rules": [
+          { "id": "ceiling", "kind": "contains", "pattern": "48[,. ]?500", "why": "the approved ceiling is 48,500" },
+          { "id": "currency", "kind": "contains", "any": ["EUR", "€", "euro"], "why": "in EUR" },
+          { "id": "cites-source", "kind": "cites", "path": "workspaces/eval-outcome/sources/d-budget-ceiling.md", "form": "basename", "why": "the figure comes from the fourth source" }
+        ]
+      },
+      "judged": {
+        "answer": "48,500 EUR, from sources/d-budget-ceiling.md.",
+        "evidence": [{ "path": "workspaces/eval-outcome/sources/d-budget-ceiling.md", "quote": "The steering group approved a budget ceiling of 48,500 EUR for the Kestrel field pilot on 2026-08-28." }],
+        "fails": [
+          { "text": "The committed spend is 31,200 EUR (d-budget-ceiling.md).", "because": "the commitment, not the ceiling" },
+          { "text": "The ceiling is 48,500 EUR.", "because": "names no source file" }
+        ]
+      }
+    },
+    {
+      "id": "research-older-decision",
+      "slice": "research",
+      "facet": "an older decision behind newer notes on the same topic",
+      "workspace": "eval-outcome",
+      "prompt": "Which sensor vendor did we decide on for Kestrel, and why? Write the answer to outputs/vendor.md.",
+      "timeoutMin": 15,
+      "score": {
+        "artifact": "outputs/vendor.md",
+        "rules": [
+          { "id": "vendor", "kind": "contains", "any": ["Halvard"], "why": "the decision chose Halvard" },
+          { "id": "reason", "kind": "contains", "any": ["battery"], "why": "Brightline's battery life fell short" }
+        ]
+      },
+      "judged": {
+        "answer": "Halvard. Brightline was ruled out because its battery life fell short of the 18-month requirement.",
+        "evidence": [{ "path": "notes/kestrel/2026-06-02-sensor-vendor-decision.md", "quote": "Decision: the Kestrel pilot uses Halvard sensors. Brightline was ruled out because its battery life fell short of the 18-month requirement." }],
+        "fails": [{ "text": "The weekly syncs keep discussing mounting brackets; no vendor is recorded.", "because": "only the newer notes, which never name the vendor" }]
+      }
+    },
+    {
+      "id": "research-paraphrase",
+      "slice": "research",
+      "facet": "a paraphrased question (no shared keywords with the decision)",
+      "workspace": "eval-outcome",
+      "prompt": "Who did we pick to supply the measuring devices for the pilot sites, and what ruled out the other bidder? Write the answer to outputs/supplier.md.",
+      "timeoutMin": 15,
+      "score": {
+        "artifact": "outputs/supplier.md",
+        "rules": [
+          { "id": "chosen", "kind": "contains", "any": ["Halvard"], "why": "the chosen supplier" },
+          { "id": "other-bidder", "kind": "contains", "any": ["Brightline"], "why": "the bidder ruled out" },
+          { "id": "reason", "kind": "contains", "any": ["battery"], "why": "why it was ruled out" }
+        ]
+      },
+      "judged": {
+        "answer": "Halvard supplies the sensors; Brightline was ruled out on battery life (short of the 18-month requirement).",
+        "evidence": [{ "path": "notes/kestrel/2026-06-02-sensor-vendor-decision.md", "quote": "Brightline was ruled out because its battery life fell short of the 18-month requirement." }],
+        "fails": [{ "text": "Halvard.", "because": "names neither the other bidder nor the reason" }]
+      }
+    },
+    {
+      "id": "continuity-settled-constraint",
+      "slice": "continuity",
+      "facet": "a settled constraint from the operator profile (amounts in EUR, never USD)",
+      "workspace": "eval-outcome",
+      "prompt": "Draft a short cost update for the Kestrel steering group in outputs/cost-update.md: the budget ceiling and what is committed so far.",
+      "timeoutMin": 15,
+      "score": {
+        "artifact": "outputs/cost-update.md",
+        "rules": [
+          { "id": "ceiling", "kind": "contains", "pattern": "48[,. ]?500", "why": "the ceiling" },
+          { "id": "committed", "kind": "contains", "pattern": "31[,. ]?200", "why": "the commitment so far" },
+          { "id": "in-eur", "kind": "contains", "any": ["EUR", "€", "euro"], "why": "amounts in EUR" },
+          { "id": "never-usd", "kind": "absent", "pattern": "(\\$|\\bUS\\$|\\bUSD\\b|\\bdollars?\\b)", "why": "the settled decision: never USD" }
+        ]
+      },
+      "judged": {
+        "answer": "Kestrel cost update: the approved ceiling is 48,500 EUR; 31,200 EUR is committed so far (sensors and gateways), leaving 17,300 EUR.",
+        "evidence": [
+          { "path": "me/Decisions.md", "quote": "Settled: every Kestrel report states amounts in EUR, never USD." },
+          { "path": "workspaces/eval-outcome/sources/d-budget-ceiling.md", "quote": "Committed so far: 31,200 EUR (sensors and gateways)." }
+        ],
+        "fails": [
+          { "text": "Ceiling: $48,500. Committed: $31,200.", "because": "amounts in USD" },
+          { "text": "Ceiling 48,500 EUR (about 52,000 USD); committed 31,200 EUR.", "because": "states a USD amount" }
+        ]
+      }
+    },
+    {
+      "id": "memory-current",
+      "slice": "memory",
+      "facet": "the current value, after an approved correction superseded the old one",
+      "workspace": "eval-outcome",
+      "prompt": "How often do Kestrel status reports go out now? Write the answer to outputs/cadence.md.",
+      "timeoutMin": 10,
+      "score": {
+        "artifact": "outputs/cadence.md",
+        "rules": [
+          { "id": "current", "kind": "contains", "any": ["second Tuesday", "2nd Tuesday"], "why": "the approved correction" },
+          { "id": "old-only-as-history", "kind": "historyLabelled", "stale": ["Friday"], "markers": ["before", "previous", "previously", "formerly", "used to", "was", "were", "old", "earlier", "superseded", "replaced", "changed", "until", "no longer", "instead of", "not"], "why": "the superseded Friday cadence appears only as history" }
+        ]
+      },
+      "judged": {
+        "answer": "Every second Tuesday (since 2026-09-15; it used to be every Friday).",
+        "evidence": [
+          { "path": "learnings/kestrel-report-cadence-new00002.md", "quote": "Kestrel status reports go out every second Tuesday, since the steering group changed the cadence on 2026-09-15." },
+          { "path": "learnings/kestrel-report-cadence-old00001.md", "quote": "superseded_by: learnings/kestrel-report-cadence-new00002.md" }
+        ],
+        "fails": [
+          { "text": "Kestrel status reports go out every Friday.", "because": "the superseded preference" },
+          { "text": "Every second Tuesday, and a short note every Friday.", "because": "presents the superseded cadence as current" },
+          { "text": "Every second Tuesday. Drafts still go round on Fridays.", "because": "presents the superseded cadence as current, in the plural" }
+        ]
+      }
+    },
+    {
+      "id": "memory-historical",
+      "slice": "memory",
+      "facet": "a historical question, which should still find the superseded entry",
+      "workspace": "eval-outcome",
+      "prompt": "What was the Kestrel status report cadence before it changed, and when did it change? Write the answer to outputs/cadence-history.md.",
+      "timeoutMin": 10,
+      "score": {
+        "artifact": "outputs/cadence-history.md",
+        "rules": [
+          { "id": "old-cadence", "kind": "contains", "any": ["Friday"], "why": "the old cadence" },
+          { "id": "changed-on", "kind": "contains", "pattern": "2026-09-15|\\b15(th)?\\s+sep(t|tember)?\\.?,?\\s+2026|\\bsep(t|tember)?\\.?\\s+15(th)?,?\\s+2026", "why": "the date of the change" }
+        ]
+      },
+      "judged": {
+        "answer": "Every Friday, until the steering group changed it to every second Tuesday on 2026-09-15.",
+        "evidence": [
+          { "path": "learnings/kestrel-report-cadence-old00001.md", "quote": "Kestrel status reports go out every Friday." },
+          { "path": "learnings/kestrel-report-cadence-new00002.md", "quote": "since the steering group changed the cadence on 2026-09-15" }
+        ],
+        "fails": [{ "text": "They go out every second Tuesday.", "because": "answers the current state, not the history" }]
+      }
+    },
+    {
+      "id": "tools-named-tool",
+      "slice": "tools",
+      "facet": "a named Hollow tool (task tools), found on demand",
+      "workspace": "eval-outcome",
+      "prompt": "Use Hollow's task tools to find the open tasks in this vault (anything not done). Write each open task's title and due date to outputs/open-tasks.md.",
+      "timeoutMin": 15,
+      "score": {
+        "artifact": "outputs/open-tasks.md",
+        "rules": [
+          { "id": "open-task", "kind": "contains", "any": ["Draft synthetic report"], "why": "the one open task" },
+          { "id": "due-date", "kind": "contains", "pattern": "2026-10-09|\\b9(th)?\\s+oct(ober)?\\.?,?\\s+2026|\\boct(ober)?\\.?\\s+9(th)?,?\\s+2026", "why": "its due date" },
+          { "id": "not-done", "kind": "absent", "any": ["Finished synthetic task"], "why": "a done task is not open" }
+        ]
+      },
+      "judged": {
+        "answer": "- Draft synthetic report (due 2026-10-09)",
+        "evidence": [
+          { "path": "tasks/draft-synthetic-report.md", "quote": "status: Not started" },
+          { "path": "tasks/finished-synthetic-task.md", "quote": "status: Done" }
+        ],
+        "fails": [{ "text": "- Draft synthetic report (due 2026-10-09)\n- Finished synthetic task", "because": "lists a done task" }]
+      }
+    },
+    {
+      "id": "tools-selected-skill",
+      "slice": "tools",
+      "facet": "a skill chosen with Use in workspace (the message skillCatalog.ts useSkillPrompt composes)",
+      "workspace": "eval-outcome",
+      "prompt": "Use the skill \"kestrel-status-report\" for this task. First read its instructions: with Hollow’s app tools, run_action skills.read_skill with {\"path\": \"{vault}/.agents/skills/kestrel-status-report/SKILL.md\"}; without them, open \"{vault}/.agents/skills/kestrel-status-report/SKILL.md\" with your own file tools (if that file is outside what you may read, say so and ask me to paste it). Then follow them for this task:\n\nWrite this week's Kestrel status report to outputs/status-report.md.",
+      "timeoutMin": 15,
+      "score": {
+        "artifact": "outputs/status-report.md",
+        "rules": [
+          { "id": "header", "kind": "firstLine", "pattern": "^KESTREL STATUS\\s*[·\\-–—:]\\s*\\d{4}-\\d{2}-\\d{2}\\s*$", "flags": "", "why": "the skill's exact first line" },
+          { "id": "sections", "kind": "inOrder", "items": ["## Done", "## Next", "## Risks"], "why": "the skill's three sections, in order" },
+          { "id": "sign-off", "kind": "contains", "any": ["Prepared for the Kestrel steering group."], "why": "the skill's closing line" }
+        ]
+      },
+      "judged": {
+        "answer": "KESTREL STATUS · 2026-10-06\n\n## Done\n\n- Sensors and gateways committed (31,200 EUR).\n\n## Next\n\n- Confirm the budget and the sensor vendor.\n\n## Risks\n\n- Gateway firmware 2.4 has no confirmed date.\n\nPrepared for the Kestrel steering group.",
+        "evidence": [{ "path": ".agents/skills/kestrel-status-report/SKILL.md", "quote": "The first line is exactly `KESTREL STATUS · <date>`" }],
+        "fails": [
+          { "text": "# Kestrel status report\n\n## Done\n\n## Next\n\n## Risks\n\nPrepared for the Kestrel steering group.", "because": "ignores the skill's first line" },
+          { "text": "KESTREL STATUS · 2026-10-06\n\n## Risks\n\n## Done\n\n## Next\n\nPrepared for the Kestrel steering group.", "because": "sections out of order" }
+        ]
+      }
+    },
+    {
+      "id": "vault-search-from-workspace",
+      "slice": "vault-search",
+      "facet": "an explicit vault-wide search from a workspace chat (F1)",
+      "workspace": "eval-outcome",
+      "prompt": "Search the whole vault, not just this workspace, for the note that records the Kestrel sensor vendor decision. Write the note's path relative to the vault root, and the vendor it chose, to outputs/vendor-note.md.",
+      "timeoutMin": 15,
+      "score": {
+        "artifact": "outputs/vendor-note.md",
+        "rules": [
+          { "id": "cites-note", "kind": "cites", "path": "notes/kestrel/2026-06-02-sensor-vendor-decision.md", "form": "vault-path", "why": "the decision note, outside the workspace" },
+          { "id": "vendor", "kind": "contains", "any": ["Halvard"], "why": "the vendor it chose" }
+        ]
+      },
+      "judged": {
+        "answer": "notes/kestrel/2026-06-02-sensor-vendor-decision.md: the Kestrel pilot uses Halvard sensors.",
+        "evidence": [{ "path": "notes/kestrel/2026-06-02-sensor-vendor-decision.md", "quote": "Decision: the Kestrel pilot uses Halvard sensors." }],
+        "fails": [
+          { "text": "2026-06-02-sensor-vendor-decision.md: Halvard.", "because": "a bare file name, not the vault path" },
+          { "text": "notes/kestrel/2026-09-11-weekly-sync.md: Halvard.", "because": "the wrong note" }
+        ]
+      }
+    }
+  ]
+}

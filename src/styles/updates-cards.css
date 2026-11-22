@@ -1,0 +1,27 @@
+/* Settings, Updates cards: Go back (U6), Publish to Main (U8), People (U9).
+   Loaded only with the lazy card modules. */
+@layer components {
+  .updates-card {
+    margin-top: var(--sp-4);
+    padding-top: var(--sp-3);
+    border-top: 1px solid var(--hairline);
+  }
+  .updates-card-title { margin: 0 0 var(--sp-2); font-size: var(--fs-body); }
+  .updates-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); }
+  .updates-card-actions .btn { white-space: normal; height: auto; min-height: 32px; }
+  .updates-card-list { margin: var(--sp-2) 0; padding-left: var(--sp-4); overflow-wrap: anywhere; }
+  .updates-card-list li + li { margin-top: var(--sp-1); }
+  .updates-card-busy { display: flex; align-items: center; gap: var(--sp-2); color: var(--muted); }
+  .updates-link {
+    margin-top: var(--sp-3);
+    padding: var(--sp-3);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+    background: var(--material-solid);
+    user-select: text;
+  }
+  .updates-link code { overflow-wrap: anywhere; user-select: all; }
+  @container hollow-window (max-width: 53.75em) {
+    .updates-card-actions { align-items: stretch; flex-direction: column; }
+  }
+}

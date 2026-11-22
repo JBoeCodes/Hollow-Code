@@ -1,0 +1,360 @@
+[
+ {
+  "id": "conv-sample-0001",
+  "title": "Plan a garden",
+  "create_time": 1700000000.0,
+  "update_time": 1700000060.5,
+  "mapping": {
+   "root": {
+    "id": "root",
+    "message": null,
+    "parent": null,
+    "children": [
+     "sys"
+    ]
+   },
+   "sys": {
+    "id": "sys",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "system"
+     },
+     "create_time": null,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       ""
+      ]
+     },
+     "metadata": {
+      "is_visually_hidden_from_conversation": true
+     },
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "root",
+    "children": [
+     "ctx"
+    ]
+   },
+   "ctx": {
+    "id": "ctx",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "user"
+     },
+     "create_time": 1700000000.0,
+     "content": {
+      "content_type": "user_editable_context",
+      "parts": [
+       "Custom instructions: be brief."
+      ]
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "sys",
+    "children": [
+     "u1"
+    ]
+   },
+   "u1": {
+    "id": "u1",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "user"
+     },
+     "create_time": 1700000010.0,
+     "content": {
+      "content_type": "multimodal_text",
+      "parts": [
+       {
+        "content_type": "image_asset_pointer",
+        "asset_pointer": "file-service://file-sample-1",
+        "width": 64,
+        "height": 64
+       },
+       "How do I start a herb garden?",
+       null
+      ]
+     },
+     "metadata": {
+      "attachments": [
+       {
+        "name": "garden-plan.pdf",
+        "id": "file-sample-2",
+        "mime_type": "application/pdf"
+       }
+      ]
+     },
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "ctx",
+    "children": [
+     "a1"
+    ]
+   },
+   "a1": {
+    "id": "a1",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "assistant"
+     },
+     "create_time": 1700000020.0,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       "Start with a sunny spot and good drainage."
+      ]
+     },
+     "metadata": {
+      "model_slug": "sample-model"
+     },
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "u1",
+    "children": [
+     "u2",
+     "u2b"
+    ]
+   },
+   "u2": {
+    "id": "u2",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "user"
+     },
+     "create_time": 1700000030.0,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       "Which herbs?"
+      ]
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "a1",
+    "children": [
+     "c1"
+    ]
+   },
+   "c1": {
+    "id": "c1",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "assistant"
+     },
+     "create_time": 1700000040.0,
+     "content": {
+      "content_type": "code",
+      "text": "print(1 + 1)",
+      "language": "python"
+     },
+     "metadata": {},
+     "recipient": "python",
+     "status": "finished_successfully"
+    },
+    "parent": "u2",
+    "children": [
+     "t1"
+    ]
+   },
+   "t1": {
+    "id": "t1",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "tool",
+      "name": "python"
+     },
+     "create_time": 1700000041.0,
+     "content": {
+      "content_type": "execution_output",
+      "text": "2"
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "c1",
+    "children": [
+     "a2"
+    ]
+   },
+   "a2": {
+    "id": "a2",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "assistant"
+     },
+     "create_time": 1700000050.0,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       "Basil and mint, two packets each."
+      ]
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "t1",
+    "children": []
+   },
+   "u2b": {
+    "id": "u2b",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "user"
+     },
+     "create_time": 1700000031.0,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       "What herbs for shade?"
+      ]
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "a1",
+    "children": [
+     "a2b"
+    ]
+   },
+   "a2b": {
+    "id": "a2b",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "assistant"
+     },
+     "create_time": 1700000032.0,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       "Mint and parsley."
+      ]
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "u2b",
+    "children": []
+   }
+  },
+  "current_node": "a2",
+  "default_model_slug": "sample-model",
+  "unknown_future_field": {
+   "a": 1
+  }
+ },
+ {
+  "id": "conv-sample-0002",
+  "title": null,
+  "create_time": 1700100000.0,
+  "update_time": null,
+  "mapping": {
+   "root": {
+    "id": "root",
+    "message": null,
+    "parent": null,
+    "children": [
+     "u"
+    ]
+   },
+   "u": {
+    "id": "u",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "user"
+     },
+     "create_time": 1700100000.0,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       "Hello there"
+      ]
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "root",
+    "children": [
+     "a"
+    ]
+   },
+   "a": {
+    "id": "a",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "assistant"
+     },
+     "create_time": 1700100001.0,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       null,
+       {
+        "content_type": "hologram",
+        "text": null
+       }
+      ]
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "u",
+    "children": [
+     "b"
+    ]
+   },
+   "b": {
+    "id": "b",
+    "message": {
+     "id": "m",
+     "author": {
+      "role": "assistant"
+     },
+     "create_time": 1700100002.0,
+     "content": {
+      "content_type": "text",
+      "parts": [
+       "Hi! How can I help?"
+      ]
+     },
+     "metadata": {},
+     "recipient": "all",
+     "status": "finished_successfully"
+    },
+    "parent": "a",
+    "children": []
+   }
+  },
+  "current_node": null
+ },
+ 42,
+ {
+  "title": "no id and no mapping"
+ },
+ "text"
+]

@@ -1,0 +1,127 @@
+/* Subagents (COO rebuild L3): the Preview pane's tab and a session in it
+   (SubagentsPanel.tsx), and a start_session call's line in the transcript
+   (ToolCall.tsx). Structure and density follow ChatGPT's subagents view;
+   colour, type and spacing are Hollow's tokens. */
+@layer components {
+/* Compact side view. Finished work and related parts use native disclosures. */
+.subagents-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; min-width: 0; container-type: inline-size; }
+.subagents-list { flex: 1; min-height: 0; overflow: auto; padding: var(--sp-3); }
+.subagents-list[hidden] { display: none; }
+.subagents-group + .subagents-group { margin-top: var(--sp-4); }
+.subagents-group-head { margin: 0 0 var(--sp-2); padding: var(--sp-2); font: 500 var(--fs-meta)/var(--lh-tight) var(--ui); color: var(--muted); }
+summary.subagents-group-head { cursor: pointer; border-radius: var(--r-sm); }
+summary.subagents-group-head:hover { background: var(--surface-soft); }
+summary.subagents-group-head:focus-visible { outline: 2px solid var(--primary); }
+.subagents-empty { margin: 0; padding: var(--sp-2); font-size: var(--fs-meta); color: var(--muted); }
+.subagents-rows { list-style: none; margin: 0; padding: 0; }
+.subagents-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-areas: "mark title state when" "mark current current current" "mark trail trail trail" "mark plan plan cost"; align-items: center; gap: var(--sp-1) var(--sp-2); width: 100%; min-height: 40px; padding: var(--sp-2); border: 0; border-radius: var(--r-md); background: none; color: var(--ink); text-align: left; font: 400 var(--fs-body)/var(--lh-tight) var(--ui); cursor: pointer; transition: background var(--t-fast); }
+.subagents-row:not([data-status="running"]):not([data-status="queued"]) { grid-template-areas: "mark title state when"; }
+.subagents-mark { grid-area: mark; align-self: start; position: relative; display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--r-pill); background: var(--surface-soft); color: var(--primary); font-size: var(--fs-title); }
+.subagents-state-mark { position: absolute; right: -2px; bottom: -2px; min-width: 12px; padding: 1px; border-radius: var(--r-pill); background: var(--surface-card); color: var(--muted); font: 600 var(--fs-micro)/1 var(--ui); text-align: center; }
+.subagents-row[data-status="running"] .subagents-state-mark { color: var(--primary); }
+.subagents-row[data-status="failed"] .subagents-state-mark,
+.subagents-row[data-status="failed"] .subagents-row-state { color: var(--risk); }
+.subagents-rows > li + li { margin-top: var(--sp-1); }
+.subagents-row-state { grid-area: state; font-size: var(--fs-micro); color: var(--muted); }
+.subagents-row-by { color: var(--muted); font-size: var(--fs-micro); }
+.subagents-row-title { grid-area: title; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); }
+.subagents-row[data-status="running"] .subagents-row-title,
+.subagents-row[data-status="queued"] .subagents-row-title { white-space: normal; overflow-wrap: anywhere; }
+.subagents-row-when { grid-area: when; justify-self: end; white-space: nowrap; font-size: var(--fs-meta); color: var(--muted); font-variant-numeric: tabular-nums; }
+.subagents-current { grid-area: current; display: flex; align-items: baseline; gap: var(--sp-2); min-width: 0; color: var(--body); font: 400 var(--fs-meta)/var(--lh-base) var(--ui); }
+.subagents-step-text { overflow-wrap: anywhere; }
+.subagents-signal { flex: none; display: flex; align-items: center; gap: 2px; height: 10px; color: var(--primary); }
+.subagents-signal i { display: block; width: 2px; height: 5px; background: currentColor; border-radius: 1px; }
+.subagents-signal i:nth-child(2) { height: 9px; }
+.subagents-row[data-status="queued"] .subagents-signal { display: none; }
+html[data-experimental-active="true"] .subagents-row[data-status="running"] .subagents-mark { animation: subagent-signal 2s ease-in-out infinite; animation-play-state: var(--ambient-play, running); }
+html[data-experimental-active="true"] .subagents-row[data-status="running"] .subagents-step-text { animation: subagent-arrival var(--t-fast) ease-out; }
+html[data-experimental-active="true"] .subagents-reading .subagents-mark { animation-play-state: paused; }
+@keyframes subagent-signal { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+@keyframes subagent-arrival { from { opacity: .5; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-experimental-active="true"] .subagents-row[data-status="running"] .subagents-mark,
+  html[data-experimental-active="true"] .subagents-row[data-status="running"] .subagents-step-text { animation: none; }
+}
+.subagents-trail { grid-area: trail; display: flex; flex-direction: column; gap: 2px; color: var(--muted); font-size: var(--fs-micro); }
+.subagents-trail > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.subagents-plan { grid-area: plan; display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); font-size: var(--fs-micro); color: var(--muted); }
+.subagents-plan progress { width: 56px; height: 3px; border: none; border-radius: var(--r-pill); overflow: hidden; accent-color: var(--primary); background: var(--surface-soft); }
+.subagents-plan progress::-webkit-progress-bar { background: var(--surface-soft); }
+.subagents-plan progress::-webkit-progress-value { background: var(--primary); }
+.subagents-cost { grid-area: cost; justify-self: end; color: var(--muted); font-size: var(--fs-micro); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.subagents-team { margin: var(--sp-1) 0; }
+.subagents-team summary { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--sp-2); padding: var(--sp-2); cursor: pointer; border-radius: var(--r-sm); }
+.subagents-team summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.subagents-team summary:hover { background: var(--surface-soft); }
+.subagents-team-kind { color: var(--muted); }
+.subagents-team-kind::before { content: '›'; }
+.subagents-team[open] .subagents-team-kind::before { content: '⌄'; }
+.subagents-team-title { font: 500 var(--fs-body)/var(--lh-tight) var(--ui); min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--ink); }
+.subagents-team-meta { color: var(--muted); font-size: var(--fs-micro); white-space: nowrap; }
+.subagents-branches { margin-left: var(--sp-2); padding-left: var(--sp-2); border-left: 1px solid var(--hairline-soft); }
+.subagents-row:hover { background: var(--surface-soft); }
+.subagents-row:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+@container (max-width: 360px) {
+  .subagents-list { padding: var(--sp-2); }
+  .subagents-row { column-gap: var(--sp-1); }
+  .subagents-mark { width: 24px; height: 24px; }
+}
+.subagents-issue { flex: none; padding: 1px var(--sp-2); border: 1px solid var(--hairline-soft); border-radius: var(--r-pill); font: 500 var(--fs-micro)/1.4 var(--mono); color: var(--muted); }
+
+.subagents-session { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+/* Back, glyph, title; "Model · Effort · time · tokens" muted at the right. */
+.subagents-session-head { flex: none; padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--hairline-soft); }
+.subagents-session-bar { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.subagents-session-title { flex: 1 1 120px; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 var(--fs-body)/var(--lh-tight) var(--ui); color: var(--ink); }
+.subagents-session-meta { display: inline-flex; align-items: center; gap: var(--sp-1); margin-left: auto; font-size: var(--fs-meta); color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.subagents-session-cfo { margin: var(--sp-1) 0 0; padding-left: calc(var(--sp-2) + 28px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-meta); color: var(--muted); }
+.subagents-transcript { flex: 1; min-height: 0; overflow: auto; padding: var(--sp-4) max(var(--sp-5), calc((100% - 760px) / 2)); }
+.subagents-reply + .subagents-reply { margin-top: var(--sp-5); }
+.subagents-ask { margin-left: auto; max-width: 85%; width: fit-content; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-lg); background: var(--surface-soft); }
+.subagents-md { font-size: var(--fs-body); line-height: var(--lh-reading); color: var(--body); overflow-wrap: anywhere; }
+.subagents-md > :first-child { margin-top: 0; }
+.subagents-md > :last-child { margin-bottom: 0; }
+.subagents-worked { display: flex; align-items: center; gap: var(--sp-2); margin: var(--sp-3) 0 var(--sp-2); padding-bottom: var(--sp-2); border-bottom: 1px solid var(--hairline-soft); font-size: var(--fs-meta); color: var(--muted); }
+.subagents-error { margin: var(--sp-2) 0 0; font-size: var(--fs-meta); color: var(--risk); }
+.subagents-reply-foot { display: flex; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); font-size: var(--fs-meta); color: var(--muted); }
+.subagents-foot-btn { display: inline-grid; place-items: center; width: 26px; height: 26px; padding: 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--muted); cursor: pointer; }
+.subagents-foot-btn:hover { background: var(--surface-soft); color: var(--ink); }
+.subagents-foot-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.subagents-foot-actions { display: inline-flex; align-items: center; gap: var(--sp-1); transition: opacity var(--t-fast) var(--ease); }
+.subagents-foot-btn.active { color: var(--primary); }
+.subagents-feedback-reason { display: inline-flex; align-items: center; gap: var(--sp-1); }
+.subagents-feedback-reason input { width: 220px; max-width: 100%; }
+/* As the chat (chat-frontier.css): older replies show the row on hover or
+   keyboard focus; the latest, a voted or a reading one always. Opacity, so
+   the buttons keep their box. */
+.subagents-transcript .subagents-reply:not(:hover) .subagents-reply-foot:not(.latest):not(.voted):not(.reading) .subagents-foot-actions:not(:focus-within) { opacity: 0; }
+.subagents-reply-time { white-space: nowrap; }
+.subagents-history { font-size: var(--fs-meta); }
+/* Overnight 11-12 (C8): the composer is one rounded box, as the chat's
+   (chat-workspace.css `.chat-main .chat-composer`): same border, radius,
+   card fill and focus (the box takes the text field ring, foundations.css),
+   the words on top and a round Send inside at the bottom right. */
+.subagents-composer { flex: none; padding: var(--sp-2) var(--sp-3) var(--sp-3); }
+.subagents-composer-box { display: flex; flex-direction: column; border: 1px solid var(--hairline); border-radius: var(--r-lg); background: var(--surface-card); transition: border-color var(--t-fast); }
+.subagents-composer-box:focus-within { border-color: color-mix(in srgb, var(--primary) 45%, var(--hairline)); box-shadow: var(--ring); }
+.subagents-input { width: 100%; min-height: 44px; resize: none; padding: var(--sp-3) var(--sp-3) var(--sp-1); border: 0; border-radius: var(--r-lg) var(--r-lg) 0 0; background: transparent; color: var(--ink); font: var(--fs-body)/var(--lh-base) var(--ui); }
+.subagents-input:focus,
+.subagents-input:focus-visible { border: 0; outline: 0; box-shadow: none; }
+.subagents-composer-row { display: flex; align-items: center; gap: var(--sp-2); padding: 0 var(--sp-2) var(--sp-2) var(--sp-3); }
+.subagents-send { flex: none; display: inline-grid; place-items: center; width: 30px; height: 30px; min-height: 30px; padding: 0; border-radius: var(--r-pill); box-shadow: none; }
+.subagents-send:disabled { background: color-mix(in srgb, var(--ink) 12%, transparent); color: var(--surface-card); opacity: 1; }
+.subagents-note { flex: 1; min-width: 0; font-size: var(--fs-meta); color: var(--muted); }
+
+/* A start_session call in the transcript: one compact line, a button. */
+.subagent-line { display: flex; align-items: center; gap: var(--sp-2); width: 100%; min-width: 0; padding: var(--sp-1) var(--sp-2); border: 0; border-radius: var(--r-sm); background: none; color: var(--body); font: var(--fs-meta)/var(--lh-tight) var(--ui); text-align: left; cursor: pointer; }
+.subagent-line:hover:not(:disabled) { background: var(--surface-soft); color: var(--ink); }
+.subagent-line:disabled { cursor: default; }
+.subagent-line:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.subagent-line-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.subagent-line-meta { flex: none; color: var(--muted); }
+.subagents-older-head { margin: var(--sp-4) 0 var(--sp-2); padding: 0 var(--sp-2); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); color: var(--muted); }
+.subagents-show-older { display: block; margin: var(--sp-3) var(--sp-2) 0; padding: var(--sp-2) var(--sp-3); border: 1px solid var(--hairline-soft); border-radius: var(--r-pill); background: none; color: var(--body); font: 500 var(--fs-body)/1 var(--ui); cursor: pointer; }
+.subagents-show-older:hover { background: var(--surface-soft); color: var(--ink); }
+.subagents-show-older:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+}

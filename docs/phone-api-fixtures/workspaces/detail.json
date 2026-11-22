@@ -1,0 +1,30 @@
+{
+  "workspace": {"id": "hollow-companion-app-cdc399a4852fa14c", "title": "Hollow Companion App", "kind": "vault", "status": "active", "pinned": 1, "modified": "2026-11-04T16:07:11.658361+00:00", "lastActivityAt": "2026-11-06T21:10:02.758538+00:00", "chatCount": 14, "runningCount": 1, "waitingCount": 0, "nextStep": "Ship round 6 to TestFlight."},
+  "outcome": "A Hollow iPhone app on TestFlight, laid out for iPhone and the foldable iPhone Duo, that lists Hollow's chats, shows them and sends messages.",
+  "plan": {"text": "# Plan\n\n- [x] Phone chat API\n- [ ] Round 6 build\n- [ ] Workspaces tab\n- [ ] Tasks tab\n", "truncated": false, "openItems": 3, "modified": "2026-11-06T20:00:00+00:00"},
+  "documents": [
+    {"name": "WORKSPACE.md", "size": 2412, "modified": "2026-11-04T16:07:11+00:00"},
+    {"name": "PLAN.md", "size": 118, "modified": "2026-11-06T20:00:00+00:00"}
+  ],
+  "chats": [
+    {
+      "key": "s-20261104-6e772c5f",
+      "title": "Release notes for 5.2",
+      "agent": "claude",
+      "workspace": {"id": "hollow-companion-app-cdc399a4852fa14c", "title": "Hollow Companion App", "kind": "vault"},
+      "createdAt": "2026-11-04T16:07:11.658361+00:00",
+      "lastActivityAt": "2026-11-04T16:18:09.702896+00:00",
+      "turnCount": 3,
+      "state": "running",
+      "needsAnswer": false,
+      "preview": "Drafting the release notes now.",
+      "runsOn": "mac-mini"
+    }
+  ],
+  "chatsHasMore": false,
+  "results": [
+    {"path": "outputs/README.md", "name": "README.md", "title": "Hollow Companion App", "kind": "document", "size": 4120, "modified": "2026-11-05T09:00:00+00:00"},
+    {"path": "outputs/plan.pdf", "name": "plan.pdf", "title": "Plan", "kind": "pdf", "size": 88210, "modified": "2026-11-04T18:00:00+00:00"}
+  ],
+  "resultsHasMore": false
+}

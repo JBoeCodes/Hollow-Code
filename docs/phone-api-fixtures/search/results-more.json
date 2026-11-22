@@ -1,0 +1,9 @@
+{
+  "query": "release notes",
+  "workspaces": [],
+  "workspacesTotal": 0,
+  "chats": [
+    {"session": {"key": "s-20261031-b3d5e8f1", "title": "Notes for the Duo build", "agent": "claude", "workspace": {"id": "phone-chat-api-for-the-iphone-app-da43f53e03747c94", "title": "Phone chat API for the iPhone app", "kind": "build"}, "createdAt": "2026-10-31T09:12:00+00:00", "lastActivityAt": "2026-10-31T09:40:12+00:00", "turnCount": 4, "state": "idle", "needsAnswer": false, "preview": "The release notes are in outputs/notes.md.", "runsOn": null}, "workspaceId": "phone-chat-api-for-the-iphone-app-da43f53e03747c94", "snippet": "Put the release notes for the Duo build in outputs"}
+  ],
+  "nextCursor": null
+}

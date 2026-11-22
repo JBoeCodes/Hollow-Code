@@ -1,0 +1,8 @@
+{
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "parentToolUseId": "toolu_parent",
+  "queueId": 42,
+  "text": "Hello",
+  "type": "assistantDelta"
+}

@@ -1,0 +1,19 @@
+{
+  "arm": "jev",
+  "complete": true,
+  "condition": "proposal-dedup",
+  "results": [
+    {
+      "basis": "fallback",
+      "calls": 1,
+      "costUsd": null,
+      "id": "cadence-learning",
+      "latencyMs": 4001.6,
+      "note": "Jev timed out.",
+      "of": null,
+      "outcome": "timeout",
+      "verdict": "new"
+    }
+  ],
+  "schema": 1
+}

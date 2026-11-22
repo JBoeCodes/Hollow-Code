@@ -1,0 +1,10 @@
+{
+  "clientTurnId": "ct-1",
+  "content": "ok",
+  "conversationKey": "s-20261118-abc",
+  "id": "toolu_1",
+  "isError": false,
+  "parentToolUseId": "toolu_parent",
+  "queueId": 42,
+  "type": "toolResult"
+}

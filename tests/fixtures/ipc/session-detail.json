@@ -1,0 +1,52 @@
+{
+  "summary": {
+    "key": "s-20261005-abcd0001",
+    "title": "Draft the summary",
+    "agent": "codex",
+    "harnessSessionId": "codex-thread-9",
+    "cwd": "/Users/fixture/vault/workspaces/local-results-view",
+    "createdAt": "2026-10-05T09:58:00Z",
+    "lastActivityAt": "2026-10-05T10:05:00Z",
+    "endedAt": null,
+    "turnCount": 2,
+    "parentKey": null,
+    "forkKind": null,
+    "adopted": false,
+    "stints": [
+      {
+        "agent": "claude",
+        "harnessSessionId": "claude-session-1",
+        "startedAt": "2026-10-05T09:58:00Z",
+        "endedAt": "2026-10-05T10:00:00Z",
+        "reason": "agent changed"
+      },
+      {
+        "agent": "codex",
+        "harnessSessionId": "codex-thread-9",
+        "startedAt": "2026-10-05T10:00:00Z",
+        "endedAt": null,
+        "reason": null
+      }
+    ],
+    "resumable": "native"
+  },
+  "turns": [
+    {
+      "ord": 1,
+      "runId": "run-20261005-0001",
+      "startedAt": "2026-10-05T09:58:00Z",
+      "endedAt": "2026-10-05T10:00:00Z",
+      "status": "success",
+      "asked": "Draft the summary"
+    },
+    {
+      "ord": 2,
+      "runId": null,
+      "startedAt": "2026-10-05T10:04:00Z",
+      "endedAt": null,
+      "status": null,
+      "asked": "Now shorten it"
+    }
+  ],
+  "eventsRetained": true
+}

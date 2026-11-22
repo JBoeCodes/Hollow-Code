@@ -1,0 +1,25 @@
+{
+  "round": "r-next",
+  "mode": "real",
+  "seed": 11,
+  "repeats": 3,
+  "budgetUsd": 20,
+  "spentUsd": 6.4,
+  "order": [
+    "memory-current-2",
+    "research-fourth-attachment-1",
+    "continuity-settled-constraint-1",
+    "memory-current-1",
+    "research-fourth-attachment-3",
+    "continuity-settled-constraint-2",
+    "research-fourth-attachment-2",
+    "memory-current-3",
+    "continuity-settled-constraint-3"
+  ],
+  "skipped": 0,
+  "stopped": null,
+  "candidate": {
+    "commit": "feedface"
+  },
+  "runs": []
+}

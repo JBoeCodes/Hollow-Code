@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "about": [
+    "What a test, build, typecheck or lint runner prints when it passed or failed, read from a shell call's output when its exit status can't speak for the check (a pipe into tail, `|| true`, a redirect then tail). Read by the Rust receipts (src-tauri/src/evidence.rs `read_output`, through include_str!) and meant for a JS reader too.",
+    "Each runner: `kinds` are the check kinds its failure text applies to (test, typecheck, lint, build, check, gate); `passKinds` the kinds a package script's check (`npm test`) may pass by its pass text (default: `kinds`); `fail` and `pass` are regular expressions. Runner ids and kinds never share a name.",
+    "Text: strip ANSI escapes (\\u001b[...letter), then add a newline at both ends, so a pattern can take a whole line (`\\n\\s*2 failed\\r?\\n`) without anchors.",
+    "Reading one check: a runner invoked directly (`npx vitest`, `cargo test`, `node --test`, `npx playwright test`, `tsc`, `eslint`, `vite build`, `tauri build`, `cargo build|check|clippy`) is read by its own entry only: its `fail` fails it, its `pass` passes it. `npm run gate` is read by `gate-record`'s pass and every gate-kind runner's fail. Another package script: any runner of its kind (fail by `kinds`, pass by `passKinds`). Failure text always wins; only positive pass text gives `passed`.",
+    "Pass text counts only when the check is the command's only check of its kind (a package script's: its only check at all), its stdout reaches the result through tail, tee or cat only (or goes with `>`, never `>>`, to a file that every later command is a tail or cat of), and its stderr reaches the result too (`2>&1` or left alone, never `2>file` or `2>/dev/null`): anything else can drop a failure line and keep a pass line. A call that errored passes a check on text only when its exit status was the check's.",
+    "`notAfterPass`: a runner's pass text counts only when none of these come after the last pass line (cargo prints `test result: ok.` once per test binary, so an `ok.` followed by the next binary's `Running` is a run cut short). `truncated` (top level): output that holds one of these was cut or timed out, so no check passes on its text; failure text still fails.",
+    "Syntax: one pattern means the same in JS (`new RegExp(p)`, no flags) and in Rust's `regex` crate: no lookaround, no backreferences, no inline flags, no ^ or $ anchors; case-sensitive."
+  ],
+  "truncated": [
+    "Command timed out",
+    "[Oo]utput truncated",
+    "\\[\\d+ lines? truncated\\]",
+    "\\(\\d+ lines? truncated\\)",
+    "\\d+ tokens? truncated",
+    "… \\(truncated\\)"
+  ],
+  "runners": [
+    {
+      "id": "vitest",
+      "about": "Vitest's summary (`Test Files  1 failed | 3 passed (4)`, `Tests  2 failed | 8 passed (10)`) and Jest's (`Test Suites: 1 failed, 2 passed`). It passes only on the file/suite line whose first count is passed, so no file failed: `Tests  10 passed` alone may be all a `tail -3` left of a failing run. A coverage threshold miss prints after the summary (Vitest's `does not meet global threshold`, Jest's `coverage threshold for lines (90%) not met`) and fails it.",
+      "kinds": ["test", "gate"],
+      "passKinds": ["test"],
+      "fail": [
+        "Test Files:?\\s+[1-9]\\d* failed",
+        "Test Suites:\\s+[1-9]\\d* failed",
+        "Tests:?\\s+[1-9]\\d* failed",
+        "Errors\\s+[1-9]\\d* errors?",
+        "No test files found",
+        "does not meet (global )?threshold",
+        "coverage threshold for .* not met"
+      ],
+      "pass": ["Test Files\\s+\\d+ passed", "Test Suites:\\s+\\d+ passed"]
+    },
+    {
+      "id": "cargo-test",
+      "about": "cargo test: each test binary's `test result:` line, and a build that never got to run. cargo stops at the first failing binary and ends with `error: test failed` (`error: doctest failed` for the doc tests, `error: N targets failed` with --no-fail-fast). `test result: ok.` prints once per binary, so it passes only when no later binary started after it (`notAfterPass`).",
+      "kinds": ["test", "gate"],
+      "passKinds": ["test"],
+      "fail": [
+        "test result: FAILED",
+        "could not compile",
+        "error\\[E\\d{4}\\]",
+        "error: test failed",
+        "error: doctest failed",
+        "error: [1-9]\\d* targets? failed"
+      ],
+      "pass": ["test result: ok\\."],
+      "notAfterPass": [
+        "\\n\\s*running \\d+ tests?",
+        "\\n\\s+Running ",
+        "\\n\\s*Doc-tests "
+      ]
+    },
+    {
+      "id": "cargo-build",
+      "about": "cargo build, check and clippy: `Finished` only once every crate compiled.",
+      "kinds": ["build", "check", "lint", "gate"],
+      "passKinds": ["build", "check", "lint"],
+      "fail": [
+        "could not compile",
+        "error\\[E\\d{4}\\]",
+        "error: aborting due to"
+      ],
+      "pass": ["Finished .*target\\(s\\) in"]
+    },
+    {
+      "id": "tauri",
+      "about": "tauri build: cargo's `Finished … target(s)` comes before bundling, so only the bundler's own `Finished N bundle(s) at` passes it.",
+      "kinds": ["build"],
+      "passKinds": [],
+      "fail": [
+        "failed to bundle project",
+        "could not compile",
+        "error\\[E\\d{4}\\]"
+      ],
+      "pass": ["Finished [1-9]\\d* bundles? at"]
+    },
+    {
+      "id": "tsc",
+      "about": "TypeScript: an `error TS…` line or a non-zero `Found N errors`. A clean `tsc --noEmit` prints nothing, so only watch/build mode's `Found 0 errors` passes.",
+      "kinds": ["typecheck", "build", "check", "gate"],
+      "passKinds": ["typecheck"],
+      "fail": ["error TS\\d+:", "Found [1-9]\\d* errors?"],
+      "pass": ["Found 0 errors"]
+    },
+    {
+      "id": "node-test",
+      "about": "node --test: the spec reporter's `ℹ pass 10` / `ℹ fail 1` and the TAP reporter's `# pass 10` / `# fail 1`.",
+      "kinds": ["test", "gate"],
+      "passKinds": ["test"],
+      "fail": ["[#ℹ] fail [1-9]", "[#ℹ] cancelled [1-9]"],
+      "pass": ["[#ℹ] pass \\d+"]
+    },
+    {
+      "id": "playwright",
+      "about": "Playwright's list reporter: a `  2 failed` (or `interrupted`) line of its own. It never passes on text: it prints `10 passed (30.2s)` last, after the failed count and the failing tests, so a `tail -1` keeps only the pass line.",
+      "kinds": ["test", "gate"],
+      "passKinds": [],
+      "fail": ["\\n\\s*[1-9]\\d* (failed|interrupted)\\r?\\n"],
+      "pass": []
+    },
+    {
+      "id": "eslint",
+      "about": "ESLint's `✖ 3 problems (2 errors, 1 warning)`; a clean run prints nothing, so it never passes on text.",
+      "kinds": ["lint", "gate"],
+      "fail": [
+        "✖ \\d+ problems? \\([1-9]\\d* errors?",
+        "ESLint found too many warnings"
+      ],
+      "pass": []
+    },
+    {
+      "id": "vite",
+      "about": "vite build.",
+      "kinds": ["build", "gate"],
+      "passKinds": ["build"],
+      "fail": ["error during build"],
+      "pass": ["✓ built in"]
+    },
+    {
+      "id": "npm",
+      "about": "A package manager's own report that a script failed: npm's (`npm ERR!` / `npm error`, npm 7-11 wording), pnpm's ` ELIFECYCLE  Test failed.`, yarn's `error Command failed with exit code 1.` and bun's `error: script \"test\" exited with code 1`. A script that runs vitest then playwright can print vitest's pass summary before playwright fails; this line comes last.",
+      "kinds": ["test", "typecheck", "lint", "build", "check", "gate"],
+      "fail": [
+        "npm (ERR!|error) (code |Lifecycle script|Test failed|command failed)",
+        "ELIFECYCLE",
+        "error Command failed with exit code",
+        "error: script \".*\" exited with code"
+      ],
+      "pass": []
+    },
+    {
+      "id": "gate-record",
+      "about": "Hollow's `npm run gate`: scripts/gate-record.mjs prints this line only after every gate step passed.",
+      "kinds": ["gate"],
+      "fail": [],
+      "pass": ["\\[gate-record\\] Gate: .* passed on"]
+    }
+  ]
+}

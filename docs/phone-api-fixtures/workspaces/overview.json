@@ -1,0 +1,7 @@
+{
+  "workspaces": [
+    {"id": "hollow-companion-app-cdc399a4852fa14c", "title": "Hollow Companion App", "kind": "vault", "status": "active", "pinned": 1, "modified": "2026-11-04T16:07:11.658361+00:00", "lastActivityAt": "2026-11-06T21:10:02.758538+00:00", "chatCount": 14, "runningCount": 1, "waitingCount": 0, "nextStep": "Ship round 6 to TestFlight."},
+    {"id": "phone-chat-api-for-the-iphone-app-da43f53e03747c94", "title": "Phone chat API for the iPhone app", "kind": "build", "status": "in progress", "pinned": null, "modified": "2026-11-05T12:30:00+00:00", "lastActivityAt": "2026-11-05T18:44:10+00:00", "chatCount": 3, "runningCount": 0, "waitingCount": 1, "nextStep": null}
+  ],
+  "total": 2
+}

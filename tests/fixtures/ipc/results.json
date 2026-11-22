@@ -1,0 +1,82 @@
+[
+  {
+    "path": "workspaces/local-results-view/outputs/brief.md",
+    "name": "outputs/brief.md",
+    "title": "Brief",
+    "kind": "document",
+    "size": 2048,
+    "modified": "2026-10-03T08:45:00Z",
+    "sha256": "c0ffee",
+    "review": "accepted",
+    "acceptedSha256": "c0ffee",
+    "acceptedAt": "2026-10-03T08:50:00Z",
+    "readyAt": "2026-10-03T08:46:00Z",
+    "hasSnapshot": true,
+    "acceptance": {
+      "actor": "person",
+      "sha256": "c0ffee",
+      "bytes": 2048,
+      "runId": "run-1",
+      "mode": "auto",
+      "basis": "the version on screen; 3 of 3 checks passed",
+      "snapshot": true,
+      "at": "2026-10-03T08:50:00Z"
+    },
+    "history": [
+      {
+        "state": "accepted",
+        "sha256": "c0ffee",
+        "at": "2026-10-03T08:50:00Z",
+        "note": "Looks right",
+        "actor": "person",
+        "runId": null
+      },
+      {
+        "state": "ready",
+        "sha256": "c0ffee",
+        "at": "2026-10-03T08:46:00Z",
+        "note": null,
+        "actor": "agent",
+        "runId": "run-1"
+      }
+    ],
+    "origin": {
+      "sessionKey": "hollow-session-1",
+      "runId": "run-1",
+      "finishedAt": "2026-10-03T08:44:00Z",
+      "status": "success",
+      "verification": "verified"
+    },
+    "checks": {
+      "total": 3,
+      "failed": 0,
+      "unknown": 0
+    }
+  },
+  {
+    "path": "workspaces/local-results-view/outputs/canvases/release-status.canvas.html",
+    "name": "outputs/canvases/release-status.canvas.html",
+    "title": "Release status",
+    "kind": "canvas",
+    "size": 812,
+    "modified": "2026-10-04T10:02:00Z",
+    "sha256": "decade",
+    "review": "changed",
+    "acceptedSha256": "facade",
+    "acceptedAt": "2026-10-04T10:01:30Z",
+    "readyAt": null,
+    "hasSnapshot": true,
+    "acceptance": null,
+    "history": [],
+    "origin": null,
+    "checks": {
+      "total": null,
+      "failed": null,
+      "unknown": null
+    },
+    "canvas": {
+      "id": "release-status",
+      "revision": 3
+    }
+  }
+]

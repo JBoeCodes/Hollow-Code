@@ -1,0 +1,14 @@
+@layer components {
+.pinned-canvases { display: grid; gap: var(--sp-3); margin-block: var(--sp-5); min-width: 0; }
+.pinned-canvases > h2 { font-size: var(--fs-body); color: var(--muted); font-weight: 600; margin: 0; }
+.pinned-canvas { border: 1px solid var(--material-edge); border-radius: var(--r-lg); padding: var(--sp-3); min-width: 0; background: var(--material-solid); box-shadow: var(--elev-edge); }
+.pinned-canvas > header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-3); padding-bottom: var(--sp-3); border-bottom: 1px solid var(--material-edge); }
+.pinned-canvas > header > div:first-child { display: grid; gap: var(--sp-1); min-width: 0; }
+.pinned-canvas strong { overflow-wrap: anywhere; font-size: var(--fs-body); }
+.pinned-canvas-status, .pinned-canvas-note, .pinned-canvas-paused { color: var(--muted); font-size: var(--fs-meta); }
+.pinned-canvas-status { font-variant-numeric: var(--type-numeric); }
+.pinned-canvas-note { margin: var(--sp-2) 0 0; line-height: 1.5; overflow-wrap: anywhere; }
+.pinned-canvas-actions { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.pinned-canvas-paused { min-height: 140px; display: grid; place-items: center; }
+.canvas-pin-action { display: inline-flex; align-items: center; gap: var(--sp-1); }
+}

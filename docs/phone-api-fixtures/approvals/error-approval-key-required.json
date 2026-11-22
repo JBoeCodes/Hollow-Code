@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "approval_key_required",
+    "message": "This iPhone isn't set up to approve from the phone. Turn on approvals in the app's Settings."
+  }
+}

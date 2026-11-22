@@ -1,0 +1,16 @@
+@layer components {
+  .threshold-art { display:block; width:100%; height:100%; max-width:600px; max-height:300px; margin:auto; color:var(--primary); pointer-events:none; user-select:none; }
+  .threshold-art-field { display:none; }
+  .threshold-art-field text { font:var(--fs-art)/1 var(--mono); white-space:pre; }
+  :root[data-texture-active="true"] .threshold-art-field { display:block; }
+  :root[data-texture-active="true"] .threshold-art-plain { display:none; }
+}
+@layer components {
+  :root[data-motion="reduced"] .threshold-art-field { display:none; }
+  :root[data-motion="reduced"] .threshold-art-plain { display:block; }
+  @media (prefers-reduced-motion:reduce), (prefers-reduced-transparency:reduce), (prefers-contrast:more), (forced-colors:active) {
+    :root[data-texture-active] .threshold-art-field { display:none; }
+    :root[data-texture-active] .threshold-art-plain { display:block; }
+  }
+  @media (forced-colors:active) { .threshold-art { color:CanvasText; } }
+}

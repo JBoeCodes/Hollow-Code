@@ -1,0 +1,642 @@
+{
+  "schema": 1,
+  "condition": "proposal-dedup",
+  "about": "Judged proposal deduplication (Jev use 3, decisions). Each item is one proposal and the existing records it is checked against; `duplicateOf` is the judged match, or null for a novel proposal (dropping that is the costly error); `kind` the case (exact: the local rules catch it, reworded: the same item in other words, related: a separate step, person, site or value, novel). Synthetic. Outputs per arm: verdict new | possible | duplicate, and of (an existing id or null).",
+  "items": [
+    {
+      "id": "cadence-learning",
+      "kind": "reworded",
+      "subject": "learning",
+      "proposal": {
+        "title": "Kestrel reports go out every second Tuesday",
+        "detail": "The steering group moved status reports to every second Tuesday."
+      },
+      "existing": [
+        {
+          "id": "l-new",
+          "title": "Kestrel status reports go out every second Tuesday, since 2026-09-15.",
+          "detail": "Kestrel status reports"
+        },
+        {
+          "id": "l-old",
+          "title": "Kestrel status reports go out every Friday.",
+          "detail": "Kestrel status reports"
+        }
+      ],
+      "duplicateOf": "l-new"
+    },
+    {
+      "id": "firmware-task",
+      "kind": "novel",
+      "subject": "task",
+      "proposal": {
+        "title": "Chase the vendor for gateway firmware 2.4",
+        "detail": "The gateways need 2.4 before go-live."
+      },
+      "existing": [
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        },
+        {
+          "id": "t-finished",
+          "title": "Finished synthetic task"
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "access-task",
+      "kind": "novel",
+      "subject": "task",
+      "proposal": {
+        "title": "Confirm Canal yard weekday morning access",
+        "detail": "Crews are allowed only on weekday mornings."
+      },
+      "existing": [
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        },
+        {
+          "id": "t-firmware",
+          "title": "Chase the vendor for gateway firmware 2.4",
+          "detail": "The gateways need 2.4 before go-live."
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "firmware-exact",
+      "kind": "exact",
+      "subject": "task",
+      "proposal": {
+        "title": "Chase the vendor for gateway firmware 2.4",
+        "detail": "Needed before go-live."
+      },
+      "existing": [
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        },
+        {
+          "id": "t-firmware",
+          "title": "Chase the vendor for gateway firmware 2.4",
+          "detail": "The gateways need 2.4 before go-live."
+        },
+        {
+          "id": "t-access",
+          "title": "Confirm Canal yard weekday morning access",
+          "detail": "Crews only on weekday mornings."
+        }
+      ],
+      "duplicateOf": "t-firmware"
+    },
+    {
+      "id": "firmware-case",
+      "kind": "exact",
+      "subject": "task",
+      "proposal": {
+        "title": "chase the vendor for gateway-firmware 2.4!",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-firmware",
+          "title": "Chase the vendor for gateway firmware 2.4",
+          "detail": "The gateways need 2.4 before go-live."
+        },
+        {
+          "id": "t-brackets",
+          "title": "Order type 2 mounting brackets for Hill reservoir",
+          "detail": "Lead time 8 days."
+        }
+      ],
+      "duplicateOf": "t-firmware"
+    },
+    {
+      "id": "firmware-reworded",
+      "kind": "reworded",
+      "subject": "task",
+      "proposal": {
+        "title": "Get a firmware 2.4 date from the gateway vendor",
+        "detail": "Go-live depends on it."
+      },
+      "existing": [
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        },
+        {
+          "id": "t-firmware",
+          "title": "Chase the vendor for gateway firmware 2.4",
+          "detail": "The gateways need 2.4 before go-live."
+        },
+        {
+          "id": "t-access",
+          "title": "Confirm Canal yard weekday morning access",
+          "detail": "Crews only on weekday mornings."
+        },
+        {
+          "id": "t-brackets",
+          "title": "Order type 2 mounting brackets for Hill reservoir",
+          "detail": "Lead time 8 days."
+        }
+      ],
+      "duplicateOf": "t-firmware"
+    },
+    {
+      "id": "firmware-follow-up",
+      "kind": "related",
+      "subject": "task",
+      "proposal": {
+        "title": "Install firmware 2.4 on the Canal yard gateways",
+        "detail": "Once the vendor ships it."
+      },
+      "existing": [
+        {
+          "id": "t-firmware",
+          "title": "Chase the vendor for gateway firmware 2.4",
+          "detail": "The gateways need 2.4 before go-live."
+        },
+        {
+          "id": "t-access",
+          "title": "Confirm Canal yard weekday morning access",
+          "detail": "Crews only on weekday mornings."
+        },
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "brackets-reworded",
+      "kind": "reworded",
+      "subject": "task",
+      "proposal": {
+        "title": "Place the order for Hill reservoir brackets (type 2)",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-brackets",
+          "title": "Order type 2 mounting brackets for Hill reservoir",
+          "detail": "Lead time 8 days."
+        },
+        {
+          "id": "t-survey",
+          "title": "Re-survey North depot after the rain",
+          "detail": "Ground was soft."
+        },
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        }
+      ],
+      "duplicateOf": "t-brackets"
+    },
+    {
+      "id": "brackets-other-site",
+      "kind": "related",
+      "subject": "task",
+      "proposal": {
+        "title": "Order type 2 mounting brackets for North depot",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-brackets",
+          "title": "Order type 2 mounting brackets for Hill reservoir",
+          "detail": "Lead time 8 days."
+        },
+        {
+          "id": "t-survey",
+          "title": "Re-survey North depot after the rain",
+          "detail": "Ground was soft."
+        },
+        {
+          "id": "t-firmware",
+          "title": "Chase the vendor for gateway firmware 2.4",
+          "detail": "The gateways need 2.4 before go-live."
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "status-reworded",
+      "kind": "reworded",
+      "subject": "task",
+      "proposal": {
+        "title": "Send out this fortnight's Kestrel status report",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-status",
+          "title": "Send the Kestrel status report",
+          "detail": "Every second Tuesday."
+        },
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        },
+        {
+          "id": "t-review",
+          "title": "Review the findings",
+          "detail": "Owner: Lee."
+        }
+      ],
+      "duplicateOf": "t-status"
+    },
+    {
+      "id": "status-different",
+      "kind": "related",
+      "subject": "task",
+      "proposal": {
+        "title": "Change the status report template to add a risks section",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-status",
+          "title": "Send the Kestrel status report",
+          "detail": "Every second Tuesday."
+        },
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "dana-same",
+      "kind": "reworded",
+      "subject": "task",
+      "proposal": {
+        "title": "Remind Dana the draft is due on 9 October",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-dana",
+          "title": "Dana: send the draft by 2026-10-09"
+        },
+        {
+          "id": "t-review",
+          "title": "Review the findings",
+          "detail": "Owner: Lee."
+        },
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        }
+      ],
+      "duplicateOf": "t-dana"
+    },
+    {
+      "id": "lee-review",
+      "kind": "reworded",
+      "subject": "task",
+      "proposal": {
+        "title": "Lee to review the findings",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-review",
+          "title": "Review the findings",
+          "detail": "Owner: Lee."
+        },
+        {
+          "id": "t-dana",
+          "title": "Dana: send the draft by 2026-10-09"
+        },
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        }
+      ],
+      "duplicateOf": "t-review"
+    },
+    {
+      "id": "different-person",
+      "kind": "related",
+      "subject": "task",
+      "proposal": {
+        "title": "Dana to review the findings",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-review",
+          "title": "Review the findings",
+          "detail": "Owner: Lee."
+        },
+        {
+          "id": "t-dana",
+          "title": "Dana: send the draft by 2026-10-09"
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "budget-approval",
+      "kind": "reworded",
+      "subject": "task",
+      "proposal": {
+        "title": "Request fresh approval from the steering group if we go over the ceiling",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-budget",
+          "title": "Ask the steering group for a new budget approval",
+          "detail": "Only if spend passes 48,500 EUR."
+        },
+        {
+          "id": "t-slot",
+          "title": "Book the steering group review",
+          "detail": "Next week."
+        },
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        }
+      ],
+      "duplicateOf": "t-budget"
+    },
+    {
+      "id": "slot-more-specific",
+      "kind": "reworded",
+      "subject": "task",
+      "proposal": {
+        "title": "Book a room for the steering group review",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-slot",
+          "title": "Book the steering group review",
+          "detail": "Next week."
+        },
+        {
+          "id": "t-budget",
+          "title": "Ask the steering group for a new budget approval",
+          "detail": "Only if spend passes 48,500 EUR."
+        }
+      ],
+      "duplicateOf": "t-slot"
+    },
+    {
+      "id": "invoice-novel",
+      "kind": "novel",
+      "subject": "task",
+      "proposal": {
+        "title": "Pay the Brightline cancellation fee",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-invoice",
+          "title": "Pay the Halvard September invoice"
+        },
+        {
+          "id": "t-budget",
+          "title": "Ask the steering group for a new budget approval",
+          "detail": "Only if spend passes 48,500 EUR."
+        },
+        {
+          "id": "t-report",
+          "title": "Draft synthetic report"
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "survey-reworded",
+      "kind": "reworded",
+      "subject": "task",
+      "proposal": {
+        "title": "Survey North depot again now the ground has dried",
+        "detail": ""
+      },
+      "existing": [
+        {
+          "id": "t-survey",
+          "title": "Re-survey North depot after the rain",
+          "detail": "Ground was soft."
+        },
+        {
+          "id": "t-brackets",
+          "title": "Order type 2 mounting brackets for Hill reservoir",
+          "detail": "Lead time 8 days."
+        },
+        {
+          "id": "t-access",
+          "title": "Confirm Canal yard weekday morning access",
+          "detail": "Crews only on weekday mornings."
+        }
+      ],
+      "duplicateOf": "t-survey"
+    },
+    {
+      "id": "eur-learning-exact",
+      "kind": "exact",
+      "subject": "learning",
+      "proposal": {
+        "title": "Every Kestrel report states amounts in EUR, never USD.",
+        "detail": "Kestrel reporting"
+      },
+      "existing": [
+        {
+          "id": "l-eur",
+          "title": "Every Kestrel report states amounts in EUR, never USD.",
+          "detail": "Kestrel reporting"
+        },
+        {
+          "id": "l-short",
+          "title": "Keep answers short and direct.",
+          "detail": "Communication"
+        },
+        {
+          "id": "l-ceiling",
+          "title": "The Kestrel budget ceiling is 48,500 EUR.",
+          "detail": "Kestrel budget"
+        }
+      ],
+      "duplicateOf": "l-eur"
+    },
+    {
+      "id": "eur-learning-reworded",
+      "kind": "reworded",
+      "subject": "learning",
+      "proposal": {
+        "title": "Kestrel reports use euros, not dollars.",
+        "detail": "Kestrel reporting"
+      },
+      "existing": [
+        {
+          "id": "l-short",
+          "title": "Keep answers short and direct.",
+          "detail": "Communication"
+        },
+        {
+          "id": "l-eur",
+          "title": "Every Kestrel report states amounts in EUR, never USD.",
+          "detail": "Kestrel reporting"
+        },
+        {
+          "id": "l-ceiling",
+          "title": "The Kestrel budget ceiling is 48,500 EUR.",
+          "detail": "Kestrel budget"
+        }
+      ],
+      "duplicateOf": "l-eur"
+    },
+    {
+      "id": "vendor-learning",
+      "kind": "reworded",
+      "subject": "learning",
+      "proposal": {
+        "title": "Halvard is the sensor supplier for the Kestrel pilot.",
+        "detail": "Kestrel sensor vendor"
+      },
+      "existing": [
+        {
+          "id": "l-vendor",
+          "title": "The Kestrel pilot uses Halvard sensors.",
+          "detail": "Kestrel sensor vendor"
+        },
+        {
+          "id": "l-eur",
+          "title": "Every Kestrel report states amounts in EUR, never USD.",
+          "detail": "Kestrel reporting"
+        },
+        {
+          "id": "l-dana",
+          "title": "Dana owns the Kestrel draft report.",
+          "detail": "Dana"
+        }
+      ],
+      "duplicateOf": "l-vendor"
+    },
+    {
+      "id": "battery-learning",
+      "kind": "novel",
+      "subject": "learning",
+      "proposal": {
+        "title": "Brightline sensors last about 14 months on battery.",
+        "detail": "Brightline"
+      },
+      "existing": [
+        {
+          "id": "l-vendor",
+          "title": "The Kestrel pilot uses Halvard sensors.",
+          "detail": "Kestrel sensor vendor"
+        },
+        {
+          "id": "l-ceiling",
+          "title": "The Kestrel budget ceiling is 48,500 EUR.",
+          "detail": "Kestrel budget"
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "ceiling-changed",
+      "kind": "related",
+      "subject": "learning",
+      "proposal": {
+        "title": "The Kestrel budget ceiling rose to 55,000 EUR.",
+        "detail": "Kestrel budget"
+      },
+      "existing": [
+        {
+          "id": "l-ceiling",
+          "title": "The Kestrel budget ceiling is 48,500 EUR.",
+          "detail": "Kestrel budget"
+        },
+        {
+          "id": "l-eur",
+          "title": "Every Kestrel report states amounts in EUR, never USD.",
+          "detail": "Kestrel reporting"
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "access-learning",
+      "kind": "reworded",
+      "subject": "learning",
+      "proposal": {
+        "title": "Crews can only work at Canal yard on weekday mornings.",
+        "detail": "Canal yard access"
+      },
+      "existing": [
+        {
+          "id": "l-access",
+          "title": "Canal yard allows crews only on weekday mornings.",
+          "detail": "Canal yard access"
+        },
+        {
+          "id": "l-short",
+          "title": "Keep answers short and direct.",
+          "detail": "Communication"
+        },
+        {
+          "id": "l-vendor",
+          "title": "The Kestrel pilot uses Halvard sensors.",
+          "detail": "Kestrel sensor vendor"
+        }
+      ],
+      "duplicateOf": "l-access"
+    },
+    {
+      "id": "dana-novel",
+      "kind": "novel",
+      "subject": "learning",
+      "proposal": {
+        "title": "Dana prefers updates by email, not chat.",
+        "detail": "Dana"
+      },
+      "existing": [
+        {
+          "id": "l-dana",
+          "title": "Dana owns the Kestrel draft report.",
+          "detail": "Dana"
+        },
+        {
+          "id": "l-short",
+          "title": "Keep answers short and direct.",
+          "detail": "Communication"
+        }
+      ],
+      "duplicateOf": null
+    },
+    {
+      "id": "cadence-old-repeat",
+      "kind": "reworded",
+      "subject": "learning",
+      "proposal": {
+        "title": "Status reports for Kestrel are sent every Friday.",
+        "detail": "Kestrel status reports"
+      },
+      "existing": [
+        {
+          "id": "l-new",
+          "title": "Kestrel status reports go out every second Tuesday, since 2026-09-15.",
+          "detail": "Kestrel status reports"
+        },
+        {
+          "id": "l-old",
+          "title": "Kestrel status reports go out every Friday.",
+          "detail": "Kestrel status reports"
+        }
+      ],
+      "duplicateOf": "l-old"
+    }
+  ]
+}

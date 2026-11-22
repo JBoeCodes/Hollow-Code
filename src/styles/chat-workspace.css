@@ -1,0 +1,305 @@
+/* Shared Chat page/panel refinement; keeps the composer and reading surface
+   together without adding to the eager shell stylesheet. */
+@layer components {
+.chat-workspace { min-height: 0; position: relative; overflow: hidden; }
+/* Resizable widths arrive as custom properties from ConversationHistory.tsx (not inline
+   `width`), so the narrow-window rules below can override them normally. */
+.chat-workspace .chat-aside { width: var(--chat-aside-w, var(--aside-w)); }
+.chat-workspace .chat-aside { display: flex; flex-direction: column; min-height: 0; background: var(--surface-soft); border-right: 1px solid var(--hairline-soft); }
+.chat-history-heading { display: flex; align-items: center; justify-content: space-between; padding: var(--sp-5) var(--sp-4) var(--sp-3); font-size: var(--fs-body); }
+.chat-history-heading > span { color: var(--muted); font-size: var(--fs-caption); font-variant-numeric: tabular-nums; }
+.chat-history-search { display: flex; align-items: center; gap: var(--sp-2); margin: 0 var(--sp-3) var(--sp-3); padding: var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--canvas); color: var(--muted); }
+.chat-history-search input { padding: 0; border: 0; background: transparent; min-width: 0; width: 100%; font-size: var(--fs-meta); box-shadow: none; outline: none; }
+.chat-history-search:focus-within { border-color: var(--primary); }
+.chat-history-search button { flex: none; color: var(--muted); background: transparent; border: 0; cursor: pointer; }
+.chat-workspace .chat-aside .split-list { padding: 0 var(--sp-2) var(--sp-3); }
+.chat-workspace .chat-session-group-label { margin: 0; padding: var(--sp-3) var(--sp-2) var(--sp-2); background: var(--surface-soft); font-family: var(--ui); letter-spacing: 0; text-transform: none; font-size: var(--fs-caption); }
+.chat-workspace .session-row { margin: var(--sp-1) 0; padding: 0; border: 1px solid transparent; border-radius: var(--r-md); transition: background var(--t-fast) var(--ease); }
+.chat-workspace .session-row:hover { background: var(--surface-card); }
+.chat-workspace .session-row.active { background: var(--primary-soft); border-color: var(--primary-soft-strong); }
+.chat-session-open { display: flex; flex-direction: column; gap: var(--sp-2); width: 100%; padding: var(--sp-3) var(--sp-6) var(--sp-3) var(--sp-3); background: none; border: 0; border-radius: inherit; color: var(--ink); text-align: left; cursor: pointer; }
+.chat-session-open .title { font-size: var(--fs-body); font-weight: 500; line-height: var(--lh-base); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+.chat-session-open .meta { display: flex; justify-content: space-between; width: 100%; color: var(--muted); font-size: var(--fs-caption); }
+.chat-session-open .meta > span:first-child { font-family: var(--ui); }
+.chat-workspace .session-delete { top: var(--sp-2); right: var(--sp-1); display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--r-sm); }
+.chat-workspace .session-row:focus-within .session-delete { opacity: 1; }
+/* The row's menu (plan completion L4, N3): under Archive, in the room the
+   open button leaves on the right, always shown. */
+.chat-workspace .session-row .session-more { position: absolute; bottom: var(--sp-2); right: var(--sp-1); width: 28px; height: 28px; color: var(--muted); }
+.chat-history-empty { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-5) var(--sp-3); color: var(--muted); font-size: var(--fs-meta); }
+.chat-history-empty strong { color: var(--body); font-weight: 500; }
+.chat-history-empty p { margin: 0; line-height: var(--lh-prose); }
+.chat-workspace .chat-cwd { padding: var(--sp-4); gap: var(--sp-2); }
+.chat-workspace .chat-cwd-label { font: 500 var(--fs-caption) var(--ui); text-transform: none; letter-spacing: 0; }
+.chat-workspace .chat-cwd-display { border: 0; padding: var(--sp-2) 0; font-family: var(--ui); font-size: var(--fs-meta); background: transparent; }
+.chat-workspace .chat-cwd-reset { font: 500 var(--fs-caption) var(--ui); }
+.chat-workspace .chat-main { min-height: 0; container-type: inline-size; }
+.chat-conversation-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4); padding: var(--sp-4) var(--sp-5); border-bottom: 1px solid var(--hairline-soft); min-height: 72px; }
+.chat-conversation-heading { min-width: 0; }
+.chat-conversation-heading h3 { font-size: var(--fs-body); font-weight: 600; margin: 0 0 var(--sp-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* The title and its conversation menu ⋯ (P1-39). */
+.chat-conversation-title { display: flex; align-items: center; gap: var(--sp-1); min-width: 0; margin-bottom: var(--sp-1); }
+.chat-conversation-title h3 { margin: 0; min-width: 0; }
+.chat-conversation-heading > span { color: var(--muted); font-size: var(--fs-caption); }
+.chat-conversation-about { margin-top: var(--sp-1); color: var(--muted); font-size: var(--fs-caption); }
+.chat-conversation-about > summary { cursor: pointer; width: fit-content; }
+.chat-conversation-about dl { display: grid; gap: var(--sp-1); margin: var(--sp-1) 0 0; max-width: 60ch; }
+.chat-conversation-about dl > div { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: var(--sp-2); }
+.chat-conversation-about dd { margin: 0; color: var(--body); }
+.chat-conversation-head > button { flex-shrink: 0; }
+.chat-load-error { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-5); color: var(--error); font-size: var(--fs-meta); }
+.chat-load-error > span { flex: 1; }
+.chat-opening { display: flex; align-items: center; justify-content: center; gap: var(--sp-3); padding: var(--sp-7); color: var(--muted); font-size: var(--fs-body); }
+/* Chat fills its pane (Alex, 2026-10-07, again 2026-11-01): no reading
+   column cap; only the side gutter. Long prose lines are the accepted cost. */
+.chat-main .chat-scroll { max-width: none; padding: var(--sp-5) var(--sp-6); }
+.chat-main .chat-empty { align-items: flex-start; text-align: left; padding: var(--sp-4) 0; gap: var(--sp-2); width: 100%; max-width: none; margin: auto; }
+.chat-main .chat-empty-title { letter-spacing: var(--ls-tight); max-width: none; margin: 0; font: 600 var(--fs-xl)/1.25 var(--ui); color: var(--ink); }
+.chat-main .chat-empty-sub { font-size: var(--fs-body); line-height: var(--lh-prose); max-width: none; color: var(--muted); margin: 0; }
+.chat-main .chat-empty-suggestions { max-width: none; margin-top: var(--sp-4); gap: var(--sp-2); display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.chat-main .chat-suggestion { display: grid; align-items: start; gap: 2px var(--sp-2); padding: var(--sp-3) var(--sp-2); border-radius: 0; background: transparent; grid-template-columns: auto 1fr; min-height: 0; border: 0; border-bottom: 1px solid var(--hairline); box-shadow: none; text-align: left; transform: none; }
+.chat-suggestion::before { display: none; }
+.chat-suggestion > svg:first-child { color: var(--primary); flex: none; margin-top: var(--sp-1); }
+.chat-suggestion > svg:last-child { margin-left: auto; flex: none; align-self: center; color: var(--muted-soft); }
+.chat-suggestion > span { display: flex; flex-direction: column; gap: var(--sp-2); }
+.chat-suggestion strong { font-size: var(--fs-body); font-weight: 500; color: var(--ink); }
+.chat-suggestion > span > span { font-size: var(--fs-caption); line-height: var(--lh-base); color: var(--muted); }
+.chat-main .turn { padding: 0; margin-bottom: var(--sp-5); }
+.chat-main .turn-content { min-width: 0; }
+.chat-main .turn.assistant .turn-content { max-width: 100%; }
+.chat-main .turn.user { margin-bottom: var(--sp-3); }
+.chat-main .turn.user .turn-content { flex-direction: column; align-items: flex-start; }
+/* Hollow's own wake note keeps the full width it had, and its own Copy in
+   its corner, shown on hover or focus. */
+.chat-main .turn.user .chat-host-note { align-self: stretch; }
+.chat-main .turn.user > .turn-copy { top: var(--sp-2); right: var(--sp-2); left: auto; font-family: var(--ui); font-size: var(--fs-caption); width: 24px; height: 24px; padding: 0; display: inline-grid; place-items: center; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--muted); opacity: 0; transition: opacity var(--t-fast); text-transform: none; letter-spacing: 0; }
+.chat-main .turn:hover > .turn-copy,
+.chat-main .turn > .turn-copy:focus-visible { opacity: 1; }
+.chat-main .turn > .turn-copy:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--ink); }
+.chat-turn-label { color: var(--muted); font-size: var(--fs-caption); font-weight: 600; margin-bottom: var(--sp-3); font-optical-sizing: var(--type-optical); }
+.chat-main .chat-msg .md-view { font-optical-sizing: var(--type-optical); line-height: var(--lh-prose); }
+.chat-main .chat-msg .md-view :is(h1, h2, h3) { letter-spacing: var(--ls-tight); }
+/* Your message (C3, Claude-desktop style): a quiet bubble fitted to its
+   text, left-aligned, in the band's fill; no visible label (screen readers
+   still hear "Prompt"). Its width is a share of the column, never a cap on
+   the column itself. */
+.chat-main .chat-user-chip { width: fit-content; max-width: min(100%, 85%); min-width: 0; border: 0; border-radius: var(--r-lg); padding: var(--sp-3) var(--sp-4); background: var(--surface-soft); box-shadow: none; overflow-wrap: anywhere; }
+.chat-main .chat-user-chip .text { font-size: var(--fs-body); }
+/* A long one (overnight 11-04, C3 follow-up; userMessageFold.ts decides from
+   its text) shows its first nine lines, faded at the foot, with Show more
+   under them. The fade is a mask, so it has no colour to match the bubble in
+   either theme. `clip`, not `hidden`, so a drag selection or VoiceOver can't
+   scroll the words inside the box; the `hidden` and `em` values before them
+   stand in where `clip` or `lh` is missing (1.6 is the words' line height).
+   Opening is instant: no motion. Print shows it whole. */
+.chat-main .chat-user-chip .text.chat-user-clipped { max-height: calc(9 * 1.6em); max-height: 9lh; overflow: hidden; overflow: clip; -webkit-mask-image: linear-gradient(to bottom, var(--black) calc(100% - 3.2em), transparent); -webkit-mask-image: linear-gradient(to bottom, var(--black) calc(100% - 2lh), transparent); mask-image: linear-gradient(to bottom, var(--black) calc(100% - 3.2em), transparent); mask-image: linear-gradient(to bottom, var(--black) calc(100% - 2lh), transparent); }
+.chat-main .chat-user-more { display: block; appearance: none; min-height: 24px; margin: var(--sp-1) 0 0 calc(-1 * var(--sp-1)); padding: 0 var(--sp-1); border: 0; border-radius: var(--r-sm); background: transparent; color: var(--muted); font: 500 var(--fs-meta)/var(--lh-base) var(--ui); cursor: pointer; }
+.chat-main .chat-user-more:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--ink); }
+@media print {
+  .chat-main .chat-user-chip .text.chat-user-clipped { max-height: none; overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  .chat-main .chat-user-more { display: none; }
+}
+/* Its actions (C3, ChatGPT style): time, Copy, and Edit on the last one,
+   shown on hover or keyboard focus. Faded, never removed, so Tab still
+   reaches them. */
+.chat-main .chat-user-actions { display: flex; align-items: center; gap: var(--sp-1); min-height: 24px; margin-top: var(--sp-1); color: var(--muted); font: var(--fs-caption)/var(--lh-base) var(--ui); opacity: 0; transition: opacity var(--t-fast) var(--ease); }
+.chat-main .turn:hover .chat-user-actions,
+.chat-main .chat-user-actions:focus-within { opacity: 1; }
+.chat-main .chat-user-time { padding: 0 var(--sp-1); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.chat-main .chat-user-actions .turn-copy,
+.chat-main .chat-user-edit { position: static; appearance: none; font-family: var(--ui); font-size: var(--fs-caption); width: 24px; height: 24px; padding: 0; display: inline-grid; place-items: center; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--muted); cursor: pointer; opacity: 1; text-transform: none; letter-spacing: 0; }
+.chat-tool-ledger { border: 1px solid var(--hairline-soft); border-radius: var(--r-md); padding: var(--sp-2) var(--sp-3); margin-top: var(--sp-4); }
+.chat-tool-ledger > summary { display: flex; align-items: center; gap: var(--sp-2); cursor: pointer; list-style: none; padding: var(--sp-1) 0; font-family: var(--ui); text-transform: none; letter-spacing: 0; color: var(--muted); }
+.chat-tool-ledger > summary::-webkit-details-marker { display: none; }
+.chat-tool-ledger > summary > span { margin-left: auto; font-weight: 400; font-size: var(--fs-caption); }
+.chat-tool-ledger[open] > summary { margin-bottom: var(--sp-2); }
+.chat-main .chat-input { max-width: none; padding: var(--sp-3) var(--sp-6) var(--sp-4); }
+.chat-main .chat-composer { border-radius: var(--r-lg); background: var(--surface-card); box-shadow: none; border: 1px solid var(--hairline); transition: border-color var(--t-fast); }
+.chat-main .chat-composer.working { animation: none; }
+.chat-main .chat-input textarea { padding: var(--sp-3) var(--sp-4); font-size: var(--fs-md); min-height: 64px; }
+.chat-main .chat-composer-bar { padding: 0 var(--sp-3) var(--sp-3); gap: var(--sp-3); }
+.chat-main .chat-composer-left { gap: var(--sp-2); }
+.chat-main .chat-composer-btn { background: transparent; border-color: transparent; height: 32px; width: 32px; }
+.chat-main .chat-send { height: 30px; border-radius: var(--r-sm); padding: 0; gap: 0; width: 30px; min-height: 30px; display: inline-grid; place-items: center; box-shadow: none; }
+/* Overnight 11-12 (C3): one rounded box; Send is a round button at its right. */
+.chat-main .chat-send:not(.chat-send-busy) { border-radius: var(--r-pill); }
+.chat-compose-help { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-2); padding: var(--sp-3) var(--sp-1) 0; font-size: var(--fs-caption); color: var(--muted-soft); }
+.chat-compose-help kbd { font-family: var(--ui); font-size: inherit; }
+.chat-main .chat-context-pill-row { max-width: none; padding: var(--sp-2) var(--sp-6) 0; }
+.chat-main .chat-ember { max-width: none; padding: 0 var(--sp-6) var(--sp-2); }
+/* An attachment is a fixed thumbnail with its name under it. The card must
+   not size to its content: the image fills the card, so an auto-sized card
+   takes the image's natural size and a pasted screenshot covered the chat. */
+.chat-attach-state { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-caption); color: var(--muted); padding: var(--sp-1); }
+.chat-attach:has(.chat-attach-state) { width: 132px; height: auto; }
+.chat-attach:has(.chat-attach-state) img { width: 100%; height: 72px; }
+.chat-attach.error .chat-attach-state { color: var(--error); }
+.chat-workspace button:focus-visible, .chat-input button:focus-visible, .chat-suggestion:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.chat-workspace button:disabled, .chat-input button:disabled { cursor: default; opacity: .5; }
+@container (max-width: 650px) {
+  .chat-main .chat-input { padding: var(--sp-3) var(--sp-5); }
+  .chat-main .chat-context-pill-row { padding-left: var(--sp-5); padding-right: var(--sp-5); }
+}
+@container chat-column (max-width: 650px) {
+  .chat-main .chat-scroll { padding: var(--sp-5); }
+}
+@container hollow-window (max-width: 68.75em) {
+  .chat-skills-link { display: none; }
+}
+@container hollow-window (max-width: 53.75em) {
+  .chat-workspace .chat-aside { width: 100%; flex: 1; border-right: 0; }
+  .chat-workspace.history-open .chat-main { display: none; }
+  .chat-workspace .chat-aside > .resize-handle { display: none; }
+  .chat-history-toggle > span { display: none; }
+  .chat-conversation-head { padding: var(--sp-3) var(--sp-4); min-height: 60px; }
+  .chat-main .chat-scroll { padding: var(--sp-4); }
+  .chat-main .chat-input { padding: var(--sp-2) var(--sp-3) var(--sp-3); }
+  .chat-compose-help > span:last-child { display: none; }
+  .chat-suggestion > span > span { display: none; }
+}
+
+.chat-history-sources { display: flex; flex-wrap: wrap; gap: 2px; padding: 0 12px 8px; }
+.chat-history-sources .active { background: var(--primary-soft); }
+
+/* Paperclip PR 7b: a chat turn waiting in the run queue. Static dot (no
+   breathing animation), so it needs no --ambient-play opt-in. */
+.chat-queued-badge { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); font-size: var(--fs-meta); color: var(--muted); }
+.chat-queued-badge .chat-queued-label { flex: 1 1 auto; min-width: 0; }
+
+/* Paperclip PR 14b: manual Continue under a stopped or interrupted turn. */
+.chat-continue { display: flex; justify-content: flex-start; margin: var(--sp-2) 0 var(--sp-3); }
+/* P1-27: Retry under a failed turn; the other-agent menu's trigger is a button. */
+.chat-retry { align-items: center; gap: var(--sp-2); }
+.chat-retry .studio-action-menu > summary { width: auto; height: auto; }
+
+/* The suggested next message (src/shipActions.ts: the agent's own guess, or
+   a ship offer) sits in the empty composer as its placeholder, a shade
+   stronger than the usual one, with a one-line key hint above it; other
+   suggestions are quiet links in the same line, cut to one short line each. */
+.chat-input-wrap:has(> .chat-suggest) { flex-wrap: wrap; }
+.chat-suggest { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); padding: var(--sp-1) var(--sp-2) 0; color: var(--muted); font-size: var(--fs-caption); }
+.chat-suggest svg { color: var(--primary); }
+.chat-suggest kbd { font: inherit; padding: 0 4px; border: 1px solid var(--hairline); border-radius: var(--r-sm); }
+.chat-suggest-alt { max-width: 36ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0; border: 0; background: none; color: var(--primary); font: inherit; cursor: pointer; }
+.chat-suggest-alt:hover { text-decoration: underline; }
+.chat-suggest-alt:focus-visible { outline: none; box-shadow: var(--ring); border-radius: var(--r-sm); }
+.chat-input-wrap textarea[data-suggesting]::placeholder { color: var(--body); }
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+.chat-main .chat-suggestion:hover { border-color: var(--hairline); background: color-mix(in srgb, var(--ink) 2%, var(--surface-card)); }
+.chat-main .chat-suggestion > svg { color: var(--muted); margin-top: 1px; }
+.chat-main .chat-suggestion strong { display: block; font: 500 var(--fs-body)/1.3 var(--ui); color: var(--ink); }
+.chat-main .chat-suggestion span span { display: block; font-size: var(--fs-meta); color: var(--muted); line-height: 1.4; margin-top: 2px; }
+.chat-main .chat-empty-teamwork { display: block; font-size: var(--fs-meta); color: var(--muted); margin-top: var(--sp-2); }
+.chat-main .chat-composer:focus-within {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--hairline));
+  box-shadow: var(--ring);
+}
+.chat-composer textarea,
+.chat-composer textarea:focus,
+.chat-composer textarea:focus-visible {
+  border: 0; outline: 0; box-shadow: none; background: transparent;
+}
+.chat-composer .chat-input-wrap { border: 0; box-shadow: none; background: transparent; }
+.chat-main .chat-send:disabled { background: color-mix(in srgb, var(--ink) 12%, transparent); color: var(--surface-card); opacity: 1; }
+.chat-main .chat-send.danger { background: var(--ink); color: var(--surface-card); }
+.chat-main .chat-compose-help { margin: 0; }
+.chat-main .chat-user-actions .turn-copy:hover,
+.chat-main .chat-user-edit:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--ink); }
+.chat-main .turn-footer,
+.chat-main .turn-footer.just-finished { border: 0; box-shadow: none; background: transparent; padding: 0; animation: none; }
+/* A quiet ribbon connects tool activity without changing disclosure owners. */
+.chat-main .chat-tool-ledger { background: transparent; border: 0; border-left: 1px solid var(--hairline); border-radius: 0; box-shadow: none; }
+.chat-main .chat-tool-ledger .tool-ledger-bar { opacity: 0; transition: opacity var(--t-fast); }
+.chat-main .chat-tool-ledger:hover .tool-ledger-bar,
+.chat-main .chat-tool-ledger .tool-ledger-bar:focus-within { opacity: 1; }
+/* One-call turns (each native agent message is its own turn) read as a
+   continuous list of quiet step rows, not a stack of cards. */
+.chat-main .chat-tool-ledger.single { border: 0; padding: 0; margin-top: var(--sp-1); background: transparent; box-shadow: none; }
+.chat-main .chat-tool-ledger.single .toolcall-head { padding-inline: 0; }
+.chat-main .turn.assistant:has(> .turn-content > .chat-tool-ledger.single):not(:has(.turn-md)):not(:has(.turn-footer)) { margin-bottom: var(--sp-1); }
+.chat-main .turn.assistant:has(.turn-md):has(> .turn-content > .chat-tool-ledger.single) { margin-bottom: var(--sp-2); }
+/* Stop keeps its ink fill in the .btn.danger / .btn.primary hover and pressed states. */
+.chat-send.danger:hover:not(:disabled), .chat-send.danger:active:not(:disabled) { background: var(--ink); color: var(--surface-card); }
+/* Short windows (overnight 11-04, C2): the empty box starts one line tall
+   (ChatBody sets rows), the bar sits closer, and the conversation header
+   puts title, agent and About on one wrapping row, so the transcript keeps
+   room to read (720x480 at 125% text left it 8px). Last in this layer, so
+   it wins over the narrow-window rules above. */
+@media (max-height: 560px) {
+  .chat-main .chat-input textarea { min-height: 0; }
+  .chat-main .chat-composer-bar { padding-bottom: var(--sp-2); }
+  .chat-conversation-head { min-height: 0; padding-block: var(--sp-2); }
+  .chat-conversation-heading { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--sp-3); }
+  .chat-conversation-title, .chat-conversation-about { margin: 0; }
+}
+}
+
+
+/* Repo ideas 2026-10-27 #3: a page's text the person shared from Annotate
+   (Include page text), a text chip beside any images. C5 (2026-11-04): an
+   attached file that isn't an image wears the same chip, its name over its
+   size. */
+@layer components {
+.chat-attach.chat-attach-page, .chat-attach.chat-attach-file { display: flex; align-items: flex-start; gap: var(--sp-1); width: auto; max-width: 280px; height: auto; padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-1); color: var(--muted); }
+.chat-attach-page-words { display: flex; flex-direction: column; min-width: 0; }
+.chat-attach-page-label { font-size: var(--fs-caption); color: var(--ink); padding: var(--sp-1) var(--sp-1) 0; }
+.chat-attach-file-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chat-attach-page .chat-attach-state, .chat-attach-file .chat-attach-state { padding-top: 0; }
+.chat-attach-page:focus-within .chat-attach-remove, .chat-attach-file:focus-within .chat-attach-remove { opacity: 1; }
+/* A sent message's attached files: chips that open in the Preview pane. */
+.turn-files { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 6px; }
+.turn-file-open { appearance: none; display: inline-flex; align-items: center; gap: var(--sp-1); max-width: 280px; min-width: 0; padding: var(--sp-1) var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--surface-soft); color: var(--ink); font: inherit; font-size: var(--fs-caption); cursor: pointer; }
+.turn-file-open:hover { border-color: var(--primary); }
+.turn-file-open:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.turn-file-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.turn-file-size { flex: none; color: var(--muted); }
+}
+
+/* A new conversation (overnight 11-07, D1, audit gap 7): the greeting and the
+   message box sit together in the middle of the pane, the starters under the
+   box, as in Claude and ChatGPT. The pane still fills its width (Alex,
+   2026-10-07 and 2026-11-01): the box is as wide as in a running chat, with
+   the same side gutter. Only the project conversation's own pane: the Main
+   agent's page, a compact host and Library's reader keep their layouts. The
+   wrapper, the scroller and the empty block give up their boxes so the box can
+   sit between the greeting and the starters (`order`); the first message
+   removes the empty block and the pane is as it was. The two spacers centre
+   the group a little above the middle and shrink to nothing in a short
+   window, where the pane scrolls. Under 520px of height the old layout stays:
+   the box must stay in view. Measured at 521 to 900px of height and 500 to
+   1440 wide, the whole group (art, greeting, Runs on, box, starters, note)
+   fits the pane, and the box ends at most 355px down it, so a Runs on block
+   120px taller than today's still keeps the box on the first screen. The
+   host clips what opens upward from a box that is no longer at the bottom:
+   the room above the + button and the usage ring is 0.53 of the window's
+   height plus 6px (measured 521 to 1100), so those two menus take a cap of
+   42vh + 50px, and the slash list (240px, 1px short at 521) one of 42vh + 10px;
+   the usage card stays within the composer. Hiding the art in
+   a short window was tried and left the menus less room, since it lifts the
+   box. */
+@layer components {
+@media (min-height: 521px) {
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) { overflow-y: auto; }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty)::before,
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty)::after { content: ''; flex: 1 1 0; min-height: 0; }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty)::before { order: -1; }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty)::after { order: 9; flex-grow: 1.25; }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) > .chat-scroll-wrap,
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) > .chat-scroll-wrap > .chat-scroll { display: contents; }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) > .chat-scroll-wrap > .chat-scroll > .chat-empty { display: contents; text-align: center; }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) > .chat-scroll-wrap > .chat-navigation { order: -2; }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .doorway-landscape--chat { order: 1; align-self: center; height: clamp(96px, 16vh, 160px); margin-bottom: var(--sp-3); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .chat-empty-title { order: 2; padding-inline: var(--sp-6); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .chat-empty-sub { order: 3; padding-inline: var(--sp-6); margin-top: var(--sp-1); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .chat-empty-runs-on { order: 4; padding-inline: var(--sp-6); margin-top: var(--sp-3); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) > .chat-input { order: 5; margin-top: var(--sp-3); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .chat-empty-suggestions { order: 6; padding-inline: var(--sp-6); margin-top: var(--sp-1); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .chat-empty-teamwork { order: 7; max-width: none; margin-top: var(--sp-3); padding-inline: var(--sp-6); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .composer-commands .studio-action-menu-body { max-height: min(60vh, 420px, calc(42vh + 50px)); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .usage-menu-pop { max-height: min(560px, calc(100vh - 140px), calc(42vh + 50px)); }
+  .work-conversation.chat-main:has(> .chat-scroll-wrap > .chat-scroll > .chat-empty) .slash-popup { max-height: min(240px, calc(42vh + 10px)); }
+}
+}

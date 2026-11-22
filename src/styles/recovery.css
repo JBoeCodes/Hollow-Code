@@ -1,0 +1,6 @@
+@layer components {
+.view-recovery { margin: var(--sp-4); min-width: 0; }
+.view-recovery .ui-state-body { overflow-wrap: anywhere; }
+.view-recovery .ui-state-actions { flex-wrap: wrap; }
+}
+

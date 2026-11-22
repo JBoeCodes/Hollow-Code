@@ -1,0 +1,992 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Notifications — toast stack + center dropdown
+   --------------------------------------------------------------------------
+   Two surfaces share one data source (`vault/.notifications.jsonl`):
+   1. `.notif-toast-stack` — top-right transient cards that pop on each
+      new notification and auto-dismiss after ~9s.
+   2. `.waiting-panel` — the bell's "waiting on you" surface
+      (decision 7), whose last section is the history.
+   Both reuse `--primary-soft`, `--accent-teal`, and `--error`/`--error-soft`
+   from the token block (all in CUSTOM_VAR_KEYS, so custom themes apply).
+   ────────────────────────────────────────────────────────────────────────── */
+@layer components {
+/* ── Top-right toast stack ────────────────────────────────────────── */
+
+.notif-toast-stack {
+  position: fixed;
+  top: 56px; /* clear of the top bar */
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9000;
+  pointer-events: none;
+  max-width: 380px;
+}
+.notif-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: stretch;
+  background: var(--surface, var(--canvas));
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--r-sm);
+  box-shadow:
+    var(--elev-2);
+  overflow: hidden;
+  animation: notif-toast-in var(--t-med) var(--ease-out);
+}
+.notif-toast.notif-kind-success { border-left-color: var(--success); }
+.notif-toast.notif-kind-error   { border-left-color: var(--error); }
+.notif-toast.notif-kind-warning { border-left-color: var(--accent-amber); }
+
+@keyframes notif-toast-in {
+  from { transform: translateX(6px); }
+  to   { transform: translateX(0); }
+}
+
+.notif-toast-body {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: inherit;
+}
+.notif-toast-body:hover { background: var(--surface-soft); }
+.notif-toast-body:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+.notif-toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+  background: var(--primary);
+}
+.notif-toast-dot.kind-success { background: var(--success); }
+.notif-toast-dot.kind-error   { background: var(--error); }
+.notif-toast-dot.kind-warning { background: var(--accent-amber); }
+
+.notif-toast-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.notif-toast-title {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.notif-toast-snippet {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--body);
+  line-height: 1.45;
+  word-break: break-word;
+}
+.notif-toast-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+}
+.notif-toast-source { color: var(--muted); }
+.notif-toast-cta    { color: var(--primary); margin-left: auto; }
+.notif-toast-close {
+  pointer-events: auto;
+  padding: 6px 10px;
+  background: none;
+  border: none;
+  color: var(--muted-soft);
+  font-size: var(--fs-md);
+  line-height: var(--lh-flat);
+  cursor: pointer;
+  align-self: flex-start;
+}
+.notif-toast-close:hover { color: var(--ink); }
+
+/* The top bar's bell and its badge went with P1-14 (D3b): the rail's Review
+   row carries the count. */
+
+/* ── Center dropdown panel ────────────────────────────────────────── */
+
+/* The "waiting on you" surface (decision 7): rows grouped by kind, a review
+   item's card opening in place, folded repeats in Recent activity. */
+.waiting-panel { width: 440px; max-width: calc(100vw - 16px); max-height: min(640px, calc(100vh - 80px)); }
+.waiting-group { display: grid; gap: 2px; padding: 0 var(--sp-2) var(--sp-2); border-bottom: 1px solid var(--hairline-soft); }
+.waiting-item { display: grid; gap: var(--sp-1); }
+.waiting-item > .review-card { margin: 0 var(--sp-1) var(--sp-2); }
+.waiting-panel .review-card-actions { flex-wrap: wrap; }
+.waiting-panel .review-key-hint { flex-basis: 100%; text-align: right; }
+.waiting-card-note { margin: 0 var(--sp-2) var(--sp-2); }
+.waiting-row-line { display: flex; align-items: center; gap: var(--sp-1); }
+.waiting-row-line > .waiting-row { flex: 1; min-width: 0; }
+.waiting-row[aria-disabled='true'] { cursor: default; opacity: .7; }
+.waiting-row[aria-disabled='true']:hover { background: none; }
+.waiting-filter { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); padding: var(--sp-2) 14px; border-bottom: 1px solid var(--hairline); color: var(--muted); font-size: var(--fs-meta); }
+.waiting-notice { margin: 0; padding: var(--sp-2) 14px; border-bottom: 1px solid var(--hairline); background: var(--amber-soft); color: var(--ink); font-size: var(--fs-meta); }
+.waiting-more { align-self: flex-start; margin: var(--sp-2) 14px; }
+/* Where a page's review inbox was (Tasks, Settings, Memory, Automations):
+   one line into the surface, filtered to that page's kinds. */
+.waiting-link { display: flex; align-items: center; gap: var(--sp-2); width: 100%; padding: var(--sp-2) 14px; border: 1px solid var(--hairline); border-radius: var(--r-sm); background: var(--canvas); color: var(--ink); text-align: left; font: inherit; font-size: var(--fs-body); cursor: pointer; }
+.waiting-link:hover { background: var(--fill-hover); }
+.waiting-link > svg { flex: none; color: var(--muted); }
+.waiting-link-count { color: var(--muted); font-size: var(--fs-meta); }
+.waiting-link-go { margin-left: auto; color: var(--primary); font-size: var(--fs-meta); }
+.activity-item { display: flex; align-items: center; gap: var(--sp-2); width: 100%; padding: 6px var(--sp-2); border: 0; border-radius: var(--r-sm); background: none; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
+.activity-item:hover:not(:disabled) { background: var(--fill-hover); }
+.activity-item:disabled { cursor: default; opacity: .7; }
+.activity-item > span { display: grid; flex: 1; min-width: 0; gap: 1px; }
+.activity-item strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 var(--fs-body)/1.3 var(--ui); }
+.activity-item small { color: var(--muted); font-size: var(--fs-caption); }
+.activity-item > svg { flex: none; color: var(--muted); }
+.activity-item > svg.tone-warn { color: var(--warning); }
+.activity-item > svg.tone-accent { color: var(--primary); }
+.activity-repeats { color: var(--muted); font-weight: 400; }
+
+/* Source filter row (shared .chip). Membership comes from the row's own
+   source and kind, so ten errors don't stay buried under a month of
+   nudges. */
+.notif-center-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--hairline);
+}
+.notif-center-chip-count { font-family: var(--mono); color: var(--muted-soft); }
+.notif-center-chip.active .notif-center-chip-count { color: inherit; }
+
+/* Unread is a left rail, not a background tint: hover owns background
+   (shared ember edge), so a tint would read as "read" under the pointer.
+   Same left-edge vocabulary the toast already uses for kind. */
+.notif-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  border-bottom: 1px solid var(--hairline);
+  border-left: 2px solid transparent;
+  /* Keyboard walking scrolls rows clear of the sticky day header. */
+  scroll-margin-top: 36px;
+}
+.notif-row:hover { background: var(--surface-soft); }
+.notif-row.unread { border-left-color: var(--primary); }
+
+/* Sticky day headers (shared .rail-group-label) sit on the lifted panel
+   surface, not the rail's — same fix the palette groups carry. */
+.rail-group-label.notif-day-sep { background: var(--surface-raised); }
+
+.notif-row-body {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: inherit;
+  min-width: 0;
+}
+.notif-row-body:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+/* The glyph says where the row came from (nudge / agent / recording /
+   routine) and is tinted by kind, so the row leads with information
+   instead of repeating a color. */
+.notif-row-glyph {
+  margin-top: 1px;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.notif-row-glyph.kind-success { color: var(--success); }
+.notif-row-glyph.kind-error   { color: var(--error); }
+.notif-row-glyph.kind-warning { color: var(--accent-amber); }
+
+.notif-row-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.notif-row .notif-row-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.notif-row-title {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.notif-row-time {
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  color: var(--muted-soft);
+  flex-shrink: 0;
+}
+.notif-row-snippet {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--body);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.notif-row-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  margin-top: 2px;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+.notif-row-source { color: var(--muted-soft); }
+.notif-row-cta    { color: var(--primary); margin-left: auto; }
+/* A CTA whose file has moved says so instead of absorbing the click. */
+.notif-row-cta.missing { color: var(--muted-soft); text-decoration: line-through; }
+.notif-row.read .notif-row-title { color: var(--body); font-weight: 400; }
+
+.notif-row-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 8px 8px 0;
+}
+.notif-row-icon-btn {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--muted-soft);
+  cursor: pointer;
+  border-radius: var(--r-md);
+  font-size: var(--fs-body);
+  line-height: var(--lh-flat);
+}
+.notif-row-icon-btn:hover { color: var(--ink); background: var(--surface-soft); }
+.notif-row-details { grid-column: 1 / -1; min-width: 0; padding: 0 var(--sp-3) var(--sp-2); font-size: var(--fs-meta); overflow-wrap: anywhere; }
+.notif-row-details > summary { cursor: pointer; color: var(--muted); }
+.notif-row-details > strong, .notif-row-details > time { display: block; margin-top: var(--sp-2); }
+.notif-row-details > time { color: var(--muted); font-size: var(--fs-caption); }
+.notif-row-details > p { white-space: pre-wrap; margin: var(--sp-2) 0 0; }
+
+/* Scroll wrapper so the jump-to-latest button can float over the
+   transcript without scrolling away with the content. */
+.chat-scroll-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.chat-scroll-wrap > .chat-scroll { flex: 1; min-height: 0; }
+
+/* Stack a message's prose / code / artifact segments. */
+.chat-msg { display: flex; flex-direction: column; gap: 8px; }
+/* `max-width`: the message is `align-items: flex-start`, so a reply is as wide
+   as its content unless capped; a table's cells made one as wide as the table. */
+.chat-msg > .md-view { margin: 0; min-width: 0; max-width: 100%; }
+
+/* ---- Fenced code block (label + copy) ----
+   The message body is a flex container, and a flex item's default
+   `min-width: auto` let a long command widen the block past the message
+   (copy button off-screen) instead of scrolling the <pre>. */
+.chat-codeblock {
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+.chat-codeblock-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 4px 10px;
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--hairline);
+}
+.chat-codeblock-lang {
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.chat-codeblock-actions { display: flex; align-items: center; gap: var(--sp-1); }
+.chat-codeblock-copy, .chat-codeblock-wrap {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--r-sm);
+}
+.chat-codeblock-copy:hover, .chat-codeblock-wrap:hover { color: var(--primary); }
+/* Wrap is on for every block at once (one setting): the lit word says so. */
+.chat-codeblock-wrap[aria-pressed="true"] { color: var(--primary); background: var(--primary-soft); }
+.chat-codeblock.is-wrapped .chat-codeblock-pre { overflow-x: hidden; white-space: pre-wrap; overflow-wrap: anywhere; }
+.chat-codeblock-pre {
+  margin: 0;
+  padding: 10px 12px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--ink);
+}
+.chat-codeblock-pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+.chat-codeblock-expand {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  background: var(--surface-card);
+  color: var(--primary);
+  font: inherit;
+  cursor: pointer;
+}
+.chat-codeblock-expand:focus-visible { outline: 2px solid var(--primary); outline-offset: -3px; }
+/* A table in a reply (overnight 11-07, D1; ReplyMarkdown builds the box): it
+   scrolls inside its own bordered box, with Copy table above it, instead of
+   pushing the pane sideways. It was unstyled before: no borders, no padding. */
+.reply-table { min-width: 0; max-width: 100%; margin: var(--sp-2) 0 var(--sp-3); }
+.reply-table-bar { display: flex; justify-content: flex-end; margin-bottom: 2px; }
+.reply-table-copy {
+  padding: 2px 6px; border: 0; border-radius: var(--r-sm); background: none;
+  color: var(--muted); font: inherit; font-size: var(--fs-caption); cursor: pointer; opacity: .7;
+}
+.reply-table:hover .reply-table-copy, .reply-table:focus-within .reply-table-copy { opacity: 1; }
+.reply-table-copy:hover { color: var(--primary); }
+.reply-table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--hairline); border-radius: var(--r-md); }
+.reply-table-scroll:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.reply-table table { width: 100%; min-width: min-content; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.reply-table th, .reply-table td { padding: 6px 12px; vertical-align: top; white-space: nowrap; border-bottom: 1px solid var(--hairline); }
+/* Short cells never break mid-token ("shared-1x", "3 GB"); a cell of more than
+   60 characters (ReplyMarkdown marks it) wraps in a column no narrower than this. */
+.reply-table .long { white-space: normal; min-width: 20em; }
+/* The Markdown column alignment arrives as an `align` attribute; only the
+   header's browser default (centred) is replaced, so `---:` still right-aligns. */
+.reply-table th:not([align]) { text-align: left; }
+.reply-table th { background: var(--surface-card); color: var(--ink); font-weight: 600; }
+/* The last body row has no rule under it (the box's own border closes it); the header's
+   only row is also a `tr:last-child`, so this names the body, not `tr`. */
+.reply-table tbody tr:last-child > :is(th, td), .reply-table thead:last-child th { border-bottom: 0; }
+.reply-local-image {
+  display: inline-flex;
+  max-width: 100%;
+  padding: 4px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: var(--surface-soft);
+  color: var(--ink);
+  font: inherit;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.reply-local-image:disabled { cursor: default; }
+.reply-local-image:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.reply-local-image img { max-height: 260px; max-width: 100%; object-fit: contain; }
+.reply-image-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-size: var(--fs-caption); }
+.chat-msg .md-view a[href] { text-decoration: underline; text-underline-offset: .15em; }
+
+/* ---- Syntax highlighting tokens (components/Highlight.tsx) ---- */
+.tok-keyword  { color: var(--syn-keyword); }
+.tok-string   { color: var(--syn-string); }
+.tok-comment  { color: var(--syn-comment); font-style: italic; }
+.tok-number   { color: var(--syn-number); }
+.tok-function { color: var(--syn-function); }
+.tok-type     { color: var(--syn-type); }
+.tok-builtin  { color: var(--syn-builtin); }
+.tok-operator { color: var(--syn-operator); }
+.tok-punct    { color: var(--syn-punct); }
+.tok-property { color: var(--syn-property); }
+.tok-tag      { color: var(--syn-tag); }
+.tok-attr     { color: var(--syn-attr); }
+.tok-meta     { color: var(--syn-meta); }
+/* Diff lines tint the full row so +/- reads at a glance. */
+.tok-inserted { color: var(--success); background: var(--success-soft); display: inline-block; width: 100%; }
+.tok-deleted  { color: var(--error);   background: var(--error-soft);   display: inline-block; width: 100%; }
+
+/* ---- Tool calls — one recessed mono ledger per turn (ToolCall.tsx).
+   The block carries the carve (r-lg + recess-2 from the surface-pass
+   join — overflow:hidden clips the rows + cap to that radius); rows
+   are flat, separated by hairlines. ---- */
+.toolcalls {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--hairline-soft);
+  background: var(--surface-soft);
+  overflow: hidden;
+}
+.toolcall {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  overflow: hidden;
+  /* Rows arrive one per stream event, so this is a genuine entrance — but the
+     live-dot already announces the call. A short rise, not a spring overshoot. */
+  animation: stagger-in var(--t-fast) var(--ease-out) both;
+}
+.toolcall + .toolcall { border-top: 1px solid var(--hairline-soft); }
+.toolcall.st-error { box-shadow: inset 2px 0 0 var(--error); }
+.toolcall-head {
+  appearance: none;
+  /* The toggle's stretched layer (below) covers this row. */
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  color: var(--body);
+  text-align: left;
+  min-width: 0;
+  transition: background var(--t-fast) var(--ease);
+}
+.toolcall.st-running .toolcall-head { color: var(--primary); }
+.toolcall-head.no-body { cursor: default; }
+.toolcall-head:not(.no-body):hover { background: var(--surface-card); }
+/* A tool row's expand toggle holds its icon and verb, and its ::after
+   stretches over the whole row, so a click anywhere on the row expands it
+   as before. File chips are the toggle's siblings, raised above that layer:
+   a chip inside the button was a control inside a control (axe
+   nested-interactive, 2026-11-04). */
+.toolcall-toggle {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+  flex: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: inherit;
+}
+.toolcall-toggle::after { content: ''; position: absolute; inset: 0; }
+.toolcall-head .toolcall-file.openable { position: relative; z-index: 1; }
+.toolcall-icon { display: inline-flex; color: var(--muted); flex: none; }
+.toolcall.st-done  .toolcall-icon { color: var(--muted); }
+.toolcall.st-error .toolcall-icon { color: var(--error); }
+.toolcall-verb { color: var(--ink); font-weight: 600; flex: none; }
+.toolcall-target {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--body);
+}
+.toolcall-target.mono { color: var(--accent-teal); font-size: var(--fs-meta); }
+.toolcall-extra { color: var(--muted); flex: none; font-size: var(--fs-meta); }
+.toolcall-spacer { flex: 1; min-width: 8px; }
+.toolcall-status { flex: none; display: inline-flex; align-items: center; color: var(--success); }
+.toolcall.st-running .toolcall-status { color: var(--accent-teal); }
+.toolcall.st-error .toolcall-status { color: var(--error); }
+.toolcall-x { font-size: var(--fs-meta); line-height: var(--lh-flat); }
+/* The chevron (DL1) is drawn, not a control: a click on it reaches the
+   toggle's stretched layer below (its fade makes it a layer of its own). */
+.toolcall-caret { display: inline-flex; align-items: center; justify-content: center; flex: none; color: var(--muted-soft); width: 12px; pointer-events: none; }
+
+/* Images a tool produced (e.g. a teammate-generated picture) — shown inline
+   under the tool header, independent of the expand/collapse state. */
+.toolcall-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 9px;
+  border-top: 1px solid var(--hairline);
+}
+.toolcall-img {
+  max-width: 320px;
+  max-height: 320px;
+  width: auto;
+  height: auto;
+  border-radius: var(--r-md);
+  border: 1px solid var(--hairline);
+  background: var(--surface-soft);
+  object-fit: contain;
+  cursor: zoom-in;
+}
+
+.toolcall-body {
+  border-top: 1px solid var(--hairline);
+  padding: 8px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: toolcall-open var(--t-med) var(--ease-out);
+}
+@keyframes toolcall-open { from { opacity: 0; transform: translateY(-2px); } to { opacity: 1; transform: none; } }
+.toolcall-section-label {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--muted-soft);
+  margin-bottom: -3px;
+}
+.toolcall-code, .toolcall-result {
+  margin: 0;
+  padding: 8px 10px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xs);
+  overflow: auto;
+  max-height: 320px;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-prose);
+  color: var(--ink);
+  white-space: pre;
+}
+.toolcall-result { white-space: pre-wrap; word-break: break-word; color: var(--body); }
+.toolcall-result.error { color: var(--error); border-color: var(--error-soft); background: var(--error-soft); }
+.toolcall-code code, .toolcall-result code { font-family: inherit; font-size: inherit; background: none; padding: 0; }
+
+/* Edit/Write diff */
+.toolcall-diff {
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xs);
+  overflow: auto;
+  max-height: 360px;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  background: var(--canvas);
+}
+.diff-line { display: flex; white-space: pre; }
+.diff-gutter {
+  flex: none;
+  width: 18px;
+  text-align: center;
+  color: var(--muted-soft);
+  user-select: none;
+  border-right: 1px solid var(--hairline-soft);
+}
+.diff-text { padding: 0 8px; flex: 1; min-width: 0; }
+.diff-add { background: var(--success-soft); }
+.diff-add .diff-gutter, .diff-add .diff-text { color: var(--success); }
+.diff-del { background: var(--error-soft); }
+.diff-del .diff-gutter, .diff-del .diff-text { color: var(--error); }
+.diff-ctx .diff-text { color: var(--body); }
+.diff-gap {
+  text-align: center;
+  color: var(--muted-soft);
+  padding: 1px 0;
+  border-top: 1px dashed var(--hairline-soft);
+  border-bottom: 1px dashed var(--hairline-soft);
+}
+
+/* ---- HTML artifact (sandboxed iframe) ---- */
+/* Never wider than the reply: since Canvas C3 html previews and canvases
+   render inline in the narrow workspace column too, so the head and the
+   permission line wrap instead of pushing the frame past the column. */
+.chat-artifact {
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--material-edge);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--material-solid);
+  box-shadow: var(--elev-edge), var(--elev-1);
+}
+.chat-artifact-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 6px 5px 10px;
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--hairline);
+}
+.chat-artifact-badge {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--on-primary);
+  background: var(--accent-teal);
+  padding: 2px 5px;
+  border-radius: var(--r-sm);
+}
+.chat-artifact-title {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+.chat-artifact-spacer { flex: 1; }
+/* 10-11 B1: the one permission line, shown only after the frame was refused
+   something the person can allow (no policy buttons any more). */
+.artifact-ask {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 10px;
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--hairline);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--ink);
+}
+.artifact-ask-text { flex: 1 1 16em; min-width: 0; }
+/* A grant is on: the head says so for as long as it lasts. */
+.chat-artifact-net {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--warning);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  padding: 1px 6px;
+}
+.chat-artifact-head .studio-action-menu > summary { padding: 2px 4px; }
+.chat-artifact-head > .studio-action-menu { margin-inline-start: auto; }
+.chat-artifact-code:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.chat-artifact-btn {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  background: none;
+  border: 1px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: var(--r-sm);
+  line-height: var(--lh-flat);
+}
+.chat-artifact-btn:hover { color: var(--primary); border-color: var(--hairline); }
+.chat-artifact-frame {
+  display: block;
+  width: 100%;
+  border: none;
+  background: var(--canvas);
+  transition: height 120ms ease;
+}
+.chat-artifact.expanded .chat-artifact-frame { transition: none; }
+/* Canvas C3 frame budget: an off-screen frame's place, at its last height,
+   so the transcript never jumps when it unmounts or mounts again. */
+.chat-artifact-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  background: var(--surface-soft);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .chat-artifact-placeholder > * { animation: chat-artifact-placeholder-in var(--t-fast) var(--ease-out) 400ms both; }
+}
+@keyframes chat-artifact-placeholder-in { from { opacity: 0; } to { opacity: 1; } }
+.chat-artifact-code {
+  margin: 0;
+  padding: 10px 12px;
+  max-height: 360px;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--ink);
+  background: var(--surface-soft);
+}
+.chat-artifact-code code { background: none; padding: 0; }
+
+/* ---- Pasted / dropped image attachments + sent images ---- */
+.chat-input { position: relative; }
+.chat-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 8px 0;
+}
+.chat-attach {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--material-edge);
+  background: var(--material-solid);
+  box-shadow: var(--elev-edge);
+  flex: 0 0 auto;
+}
+.chat-attach img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.chat-attach.saving { opacity: 0.65; }
+.chat-attach.saving::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 6px, var(--primary-soft) 6px, var(--primary-soft) 12px);
+  animation: chat-attach-stripe 0.8s linear infinite;
+}
+@keyframes chat-attach-stripe { to { background-position: 17px 0; } }
+.chat-attach.error { border-color: var(--error); }
+.chat-attach.error img { opacity: 0.3; }
+.chat-attach-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 17px;
+  height: 17px;
+  border-radius: var(--r-sm);
+  border: none;
+  background: var(--scrim-strong);
+  color: var(--white);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-flat);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: var(--motion-base);
+}
+.chat-attach:hover .chat-attach-remove { opacity: 1; }
+.chat-attach-remove:hover { background: var(--error); color: var(--on-error); }
+
+.chat-composer.drag-over { border-color: var(--primary); border-style: dashed; }
+/* "Drop files to attach": any file attaches since C5, 2026-11-04 (P0-07,
+   composerDrop.ts). */
+.chat-composer.drag-over::before {
+  content: attr(data-drop-label);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-radius: var(--r-md);
+  pointer-events: none;
+  z-index: 3;
+}
+/* A file dragged anywhere over the window attaches to the chat (2026-11-04,
+   WindowFileDrop.tsx). The veil says where it goes and never takes the
+   pointer, so a target that takes drops itself keeps them. Frames (reply
+   canvases) let the drag through to the page while it shows. */
+.window-file-drop {
+  position: fixed;
+  inset: var(--sp-3);
+  z-index: 8000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--primary);
+  border-radius: var(--r-lg);
+  background: var(--primary-soft);
+  pointer-events: none;
+}
+.window-file-drop-label {
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--surface-raised);
+  box-shadow: var(--elev-2);
+  color: var(--ink);
+  font: 600 var(--fs-body) var(--ui);
+}
+:root[data-file-drag] iframe { pointer-events: none; }
+
+.turn-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 6px;
+}
+/* Attached and generated images open in the side panel. */
+.turn-image-open, .toolcall-img-open {
+  appearance: none;
+  display: inline-flex;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: var(--r-md);
+  cursor: zoom-in;
+}
+.turn-image-open:focus-visible, .toolcall-img-open:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.turn-image {
+  max-width: 220px;
+  max-height: 220px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--hairline);
+  object-fit: contain;
+  background: var(--surface-soft);
+}
+
+/* ── Projects → Portfolio sub-view ───────────────────────────────── */
+.portfolio { display: flex; flex-direction: column; gap: 22px; max-width: 760px; }
+/* "Document Cover" — the decorated window the OS opens for a .md file: a
+   floating toolbar (file name + "Save to vault") over a carved sheet whose
+   header is a display-face cover title with a drawn amber rule and mono
+   path/word-count metadata. Reuses .md-view for the markdown typography;
+   only the chrome is defined here. Storeless window, so it stands alone from
+   the .app shell layout. */
+body:has(.md-preview) { background: var(--canvas); }
+.md-preview {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--ui);
+}
+/* Persistent floating toolbar: lift-1, deliberately NOT in the surface-pass
+   lifted (lift-2) list — it's resident chrome, not transient. */
+.md-preview-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  padding: 10px 20px;
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--hairline-soft);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.md-preview-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.md-preview-name {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  color: var(--body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.md-preview-actions { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
+.md-preview-status { font-size: var(--fs-meta); color: var(--muted); }
+.md-preview-status.success { color: var(--success); }
+.md-preview-status.error { color: var(--error); }
+.md-preview-badge { font-family: var(--mono); font-size: var(--fs-meta); color: var(--success); }
+.md-preview-body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 36px 32px 64px;
+}
+/* The carved sheet — radius/recess come from joining the carved
+   surface-pass list. */
+.md-preview-sheet {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 44px 52px 56px;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline-soft);
+  animation: stagger-in var(--t-slow) var(--ease-out) both;
+}
+/* The cover header is a shared .doc-cover.doc-cover--inline; the in-sheet
+   variant gives up the carved seam + padding (the sheet owns the gutter).
+   Compound selector: the shared .doc-cover rule sits later in source. */
+.md-preview-sheet .md-cover { padding: 0; margin-bottom: 28px; }
+.md-cover-title {
+  margin: 0 0 10px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: var(--fs-display);
+  line-height: 1.15;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.md-cover-rule {
+  height: 1px;
+  margin-bottom: 12px;
+  background: var(--hairline-soft);
+}
+.md-cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+.md-cover-path { overflow-wrap: anywhere; }
+.md-cover-stat { color: var(--muted-soft); }
+.md-cover-stat.trunc { color: var(--warning); }
+.md-preview-md { max-width: none; margin: 0; } /* the sheet owns the measure */
+.md-preview-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 64px 0;
+  color: var(--muted-soft);
+  font-size: var(--fs-meta);
+}
+.md-preview-loading-arch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--hairline);
+  border-top-color: var(--muted);
+  animation: spinner-turn 800ms linear infinite;
+}
+.md-preview-error {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  background: var(--error-soft);
+  border: 1px solid var(--error);
+  border-radius: var(--r-md);
+  color: var(--error);
+  font-size: var(--fs-body);
+}
+}
+@layer components {
+.chat-input[hidden] { display: none; }
+}
+

@@ -1,0 +1,12 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"session","sessionId":"thread-9"}
+{"type":"assistantText","text":"Searching."}
+{"type":"toolUse","id":"item_1","name":"mcp__hollow_vault__search","input":{"q":"x"}}
+{"type":"toolResult","id":"item_1","content":"3 hits","isError":false}
+{"type":"toolUse","id":"item_2","name":"file_change","input":{}}
+{"type":"toolResult","id":"item_2","content":"","isError":false}
+{"type":"activity","runId":"r1","lastEventAt":null,"progress":null}
+{"type":"assistantText","text":"Found it."}
+{"type":"result","result":"Found it.","costUsd":null,"isError":false,"subtype":"success","sessionId":"thread-9"}
+{"type":"usage","usage":{}}
+{"type":"done","sessionId":"thread-9"}

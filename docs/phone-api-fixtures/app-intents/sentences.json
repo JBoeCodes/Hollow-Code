@@ -1,0 +1,35 @@
+{
+  "ask": [
+    {
+      "text": "  What changed today?\n",
+      "workspaceId": null,
+      "request": {"workspaceId": "quick-chats", "text": "What changed today?"}
+    },
+    {
+      "text": "Summarise my inbox",
+      "workspaceId": "ws-1",
+      "request": {"workspaceId": "ws-1", "text": "Summarise my inbox"}
+    },
+    {"text": " \n ", "workspaceId": null, "request": null}
+  ],
+  "started": [
+    {"workspaceTitle": null, "says": "Started a chat in Hollow."},
+    {"workspaceTitle": "Hollow Companion App", "says": "Started a chat in Hollow Companion App."}
+  ],
+  "waiting": [
+    {"titles": [], "known": true, "says": "Nothing is waiting on you."},
+    {"titles": ["Release notes"], "known": true, "says": "One chat is waiting on you: Release notes."},
+    {"titles": ["Plan", "New chat"], "known": true, "says": "2 chats are waiting on you: Plan and New chat."},
+    {"titles": ["A", "B", "C"], "known": true, "says": "3 chats are waiting on you: A, B and C."},
+    {"titles": ["A", "B", "C", "D", "E"], "known": true, "says": "5 chats are waiting on you, including A, B and C."},
+    {"titles": [], "known": false, "says": "Update Hollow on your Mac to ask what's waiting."}
+  ],
+  "failures": [
+    {"failure": "notPaired", "says": "Open Hollow and pair with your Mac first."},
+    {"failure": "emptyMessage", "says": "There was nothing to send to Hollow."},
+    {"failure": "signedOut", "says": "Hollow on your Mac turned this iPhone away. Open Hollow and pair again."},
+    {"failure": "unreachable", "says": "Hollow can't reach your Mac. Check that Hollow is open there, the Mac is awake and on Tailscale."},
+    {"failure": "mayHaveBeenSent", "says": "Hollow didn't answer, so I can't tell whether it got your message. Check Hollow before asking again."},
+    {"failure": "olderHollow", "says": "Update Hollow on your Mac to ask what's waiting."}
+  ]
+}

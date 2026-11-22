@@ -1,0 +1,296 @@
+/* M2 PR 4: the machine strip, its popover, the machine badge, a chat on
+   another Mac (RemoteChatView) and Settings, Devices, Macs. Imported only by
+   those lazy components (RailMachines, MachineBadge, RemoteChatView,
+   MachinesPanel), so none of it rides the shell chunk. Tokens and scale
+   steps; product UI, so no dithering. */
+@layer components {
+
+/* ── Status dot ─────────────────────────────────────────────────────── */
+.machine-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--muted);
+  background: transparent;
+}
+.machine-dot[data-dot="this-mac"] { background: var(--primary); border-color: var(--primary); }
+.machine-dot[data-dot="online"] { background: var(--success); border-color: var(--success); }
+.machine-dot[data-dot="attention"] { background: var(--warning); border-color: var(--warning); }
+.machine-dot[data-dot="connecting"] { border-color: var(--primary); }
+@media (prefers-reduced-motion: no-preference) {
+  .machine-dot[data-dot="connecting"] { animation: machine-dot-pulse 1.2s var(--ease-soft, ease-in-out) infinite; animation-play-state: var(--ambient-play, running); }
+}
+@keyframes machine-dot-pulse { 50% { opacity: 0.35; } }
+
+/* ── The strip, above Shared tools ──────────────────────────────────── */
+.rail-machines {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: var(--sp-2) var(--sp-2) 0;
+  border-top: 1px solid var(--hairline-soft);
+}
+.rail-machine-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-width: 0;
+  height: var(--row-h, 30px);
+  padding: 0 var(--sp-2);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--body-strong);
+  font: 500 var(--fs-meta)/1 var(--ui);
+  text-align: left;
+}
+button.rail-machine-row { cursor: pointer; }
+button.rail-machine-row:hover, .rail-machine-row.is-open { background: var(--fill-hover); }
+.rail-machine-row.is-this-mac { color: var(--muted); }
+.rail-machine-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rail-machine-state { flex: none; max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-weight: 400; }
+.rail-machine-count {
+  flex: none;
+  min-width: 18px;
+  padding: 2px var(--sp-1);
+  border-radius: var(--r-pill);
+  background: var(--fill-selected);
+  color: var(--body-strong);
+  font-size: var(--fs-caption);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+/* Collapsed sidebar: one icon per Mac with its dot. */
+.rail-machines.is-collapsed { align-items: center; padding: var(--sp-2) 0 0; }
+.rail-machines.is-collapsed .rail-machine-row { width: 34px; justify-content: center; position: relative; padding: 0; }
+.rail-machines.is-collapsed .machine-dot { position: absolute; right: 5px; bottom: 6px; width: 7px; height: 7px; }
+
+/* ── Popover ────────────────────────────────────────────────────────── */
+.machine-popover {
+  position: fixed;
+  z-index: 60;
+  width: 300px;
+  max-height: min(380px, calc(100vh - 16px));
+  overflow: auto;
+  padding: var(--sp-3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: var(--surface-raised);
+  box-shadow: var(--elev-2);
+  color: var(--body);
+}
+.machine-popover-head { display: flex; align-items: center; gap: var(--sp-2); }
+.machine-popover-head strong { flex: 1; min-width: 0; color: var(--body-strong); }
+.machine-popover-status { margin: var(--sp-2) 0 0; font-size: var(--fs-meta); }
+.machine-popover-detail { margin: var(--sp-1) 0 0; font: var(--fs-caption)/var(--lh-base, 1.4) var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+.machine-popover-empty { margin: var(--sp-2) 0 0; font-size: var(--fs-meta); color: var(--muted); }
+.machine-popover-chats { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.machine-popover-chats.is-stale { opacity: 0.6; }
+.machine-popover-chat {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: 28px;
+  padding: 0 var(--sp-2);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--body-strong);
+  font: 400 var(--fs-meta)/1.2 var(--ui);
+  text-align: left;
+  cursor: pointer;
+}
+.machine-popover-chat:hover, .machine-popover-chat:focus-visible { background: var(--fill-hover); }
+.machine-popover-chat-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.machine-popover-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-1); margin-top: var(--sp-2); }
+
+/* ── Badge ──────────────────────────────────────────────────────────── */
+.machine-badge {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 5px;
+  border-radius: var(--r-pill);
+  background: var(--fill-selected);
+  color: var(--muted);
+  font: 500 var(--fs-caption)/1.2 var(--ui);
+}
+.machine-glyph { flex: none; display: block; }
+.machine-badge-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--warning);
+  box-shadow: 0 0 0 1.5px var(--surface-raised);
+}
+
+/* Another Mac's quick chat whose Mac isn't reachable: read-only, dimmed. */
+.work-workspace-row.is-stale { opacity: 0.6; }
+
+/* ── A chat on another Mac, over the page pane ──────────────────────── */
+.remote-chat-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  background: var(--canvas);
+}
+/* Focusable so Escape works with nothing else focused; no ring for that. */
+.remote-chat-layer:focus:not(:focus-visible) { outline: none; }
+.remote-chat-loading { margin: auto; color: var(--muted); font-size: var(--fs-meta); }
+.remote-chat { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; }
+.remote-chat-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px var(--sp-3);
+  padding: var(--sp-3) var(--page-gutter, 24px);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.remote-chat-heading { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.remote-chat-title { margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 var(--fs-md)/1.3 var(--ui); color: var(--body-strong); }
+.remote-chat-tools { grid-column: 2; grid-row: 1 / span 2; align-self: center; display: inline-flex; gap: var(--sp-1); }
+.remote-chat-sub { grid-column: 1; display: flex; align-items: center; gap: var(--sp-2); margin: 0; font-size: var(--fs-meta); color: var(--muted); }
+.remote-chat-mode { padding: 1px var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-pill); }
+.remote-chat-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--page-gutter, 24px);
+  background: var(--amber-soft);
+  color: var(--body-strong);
+  font-size: var(--fs-meta);
+}
+.remote-chat-banner > span { flex: 1; min-width: 0; }
+.remote-chat-scroll { flex: 1; min-height: 0; overflow: auto; }
+/* Full width, as a chat fills its pane. */
+.remote-chat-turns { display: flex; flex-direction: column; gap: var(--sp-4); width: 100%; padding: var(--sp-4) var(--page-gutter, 24px) var(--sp-6); }
+.remote-chat-empty { margin: var(--sp-6) auto; color: var(--muted); font-size: var(--fs-meta); }
+.remote-turn.user { display: flex; justify-content: flex-end; }
+.remote-turn-files { list-style: none; margin: 0 0 var(--sp-1); padding: 0; display: flex; flex-wrap: wrap; gap: var(--sp-2); font-size: var(--fs-meta); color: var(--muted); }
+.remote-turn-files li { display: inline-flex; align-items: center; gap: var(--sp-1); }
+.remote-turn-tools, .remote-turn-note { margin: 0 0 var(--sp-2); font-size: var(--fs-meta); color: var(--muted); }
+.remote-canvas-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: var(--sp-2) 0;
+  padding: var(--sp-3);
+  border: 1px dashed var(--hairline);
+  border-radius: var(--r-md);
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+.remote-chat-composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0 var(--page-gutter, 24px) var(--sp-4);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  background: var(--surface-raised);
+}
+/* The box rings as the local composer's does; the field inside has none. */
+.remote-chat-composer:focus-within {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--hairline));
+  box-shadow: var(--ring);
+}
+.remote-chat-composer textarea:focus,
+.remote-chat-composer textarea:focus-visible { outline: 0; box-shadow: none; }
+.remote-chat-composer textarea {
+  width: 100%;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--body-strong);
+  font: var(--fs-body)/var(--lh-base, 1.4) var(--ui);
+}
+.remote-chat-actions { display: flex; align-items: center; gap: var(--sp-2); }
+.remote-chat-note { flex: 1; min-width: 0; margin: 0; font-size: var(--fs-meta); color: var(--muted); }
+.remote-chat-send { width: 30px; height: 30px; padding: 0; border-radius: var(--r-pill); display: inline-flex; align-items: center; justify-content: center; }
+@container hollow-window (max-width: 53.75em) {
+  .remote-chat-head, .remote-chat-banner { padding-inline: var(--sp-3); }
+  .remote-chat-turns { padding-inline: var(--sp-3); }
+  .remote-chat-composer { margin-inline: var(--sp-2); }
+}
+
+/* ── Settings, Devices, Macs ────────────────────────────────────────── */
+/* At rest: one row, a one-line row per paired Mac and the server fold
+   (Settings height, 1.3 screens a section). The heading is the row's key. */
+.machines-panel { margin-top: var(--sp-2); }
+.machines-head h3.settings-row-k { margin: 0; font-weight: 600; }
+.machines-head .settings-row-actions { align-items: center; }
+/* The live region stays mounted (so a change is announced) but takes no room while empty. */
+.machines-progress:empty { padding: 0; }
+.machines-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.machines-row { padding: var(--sp-2) var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-md); }
+.machines-row-more { margin: var(--sp-1) 0 0; }
+.machines-row-head { display: flex; align-items: center; gap: var(--sp-2); }
+.machines-row-state { color: var(--muted); font-size: var(--fs-meta); }
+.machines-row-actions { margin-left: auto; display: inline-flex; gap: var(--sp-2); }
+.machines-row-message { font-family: var(--mono); overflow-wrap: anywhere; }
+.machines-hosts { margin: var(--sp-2) 0 0; padding-left: var(--sp-5); font-size: var(--fs-meta); }
+.machines-hosts li { display: flex; align-items: center; gap: var(--sp-2); min-height: 26px; }
+.machines-host-up { color: var(--success); font-size: var(--fs-caption); }
+.machines-server { margin: var(--sp-2) 0 0; }
+.machines-move-row { padding: var(--sp-2) 0 0; }
+
+/* ── M5: a chat's move (ChatMoveNotice) and the moved badge ─────────── */
+.machine-badge.is-moved { background: var(--fill-hover); }
+.chat-move-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: var(--sp-2);
+  padding: var(--sp-3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: var(--surface-soft);
+}
+.chat-move-notice[data-kind="moving"],
+.chat-move-notice[data-kind="waiting"] { border-color: var(--warning); }
+.chat-move-notice-text { flex: 1 1 16rem; margin: 0; }
+/* M5 offline UI: an offline copy of a moved chat (its notice, Quick chats). */
+.chat-move-notice[data-kind="kept"] { border-color: var(--warning); }
+.chat-offline-badge {
+  flex: none;
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--fill-hover);
+  color: var(--muted);
+  font-size: var(--fs-caption);
+  white-space: nowrap;
+}
+
+/* M3a follow-up: the chip on a routed turn's receipt (RouteChip), a file
+   chip's box as a button. */
+.route-chip { background: none; font-family: var(--ui); }
+
+
+/* ── M2 leftovers: another Mac's chats in Library, Conversations ────── */
+.remote-conversations { margin-top: var(--sp-2); }
+.remote-conversations .session-row.is-stale { opacity: 0.6; }
+.remote-conversations .chat-session-open .title { display: inline-flex; align-items: center; gap: var(--sp-1); }
+.remote-conversations-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+.machines-alias-add { display: flex; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); }
+.machines-alias-add input { flex: 1 1 10rem; min-width: 0; }
+}

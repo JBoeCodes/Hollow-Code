@@ -1,0 +1,13 @@
+# Pin the Rust toolchain to one exact release so CI, the pre-release
+# `tauri build` lane and every local checkout compile with the same rustc and
+# clippy (a floating "stable" moved under CI whenever Rust shipped). Bump it on
+# purpose, in its own change. The hardened release profile (panic=abort, lto,
+# strip) is built and tested under this version. MSRV is declared separately in
+# src-tauri/Cargo.toml (rust-version).
+#
+# A machine that only has `stable` installed needs this once (newer rustups
+# install it on the first cargo command by themselves):
+#   rustup toolchain install 1.96.0 --profile minimal --component rustfmt,clippy
+[toolchain]
+channel = "1.96.0"
+components = ["rustfmt", "clippy"]

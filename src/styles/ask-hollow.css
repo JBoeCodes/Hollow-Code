@@ -1,0 +1,59 @@
+@layer components {
+/* The card the meeting prep pack dialog uses (overnight 10-11 A4). It was
+   Ask Hollow's sentence dialog (overnight 10-11 A2) until One Ask removed
+   that dialog (2026-11-03); its plan, step and source rules went with it.
+   The backdrop is the shared dialog one (.rbk-backdrop, a modal-grade
+   surface); the card is narrower and sits high, like the palette. Tokens
+   only. */
+.ask-card {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  width: min(720px, 92vw);
+  max-height: min(720px, 84vh);
+  margin-top: 12vh;
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+  gap: var(--sp-3);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+  outline: none;
+}
+.ask-head { display: flex; align-items: center; gap: var(--sp-2); }
+.ask-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-pill);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.ask-body { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: var(--sp-3); }
+.ask-hint, .ask-meta { margin: 0; font-size: var(--fs-meta); color: var(--muted); }
+.ask-note { margin: 0; font-size: var(--fs-body); color: var(--body); }
+.ask-note.is-error { color: var(--ink); padding-left: var(--sp-2); border-left: 2px solid var(--risk); }
+.ask-actions { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.ask-actions .ask-meta { flex: 1; }
+.ask-actions kbd { margin-left: var(--sp-1); font-size: var(--fs-caption); opacity: 0.8; }
+
+.ask-thinking { display: flex; gap: var(--sp-1); }
+.ask-thinking span { width: 6px; height: 6px; border-radius: var(--r-pill); background: var(--primary); opacity: 0.35; }
+
+/* Meeting prep packs (overnight 10-11 A4) share the card. */
+.prep-card { width: min(820px, 94vw); }
+.prep-title { flex: 1; margin: 0; font-size: var(--fs-md); color: var(--ink); }
+.prep-title small { font-size: var(--fs-meta); color: var(--muted); font-weight: normal; }
+.prep-body { font-size: var(--fs-body); color: var(--ink); }
+
+/* Motion only for people who haven't asked for less. */
+@media (prefers-reduced-motion: no-preference) {
+  .ask-card { animation: confirm-pop-in var(--t-med) var(--ease-out) both; }
+  .ask-thinking span { animation: ask-pulse 1s var(--ease-out) infinite; animation-play-state: var(--ambient-play, running); }
+  .ask-thinking span:nth-child(2) { animation-delay: 150ms; }
+  .ask-thinking span:nth-child(3) { animation-delay: 300ms; }
+}
+}
+
+@keyframes ask-pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.9; } }

@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "bad_signature",
+    "message": "That answer wasn't signed by this iPhone's approval key."
+  }
+}

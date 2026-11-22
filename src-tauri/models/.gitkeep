@@ -1,0 +1,8 @@
+# Keeps src-tauri/models/ present in a fresh checkout.
+#
+# tauri-build's build.rs validates `bundle.resources: ["models/"]` (tauri.conf.json)
+# on EVERY cargo build — including `cargo test`/`cargo check` — and errors with
+# "resource path `models` doesn't exist" if the dir is missing. The actual model
+# weights are gitignored and fetched + SHA-256-verified at build time by
+# scripts/fetch-embed-model.mjs (beforeBuildCommand → `npm run fetch:model`).
+# Do not delete this file.

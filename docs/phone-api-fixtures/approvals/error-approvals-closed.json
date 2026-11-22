@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "approvals_closed",
+    "message": "Approvals aren't open for this iPhone. In Hollow on your Mac, open Settings, Devices, Companion devices, and choose Approvals from this iPhone."
+  }
+}

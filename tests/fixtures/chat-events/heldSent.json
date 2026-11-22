@@ -1,0 +1,9 @@
+{
+  "after": "queue",
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "heldId": "h-1",
+  "queueId": 42,
+  "sessionKey": "s-20261118-abc",
+  "type": "heldSent"
+}

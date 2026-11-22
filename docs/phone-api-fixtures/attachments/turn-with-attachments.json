@@ -1,0 +1,17 @@
+{
+  "id": "s-20261107-6e772c5f-1-user",
+  "ord": 1,
+  "role": "user",
+  "text": "What is on this receipt?",
+  "agent": "claude",
+  "startedAt": "2026-11-07T10:07:11.700000+00:00",
+  "status": "success",
+  "error": null,
+  "truncated": false,
+  "tools": [],
+  "questions": null,
+  "attachments": [
+    {"id": "at-1f0e3c5a9b7d2468", "name": "IMG_0412.jpg", "kind": "image", "mime": "image/jpeg", "size": 482113, "available": true},
+    {"id": "at-9c2b7e41d0a85f36", "name": "Quarterly-report.pdf", "kind": "file", "mime": "application/pdf", "size": 1048576, "available": false}
+  ]
+}

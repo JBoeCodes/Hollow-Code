@@ -1,0 +1,26 @@
+{
+  "id": "apr-19a7c2f1b3e-1f4a-3",
+  "reason": "hollow:external",
+  "message": "Publish the build to the beta channel",
+  "toolCallId": "toolu-007",
+  "responseSchema": {
+    "type": "object",
+    "required": ["approved"],
+    "properties": {
+      "approved": { "type": "boolean" },
+      "reason": {
+        "type": "string",
+        "maxLength": 500,
+        "description": "Words typed on a Decline; sent to the agent."
+      }
+    },
+    "additionalProperties": false
+  },
+  "expiresAt": "2026-11-17T21:02:00+00:00",
+  "metadata": {
+    "kind": "app-external",
+    "title": "Hollow app",
+    "sessionKey": "s-20261117-abc12345",
+    "shownAt": "2026-11-17T21:00:00+00:00"
+  }
+}

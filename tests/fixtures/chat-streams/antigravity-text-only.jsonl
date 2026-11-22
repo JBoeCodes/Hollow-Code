@@ -1,0 +1,6 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"session","sessionId":"agy-2"}
+{"type":"assistantText","text":"No tools needed."}
+{"type":"result","result":"No tools needed.","costUsd":null,"isError":false,"subtype":"success","sessionId":"agy-2"}
+{"type":"usage","usage":{}}
+{"type":"done","sessionId":"agy-2"}

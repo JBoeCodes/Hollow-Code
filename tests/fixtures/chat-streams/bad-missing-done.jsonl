@@ -1,0 +1,3 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"assistantText","text":"hi"}
+{"type":"result","result":"hi","costUsd":null,"isError":false,"subtype":"success","sessionId":null}

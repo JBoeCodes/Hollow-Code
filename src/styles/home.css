@@ -1,0 +1,15 @@
+/* Home's section heads and deleted-workspaces list. The resume row
+   (HomeReturnRow) and its styles went with the unmounted component (11-10). */
+@layer components {
+
+.studio-home { gap: 0; }
+.studio-home > .studio-ask { margin-bottom: var(--section-gap); }
+.home-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); margin: 0 0 var(--sp-3); }
+.studio-deleted { margin-top: var(--sp-4); }
+.home-section-head h2, .studio-deleted .home-section-head h3 { margin: 0; color: var(--body-strong); font: 600 var(--fs-body)/1.3 var(--ui); letter-spacing: 0; }
+
+@container hollow-window (max-width: 53.75em) {
+  .home-section-head { flex-wrap: wrap; }
+}
+}
+

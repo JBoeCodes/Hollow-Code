@@ -1,0 +1,349 @@
+=====feedback_example_visibility.md
+---
+name: Always create repos as private
+description: xxx xxx xxxxxx xxxx xxxxxxx xx xxx xxxx.
+type: feedback
+originSessionId: 00000000-0000-4000-8000-000000000001
+---
+Body.
+=====example_rule_drifted.md
+---
+name: example-rule-drifted
+description: "xxx xxxx xxxxx xxxx xxxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000002
+  modified: 2026-10-01T12:00:00.000Z
+---
+Body.
+=====example-memory-03.md
+---
+name: example-memory-03
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000003
+  modified: 2026-10-04T12:00:00.000Z
+---
+Body.
+=====example-memory-04.md
+---
+name: example-memory-04
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000004
+  modified: 2026-10-05T12:00:00.000Z
+---
+Body.
+=====example-memory-05.md
+---
+name: example-memory-05
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000005
+  modified: 2026-10-06T12:00:00.000Z
+---
+Body.
+=====example-memory-06.md
+---
+name: example-memory-06
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000006
+  modified: 2026-10-07T12:00:00.000Z
+---
+Body.
+=====example-memory-07.md
+---
+name: example-memory-07
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000007
+  modified: 2026-10-08T12:00:00.000Z
+---
+Body.
+=====example-memory-08.md
+---
+name: example-memory-08
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000008
+  modified: 2026-10-09T12:00:00.000Z
+---
+Body.
+=====example-memory-09.md
+---
+name: example-memory-09
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000009
+  modified: 2026-10-10T12:00:00.000Z
+---
+Body.
+=====example-memory-10.md
+---
+name: example-memory-10
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000010
+  modified: 2026-10-11T12:00:00.000Z
+---
+Body.
+=====example-memory-11.md
+---
+name: example-memory-11
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000011
+  modified: 2026-10-12T12:00:00.000Z
+---
+Body.
+=====example-memory-12.md
+---
+name: example-memory-12
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000012
+  modified: 2026-10-13T12:00:00.000Z
+---
+Body.
+=====example-memory-13.md
+---
+name: example-memory-13
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000013
+  modified: 2026-10-14T12:00:00.000Z
+---
+Body.
+=====example-memory-14.md
+---
+name: example-memory-14
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000014
+  modified: 2026-10-15T12:00:00.000Z
+---
+Body.
+=====example-memory-15.md
+---
+name: example-memory-15
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000015
+  modified: 2026-10-16T12:00:00.000Z
+---
+Body.
+=====example-memory-16.md
+---
+name: example-memory-16
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000016
+  modified: 2026-10-17T12:00:00.000Z
+---
+Body.
+=====example-memory-17.md
+---
+name: example-memory-17
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000017
+  modified: 2026-10-18T12:00:00.000Z
+---
+Body.
+=====example-memory-18.md
+---
+name: example-memory-18
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000018
+  modified: 2026-10-19T12:00:00.000Z
+---
+Body.
+=====example-memory-19.md
+---
+name: example-memory-19
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000019
+  modified: 2026-10-20T12:00:00.000Z
+---
+Body.
+=====example-memory-20.md
+---
+name: example-memory-20
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000020
+  modified: 2026-10-21T12:00:00.000Z
+---
+Body.
+=====example-memory-21.md
+---
+name: example-memory-21
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000021
+  modified: 2026-10-22T12:00:00.000Z
+---
+Body.
+=====example-memory-22.md
+---
+name: example-memory-22
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000022
+  modified: 2026-10-23T12:00:00.000Z
+---
+Body.
+=====example-memory-23.md
+---
+name: example-memory-23
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000023
+  modified: 2026-10-24T12:00:00.000Z
+---
+Body.
+=====example-memory-24.md
+---
+name: example-memory-24
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000024
+  modified: 2026-10-25T12:00:00.000Z
+---
+Body.
+=====example-memory-25.md
+---
+name: example-memory-25
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: user
+  originSessionId: 00000000-0000-4000-8000-000000000025
+  modified: 2026-10-26T12:00:00.000Z
+---
+Body.
+=====example-memory-26.md
+---
+name: example-memory-26
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000026
+  modified: 2026-10-27T12:00:00.000Z
+---
+Body.
+=====example-memory-27.md
+---
+name: example-memory-27
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000027
+  modified: 2026-10-28T12:00:00.000Z
+---
+Body.
+=====example-memory-28.md
+---
+name: example-memory-28
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000028
+  modified: 2026-10-01T12:00:00.000Z
+---
+Body.
+=====example-memory-29.md
+---
+name: example-memory-29
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000029
+  modified: 2026-10-02T12:00:00.000Z
+---
+Body.
+=====example-memory-30.md
+---
+name: example-memory-30
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000030
+  modified: 2026-10-03T12:00:00.000Z
+---
+Body.
+=====example-memory-31.md
+---
+name: example-memory-31
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000031
+  modified: 2026-10-04T12:00:00.000Z
+---
+Body.
+=====example-memory-32.md
+---
+name: example-memory-32
+description: "xxx xxxx xxxxx xxx xxxxx xx xxxxx."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 00000000-0000-4000-8000-000000000032
+  modified: 2026-10-05T12:00:00.000Z
+---
+Body.

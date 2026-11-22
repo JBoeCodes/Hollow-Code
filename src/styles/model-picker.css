@@ -1,0 +1,14 @@
+/* Model picker: a menu of known models plus a custom-ID field. Loaded with
+   ModelPicker (lazy surfaces) to keep it out of the main CSS budget. */
+@layer components {
+.model-picker { min-width:0; width:100%; display:grid; gap:6px; }
+.model-picker select,.model-picker input { width:100%; min-width:0; }
+.model-picker-meta { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:var(--fs-meta); }
+.model-picker-meta span { flex:1; min-width:0; overflow-wrap:anywhere; }
+.model-picker-meta .btn { padding:2px 6px; font-size:var(--fs-meta); flex-shrink:0; }
+.model-picker.compact .model-picker-meta span { display:none; }
+.model-newer { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:var(--fs-meta); }
+.model-newer span { flex:1; min-width:0; overflow-wrap:anywhere; }
+.model-newer .btn { padding:2px 6px; font-size:var(--fs-meta); flex-shrink:0; }
+.model-picker.compact .model-picker-meta { justify-content:flex-end; margin-top:-2px; }
+}

@@ -1,0 +1,1 @@
+error: cannot resume this session under sandbox profile 'off' — it was created with 'read-only'. Omit --sandbox to resume with 'read-only', or start a new session to use 'off'.

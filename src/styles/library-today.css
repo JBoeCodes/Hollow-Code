@@ -1,0 +1,341 @@
+/* ── The library wall ──
+   Shown in the viewer when no skill is selected: every skill as a card.
+   Radius, recess, hover reticle, and focus ring for .skill-card come
+   from the shared lists near the top + the EOF surface pass — only the
+   card's own anatomy lives here. */
+@layer components {
+.skill-detail-desc {
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  color: var(--body);
+  margin: 0 0 10px;
+}
+.skill-detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+.skill-detail-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+.skill-form { max-width: 720px; }
+.skill-form h2 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: var(--fs-display);
+  margin: 0 0 18px;
+}
+.skill-form label { display: block; margin-bottom: 14px; }
+.skill-form .form-label {
+  display: block;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.skill-form input,
+.skill-form textarea {
+  width: 100%;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  padding: 9px 12px;
+  font-family: var(--mono);
+  font-size: var(--fs-body);
+  color: var(--ink);
+  outline: none;
+  box-sizing: border-box;
+}
+.skill-form textarea { font-family: var(--mono); font-size: var(--fs-meta); line-height: 1.6; resize: vertical; }
+.skill-form .skill-description-input { font-family: var(--ui); font-size: var(--fs-body); line-height: var(--lh-reading); }
+.skill-form input:focus,
+.skill-form textarea:focus {
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+}
+.skill-form small { display: block; margin-top: 4px; color: var(--muted-soft); font-size: var(--fs-meta); }
+.skill-form-actions { display: flex; gap: 8px; margin-top: 8px; }
+
+/* ============== CONTEXT MENU ============== */
+
+.ctx-menu {
+  position: fixed;
+  z-index: 9999;
+  min-width: 200px;
+  max-width: 300px;
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--elev-2);
+  padding: 4px;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  animation: ctx-in var(--t-fast) var(--ease-out) both;
+  transform-origin: top left;
+}
+@keyframes ctx-in {
+  from { transform: translateY(3px); }
+  to { transform: translateY(0); }
+}
+.ctx-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.ctx-item:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.ctx-item:active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--primary-soft-strong);
+}
+.ctx-item:disabled,
+.ctx-item[aria-disabled="true"] {
+  color: var(--muted-soft);
+  cursor: not-allowed;
+}
+.ctx-item.danger { color: var(--error); }
+.ctx-item.danger:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--error-soft); }
+.ctx-shortcut {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  color: var(--muted-soft);
+  letter-spacing: 0;
+}
+.ctx-sep {
+  height: 1px;
+  background: var(--hairline);
+  margin: 4px 6px;
+}
+
+.chat-input-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+}
+.chat-input-wrap textarea { width: 100%; }
+
+.slash-popup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 6px);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--elev-2);
+  padding: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 5;
+}
+.slash-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: var(--fs-body);
+}
+.slash-item.active,
+.slash-item:hover { background: var(--surface-card); }
+.slash-name {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--primary);
+  flex-shrink: 0;
+  min-width: 80px;
+}
+.slash-desc { color: var(--muted); font-size: var(--fs-meta); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.slash-tag {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  padding: 2px 6px;
+  border-radius: var(--r-pill);
+  flex-shrink: 0;
+}
+.slash-tag.local  { color: var(--accent-teal); background: var(--teal-soft); }
+.slash-tag.claude { color: var(--primary);     background: var(--primary-soft); }
+
+/* System (local-command) turns: subdued, no left accent. */
+.turn.system .text {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+/* Shared activity pulse and the operation log in Work > Running. */
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--amber-soft);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.9);
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+.activity-dock-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--hairline-soft);
+  background: var(--surface-card);
+}
+.activity-dock-title {
+  font-size: var(--fs-meta);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  font-weight: 600;
+}
+.activity-dock-clear {
+  font-size: var(--fs-meta);
+  font-family: var(--ui);
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  padding: 3px 8px;
+  cursor: pointer;
+}
+.activity-dock-clear:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--muted);
+}
+.activity-dock-clear:disabled { opacity: 0.4; cursor: not-allowed; }
+.activity-dock-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  overflow-y: auto;
+  flex: 1;
+}
+.activity-row {
+  display: flex;
+  gap: 10px;
+  padding: 7px 14px;
+  border-bottom: 1px solid var(--hairline-soft);
+  transition: background var(--t-fast) var(--ease);
+}
+.activity-row:hover { background: var(--surface-soft); }
+.activity-row.pending .activity-icon {
+  color: var(--accent-amber);
+  animation: breathe 1.6s var(--ease-soft) infinite;
+}
+.activity-row:last-child { border-bottom: none; }
+.activity-icon {
+  width: 18px;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  line-height: 18px;
+  color: var(--muted-soft);
+}
+.activity-row.success .activity-icon { color: var(--success); }
+.activity-row.warning .activity-icon { color: var(--accent-amber); font-weight: 600; }
+.activity-row.error   .activity-icon { color: var(--error); }
+/* An expected stop (Paperclip PR 22, `.activity-row.cancelled`) keeps the
+   neutral base colors above: never the error red. */
+.activity-body {
+  flex: 1;
+  min-width: 0;
+}
+.activity-name {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--fs-meta);
+  color: var(--ink);
+}
+.activity-elapsed {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.activity-detail {
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  margin-top: 1px;
+}
+.activity-result {
+  margin-top: 4px;
+  font-size: var(--fs-meta);
+  line-height: 1.45;
+  color: var(--body);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 80px;
+  overflow-y: auto;
+}
+.activity-result.warning { color: var(--accent-amber); }
+.activity-result.error { color: var(--error); }
+
+/* Morning Briefs tab — date-chip bar above the rendered brief. */
+.briefs-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+/* HTML brief (HtmlDoc) — a sandboxed iframe that fills the pane width and
+   sizes its height to content; the outer .workflow-viewer scrolls, not the
+   frame. The doc's own narrow-column cap AND outer page padding are neutralized
+   inside the frame (FILL_STYLES in HtmlDoc.tsx), so the doc fills the dynamic
+   pane width and the frame's single fluid body gutter owns the page margin. */
+.html-doc { width: 100%; }
+.html-doc-ask {
+  border-bottom: 1px solid var(--hairline-soft);
+  background: var(--surface-card);
+}
+.html-doc-frame {
+  width: 100%;
+  border: none;
+  display: block;
+  background: transparent;
+  color-scheme: light dark;
+}
+
+/* `.brief-row*` and `.brief-list` were deleted 2026-08-05: the BriefCard/BriefRow
+   component went with the Morning Briefs tab and nothing has rendered them since.
+   `.brief-error`, the last of them, went 2026-10-14 when nothing rendered it either
+   (night ST3; scripts/check-orphan-css.mjs now catches unused classes). */
+
+/* ============== SETTINGS PAGE ============== */
+}

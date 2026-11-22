@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  The Nightly release builder as a LaunchDaemon on a headless build Mac, run as
+  a dedicated build user every 300 s. Written only: nothing in the repository
+  loads or installs it. See docs/UPDATES.md ("The release builder").
+
+  Placeholders to replace before loading:
+    __USER__       dedicated non-admin build user (e.g. runner)
+    __HOME__       that user's home folder (e.g. /Users/runner)
+    __NODE__       absolute path of node (e.g. /opt/homebrew/bin/node)
+    __REPO__       the builder's own clone of Hollow (never a dev checkout)
+
+  No secret is in this file. The wrapper sources a 0600 env file that holds
+  the builder's variables (TAURI_SIGNING_PRIVATE_KEY_PATH, HOLLOW_R2_*,
+  APPLE_API_*, HOLLOW_SIGNING_IDENTITY, CARGO_TARGET_DIR, HOLLOW_NIGHTLY_*).
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.hollow.app-nightly</string>
+  <key>UserName</key>
+  <string>__USER__</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>set -a; . __HOME__/.config/hollow-nightly/env; set +a; exec "__NODE__" "__REPO__/scripts/release/nightly.mjs"</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__REPO__</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>HOME</key>
+    <string>__HOME__</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:__HOME__/.cargo/bin:__HOME__/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>LANG</key>
+    <string>en_US.UTF-8</string>
+  </dict>
+  <key>StartInterval</key>
+  <integer>300</integer>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>ProcessType</key>
+  <string>Background</string>
+  <key>LowPriorityIO</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__HOME__/Library/Logs/hollow-nightly.log</string>
+  <key>StandardErrorPath</key>
+  <string>__HOME__/Library/Logs/hollow-nightly.log</string>
+</dict>
+</plist>

@@ -1,0 +1,16 @@
+{
+  "enrolled": true,
+  "items": [
+    {
+      "id": "apr-1a2b3c4d-1",
+      "sessionKey": "s-20261104-e2582579",
+      "chatTitle": "Ship the release",
+      "title": "Install Hollow 5.2.1?",
+      "action": "Install the built app, commit 9f3c2ab.\n12 files changed against the installed build.\nsrc-tauri/src/approvals.rs\nand 11 more",
+      "kind": "app",
+      "createdAt": "2026-11-19T09:00:00.000Z",
+      "expiresAt": "2026-11-19T09:02:00.000Z",
+      "digest": "7d0c5f2b8e5a1c3d94a6b7e8f0123456789abcdef0123456789abcdef0123456"
+    }
+  ]
+}

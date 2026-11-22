@@ -1,0 +1,158 @@
+/* Settings, Usage in detail (Settings PR 8): the view tabs, the Limits
+   meters with their marks (Move on at, a budget's warn and hard-stop
+   lines) and the agent tabs' outcome list. Imported by UsageMeter.tsx and
+   UsagePanel.tsx, so it rides the lazy Usage chunk. Tokens only. */
+@layer components {
+.usage-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.usage-tab {
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font-size: var(--fs-body);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.usage-tab:hover {
+  color: var(--ink);
+}
+
+.usage-tab.active {
+  border-bottom-color: var(--primary);
+  color: var(--ink);
+}
+
+.usage-limits,
+.usage-agent-tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.usage-limits-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.usage-limits-sub {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+
+.usage-limits-none {
+  margin: 0;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+
+.usage-limits-none strong {
+  margin-inline-end: var(--sp-2);
+  color: var(--ink);
+}
+
+.usage-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+
+.usage-limit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.usage-limit-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+
+.usage-limit-value {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.usage-limit-meta {
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+
+.usage-limit[data-level="high"] .meter-fill,
+.usage-limit[data-level="warn"] .meter-fill {
+  background: var(--warning);
+}
+
+.usage-limit[data-level="over"] .meter-fill {
+  background: var(--error);
+}
+
+.usage-meter {
+  position: relative;
+}
+
+.usage-mark {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  inset-inline-start: calc(var(--at, 0) * 100% - 1px);
+  width: 2px;
+  border-radius: var(--r-pill);
+  background: var(--muted);
+}
+
+.usage-mark[data-mark="warn"] {
+  background: var(--warning);
+}
+
+.usage-mark[data-mark="stop"] {
+  background: var(--error);
+}
+
+.usage-where-title {
+  margin: 0;
+}
+
+.usage-outcomes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+
+.usage-outcomes strong {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+}
+
+/* Settings PR 5b (2026-11-12): Limits fits 1.3 screens: tighter gaps between
+   blocks, and the agents without plan limits share one line. */
+@layer components {
+  .usage-limits, .usage-agent-tab { gap: var(--sp-3); }
+  .usage-block[aria-label="Agents without plan limits"] { display: flex; flex-wrap: wrap; gap: 0 var(--sp-4); }
+  .usage-limits .budgets-list.budgets-fixed { margin-bottom: 0; gap: var(--sp-2); }
+  .usage-limits .budgets-fixed-row { padding: var(--sp-2) var(--sp-3); }
+  .usage-limits .budgets-fixed-row p { margin: 0; }
+  .usage-limits .budgets-fixed-row .meter { margin: var(--sp-1) 0; }
+  .usage-limits .budgets-fixed-row .budgets-row-actions { margin-top: var(--sp-1); }
+  .usage-limits .claude-acct-routing { gap: var(--sp-1); }
+}

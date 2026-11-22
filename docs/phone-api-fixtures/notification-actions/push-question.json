@@ -1,0 +1,19 @@
+{
+  "aps": {
+    "alert": {"title": "New chat", "body": "Which branch should I start from?"},
+    "sound": "default",
+    "thread-id": "s-20261104-e2582579",
+    "category": "hollow.question",
+    "mutable-content": 1
+  },
+  "sessionKey": "s-20261104-e2582579",
+  "kind": "question",
+  "card": {
+    "questionId": "qi-8c4e2b7a1d9f3605",
+    "itemId": "branch",
+    "options": [
+      {"id": "main", "label": "main"},
+      {"id": "ios", "label": "feat/ios-chat-app"}
+    ]
+  }
+}

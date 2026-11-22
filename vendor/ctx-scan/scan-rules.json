@@ -1,0 +1,479 @@
+{
+  "schema_version": 1,
+  "about": "The one rules list for context leaks and secrets. Read by tools/ctx-scan/ctx-scan (Python) and by Hollow's scan_rules.rs (Rust, vendored copy). Patterns stay in the syntax both engines share: no lookaround, no backreferences, every repeat bounded. Change it here, by pull request, then re-vendor into Hollow. A value check `not_reference` drops values that point somewhere instead of holding a secret: starting with / ~ $ . { % <, containing ://, an e-mail address, or starting process.env, os.environ, env. or import.meta.",
+  "max_file_bytes": 5242880,
+  "layers": [
+    "home",
+    "personal",
+    "org",
+    "project",
+    "vault"
+  ],
+  "placeholder_words": [
+    "replace",
+    "placeholder",
+    "example",
+    "changeme",
+    "change-me",
+    "change_me",
+    "dummy",
+    "sample",
+    "your-",
+    "your_",
+    "yourkey",
+    "xxxx",
+    "redacted",
+    "fake",
+    "fixture",
+    "notreal",
+    "not-a-real",
+    "not_a_real",
+    "password",
+    "todo",
+    "insert",
+    "<",
+    "${",
+    "{{"
+  ],
+  "groups": {
+    "secret": "Secrets never go in any repo. Remove it, rotate it if it was ever real, and keep it in a 0600 file or the Keychain.",
+    "machine": "Would this be false on a colleague's computer? Then it belongs in home/<machine>.md in your personal-context repo.",
+    "personal": "Is this only about how one person works? Then it belongs in your personal-context repo (me/, memory/, learnings/).",
+    "pii": "Employee personal data (SSNs, pay, HR files) never goes in a context repo.",
+    "file": "Data files and large files stay out of context repos: link to where the data lives instead.",
+    "scan": "The scanner could not read this file, so it could not check it."
+  },
+  "rules": [
+    {
+      "id": "secret.anthropic",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\bsk-ant-[A-Za-z0-9_-]{20,300}",
+      "message": "Anthropic API key or Claude token",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.openai",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\bsk-(proj|svcacct|admin)-[A-Za-z0-9_-]{20,300}|\\bsk-or-v1-[A-Za-z0-9]{32,128}|\\bsk-[A-Za-z0-9]{32,300}",
+      "message": "OpenAI API key",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.github",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\bgh[pousr]_[A-Za-z0-9]{30,255}|\\bgithub_pat_[A-Za-z0-9_]{30,255}",
+      "message": "GitHub token",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.aws_access_key",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\b(AKIA|ASIA)[0-9A-Z]{16}\\b",
+      "message": "AWS access key ID",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.aws_secret_key",
+      "group": "secret",
+      "target": "line",
+      "pattern": "(?i)aws_secret_access_key[\"']?\\s{0,3}[:=]\\s{0,3}[\"']?[A-Za-z0-9/+]{40}",
+      "message": "AWS secret access key",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.stripe",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\b(sk|rk)_(live|test)_[A-Za-z0-9]{16,255}|\\bwhsec_[A-Za-z0-9]{16,255}",
+      "message": "Stripe secret, restricted or webhook key",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.square",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\bEAAA[A-Za-z0-9_-]{40,200}|\\bsq0(atp|csp)-[A-Za-z0-9_-]{20,200}",
+      "message": "Square access token or application secret",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.cloudflare",
+      "group": "secret",
+      "target": "line",
+      "pattern": "(?i)\\b(cloudflare|cf)_[A-Za-z0-9_]{0,20}(token|key)[\"']?\\s{0,3}[:=]\\s{0,3}[\"']?([A-Za-z0-9_-]{37,100})",
+      "message": "Cloudflare API token or key",
+      "severity": {
+        "*": "block"
+      },
+      "value_group": 3,
+      "value_checks": {
+        "not_placeholder": true,
+        "min_entropy": 3.0
+      }
+    },
+    {
+      "id": "secret.slack",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\bxox[abprse]-[A-Za-z0-9-]{10,255}|\\bxapp-[A-Za-z0-9-]{10,255}|https://hooks\\.slack\\.com/(services|workflows|triggers)/[A-Za-z0-9/_-]{20,200}",
+      "message": "Slack token or webhook URL",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.linear",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\blin_(api|oauth)_[A-Za-z0-9]{20,255}",
+      "message": "Linear API key",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.notion",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\b(ntn|secret)_[A-Za-z0-9]{30,255}",
+      "message": "Notion integration token",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.other_provider",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\bnpm_[A-Za-z0-9]{36}|\\bhf_[A-Za-z0-9]{30,40}|\\bSG\\.[A-Za-z0-9_-]{16,32}\\.[A-Za-z0-9_-]{16,64}|\\bdo[por]_v1_[a-f0-9]{64}",
+      "message": "npm, Hugging Face, SendGrid or DigitalOcean token",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.google",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\bAIza[0-9A-Za-z_-]{35}|\\bya29\\.[0-9A-Za-z_-]{20}|\\bGOCSPX-[A-Za-z0-9_-]{20}",
+      "message": "Google API key, OAuth token or client secret",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.private_key",
+      "group": "secret",
+      "target": "line",
+      "pattern": "-----BEGIN [A-Z ]{0,40}PRIVATE KEY( BLOCK)?-----",
+      "message": "Private key",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.jwt",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\beyJ[A-Za-z0-9_-]{10,500}\\.eyJ[A-Za-z0-9_-]{10,4000}\\.[A-Za-z0-9_-]{10}",
+      "message": "JSON Web Token",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "secret.url_password",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\b[a-z][a-z0-9+.-]{1,20}://[^/\\s:@\"'`]{1,64}:([^/\\s:@\"'`]{6,128})@",
+      "message": "Password inside a URL",
+      "severity": {
+        "*": "block"
+      },
+      "value_group": 1,
+      "value_checks": {
+        "not_placeholder": true,
+        "min_entropy": 2.5
+      }
+    },
+    {
+      "id": "secret.bearer",
+      "group": "secret",
+      "target": "line",
+      "pattern": "(?i)\\bbearer\\s{1,5}([A-Za-z0-9._~+/=-]{24,512})",
+      "message": "Bearer token",
+      "severity": {
+        "*": "block"
+      },
+      "value_group": 1,
+      "value_checks": {
+        "letter_and_digit": true,
+        "not_placeholder": true,
+        "min_entropy": 2.0,
+        "not_reference": true
+      }
+    },
+    {
+      "id": "secret.basic_auth",
+      "group": "secret",
+      "target": "line",
+      "pattern": "(?i)\\bauthorization[\"']?\\s{0,3}[:=]\\s{0,3}[\"']?basic\\s{1,5}([A-Za-z0-9+/]{16,512}={0,2})",
+      "message": "HTTP Basic credentials in an Authorization header",
+      "severity": {
+        "*": "block"
+      },
+      "value_group": 1,
+      "value_checks": {
+        "letter_and_digit": true,
+        "not_placeholder": true,
+        "min_entropy": 2.5
+      }
+    },
+    {
+      "id": "secret.sk_key",
+      "group": "secret",
+      "target": "line",
+      "pattern": "\\b(sk-[A-Za-z0-9_-]{24,300})",
+      "message": "An sk- API key (OpenAI-style, OpenRouter, others)",
+      "severity": {
+        "*": "block"
+      },
+      "value_group": 1,
+      "value_checks": {
+        "letter_and_digit": true,
+        "not_placeholder": true,
+        "min_entropy": 3.0
+      }
+    },
+    {
+      "id": "secret.assignment",
+      "group": "secret",
+      "target": "line",
+      "pattern": "(?i)(api[_-]?key|secret|token|password|passwd|pwd|access[_-]?key|private[_-]?key|client[_-]?secret)[A-Za-z0-9_]{0,30}[\"']?\\s{0,3}[:=]\\s{0,3}[\"']?([^\\s\"'`]{16,256})",
+      "message": "A key, token or password assigned a high-entropy value",
+      "severity": {
+        "*": "block"
+      },
+      "value_group": 2,
+      "value_checks": {
+        "letter_and_digit": true,
+        "not_placeholder": true,
+        "min_entropy": 2.0,
+        "not_reference": true
+      }
+    },
+    {
+      "id": "secret.key_file",
+      "group": "secret",
+      "target": "path",
+      "pattern": "(?i)(^|/)(\\.env(\\.[A-Za-z0-9_-]{1,40})?|\\.dev\\.vars|\\.pypirc|credentials\\.json|terraform\\.tfstate(\\.backup)?|id_(rsa|dsa|ecdsa|ed25519)(\\.[A-Za-z0-9]{1,10})?|\\.netrc|\\.git-credentials|[^/]{1,200}\\.(pem|key|p12|pfx|jks|keystore))$",
+      "exclude": "(?i)(^|/)\\.env\\.(example|sample|template|dist)$|\\.pub$",
+      "message": "A file type that holds secrets",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "machine.macbook",
+      "group": "machine",
+      "target": "line",
+      "pattern": "(?i)\\bmacbook\\b",
+      "message": "Names a MacBook",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "machine.mac_mini",
+      "group": "machine",
+      "target": "line",
+      "pattern": "(?i)\\bmac[ -]?mini\\b",
+      "message": "Names a Mac mini",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "machine.owner_absolute_path",
+      "group": "machine",
+      "target": "line",
+      "pattern": "(/Users|/home)/[A-Za-z0-9._-]{1,64}/",
+      "message": "A path inside one person's home folder",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "machine.home_relative_path",
+      "group": "machine",
+      "target": "line",
+      "pattern": "~/\\.(claude|codex|config|zshrc|zshenv|bashrc|ssh|aws|local)\\b",
+      "message": "A path to one computer's dotfiles",
+      "severity": {
+        "org": "warn",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "machine.hostname",
+      "group": "machine",
+      "target": "line",
+      "pattern": "(?i)\\b[a-z0-9-]{1,63}\\.(tail[0-9a-f]{3,12}\\.ts\\.net|local|localdomain|lan)\\b",
+      "message": "A hostname or tailnet name",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "machine.private_ipv4",
+      "group": "machine",
+      "target": "line",
+      "pattern": "\\b(10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}|192\\.168\\.[0-9]{1,3}\\.[0-9]{1,3}|172\\.(1[6-9]|2[0-9]|3[01])\\.[0-9]{1,3}\\.[0-9]{1,3}|100\\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\\.[0-9]{1,3}\\.[0-9]{1,3})\\b",
+      "message": "A private or tailnet IP address",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "machine.capacity",
+      "group": "machine",
+      "target": "line",
+      "pattern": "(?i)\\b[0-9]{1,3}\\s{0,1}(cpu |performance |efficiency )?cores?\\b|\\b[0-9]{1,4}\\s{0,1}GB\\s{1,2}(of\\s{1,2})?(RAM|memory|unified memory)\\b",
+      "message": "One computer's core or memory count",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "machine.cap_variable",
+      "group": "machine",
+      "target": "line",
+      "pattern": "\\b(CARGO_BUILD_JOBS|VITEST_MAX_WORKERS|VITEST_MAX_THREADS|VITEST_MAX_FORKS|VITEST_MIN_THREADS|VITEST_MIN_FORKS|PRODUCER_MAX_WORKERS)\\b",
+      "message": "A per-computer build cap",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "machine.hollow_slot",
+      "group": "machine",
+      "target": "line",
+      "pattern": "\\bhollow-slot\\b",
+      "message": "Names one computer's build runner setup",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "personal.private_email",
+      "group": "personal",
+      "target": "line",
+      "pattern": "(?i)\\b[A-Za-z0-9._%+-]{1,64}@(gmail|googlemail|icloud|me|mac|yahoo|hotmail|outlook|live|proton|protonmail|pm|aol|fastmail)\\.(com|me|net)\\b",
+      "message": "A private e-mail address",
+      "severity": {
+        "org": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "personal.owner_term",
+      "group": "personal",
+      "target": "personal_terms",
+      "message": "Names the person running the scan (terms from their own personal file)",
+      "severity": {
+        "org": "warn",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "pii.ssn",
+      "group": "pii",
+      "target": "line",
+      "pattern": "\\b[0-9]{3}-[0-9]{2}-[0-9]{4}\\b|\\b(?i:ssn|social security( number)?)[\\s:#]{1,4}[0-9]{9}\\b",
+      "message": "A Social Security number shape",
+      "severity": {
+        "*": "block"
+      }
+    },
+    {
+      "id": "pii.salary_or_hr",
+      "group": "pii",
+      "target": "line",
+      "pattern": "(?i)\\b(salary|salaries|pay rate|hourly rate|annual pay|compensation band|disciplinary|termination letter|performance improvement plan|w-2|i-9)\\b",
+      "message": "Pay or HR detail",
+      "severity": {
+        "org": "warn"
+      }
+    },
+    {
+      "id": "pii.hr_filename",
+      "group": "pii",
+      "target": "path",
+      "pattern": "(?i)(^|[/_ .-])(payroll|salary|salaries|ssn|w-?2|i-?9|census|employee[_ -]?(export|list|data))([_ .-][^/]{0,200})?$",
+      "message": "A file name that suggests employee or payroll data",
+      "severity": {
+        "org": "warn"
+      }
+    },
+    {
+      "id": "file.data_type",
+      "group": "file",
+      "target": "path",
+      "pattern": "(?i)\\.(csv|tsv|xlsx|xlsm|xls|pdf|zip|gz|tgz|7z|rar|db|sqlite|sqlite3|parquet|mdb|accdb|bak|dump)$",
+      "message": "A data file type",
+      "severity": {
+        "org": "block",
+        "personal": "block",
+        "home": "block"
+      }
+    },
+    {
+      "id": "file.too_large",
+      "group": "file",
+      "target": "size",
+      "message": "Larger than the size limit; only its first part was checked",
+      "severity": {
+        "org": "block",
+        "personal": "block",
+        "home": "block",
+        "vault": "block",
+        "project": "warn"
+      }
+    },
+    {
+      "id": "scan.unreadable",
+      "group": "scan",
+      "target": "unreadable",
+      "message": "Could not be read",
+      "severity": {
+        "*": "block"
+      }
+    }
+  ]
+}

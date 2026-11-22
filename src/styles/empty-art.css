@@ -1,0 +1,26 @@
+@layer components {
+.empty-art { display: block; width: 160px; max-width: 100%; height: 112px; margin: 0 auto; color: var(--muted); }
+.empty-art.compact { width: 80px; height: 56px; }
+.empty-art svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.empty-art-plate { fill: var(--surface-sunken); stroke: var(--material-edge); }
+.empty-art-grid { stroke: var(--hairline-soft); }
+.empty-art-edge { stroke: var(--primary); }
+.empty-art-ground { stroke: var(--hairline); }
+.empty-art-accent { stroke: var(--primary); stroke-dasharray: none; }
+:root[data-texture-active="true"] .empty-art-scene { stroke-dasharray: .1 3.2; stroke-width: 1.8; }
+:root[data-texture-active="true"] .empty-art-grid { stroke-dasharray: .1 4; }
+.ui-state:has(> .empty-art), .ui-state:has(> .empty-art-space) { flex-direction: column; align-items: center; text-align: center; }
+.empty-art-study { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); gap: var(--sp-4); }
+.empty-art-study section { text-align: center; color: var(--ink); }
+}
+@layer a11y {
+:root[data-motion="reduced"] .empty-art-scene, :root[data-motion="reduced"] .empty-art-grid { stroke-dasharray: none; }
+@media (prefers-reduced-motion: reduce), (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  :root[data-texture-active] .empty-art-scene, :root[data-texture-active] .empty-art-grid { stroke-dasharray: none; }
+}
+@media (forced-colors: active) {
+  .empty-art { color: CanvasText; }
+  .empty-art-plate { fill: Canvas; stroke: CanvasText; }
+  .empty-art-grid, .empty-art-edge, .empty-art-ground, .empty-art-accent { stroke: CanvasText; }
+}
+}

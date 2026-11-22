@@ -1,0 +1,30 @@
+@layer components {
+  .background-clock { margin: 0 var(--sp-6) var(--sp-2); flex: 0 0 auto; max-height: 190px; overflow: auto; font-size: var(--fs-meta); }
+  .background-clock summary { padding-block: var(--sp-1); color: var(--muted); cursor: pointer; }
+  .background-clock summary:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+  .background-clock-layout { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: var(--sp-3); align-items: center; }
+  .background-clock-dial { width: 160px; height: 160px; }
+  .background-clock-dial text { fill: var(--ink); font: 500 var(--fs-caption) var(--ui); text-anchor: middle; }
+  .background-clock-track { fill: none; stroke: var(--hairline); stroke-width: 1; }
+  .background-clock-band { fill: none; stroke: var(--primary); stroke-width: 3; cursor: pointer; }
+  .background-clock-band:hover { stroke: var(--ink); }
+  .background-clock-copy { min-width: 0; }
+  .background-clock-heading { display: flex; align-items: baseline; gap: var(--sp-2); flex-wrap: wrap; overflow-wrap: anywhere; }
+  .background-clock-copy p { margin: var(--sp-1) 0; color: var(--muted); }
+  .background-clock-copy ul { padding: 0; margin: 0; list-style: none; }
+  .background-clock-link { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0 var(--sp-2); width: 100%; border: 0; border-radius: var(--r-xs); background: transparent; color: var(--ink); font: inherit; text-align: left; cursor: pointer; padding: var(--sp-1); overflow-wrap: anywhere; }
+  .background-clock-link:hover { background: var(--fill-hover); }
+  .background-clock-link:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+  @container hollow-window (max-width: 68.75em) {
+    .background-clock { margin-inline: var(--sp-4); max-height: 160px; }
+    .background-clock-layout { gap: var(--sp-2); }
+  }
+  @media (max-height: 700px) {
+    .background-clock { max-height: 110px; }
+    .background-clock-layout { grid-template-columns: 100px minmax(0, 1fr); align-items: start; }
+    .background-clock-copy { max-height: 110px; overflow: auto; }
+    .background-clock-dial { width: 100px; height: 100px; }
+    .background-clock-dial text { font-size: calc(var(--fs-caption) * 1.6); }
+    .background-clock-dial .background-clock-unit { display: none; }
+  }
+}

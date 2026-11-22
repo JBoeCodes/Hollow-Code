@@ -1,0 +1,1039 @@
+/* Settings: a quiet section index and a continuous ruled control sheet.
+   Section switching, search and save ownership stay in their controllers. */
+@layer components {
+/* Connector health dot — shared .live-dot carries the data-state
+   colors + breathe; the tab class only shrinks it to fit the row. */
+.live-dot.settings-index-dot { width: 6px; height: 6px; }
+.settings-state-chip {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  letter-spacing: 0;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  /* --surface-soft, not --surface-cream-strong: the state colours below are
+     checked for AA on it (scripts/check-contrast.mjs); on the darker cream
+     --success read 4.47:1 and --warning 4.49:1 at 11 px (overnight S02). */
+  background: var(--surface-soft);
+  /* An edge that leaves text contrast alone: --surface-soft is close to the
+     canvas in dark and to the History run list, so the pill keeps its shape. */
+  box-shadow: inset 0 0 0 1px var(--hairline-soft);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.settings-state-chip[data-state="ok"] { color: var(--success); }
+.settings-state-chip[data-state="warn"] { color: var(--accent-amber); }
+.settings-state-chip[data-state="risk"] { color: var(--risk); background: var(--risk-soft); }
+.settings-state-chip[data-state="error"] { color: var(--error); }
+/* Sub-header inside a consolidated section — a former standalone section's
+   title carried into its new host body, one visual step below the h2. */
+/* Status conduit — the shared .status-conduit owns the data-state
+   colors (teal ok / amber busy breathe); the tab class stretches it
+   to the row height. */
+.status-conduit.settings-conduit { align-self: stretch; min-height: 30px; }
+
+/* Teammate role-preset fields (Agent teamwork section). */
+.settings-role-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 320px;
+  max-width: 46%;
+}
+.settings-input {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  padding: 6px 9px;
+  width: 100%;
+}
+.settings-input::placeholder { color: var(--muted-soft); }
+textarea.settings-role-brief { resize: vertical; min-height: 44px; }
+/* Row hierarchy flip: setting name = the primary line, description =
+   calm metadata beneath it. Paths/counts/durations opt into mono-v. */
+.settings-row-v.mono-v {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  word-break: break-all;
+}
+.settings-row-v.warn { color: var(--accent-amber); }
+.settings-row-v .ok { color: var(--success); }
+.settings-row-v .warn { color: var(--accent-amber); font-family: var(--ui); }
+.settings-row-warn {
+  font-size: var(--fs-meta);
+  color: var(--accent-amber);
+  margin-top: 2px;
+  font-style: italic;
+}
+/* Settings, Advanced, Disk space (overnight D1, settings/DiskSpacePanel.tsx). */
+.disk-folders { margin: var(--sp-1) 0 var(--sp-2); padding: 0; list-style: none; display: grid; gap: 2px; font-size: var(--fs-meta); }
+.disk-folders li { display: flex; gap: var(--sp-2); justify-content: space-between; min-width: 0; }
+.disk-folder-path { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--mono, ui-monospace, monospace); }
+.disk-folder-size, .disk-note { color: var(--muted); }
+.disk-threshold { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-meta); color: var(--muted); }
+.disk-folder-size { flex: none; }
+.disk-note { margin: 0; font-size: var(--fs-meta); }
+.settings-select {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  padding: 4px 8px;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
+  color: var(--body);
+  border-radius: var(--r-xs);
+  cursor: pointer;
+}
+.settings-select:focus-visible { outline: none; box-shadow: var(--ring); }
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  padding: var(--sp-3) 0;
+}
+/* Merged rows (Settings PR 5): two or three small controls on one row, each with its own name. */
+.settings-mini { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.settings-mini .settings-row-v { margin: 0; white-space: nowrap; }
+.settings-mini-field { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.settings-loading {
+  padding: var(--sp-3) 0;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+.settings-note {
+  padding: 8px 18px 12px;
+  margin: 0;
+  font-size: var(--fs-meta);
+  font-style: italic;
+  color: var(--muted-soft);
+}
+.capability-doctor-summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  border-top: 1px solid var(--hairline-soft);
+}
+.capability-doctor-list {
+  border-top: 1px solid var(--hairline-soft);
+}
+.capability-doctor-row {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px var(--sp-4);
+  border-top: 1px solid var(--hairline-soft);
+}
+.capability-doctor-row:first-child { border-top: none; }
+.capability-doctor-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted-soft);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--muted-soft) 12%, transparent);
+}
+.capability-doctor-row[data-state="live"] .capability-doctor-dot {
+  background: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 12%, transparent);
+}
+.capability-doctor-row[data-state="stale"] .capability-doctor-dot {
+  background: var(--warning);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 14%, transparent);
+}
+.capability-doctor-row[data-state="broken"] .capability-doctor-dot {
+  background: var(--error);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--error) 12%, transparent);
+}
+.capability-doctor-row[data-state="declined"] { opacity: 0.78; }
+.capability-doctor-copy { min-width: 0; }
+.capability-doctor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.backup-health-box {
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-top: 1px solid var(--hairline-soft);
+}
+.backup-health-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-3); }
+.backup-signal-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.backup-signal {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr);
+  align-items: start;
+  gap: 9px;
+  padding: 9px;
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-sm);
+  background: var(--surface-card);
+}
+.backup-signal b { display: block; color: var(--body-strong); font-size: var(--fs-meta); }
+.backup-signal span:not(.capability-doctor-dot) { display: block; margin-top: 2px; color: var(--muted); font-size: var(--fs-caption); }
+.backup-signal[data-state="confirmed"] .capability-doctor-dot { background: var(--success); }
+.backup-signal[data-state="partial"] .capability-doctor-dot { background: var(--warning); }
+.backup-managed-toggle { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: var(--fs-meta); cursor: pointer; }
+.backup-managed-toggle input { accent-color: var(--primary); }
+@container hollow-window (max-width: 53.75em) {
+  .capability-doctor-row {
+    grid-template-columns: 8px minmax(0, 1fr) auto;
+  }
+  .capability-doctor-actions {
+    grid-column: 2 / -1;
+    justify-self: start;
+  }
+  .capability-doctor-summary { flex-direction: column; }
+  .backup-signal-list { grid-template-columns: 1fr; }
+  .backup-health-head { flex-direction: column; }
+}
+.startup-warmup {
+  border-top: 1px solid var(--hairline-soft);
+  padding: var(--sp-3) var(--sp-4);
+}
+.startup-warmup-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: 10px;
+}
+.startup-warmup-list {
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xs);
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+.startup-warmup-row {
+  display: grid;
+  grid-template-columns: 8px minmax(150px, 1fr) 74px 72px 58px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border-top: 1px solid var(--hairline-soft);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+.startup-warmup-row:first-child { border-top: none; }
+.startup-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted-soft);
+}
+.startup-warmup-row[data-status="running"] .startup-dot { background: var(--accent-amber); }
+.startup-warmup-row[data-status="done"] .startup-dot { background: var(--success); }
+.startup-warmup-row[data-status="error"] .startup-dot { background: var(--error); }
+.startup-label { color: var(--body); font-weight: 500; min-width: 0; }
+/* Overnight Y7: a launch call repeated past the budget, and its details. */
+.startup-warmup-row.launch-ipc-row { grid-template-columns: 8px minmax(120px, 1fr) minmax(0, 2fr) auto; }
+.launch-ipc-args {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+}
+.launch-ipc-count { font-family: var(--mono); font-size: var(--fs-caption); color: var(--body); }
+@container hollow-window (max-width: 53.75em) {
+  .startup-warmup-row.launch-ipc-row { grid-template-columns: 8px minmax(0, 1fr) auto; }
+  .launch-ipc-args { grid-column: 2 / -1; grid-row: 2; }
+  .launch-ipc-count { grid-column: 3; grid-row: 1; }
+  .startup-warmup-row {
+    grid-template-columns: 8px minmax(0, 1fr) 58px;
+  }
+}
+.settings-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 18px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: var(--surface-card);
+  font-size: var(--fs-meta);
+}
+.settings-banner.danger {
+  border-color: var(--error);
+  background: color-mix(in srgb, var(--error) 8%, var(--surface-card));
+}
+.settings-banner strong { color: var(--error); font-size: var(--fs-body); }
+.settings-banner p { margin: 0; line-height: var(--lh-base); color: var(--body); }
+.settings-banner code {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  background: var(--surface-cream-strong);
+  padding: 1px 4px;
+  border-radius: var(--r-xs);
+}
+.settings-banner button { align-self: flex-start; }
+.settings-select.danger {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+/* ============== CONFIRM DIALOG ============== */
+
+.confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  animation: confirm-fade-in var(--t-med) var(--ease-out) both;
+}
+@keyframes confirm-fade-in {
+  from { opacity: 0; backdrop-filter: blur(0); }
+  to   { opacity: 1; backdrop-filter: blur(4px); }
+}
+.confirm-dialog {
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  box-shadow: var(--elev-3);
+  width: min(520px, calc(100vw - 32px));
+  min-width: 0;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  animation: confirm-pop-in var(--t-med) var(--ease-out) both;
+  transform-origin: center;
+}
+@keyframes confirm-pop-in {
+  from { transform: translateY(6px); }
+  to { transform: translateY(0); }
+}
+.confirm-title {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: var(--fs-lg);
+  font-optical-sizing: var(--type-optical);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.confirm-dialog.danger .confirm-title { color: var(--error); }
+/* The outer dialog scrolls when a summary/body and checklist are tall.
+   Its inner scroll box must keep a real viewport for the checkboxes. */
+.confirm-dialog > .confirm-checklist { flex-shrink: 0; }
+.confirm-body {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-prose);
+  color: var(--body);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  flex-shrink: 0;
+  /* A long list (Merge into…'s files) scrolls instead of leaving the screen. */
+  max-height: 50vh;
+  overflow-y: auto;
+}
+.confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: var(--sp-2);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--hairline);
+}
+
+/* ============== UNDO SNACKBARS ============== */
+
+.snackbar-stack {
+  position: fixed;
+  left: 20px;
+  bottom: calc(56px + var(--install-banner-height, 0px));
+  z-index: 8500;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  max-height: min(45vh, calc(100dvh - 160px - var(--install-banner-height, 0px)));
+  max-width: calc(100vw - 40px);
+  padding: 4px;
+  margin: -4px;
+  overflow: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+}
+.snackbar-stack:empty { display: none; }
+.snackbar {
+  pointer-events: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-raised);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  padding: 8px 8px 8px 14px;
+  font-size: var(--fs-meta);
+  box-shadow: var(--elev-1);
+  min-width: 260px;
+  max-width: 460px;
+  animation: snackbar-in var(--t-med) var(--ease-out) both;
+  transform-origin: bottom left;
+}
+/* A failure must not look like a confirmation. The stack carries 64 previously
+   invisible `×`-prefixed failures now, so they get the error accent on the edge
+   the eye lands on first, and a slightly heavier message. */
+.snackbar.error {
+  border-color: var(--error);
+  box-shadow: inset 3px 0 0 var(--error), var(--elev-edge), var(--elev-2);
+  padding-left: var(--sp-4);
+}
+.snackbar.error .snackbar-msg { font-weight: 600; }
+
+@keyframes snackbar-in {
+  from { transform: translateY(6px); }
+  to { transform: translateY(0); }
+}
+.snackbar-msg { line-height: 1.4; }
+.snackbar-msg-wrap {
+  flex: 1;
+  line-height: 1.4;
+  display: inline-flex;
+  align-items: baseline;
+  min-width: 0;
+}
+/* The raw error behind a plain-language message (overnight C7): a quiet
+   "Details" toggle on its own line, the raw text selectable under it. */
+.snackbar-msg-wrap:has(.snackbar-details) { flex-wrap: wrap; }
+.snackbar-details { flex-basis: 100%; margin-top: var(--sp-1); font-size: var(--fs-caption); }
+.snackbar-details > summary { cursor: pointer; width: max-content; color: var(--muted); }
+.snackbar-details > summary:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: var(--r-xs); }
+.snackbar-detail { display: block; margin-top: var(--sp-1); font-family: var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; max-height: calc(8 * 1.4em); overflow: auto; }
+.snackbar-action {
+  background: var(--primary-soft);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: var(--motion-base, all 120ms);
+}
+.snackbar-action:hover:not(:disabled) {
+  background: var(--primary-soft-strong);
+  border-color: var(--primary);
+  color: var(--ink);
+}
+.snackbar-action:active:not(:disabled) {
+  background: var(--primary-soft-strong);
+  border-color: var(--body-strong);
+  color: var(--ink);
+}
+.snackbar-close {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: var(--fs-md);
+  line-height: var(--lh-flat);
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+}
+.snackbar-close:hover { color: var(--ink); }
+.snackbar-close-x {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  line-height: var(--lh-flat);
+}
+/* Circular dismiss-countdown ring inside the close button. The track
+   sits at low alpha, the bar depletes by animating its
+   stroke-dashoffset from 0 → C over the snackbar's ttl. */
+.snackbar-progress {
+  position: absolute;
+  inset: 0;
+  width: 22px;
+  height: 22px;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+.snackbar-progress-track {
+  fill: none;
+  stroke: var(--hairline);
+  stroke-width: 1.5;
+}
+.snackbar-progress-bar {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dashoffset: 0;
+  animation: snackbar-deplete var(--ttl, 6000ms) linear forwards;
+}
+/* A held bar (focus or pointer on it) waits; so does its ring (overnight B8). */
+.snackbar.is-held .snackbar-progress-bar { animation-play-state: paused; }
+.snackbar.is-sticky { flex-wrap: wrap; }
+.snackbar.is-sticky .snackbar-msg-wrap { flex-basis: 100%; }
+.snackbar.is-sticky .snackbar-progress { display: none; }
+@keyframes snackbar-deplete {
+  to { stroke-dashoffset: var(--c, 56.55); }
+}
+
+/* ============== COMMAND PALETTE (Cmd+K) ============== */
+
+.palette-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 9100;
+  padding: min(10vh, 80px) var(--sp-4) var(--sp-4);
+  animation: confirm-fade-in 120ms var(--ease, ease-out);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.palette-dialog {
+  position: relative;
+  width: min(560px, 92vw);
+  max-height: calc(100dvh - min(10vh, 80px) - var(--sp-4));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  box-shadow: var(--elev-3);
+  overflow: hidden;
+  animation: confirm-pop-in var(--t-med) var(--ease-out) both;
+}
+.palette-dialog.has-preview { width: min(940px, 92vw); }
+.palette-body { display: flex; min-height: 0; flex: 1; }
+.palette-body > .palette-list { min-width: 0; }
+.palette-preview {
+  flex: 0 0 36%; min-width: 0; overflow: auto; padding: 20px;
+  border-left: 1px solid var(--hairline); background: var(--material-solid);
+  color: var(--body); font-size: var(--fs-body); overflow-wrap: anywhere;
+}
+.palette-preview-kind { display: flex; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: var(--fs-meta); }
+.palette-preview-kind span { color: var(--muted); }
+.palette-preview-status:empty { margin: 0; }
+.palette-preview h2 { margin: 12px 0; font-size: var(--fs-xl); line-height: var(--lh-title); color: var(--ink); font-optical-sizing: var(--type-optical); }
+.palette-preview-facts, .palette-preview-caption { font-size: var(--fs-meta); color: var(--muted); }
+.palette-preview-text { margin: 18px 0; white-space: pre-wrap; line-height: var(--lh-reading); }
+.palette-preview-caption { border-top: 1px solid var(--hairline-soft); padding-top: 12px; }
+.palette-preview-empty { margin: 0; color: var(--muted); line-height: 1.6; }
+.palette-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.palette-search-icon { color: var(--muted); display: inline-flex; }
+.palette-input {
+  flex: 1;
+  font-family: var(--ui);
+  color: var(--ink);
+  padding: 2px 0;
+}
+.palette-input::placeholder { color: var(--muted-soft); }
+.palette-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+}
+.palette-group { padding: 4px 0 6px; }
+/* Opaque sticky headers keep scrolled rows from showing through Glass. */
+.rail-group-label.palette-group-label { background: var(--surface-raised); padding-inline: 10px; font-variant-numeric: var(--type-numeric); }
+.palette-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  background: transparent;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  color: var(--body);
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  position: relative;
+  /* Selection never hides under the sticky group header (tuned for
+     the palette's shorter header — sanctioned 30px override). */
+  scroll-margin-top: 30px;
+  scroll-margin-bottom: 8px;
+  transition:
+    background var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+.palette-row:hover {
+  background: var(--surface-cream-strong);
+  color: var(--ink);
+}
+.palette-row.selected {
+  /* Static accent rail: selection never moves text or icons. */
+  background: var(--primary-soft);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--primary-soft-strong);
+}
+.palette-row.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--primary);
+  border-radius: var(--r-xs);
+}
+.palette-row-digit {
+  flex-shrink: 0;
+  min-width: 16px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  opacity: 0.8;
+}
+.palette-row.selected .palette-row-digit { color: var(--primary); opacity: 1; }
+.palette-row-icon {
+  color: var(--muted);
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: var(--sp-1);
+  transition: color var(--t-fast) var(--ease);
+}
+.palette-row.selected .palette-row-icon {
+  color: var(--primary);
+}
+.palette-row-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.palette-row-hint {
+  flex-shrink: 0;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  max-width: 30%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.palette-row.selected .palette-row-hint { color: var(--ink); }
+@media (forced-colors: active) {
+  .palette-row.selected { outline: 2px solid Highlight; outline-offset: -2px; }
+}
+.palette-row.selected .palette-row-detail { color: var(--ink); }
+.palette-row-shortcut {
+  flex-shrink: 0;
+  min-width: 30px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--muted);
+  background: var(--surface-cream-strong);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xs);
+  padding: 1px 5px;
+}
+.palette-row.selected .palette-row-shortcut {
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 32%, transparent);
+  background: var(--primary-soft);
+}
+/* Next-level P07: search scope chips, excerpt line and source label. */
+.palette-scopes { padding: 6px 14px; border-bottom: 1px solid var(--hairline-soft); }
+.palette-row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.palette-row-text > .palette-row-label { flex: none; }
+.palette-row-detail { font-size: var(--fs-meta); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.palette-row-source {
+  flex-shrink: 0;
+  max-width: 180px;
+  padding: 1px 6px;
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xs);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.palette-row.selected .palette-row-source { color: var(--primary); border-color: color-mix(in srgb, var(--primary) 32%, transparent); }
+.palette-empty {
+  padding: 18px;
+  text-align: center;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+.palette-foot {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--hairline-soft);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  background: var(--surface-soft);
+}
+.palette-foot-spacer { flex: 1; }
+.palette-foot kbd {
+  font-family: var(--mono);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xs);
+  padding: 1px 5px;
+  margin-right: 3px;
+  font-size: var(--fs-caption);
+}
+
+@container hollow-window (max-width: 53.75em) {
+  .studio-motion-setting { flex-wrap: wrap; }
+}
+.settings-found { border-radius: var(--r-md); box-shadow: 0 0 0 2px var(--primary); background: var(--primary-soft); }
+/* The motion kit gates the search pulse; the static target remains visible. */
+
+/* ── Settings: a flat two-column preferences window (frontier F3) ──────────
+   Left, a plain list of sections (neutral selection, sentence-case group
+   labels). Right, the active section: a title and one-line description, then
+   rows — label and description on the left, the control on the right —
+   separated by hairlines; groups (subheads) are separated by a hairline and a
+   heading. No cards, no floating rail, no boxes inside boxes. */
+.settings-page {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr);
+  border-top: 1px solid var(--hairline-soft);
+}
+.settings-index {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-2) var(--sp-5);
+  border-right: 1px solid var(--hairline-soft);
+  background: var(--surface-soft);
+}
+.settings-search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--control-h);
+  margin: 0 var(--sp-1);
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  background: var(--surface-card);
+  color: var(--muted);
+}
+.settings-search:focus-within { border-color: var(--primary); box-shadow: var(--ring); }
+.settings-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  background: transparent;
+  color: var(--ink);
+  font: var(--fs-body) var(--ui);
+}
+.settings-search input:focus-visible { box-shadow: none; }
+.settings-search-empty { padding: var(--sp-2); color: var(--muted); font-size: var(--fs-meta); }
+.settings-search-empty p { margin: 0 0 var(--sp-2); }
+.settings-index-group { display: grid; gap: 1px; }
+.settings-index-cap {
+  padding: 0 var(--sp-2) var(--sp-1);
+  color: var(--muted);
+  font: 500 var(--fs-meta)/1.3 var(--ui);
+}
+.settings-index-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: 32px;
+  padding: var(--sp-2);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--body-strong);
+  font: 400 var(--fs-body)/var(--lh-tight) var(--ui);
+  text-align: left;
+  cursor: pointer;
+}
+.settings-index-item > svg { flex: none; color: var(--muted); }
+.settings-index-item:hover { background: var(--fill-hover); }
+.settings-index-item[data-active] { background: var(--fill-selected); color: var(--ink); font-weight: 600; box-shadow: inset 2px 0 var(--primary); }
+.settings-index-item[data-active] > svg { color: var(--ink); }
+.settings-index-tick { display: none; }
+.settings-index-label { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.settings-index-control { padding-left: 30px; color: var(--body); font-size: var(--fs-meta); }
+.settings-index-control .settings-index-arrow { flex: none; color: var(--muted); }
+.settings-index-control .settings-index-where { flex: none; color: var(--muted); }
+.live-dot.settings-index-dot { width: 6px; height: 6px; }
+.settings-mobile-index { display: none; }
+
+.settings-body {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  padding: var(--sp-5) var(--page-gutter) var(--sp-7);
+  /* WKWebView has no scroll anchoring; this makes Chromium (the smoke
+     suite) behave the same, so a jump's own re-scroll while lazy parts fill
+     in above its target (settingsNavigation.ts, keepInView) is what holds
+     the target in both, and a missing one shows in a spec (S2 review). */
+  overflow-anchor: none;
+}
+.settings-body > * { width: 100%; max-width: 52rem; }
+.settings-section { display: block; }
+.settings-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: 0 0 var(--sp-4);
+  margin-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--hairline);
+}
+.settings-section-titles { min-width: 0; }
+.settings-section-title { margin: 0; color: var(--ink); font: 600 var(--fs-title)/var(--lh-title) var(--ui); letter-spacing: var(--ls-tight); }
+/* Focused by a section switch (P1-21): the move is announced, not drawn. */
+.settings-section-title:focus { outline: none; }
+.settings-saved-cue { margin: 0; color: var(--muted); font-size: var(--fs-meta); white-space: nowrap; }
+/* The unsaved-changes question stays in view while the section scrolls. */
+.settings-unsaved { position: sticky; top: 0; z-index: 2; }
+.settings-banner.settings-unsaved { border-color: var(--warning); background: color-mix(in srgb, var(--warning) 8%, var(--surface-card)); }
+.settings-banner.settings-unsaved strong { color: var(--ink); }
+/* One continuous form; its own Save and dirty guard retain ownership. */
+.agent-defaults-form, .self-hosted-form { padding: 0 0 var(--sp-3); border-bottom: 1px solid var(--hairline); }
+/* Devices height (1.3 screens): in the runner's Runs on, Builds and tests and Overnight rows the
+   help line, its More and Builds and tests' "Where builds and tests ran" share a line; a fold
+   that opens takes a line of its own. */
+.agent-defaults-runner .agent-defaults-form .settings-row-label { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--sp-3); }
+.agent-defaults-runner .agent-defaults-form .settings-row-label > .settings-row-k { flex-basis: 100%; }
+.agent-defaults-runner .agent-defaults-form .settings-row-label > details { margin: 0; }
+.agent-defaults-runner .agent-defaults-form .settings-row-label > details[open] { flex-basis: 100%; }
+.settings-section-hint { max-width: var(--measure); margin: var(--sp-1) 0 0; color: var(--muted); font-size: var(--fs-body); line-height: var(--lh-base); }
+.settings-section-status { flex: none; padding-top: 2px; }
+/* One native disclosure retains every scope sentence from the registry. */
+.settings-section-scope, .settings-part-save { max-width: var(--measure); margin-top: var(--sp-2); font-size: var(--fs-meta); line-height: var(--lh-base); color: var(--muted); }
+.settings-section-scope dt { color: var(--muted); }
+.settings-section-scope dd { margin: 0; color: var(--body-strong); overflow-wrap: anywhere; }
+.settings-section-scope > details { margin-top: var(--sp-1); }
+.settings-section-scope summary { width: fit-content; max-width: 100%; cursor: pointer; color: var(--muted); }
+.settings-section-scope summary:hover, .settings-section-scope details[open] > summary { color: var(--ink); }
+.settings-scope-full { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 2px var(--sp-2); margin: var(--sp-2) 0 0; }
+.settings-scope-full > div { display: contents; }
+/* Sign-in, connectors and sync side by side (L4, X12). */
+.settings-access-kinds { margin: 0 0 var(--sp-3); font-size: var(--fs-meta); }
+.settings-access-kinds > summary, .settings-fold > summary { cursor: pointer; color: var(--muted); font: 500 var(--fs-meta) var(--ui); width: fit-content; }
+.settings-access-kinds > summary:hover, .settings-access-kinds[open] > summary, .settings-fold > summary:hover, .settings-fold[open] > summary { color: var(--ink); }
+/* P1-22: About you's map, agents not installed and System's developer readouts fold closed. */
+.settings-fold { margin: var(--sp-2) 0 var(--sp-3); }
+.settings-fold[open] > summary { margin-bottom: var(--sp-2); }
+/* Long help text cut after its first sentence (`LeadText`, overnight 11-07):
+   the rest sits behind a "More" that reads "Less" once open. Tighter than a
+   fold between rows, because it belongs to the sentence above it. */
+.settings-lead-more { margin: var(--sp-1) 0 0; }
+.settings-lead-more[open] > summary { margin-bottom: var(--sp-1); }
+.settings-lead-more > summary .lead-more-hide { display: none; }
+.settings-lead-more[open] > summary .lead-more-show { display: none; }
+.settings-lead-more[open] > summary .lead-more-hide { display: inline; }
+.settings-section-body { display: flex; flex-direction: column; }
+
+/* Group headings share the page's typographic rhythm; controls stay in place. */
+.settings-subhead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  padding: var(--sp-3) 0 var(--sp-2);
+  border-top: 1px solid var(--hairline);
+}
+.settings-section-body > .settings-subhead:first-child { margin-top: 0; border-top: 0; }
+/* Settings PR 5b: a section's own group heading carries its one line beside it. */
+.settings-section-body > .settings-subhead .settings-subhead-titles { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-3); }
+/* A former section kept whole inside one (S2): its heading opens a group a
+   step stronger than a sub-header, and its rows follow as in a section. */
+.settings-part { display: flex; flex-direction: column; }
+.settings-part > .settings-part-head { margin-top: var(--sp-6); }
+.settings-section-body > .settings-part:first-child > .settings-part-head { margin-top: 0; border-top: 0; }
+.settings-part-head .settings-subhead-title { font-size: var(--fs-xl); }
+/* A lazy part's place until it comes near the screen (S2 review). */
+.settings-part-pending { min-height: 12rem; }
+/* Focused by a jump to the part (S2): the move is announced, not drawn. */
+.settings-part-head .settings-subhead-title:focus { outline: none; }
+/* Advanced's closed groups (Settings PR 3, plan 3.3): one line each, a
+   heading that opens to its rows. */
+.settings-group { margin: 0; border-top: 1px solid var(--hairline); }
+.settings-section-body > .settings-group:first-child { border-top: 0; }
+.settings-fold.settings-group > summary.settings-subhead { width: auto; margin: 0; padding: var(--sp-3) 0; border-top: 0; color: var(--ink); list-style: none; }
+.settings-fold.settings-group > summary.settings-subhead::-webkit-details-marker { display: none; }
+.settings-group > summary .settings-subhead-title { font-size: var(--fs-lg); }
+/* One line each, as their comment says: the hint sits beside the title (as a section's own group
+   heading's does) and wraps under it only when the line is full (Sources' height, 2026-11-15). */
+.settings-group > summary .settings-subhead-titles { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-3); }
+.settings-group > summary .settings-section-hint { margin: 0; }
+/* The chevron is drawn, not text, so it never joins the heading's name. */
+.settings-group > summary.settings-subhead::after { content: ''; flex: none; width: 7px; height: 7px; margin: 8px 4px 0 0; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(-45deg); }
+.settings-group[open] > summary.settings-subhead::after { transform: rotate(45deg); }
+.settings-group[open] { padding-bottom: var(--sp-3); }
+.settings-group.settings-part { display: block; }
+.settings-subhead-titles { min-width: 0; }
+.settings-subhead-title { margin: 0; color: var(--ink); font: 600 var(--fs-lg)/1.3 var(--ui); letter-spacing: var(--ls-tight); }
+
+/* A row: what it is on the left, the control on the right. */
+.settings-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-4);
+  min-height: 44px;
+  padding: var(--sp-3) 0;
+  border-top: 1px solid var(--hairline-soft);
+}
+.settings-section-head + .settings-section-body > .settings-row:first-child { border-top: 0; }
+.settings-subhead + .settings-row { border-top: 0; }
+.settings-row > :only-child { grid-column: 1 / -1; }
+.settings-row > .settings-row-label ~ :not(:last-child) { grid-column: auto; }
+.settings-row > .hollow-switch, .settings-row > button:last-child { justify-self: end; }
+/* A row led by a status conduit (Plaud recordings): a thin bar, then the label, then the
+   actions. The two tracks above put the bar in the label's column and the label in the actions' (the
+   2026-11-07 capture of Connections), so such a row gets a track for the bar. In a narrow window the
+   last child (the actions; Plaud's wrapper has no class) drops under the label. */
+.settings-row:has(> .settings-conduit) { grid-template-columns: auto minmax(0, 1fr) auto; }
+@container hollow-window (max-width: 53.75em) {
+  .settings-row:has(> .settings-conduit) { grid-template-columns: auto minmax(0, 1fr); }
+  .settings-row:has(> .settings-conduit) > :last-child { grid-column: 2; }
+}
+.settings-row-label { min-width: 0; }
+/* Several buttons as a row's control (Self-hosted models, the runner). */
+.settings-row-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-2); }
+.settings-row-k { color: var(--ink); font: 500 var(--fs-body)/1.35 var(--ui); }
+.settings-row-v { max-width: var(--measure); margin-top: 2px; color: var(--muted); font-size: var(--fs-meta); line-height: var(--lh-base); overflow-wrap: anywhere; }
+/* Self-hosted models' form (Q4) lays its fields out like Agents' own rows. */
+.agent-defaults .settings-row, .self-hosted-form .settings-row { grid-template-columns: minmax(0, 1fr) minmax(180px, 40%); align-items: start; padding: var(--sp-3) 0; }
+/* Skills is the last part of Agents (S2): a bounded pane about a window
+   tall, its list and detail scrolling inside, so the catalog stays usable
+   below the rows above it. */
+#settings-skills { height: max(32rem, calc(100vh - 12rem)); min-height: 0; }
+#settings-skills > .skills-catalog { flex: 1; min-height: 0; }
+@container hollow-window (max-width: 68.75em) {
+  .agent-defaults .settings-row, .self-hosted-form .settings-row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
+}
+@container hollow-window (max-width: 53.75em) {
+  .settings-page { display: flex; flex-direction: column; overflow: hidden; }
+  /* The search stays above the section picker, its hits listed while
+     searching (P1-21). */
+  .settings-index { flex: none; max-height: 45vh; gap: var(--sp-2); padding: var(--sp-3) var(--page-gutter) 0; border-right: 0; }
+  .settings-index:not([data-searching]) > :not(.settings-search) { display: none; }
+  .settings-index .settings-search { margin: 0; }
+  .settings-mobile-index { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-3) var(--page-gutter); border-bottom: 1px solid var(--hairline-soft); color: var(--muted); font-size: var(--fs-meta); }
+  .settings-body { flex: 1; }
+}
+@container hollow-window (max-width: 53.75em) {
+  .settings-row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-2); }
+  .settings-section-head { flex-direction: column; gap: var(--sp-2); }
+  .settings-role-fields { width: 100%; max-width: none; }
+}
+@media (forced-colors: active) {
+  .settings-index-item[data-active] { outline: 2px solid Highlight; outline-offset: -2px; }
+}
+/* Readable passive samples; only Use selects a theme. A grid of tiles, three
+   across at the usual width (overnight 11-07: five tall stacked cards took
+   about 850px of the page); the sample, name and Use keep their markup. */
+.theme-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: var(--sp-3); margin-top: var(--sp-3); }
+.theme-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "preview preview" "meta actions";
+  align-items: center;
+  gap: var(--sp-2) var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--material-solid);
+  border: 1px solid var(--material-edge);
+  border-radius: var(--r-lg);
+  box-shadow: var(--elev-edge);
+}
+.theme-card-preview {
+  grid-area: preview;
+  width: auto;
+  max-width: 100%;
+  padding: var(--sp-2);
+  font-size: var(--fs-meta);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+}
+.theme-card.active { border-color: var(--primary); }
+.theme-preview-label { display: block; margin-bottom: var(--sp-1); }
+.theme-preview-card { display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-2); border-radius: var(--r-xs); line-height: var(--lh-base); }
+.theme-preview-card strong { font-weight: 600; }
+.theme-preview-selection { border-inline-start: 3px solid; padding: 2px var(--sp-1); border-radius: var(--r-xs); }
+.theme-preview-action { align-self: flex-start; padding: 2px var(--sp-2); border: 1px solid; border-radius: var(--r-xs); }
+.theme-card-meta { grid-area: meta; min-width: 0; }
+.theme-card-name { display: flex; align-items: center; gap: var(--sp-2); color: var(--ink); font: 500 var(--fs-body)/1.35 var(--ui); }
+.theme-card-mode { margin-top: var(--sp-1); color: var(--muted); font-size: var(--fs-meta); line-height: var(--lh-base); overflow-wrap: anywhere; }
+.theme-card-actions { grid-area: actions; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-1); }
+@container hollow-window (max-width: 53.75em) {
+  /* Narrow window: one tile per row, the actions under the name. */
+  .theme-list { grid-template-columns: minmax(0, 1fr); }
+  .theme-card { grid-template-columns: minmax(0, 1fr); grid-template-areas: "preview" "meta" "actions"; }
+  .theme-card-actions { justify-content: flex-start; }
+}
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+.agent-defaults .settings-input, .self-hosted-form .settings-input { min-width:0; width:100%; padding:10px 12px; box-shadow:none; }
+.agent-defaults .settings-row-v { line-height:1.7; margin-top:6px; }
+/* ── Settings search results (H06) ─────────────────────────────────────── */
+.history-storage > summary { cursor: pointer; }
+.history-technical > summary { cursor: pointer; color: var(--muted); }
+.palette-input,
+.palette-input:focus,
+.palette-input:focus-visible { border: 0; outline: 0; box-shadow: none; background: transparent; font-size: var(--fs-md); }
+}
+/* These scroll-owner exceptions must follow the shared shell button ring. */
+@layer shell {
+  .settings-index-item:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+  @media (forced-colors: active) {
+    .settings-index-item:focus-visible { outline: 2px dashed Highlight; outline-offset: -4px; }
+    .settings-index-item[data-active]:focus-visible { outline: 3px double Highlight; outline-offset: -3px; }
+  }
+
+  /* Panel animation (0.2): a 0 to 400 ms range, its readout and a Turn off button. */
+  .settings-range { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+  .settings-range input[type="range"] { width: 9rem; accent-color: var(--primary); }
+  .settings-range-value { min-width: 3.5em; text-align: right; font-size: var(--fs-meta); color: var(--muted); font-variant-numeric: tabular-nums; }
+}

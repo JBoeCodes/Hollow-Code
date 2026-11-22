@@ -1,0 +1,54 @@
+{
+  "rule": "Character bounds count Unicode scalar values: Rust str::chars(), JavaScript [...text] (never .length, which counts UTF-16 units, and never bytes). scalars and last3 follow the rule; utf16 shows where .length differs.",
+  "cases": [
+    {
+      "name": "ascii",
+      "text": "plain text",
+      "scalars": 10,
+      "utf16": 10,
+      "last3": "ext"
+    },
+    {
+      "name": "precomposed",
+      "text": "café",
+      "scalars": 4,
+      "utf16": 4,
+      "last3": "afé"
+    },
+    {
+      "name": "combining",
+      "text": "café é",
+      "scalars": 8,
+      "utf16": 8,
+      "last3": " é"
+    },
+    {
+      "name": "astral",
+      "text": "𝔘𝔫𝔦",
+      "scalars": 3,
+      "utf16": 6,
+      "last3": "𝔘𝔫𝔦"
+    },
+    {
+      "name": "emoji",
+      "text": "ship 🚀🚀",
+      "scalars": 7,
+      "utf16": 9,
+      "last3": " 🚀🚀"
+    },
+    {
+      "name": "zwj family",
+      "text": "us 👩‍👩‍👧",
+      "scalars": 8,
+      "utf16": 11,
+      "last3": "👩‍👧"
+    },
+    {
+      "name": "flag",
+      "text": "go 🇺🇸",
+      "scalars": 5,
+      "utf16": 7,
+      "last3": " 🇺🇸"
+    }
+  ]
+}

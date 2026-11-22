@@ -1,0 +1,10 @@
+{
+  "kit": "kit@1",
+  "sha256": "2f0c6b1e9d8a7c5f4e3d2c1b0a99887766554433221100ffeeddccbbaa998877",
+  "head": "<meta charset=\"utf-8\">\n<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; connect-src 'none'; media-src data: blob:; worker-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'\">\n<meta http-equiv=\"x-dns-prefetch-control\" content=\"off\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<base target=\"_blank\">\n<style>:root{color-scheme:light dark;--app-canvas:#ffffff;--app-ink:#1a1a1a;}\n@media (prefers-color-scheme: dark){:root{--app-canvas:#1a1a1a;--app-ink:#f9f9f9;}}\nhtml,body{margin:0}</style>\n<style>/* kit.min.css */</style>\n<script>/* sandbox-doc.js */</script>\n<script>/* kit.min.js */</script>",
+  "askHead": "<style>/* kit-ask.min.css */</style>\n<script>/* kit-ask.min.js */</script>",
+  "themes": {
+    "light": {"--app-canvas": "#ffffff", "--app-ink": "#1a1a1a"},
+    "dark": {"--app-canvas": "#1a1a1a", "--app-ink": "#f9f9f9"}
+  }
+}

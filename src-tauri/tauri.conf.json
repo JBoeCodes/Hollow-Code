@@ -1,0 +1,82 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Hollow",
+  "version": "../package.json",
+  "identifier": "com.hollow.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run fetch:model && npm run build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
+  },
+  "app": {
+    "macOSPrivateApi": true,
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Hollow",
+        "width": 1180,
+        "height": 820,
+        "minWidth": 720,
+        "minHeight": 480,
+        "visible": false,
+        "skipTaskbar": false,
+        "center": true,
+        "decorations": true,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "trafficLightPosition": { "x": 16, "y": 24 },
+        "transparent": true,
+        "alwaysOnTop": false,
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-eval' 'sha256-WrspaX7PYrE0J+5diIJgEEywjQGwmtqRd3zkfcRzjlY=' 'sha256-0eTRAvSdeXh94UmhzFAlXCO9bvLT4CZT51UpZq9zXTI=' 'sha256-atkEmkPt3QP1zhMwseb0Es0KYM9F/GyK0uMW3Al/GM4='; style-src 'self' 'unsafe-inline' https://rsms.me https://fonts.googleapis.com; img-src 'self' data: blob:; media-src 'self' hollow-media: http://hollow-media.localhost; font-src 'self' data: https://rsms.me https://fonts.gstatic.com; connect-src 'self' ipc: http://ipc.localhost https://tauri.localhost ws://localhost:1420 http://localhost:1420; frame-src 'self' artifact: http://artifact.localhost; object-src 'none'; base-uri 'self'; form-action 'none'"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": ""
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "app",
+      "dmg",
+      "appimage"
+    ],
+    "resources": [
+      "models/",
+      "build-provenance.json"
+    ],
+    "fileAssociations": [
+      {
+        "ext": [
+          "md",
+          "markdown",
+          "mdown",
+          "mkd"
+        ],
+        "name": "Markdown Document",
+        "description": "Markdown text document",
+        "role": "Editor",
+        "mimeType": "text/markdown"
+      }
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.png"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "11.0",
+      "signingIdentity": "Hollow Dev Signing",
+      "entitlements": "Entitlements.plist"
+    }
+  }
+}

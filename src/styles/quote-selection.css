@@ -1,0 +1,24 @@
+/* The Quote button above text selected in the transcript (components/
+   QuoteSelection.tsx, overnight 11-07 D1, audit gap 9). Looks as the file
+   preview's selection bar does (documents.css), one button wide. It sits in
+   `.chat-scroll-wrap`, which is positioned, so `left` and `top` are the
+   selection's own, minus the wrap's. */
+@layer components {
+.quote-selection {
+  position: absolute; z-index: 6;
+  display: inline-flex; padding: 3px;
+  transform: translate(-50%, -100%);
+  border: 1px solid var(--hairline); border-radius: var(--r-md);
+  background: var(--surface-raised); box-shadow: var(--elev-2);
+}
+.quote-selection.below { transform: translate(-50%, 0); }
+.quote-selection button {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 26px; padding: 0 var(--sp-2);
+  border: 0; border-radius: var(--r-sm); background: none;
+  color: var(--ink); font: 500 var(--fs-meta)/1 var(--ui);
+  white-space: nowrap; cursor: pointer;
+}
+.quote-selection button:hover { background: var(--fill-selected); }
+.quote-selection button:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "md-preview",
+  "description": "Permissions for the runtime-created markdown preview windows (labels match md-preview-*). Each renders one externally-opened markdown file and can set its title and hide/close/focus itself. The take_preview_file / save_preview_to_vault / open_markdown_preview app commands need no ACL entry (app commands aren't gated by the permission system).",
+  "windows": ["md-preview-*"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-hide",
+    "core:window:allow-close",
+    "core:window:allow-set-focus",
+    "core:window:allow-set-title"
+  ]
+}

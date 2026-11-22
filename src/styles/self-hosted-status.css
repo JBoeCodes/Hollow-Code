@@ -1,0 +1,20 @@
+/* Self-hosted models Q6: the start chip above a self-hosted chat's composer
+   (components/SelfHostedStatus.tsx, a lazy chunk, which imports this file).
+   The dot pulses only while starting, and only with both motion gates open
+   (no reduced-motion preference, Settings' Motion not Reduced), and pauses
+   while the window is away (--ambient-play, as session-indicator.css); the
+   time so far is text, so nothing else moves. Tokens and scale steps. */
+@layer components {
+.self-hosted-status { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); margin: 0 0 var(--sp-2); padding: var(--sp-1) var(--sp-3); border-radius: var(--r-sm); background: var(--fill-hover); color: var(--body-strong); font-size: var(--fs-meta); line-height: 1.4; }
+.self-hosted-status-dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--muted-soft); }
+.self-hosted-status-elapsed, .self-hosted-status-note { color: var(--muted); font-variant-numeric: tabular-nums; }
+.self-hosted-status > .btn { margin-left: auto; }
+.self-hosted-status:is([data-state="checking"], [data-state="starting"]) { background: var(--primary-soft); }
+.self-hosted-status[data-state="starting"] .self-hosted-status-dot { background: var(--primary); }
+.self-hosted-status[data-state="ready"] .self-hosted-status-dot { background: var(--success); }
+.self-hosted-status[data-state="error"] { background: var(--error-soft); }
+.self-hosted-status[data-state="error"] .self-hosted-status-dot { background: var(--error); }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .self-hosted-status[data-state="starting"] .self-hosted-status-dot { animation: status-pulse 1.6s var(--ease-soft) infinite; animation-play-state: var(--ambient-play, running); }
+}
+}

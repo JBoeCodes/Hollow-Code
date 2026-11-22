@@ -1,0 +1,55 @@
+{
+ "schemaVersion": 1,
+ "runId": "run-A",
+ "layers": [
+  {
+   "name": "workspace",
+   "bytes": 1000,
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "name": "profile",
+   "bytes": 500,
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "preparation": {
+  "timeline": {
+   "origin": "admission",
+   "totalMs": 100,
+   "phases": []
+  },
+  "retrievalMs": 50
+ },
+ "retrieval": {
+  "engine": "jev",
+  "candidates": [
+   {
+    "path": "private/should-not-leak.md",
+    "rank": 1,
+    "kept": true
+   }
+  ],
+  "stats": {
+   "prefilter": "fts",
+   "notesEligible": 100,
+   "notesRead": 80,
+   "bytesRead": 1000
+  }
+ },
+ "compiler": {
+  "entry": "composer",
+  "session": "new",
+  "budget": {
+   "provider": "claude",
+   "layers": [
+    {
+     "name": "workspace",
+     "tier": "t",
+     "wanted": 100,
+     "granted": 50
+    }
+   ]
+  }
+ }
+}

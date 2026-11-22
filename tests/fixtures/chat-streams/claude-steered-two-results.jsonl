@@ -1,0 +1,9 @@
+{"type":"runStarted","runId":"r3","sessionKey":"s3","asked":"start","permissionMode":"auto"}
+{"type":"turnBoundary"}
+{"type":"assistantText","text":"First."}
+{"type":"result","result":"First.","costUsd":0.01,"isError":false,"subtype":"success","sessionId":"c-3"}
+{"type":"turnBoundary"}
+{"type":"assistantText","text":"Second, after a steer."}
+{"type":"result","result":"Second, after a steer.","costUsd":0.02,"isError":false,"subtype":"success","sessionId":"c-3"}
+{"type":"usage","usage":{},"sessionKey":"s3"}
+{"type":"done","sessionId":"c-3","sessionKey":"s3"}

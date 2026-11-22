@@ -1,0 +1,10 @@
+{
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "error": "The queue was closed.",
+  "heldId": "h-1",
+  "prompt": "Later.",
+  "queueId": 42,
+  "sessionKey": "s-20261118-abc",
+  "type": "heldFailed"
+}

@@ -1,0 +1,13 @@
+@layer components {
+.chat-preview-body.pdf-document { display:flex; flex-direction:column; overflow:hidden; }
+.pdf-preview { display: flex; flex-direction: column; flex: 1; min-height: 0; min-width: 0; color: var(--body); }
+.pdf-preview-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); padding: var(--sp-2); border-bottom: 1px solid var(--hairline); background: var(--material-solid); }
+.pdf-preview-count { font-size: var(--fs-meta); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pdf-preview-zoom { display: inline-flex; margin-left: auto; }
+.pdf-preview-surface { overflow: auto; min-height: 0; flex: 1; padding: var(--sp-3); background: var(--surface-sunken); }
+.pdf-preview-surface:focus-visible { outline:var(--focus-outline); outline-offset:-2px; }
+.pdf-preview-page { display: block; max-width: none; height: auto; margin: 0 auto; background: var(--white); box-shadow: var(--elev-1); }
+.pdf-preview-message { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-4); margin: 0; }
+.pdf-preview-text { padding: var(--sp-2) var(--sp-3); border-top: 1px solid var(--hairline); font-size: var(--fs-meta); }
+.pdf-preview-text pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: var(--lh-prose); }
+}

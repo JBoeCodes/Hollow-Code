@@ -1,0 +1,12 @@
+{
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "costUsd": 0.25,
+  "isError": false,
+  "queueId": 42,
+  "result": "Done.",
+  "resultKind": "answer",
+  "sessionId": "sess-1",
+  "subtype": "success",
+  "type": "result"
+}

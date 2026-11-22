@@ -1,0 +1,813 @@
+command	file	area	tier	note	stability
+configure_conversation_settlement	src-tauri/src/commands/sessions_api.rs	sessions	write	COO parity: one-shot idle or bound PR settlement policy, or off, through the window handler with expected revision and activity	stable
+sweep_conversation_settlement	src-tauri/src/commands/sessions_api.rs	sessions	plumbing	window timer evaluates only saved opt-in policies, with native lifecycle guards and protected visible keys	stable
+list_conversation_organization	src-tauri/src/commands/sessions_api.rs	sessions	read	saved organization revisions and current session summaries for guarded COO writes	stable
+organize_conversation	src-tauri/src/commands/sessions_api.rs	sessions	write	COO parity: pin, unpin, snooze, wake and settle through the window handler with expected revision and activity	stable
+read_custom_icon	src-tauri/src/commands/custom_icons_api.rs	settings	read	settings.read_custom_icon: summary only (set or not, revision, preset, original format); never the original image, editor state or rendered bytes	stable
+prepare_custom_icon	src-tauri/src/commands/custom_icons_api.rs	settings	read	settings.prepare_custom_icon: checks a PNG, JPEG or ICNS file by path and returns format and size, no picture data	stable
+save_custom_icon	src-tauri/src/commands/custom_icons_api.rs	settings	write	settings.save_custom_icon: renders a PNG, JPEG or ICNS file by path into the 512 px icon here (fitted, no SVG); card only when it replaces a picture the person uploaded; Lease::Outside: app-support icon store and Dock, not the vault	stable
+reset_custom_icon	src-tauri/src/commands/custom_icons_api.rs	settings	confirm	settings.reset_custom_icon: restores stock artwork and discards the saved original; Lease::Outside: app-support icon store and Dock, not the vault	stable
+select_app_icon_preset	src-tauri/src/commands/custom_icons_api.rs	settings	write	settings.select_app_icon_preset: bundled artwork for the app icon; card only when it replaces an uploaded picture; Lease::Outside: app-support icon store and Dock, not the vault	stable
+agent_available	src-tauri/src/commands.rs	agents	read		stable
+agent_descriptors	src-tauri/src/commands.rs	agents	read		stable
+agent_models	src-tauri/src/commands.rs	agents	read		stable
+agent_cli_status	src-tauri/src/commands.rs	agents	read	agent updates: versions, install method, Updates choice	stable
+update_agent_cli	src-tauri/src/commands.rs	agents	confirm	agents.update_cli; runs the install method's own updater, waits while a run uses the agent	stable
+restore_agent_cli	src-tauri/src/commands.rs	agents	confirm	agents.restore_cli (L13): reinstalls the version before Hollow's last update; refused while a run uses it (Claude Code native excepted); auto-ask class like agents.update_cli. Lease::Outside: installs a binary (process control, outside the vault)	stable
+cancel_agent_cli_update	src-tauri/src/commands.rs	agents	write	agents.cancel_cli_update (L13): drops an update waiting for runs; returns the agent's status. Lease::Outside: agent update state in app data	stable
+set_agent_cli_policy	src-tauri/src/commands.rs	agents	user-only	Settings' Updates choice; agents use the agents.updates.* settings keys (confirm)	stable
+codex_helper_status	src-tauri/src/commands.rs	agents	read		stable
+claude_admin	src-tauri/src/commands.rs	agents	read		stable
+approval_respond	src-tauri/src/commands/approvals_api.rs	approvals	user-only	the Allow/Deny click itself; exposing it would let an agent approve its own request	stable
+cancel_workflow	src-tauri/src/commands.rs	automations	write	refuses the calling automation's own run	stable
+delete_workflow	src-tauri/src/commands.rs	automations	confirm	lease Outside (takes the permission write guard)	stable
+list_heartbeat_tasks	src-tauri/src/commands.rs	automations	read		stable
+list_workflow_outputs	src-tauri/src/commands.rs	automations	read		stable
+list_workflows	src-tauri/src/commands.rs	automations	read		stable
+read_workflow	src-tauri/src/commands.rs	automations	read		stable
+resolve_heartbeat_task	src-tauri/src/commands.rs	automations	user-only	owner decision 2026-10-02: approving a proposed task is the human gate; agents propose with tasks propose_tasks	stable
+run_heartbeat_now	src-tauri/src/commands.rs	automations	confirm	spends a run; records its own History run, so refused before any card from a live run	stable
+run_nudge_scan	src-tauri/src/commands.rs	automations	write		stable
+run_workflow	src-tauri/src/commands.rs	automations	confirm	spends a run; enqueues and returns (workflows::start_run_now), never waits on the caller's own lease; lease Outside	stable
+write_workflow	src-tauri/src/commands.rs	automations	confirm	automations.save: card shows the workflow_permissions fields old → new; allowing records that approval (approve_app_save, "review"); lease Outside (takes the permission write guard); optional ends (ISO date-time) or afterRuns (N runs) stop it for good (G2); optional runsOn names the owner Mac (M4, runs_on.rs: "this" is this Mac's id, or a machine id or slug; a stamped field shown on the card; a new one gets this Mac only once another Mac shares the vault)	stable
+ack_self_install_result	src-tauri/src/commands/build_api.rs	build	plumbing	UI acknowledgement	stable
+app_build_status	src-tauri/src/commands/build_api.rs	build	read		stable
+exit_running_work	src-tauri/src/lifecycle.rs	system	read	system.exit_running_work: lists what a quit would end (lifecycle::running_work)	stable
+resolve_quit	src-tauri/src/lifecycle.rs	system	confirm	system.quit_hollow: choice quit or tray, skips the quit dialog (the card is the confirmation), card lists running work and says it ends every turn including the caller's; Lease::Outside: process control	stable
+pending_quit_request	src-tauri/src/lifecycle.rs	system	user-only	restore unanswered quit dialog after webview reload	stable
+app_build_brings	src-tauri/src/commands/build_api.rs	build	user-only	the Install confirm's what-it-brings list; agents use build.install_brings with id, which runs the same code	stable
+build_commit	src-tauri/src/commands/build_api.rs	build	confirm	allowed while the caller is the vault's lease holder (build_changes::commit_for); lease Outside (git, up to minutes)	stable
+build_diff	src-tauri/src/commands/build_api.rs	build	read		stable
+build_open_pr	src-tauri/src/commands/build_api.rs	build	external	names the repository; allowed while the caller holds the vault (open_pr_as); also build.publish	stable
+build_rail_states	src-tauri/src/commands/build_api.rs	build	plumbing	the rail's branch and PR glyph; build_status carries the same facts	stable
+build_set_runs_on	src-tauri/src/commands/build_api.rs	build	confirm	build.set_runs_on: Changes' Runs on (this-mac, runner or default; mac-mini, the old name, still accepted) for a build workspace; card shows old to new and the runner it uses; runs on auto approval like agents.runsOn. Lease::Outside: app data build-workspaces.json, which History never diffs	stable
+remote_runner	src-tauri/src/commands/build_api.rs	build	plumbing	names the runner Runs on's remote runner choice uses (~/.config/hollow/slot-remote)	stable
+runner_status	src-tauri/src/commands/build_api.rs	build	read	overnight N1 (2026-11-02): the runner's state under Settings → Runs on (Check now); one ssh call, read-only there; smart routing 3 (2026-11-03): with hollow-slot's latest routing decisions and the runner's tools, read from this Mac's slot folder	stable
+workspace_runs_on	src-tauri/src/commands/workspaces_api.rs	workspaces	plumbing	a vault workspace's own Runs on, for the control in a new chat's empty state (2026-11-02)	stable
+runner_access_get	src-tauri/src/commands/runner_api.rs	build	read	build.runner_access_get: a workspace's On the runner choice (GitHub, Google Cloud), the old side of build.set_runner_access's card (COO parity L13, was plumbing)	stable
+runner_access_set	src-tauri/src/commands/runner_api.rs	build	confirm	build.set_runner_access: Runs on, On the runner: GitHub and Google Cloud for a workspace's runner turns; card shows old to new and the credential's source; grants credentials, so it always asks (auto-ask class and ALWAYS_ASK). Lease::Outside: app data runner-access.json, which History never diffs	stable
+runner_github_status	src-tauri/src/commands/runner_api.rs	build	read	build.runner_github_status: the GitHub source, whether a runner token is saved, whether this Mac's gh is signed in (never a token); read before set_source or save_token (COO parity L13, was plumbing)	stable
+runner_github_save_token	src-tauri/src/commands/runner_api.rs	build	confirm	build.runner_github_save_token: saves the GitHub runner token in this Mac's Keychain; token is Kind::Secret in only, refused before the card when malformed (never echoed), result is GithubStatus (no token); asks in auto (secrets). Lease::Outside: Keychain, which History never diffs	stable
+runner_github_clear_token	src-tauri/src/commands/runner_api.rs	build	confirm	build.runner_github_clear_token: removes the saved GitHub runner token; asks in auto (secrets). Lease::Outside: Keychain, which History never diffs	stable
+runner_github_set_source	src-tauri/src/commands/runner_api.rs	build	confirm	build.runner_github_set_source: the runner token or this Mac's gh login (broader) as the runner's GitHub credential; card shows old to new; asks in auto (secrets). Lease::Outside: app data runner-access.json, which History never diffs	stable
+onepassword_status	src-tauri/src/commands/onepassword_api.rs	settings.accounts	read	settings.accounts.onepassword_status: whether 1Password secrets are on (off by default), whether op and the 1Password app are installed, each slot's op:// reference and last failure; never runs op, never a secret (parity row 7.5, 2026-11-20)	stable
+onepassword_check	src-tauri/src/commands/onepassword_api.rs	settings.accounts	user-only	Settings, Accounts, 1Password Check button: runs op --version and op whoami when the switch is on (may raise 1Password's unlock prompt); reads no secret, never an action	stable
+onepassword_set_enabled	src-tauri/src/commands/onepassword_api.rs	settings.accounts	confirm	settings.accounts.onepassword_set_enabled: turns the 1Password secret path on or off; card says what changes; asks in auto (secrets). Lease::Outside: app data onepassword.json, which History never diffs	stable
+onepassword_set_reference	src-tauri/src/commands/onepassword_api.rs	settings.accounts	confirm	settings.accounts.onepassword_set_reference: points a slot at an op:// reference; refused before the card for a key that is not a slot or a malformed reference; asks in auto (secrets). Lease::Outside: app data onepassword.json	stable
+onepassword_clear_reference	src-tauri/src/commands/onepassword_api.rs	settings.accounts	confirm	settings.accounts.onepassword_clear_reference: forgets a slot's reference, so the Keychain value is used again; asks in auto (secrets). Lease::Outside: app data onepassword.json	stable
+runner_set	src-tauri/src/commands/runner_api.rs	build	confirm	build.runner_set: names this Mac's runner in ~/.config/hollow/slot-remote, or off; card shows old to new and refuses a host that isn't one; asks in auto (where agent work runs). Lease::Outside: a dotfile outside the vault	stable
+runner_check_host	src-tauri/src/commands/runner_api.rs	build	external	build.runner_check_host: the read-only runner check of a typed SSH host before it is named; card names ssh <host>. Lease::Outside: ssh to another machine, up to 30 s	stable
+runner_record_owner	src-tauri/src/commands/runner_api.rs	build	external	build.runner_record_owner: records this Hollow as the runner's owner (~/hollow-remote/owner.json there), then checks it again; card names the host and says when it replaces another Hollow's record. Lease::Outside: remote state over ssh	stable
+runner_setup_plan	src-tauri/src/commands/runner_api.rs	build	read	build.runner_setup_plan: Set up's steps for the typed fields, each with its check and apply commands as shown, and for Google Cloud the estimate; runs only ssh -G (COO parity L13, was plumbing)	stable
+runner_setup_check	src-tauri/src/commands/runner_api.rs	build	external	build.runner_setup_check: every Set up step's read-only check commands (ssh with BatchMode to the admin login and the runner, gcloud reads); card names those destinations; the agent gets allowlisted fields only (step, fixed state words, by-hand flag, each command as shown with its exit code), never command output. Lease::Outside: ssh and gcloud, minutes	stable
+runner_setup_apply	src-tauri/src/commands/runner_api.rs	build	external	build.runner_setup_apply: one Set up step's apply commands then its check (runner account, key and Host block, toolchains, preflight, sleep and sshd, naming the runner); card shows the step's confirm text and every command; the agent gets allowlisted fields only, never command output or private keys. Lease::Outside: remote machines and ~/.ssh, up to 30 min	stable
+runner_cloud_estimate	src-tauri/src/commands/runner_api.rs	build	read	build.runner_cloud_estimate: the Google Cloud runner's monthly estimate; its totalCents is what build.runner_cloud_create must be handed (COO parity L13, was plumbing)	stable
+runner_cloud_create	src-tauri/src/commands/runner_api.rs	build	external	build.runner_cloud_create: a billed Google Cloud VM, service account, IAP-only firewall rule, Cloud NAT and budget alert, only with the estimate's totalCents; card names Google Cloud, the project and billing account and the monthly cost, and refuses a stale estimate; the agent gets the machine step's allowlisted fields, never gcloud output. Lease::Outside: Google Cloud, minutes	stable
+workspace_set_runs_on	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	workspaces.set_runs_on: a vault workspace's own Runs on (this-mac, runner, default; mac-mini still accepted); card shows old to new. Lease::Outside: the choice lives in app data (remote_folder store), which History never diffs	stable
+build_push	src-tauri/src/commands/build_api.rs	build	external	names remote and branch; allowed while the caller is the vault's lease holder (push_for); also build.publish	stable
+build_status	src-tauri/src/commands/build_api.rs	build	read	installedContainsHead says whether the last install contains HEAD (P1-46)	stable
+build_update_from_base	src-tauri/src/commands/build_api.rs	build	external	build.update_from_base: Changes' Update from <base>: fetch from origin (GitHub, so external; its card names the origin), then rebase (or merge once pushed); aborts on failure (P1-46). The workspace's folder is reserved by an exclusive scoped run through completion, so no agent turn starts there meanwhile; the vault-wide check exempts only the caller's own lease (build_changes::update_from_base_for). Lease::Outside: git in the worktree, up to minutes	stable
+cancel_app_build	src-tauri/src/commands/build_api.rs	build	write		stable
+list_services	src-tauri/src/commands/build_api.rs	build	read		stable
+self_install_receipt	src-tauri/src/commands/build_api.rs	build	read	persistent receipt vs running provenance (next-level P00)	stable
+install_targets	src-tauri/src/commands/build_api.rs	build	read	install build folders and why each stays (overnight A5)	stable
+prune_install_targets	src-tauri/src/commands/build_api.rs	build	confirm	Lease::Outside: deletes ~/Library/Caches folders History never diffs; card bound to the exact list (overnight A5)	stable
+worktree_hygiene	src-tauri/src/commands/build_api.rs	build	read	worktrees, local-only branches, literal ~ folders (overnight A9)	stable
+clean_worktrees	src-tauri/src/commands/build_api.rs	build	confirm	Lease::Outside: git worktree remove and ~ folder deletes outside the vault; card bound to the exact list (overnight A9)	stable
+self_install_result	src-tauri/src/commands/build_api.rs	build	read		stable
+service_log	src-tauri/src/commands/build_api.rs	build	read		stable
+start_app_build	src-tauri/src/commands/build_api.rs	build	confirm	long build; uses a build slot	stable
+stop_service	src-tauri/src/commands/build_api.rs	build	confirm		stable
+create_commitment	src-tauri/src/commands.rs	commitments	write		stable
+list_commitment_proposals	src-tauri/src/commands.rs	commitments	read		stable
+list_commitments	src-tauri/src/commands.rs	commitments	read	optional direction (owed_by_me / owed_to_me) and person filters (master plan #2)	stable
+resolve_commitment_proposal	src-tauri/src/commands.rs	commitments	user-only	owner decision 2026-10-02: only a person resolves a proposal; agents propose with submit_commitment_proposal	stable
+restore_commitment	src-tauri/src/commands.rs	commitments	write		stable
+set_commitment_status	src-tauri/src/commands.rs	commitments	write		stable
+submit_commitment_proposal	src-tauri/src/commands.rs	commitments	write		stable
+trash_commitment	src-tauri/src/commands.rs	commitments	confirm		stable
+update_commitment	src-tauri/src/commands.rs	commitments	write		stable
+clear_feedback	src-tauri/src/commands/feedback_api.rs	feedback	confirm		stable
+export_feedback	src-tauri/src/commands/feedback_api.rs	feedback	confirm	A3 moved from write: writes files outside the vault, where History cannot undo them	stable
+file_eval_candidate	src-tauri/src/commands/feedback_api.rs	feedback	write	feedback.file_eval_candidate (NV7): a chat turn that missed a skill becomes a redacted pending eval_candidate review item; an agent files only its own chat's turns; accepting stays the person's (resolve_review_item, a written expected skill and the card version)	experimental
+list_feedback	src-tauri/src/commands/feedback_api.rs	feedback	read		stable
+record_turn_feedback	src-tauri/src/commands/feedback_api.rs	feedback	write		stable
+create_goal	src-tauri/src/commands.rs	goals	write		stable
+goal_alignment	src-tauri/src/commands.rs	goals	read		stable
+list_goals	src-tauri/src/commands.rs	goals	read		stable
+restore_goal	src-tauri/src/commands.rs	goals	write		stable
+trash_goal	src-tauri/src/commands.rs	goals	confirm		stable
+update_goal	src-tauri/src/commands.rs	goals	write		stable
+clear_automated_history	src-tauri/src/commands.rs	history	confirm	refused before any card from a live run (it refuses while any run is active and takes HISTORY_LOCK); .app-actions.jsonl is not cleared by it	stable
+get_evidence_receipt	src-tauri/src/commands.rs	history	read		stable
+get_history_run	src-tauri/src/commands.rs	history	read		stable
+history_storage_status	src-tauri/src/commands.rs	history	read		stable
+list_evidence_receipts	src-tauri/src/commands.rs	history	read		stable
+list_history_runs	src-tauri/src/commands.rs	history	read		stable
+list_note_history	src-tauri/src/commands.rs	history	read		stable
+read_history_repo_changes	src-tauri/src/commands/repo_receipts_api.rs	history	read		stable
+read_history_version	src-tauri/src/commands.rs	history	read		stable
+restore_history_change	src-tauri/src/commands.rs	history	confirm	records its own History run (and takes HISTORY_LOCK): refused before any card from a live run	stable
+restore_history_run	src-tauri/src/commands.rs	history	confirm	records its own History run (and takes HISTORY_LOCK): refused before any card from a live run	stable
+run_context_manifest	src-tauri/src/commands.rs	history	read	agent effectiveness F11: sizes, hashes and decisions, never prompt text	stable
+dismiss_interaction	src-tauri/src/commands/interactions_api.rs	interactions	write		stable
+list_pending_interactions	src-tauri/src/commands/interactions_api.rs	interactions	read		stable
+reopen_interaction	src-tauri/src/commands/interactions_api.rs	interactions	write		stable
+resolve_interaction	src-tauri/src/commands/interactions_api.rs	interactions	user-only	answering a question card is the user's answer	stable
+list_learning_context	src-tauri/src/commands.rs	learning	read		stable
+get_learning_settings	src-tauri/src/commands.rs	learning	read	fewer learnings 10-11: Learning suggestions (also settings key learning.suggestions)	stable
+list_learning_proposals	src-tauri/src/commands.rs	learning	read		stable
+list_private_memories	src-tauri/src/commands.rs	learning	read	learning.list_private_memories (L13): a workspace's Claude and Codex scratch memories, text redacted, with ids and hashes	stable
+list_skill_lessons	src-tauri/src/commands.rs	learning	read	learning.list_skill_lessons (L13): skill-learning review items; resolving one stays person-only	stable
+resolve_skill_lesson	src-tauri/src/commands.rs	learning	user-only	Person Save or Reject of a pinned skill lesson	stable
+undo_skill_lesson	src-tauri/src/commands.rs	learning	user-only	Person Undo of a saved skill lesson: restores the pinned skill bytes, or removes a new skill, while the skill is still what Save wrote	stable
+promote_private_memory	src-tauri/src/commands.rs	learning	write	learning.promote_private_memory (L13): queues one exact passage as a pending learning proposal under the agent rules (off refuses, one per run, stamped with the run); accepting stays person-only	stable
+recall_learning_context	src-tauri/src/commands.rs	learning	read		stable
+resolve_learning_proposal	src-tauri/src/commands.rs	learning	user-only	owner decision 2026-10-02: only a person decides what agents remember; agents propose with submit_learning_proposal	stable
+set_learning_suggestions	src-tauri/src/commands.rs	learning	confirm	Lease::Outside: the app-data learning-settings.json (fewer learnings 10-11)	stable
+resolve_learning_proposals_batch	src-tauri/src/commands.rs	learning	user-only	bulk review: the person accepts or rejects several learning proposals at once (owner decision 2026-10-02), and a row's Save is a one-item batch with its edited words, so it has the same Undo; never an action	stable
+undo_learning_batch	src-tauri/src/commands.rs	learning	user-only	Undo of a bulk review: its proposals back to pending, accepted notes out of learnings/; the person's click, never an action	stable
+memory_maintenance	src-tauri/src/commands.rs	learning	write	learning.memory_maintenance (L13): the Learnings lifecycle view; records newly seen learnings and files due take-out or reword proposals; never changes a line	stable
+edit_memory_maintenance	src-tauri/src/commands.rs	learning	user-only	pin, restore or valid-through on a saved learning stay Library clicks: keeping a line supersedes its waiting take-out proposal (settling a learning proposal) and the audit records the person (L13 exception)	stable
+submit_learning_proposal	src-tauri/src/commands.rs	learning	write		stable
+supersede_learning_context	src-tauri/src/commands.rs	learning	confirm		stable
+clear_notifications	src-tauri/src/commands.rs	notifications	confirm		stable
+create_notification	src-tauri/src/commands.rs	notifications	write		stable
+delete_notification	src-tauri/src/commands.rs	notifications	confirm	A3 moved from write: deletes with no undo	stable
+delete_notifications	src-tauri/src/commands.rs	notifications	user-only	P0-08: Recent activity's Clear these after its count confirm; never a failure waiting in Review (agents have delete_notification)	stable
+list_notifications	src-tauri/src/commands.rs	notifications	read		stable
+mark_all_notifications_read	src-tauri/src/commands.rs	notifications	write		stable
+mark_notification_read	src-tauri/src/commands.rs	notifications	write	one notification by id	stable
+mark_notifications_read	src-tauri/src/commands.rs	notifications	user-only	P0-08: Recent activity's Mark these read (agents have mark_notification_read)	stable
+unread_notification_count	src-tauri/src/commands.rs	notifications	read		stable
+tracker_status	src-tauri/src/commands/tracker_api.rs	tracker	read	the task tracker's provider, team, key state (never the key), sync state and what is missing	stable
+tracker_view	src-tauri/src/commands/tracker_api.rs	tracker	read	the mirrored issues and projects with filters; empty with a note until the sync engine lands	stable
+tracker_issue	src-tauri/src/commands/tracker_api.rs	tracker	read	one mirrored issue with every detail field, lock, conflicts and pending edits	stable
+tracker_issue_history	src-tauri/src/commands/tracker_api.rs	tracker	read	tracker.issue_history; the issue detail's activity: one issue's change history read from the tracker on demand, never stored in the mirror	stable
+tracker_issue_work	src-tauri/src/commands/tracker_api.rs	tracker	read	tracker.work_for_issue; X1 agent runs tied to an issue (work_links, Subagents totals); X2 audit rows newest first	stable
+tracker.report_progress	src-tauri/src/app_actions.rs	tracker	write	verb: no Tauri command of its own; X1 records a progress fact (sessions store) the sync pass posts at most once per issue per 15 min; lease Outside (app-support state)	stable
+tracker.audit	src-tauri/src/app_actions.rs	tracker	read	verb: no Tauri command of its own; X2 audit rows of agent runs and tracker writes (audit_log in the sessions store), filters issue, session, workspace, since, kind, limit; verify checks the hash chain	stable
+tracker_team_meta	src-tauri/src/commands/tracker_api.rs	tracker	read	the scoped team's states, labels, members, cycles, milestones and projects	stable
+tracker_link_setup	src-tauri/src/commands/tracker_api.rs	tracker	read	tracker.link_setup: the Custom link value to paste into Linear's coding-tool setting (hollow://issue?prompt={{prompt}}) and where it goes; a constant, reads and writes nothing	stable
+tracker_sync	src-tauri/src/commands/tracker_api.rs	tracker	write	tracker.sync_now; reconciles the configured tracker with durable local edits	stable
+edit_tracker_item	src-tauri/src/commands/tracker_api.rs	tracker	user-only	the issue editor's save (compare-and-swap); agents edit a mirrored issue with tasks.update_task, tasks.set_status or tasks.update_project on its vault ref (tracker.issue path), the same durable tracker editor (seams::edit_task_at)	stable
+create_tracker_task	src-tauri/src/commands/tracker_api.rs	tracker	write	tracker.create_task; no card (T1): team ENG or HOL by team_for (tracked work AI, Hollow-only HOL), LP and PRO refused; stable request key	stable
+create_tracker_project	src-tauri/src/commands/tracker_api.rs	tracker	write	tracker.create_project; durable attempted journal, never resend an uncertain create; no card (T1), AI or HOL only	stable
+comment_tracker_issue	src-tauri/src/commands/tracker_api.rs	tracker	write	tracker.comment_issue; B5 issue detail comment box: journaled under a request key, never resent when unconfirmed; no card (T1), AI or HOL issues only	stable
+write_friday_status	src-tauri/src/commands/tracker_api.rs	tracker	write	tracker.friday_status; A18 Friday status from the tracker mirror into workspaces/<id>/outputs/status and the COO digest, one notification; tracker copy only with tracker.postStatusUpdates, team ENG, once a project a week; Lease::Own: the notes inside the run's live lease, the copy under the tracker lease	stable
+attach_canvas_to_issue	src-tauri/src/commands/tracker_api.rs	tracker	write	tracker.attach_canvas; A19 saved canvas copy on a team ENG issue: journaled upload then attach, key canvas id + revision + issue; the canvas stays in Hollow; no card (T1)	stable
+archive_tracker_task	src-tauri/src/commands/tracker_api.rs	tracker	write	tracker.archive_task; no card (T1; left ALWAYS_ASK 2026-11-15), AI or HOL only, durable archive intent	stable
+tracker.graphql	src-tauri/src/app_actions.rs	tracker	write	verb: no Tauri command of its own; one Linear GraphQL query or mutation with the tracker engine's saved key (tracker/graphql.rs). Org must be Example Org by its id (graphql::ORG_ID; name and urlKey are not trusted); a mutation naming a team other than AI is refused; a by-id mutation on an issue, comment, attachment or workflow state reads its team first (HollowTeamGuard) and is refused outside AI or when not found; selecting a secret-named field, alias or not, is refused. Asks on a card in every mode (asks_in_mode): a mutation named Delete, Archive, Remove, Trash, Retire, Suspend, Demote, Merge, Rotate, Revoke or Disconnect (or setting trashed/archivedAt), one granting access or reaching outside the org (organization*, user*, webhook*, apiKey*, oauth*, *Invite*, *Integration*, *Membership*) (a by-id target whose team it can't read is refused, card or not); every other call that passes the guards asks no card (T1, 2026-11-15), and an automation runs only those. One tracker_write audit row per call (action graphql, query text with secret literals masked, operation and scrubbed variables). Lease::Outside: the change is in Linear, nothing in the vault for History to diff	stable
+tracker.ensure_labels	src-tauri/src/app_actions.rs	tracker	write	verb: no Tauri command of its own; T1 (folds in T2): per configured team, reads its labels and creates only the missing ones of linear::labels_for (ENG: needs-review; PER: needs-review, commitment, agent, hollow-lesson) with issueLabelCreate and the team id; a second run creates nothing; one tracker_write audit row (action label) per create; no card	stable
+set_tracker_key	src-tauri/src/commands/tracker_api.rs	tracker	confirm	tracker.set_key (L13): the key goes in only as a Secret parameter; the result is the status (key saved or missing). Lease::Outside: Keychain bundle	stable
+clear_tracker_key	src-tauri/src/commands/tracker_api.rs	tracker	confirm	tracker.clear_key (L13): removes the saved key; returns the status. Lease::Outside: Keychain bundle	stable
+use_keychain_tracker_key	src-tauri/src/commands/tracker_api.rs	tracker	confirm	tracker.use_keychain_key (L13): copies the provider's own Keychain item into the bundle (a macOS prompt the person answers); returns the status, never the key. Lease::Outside: Keychain	stable
+set_tracker_settings	src-tauri/src/commands/tracker_api.rs	tracker	confirm	tracker.set_settings (L13): provider, team, transport, interval in config.json, applied after a restart. Lease::Outside: config.json in app support	stable
+tracker.configure	src-tauri/src/app_actions.rs	tracker	confirm	verb: no Tauri command of its own; T6b cutover setup: tracker block through save_tracker_settings (provider, team, poll interval, trackAgentWork), team ENG only (refused before writing), copyKeychainKey copies the provider Keychain item as use_keychain_tracker_key does; returns the status, never the key. Lease::Outside: config.json and Keychain	stable
+sources_status	src-tauri/src/commands/sources_api.rs	sources	read	sources.status; H4a Settings, Sources: role rows (owner, inherited, label, last read, queued and held edits, conflicts, problems), workspace overrides and bindings, knowledge references, ledger generation; local reads, never the key	experimental
+sources_set	src-tauri/src/commands/sources_api.rs	sources	confirm	sources.set; H4a Save: knowledge references in config.json's sources block; an owner change is refused (a switch, not a Save)	experimental
+sources_migration_plan	src-tauri/src/commands/sources_api.rs	sources	read	sources.migration_plan; H4a owner switch dry run: counts, files, config change, generation, or why refused; writes nothing	experimental
+sources_migration_apply	src-tauri/src/commands/sources_api.rs	sources	confirm	sources.migrate; H4a owner switch: refused with queued or held edits or conflicts, journaled vault files with a manifest, new ledger generation, config.json sources block; no tracker writes. Lease::Outside: takes the tracker sync lock and its mirror lease itself, like a sync pass; ledger dot-state and config.json in app support	experimental
+sources_migration_rollback	src-tauri/src/commands/sources_api.rs	sources	confirm	sources.rollback_migration; H4a byte-exact rollback of one switch from its manifests and backups. Lease::Outside: as sources_migration_apply	experimental
+sources_migration_status	src-tauri/src/commands/sources_api.rs	sources	read	sources.migration_status; H4a every owner switch, newest first, and one that stopped part way	experimental
+list_people	src-tauri/src/commands/system.rs	people	read		stable
+ingest_cancel	src-tauri/src/commands.rs	recordings	write		stable
+ingest_run	src-tauri/src/commands.rs	recordings	confirm	A3 moved from write: an agent run with model spend; it records its own History run, so from a live run it is refused before any card	stable
+plaud_connected	src-tauri/src/commands.rs	recordings	read		stable
+plaud_login	src-tauri/src/commands.rs	recordings	external	opens a browser sign-in (up to 3 minutes)	stable
+plaud_logout	src-tauri/src/commands.rs	recordings	confirm		stable
+plaud_ping	src-tauri/src/commands.rs	recordings	read		stable
+activation_inventory	src-tauri/src/commands.rs	review	read		stable
+list_review_inbox	src-tauri/src/commands.rs	review	read		stable
+list_interrupted_chats	src-tauri/src/commands/sessions_api.rs	sessions	read	sessions.list_interrupted_chats (L13): the chats this launch offers to resume, then agent-started ones to open	stable
+resume_interrupted_chats	src-tauri/src/commands/sessions_api.rs	sessions	confirm	sessions.resume_interrupted_chats (L13): Continue as a top-level turn in each chat's own last mode; its card lists each chat and flags a mode stronger than the caller's; never an agent-started chat. Lease::Outside: starts chat turns (process control), like sessions.start	stable
+conflict_copies	src-tauri/src/commands/needs_you_api.rs	vault	read	overnight A10: conflict copies with their originals	stable
+conflict_copy_pair	src-tauri/src/commands/needs_you_api.rs	vault	read	vault.conflict_copy_pair (L13): both texts and the hashes the resolve binds	stable
+resolve_conflict_copy	src-tauri/src/commands/needs_you_api.rs	vault	confirm	vault.resolve_conflict_copy (L13): keeps one, the other to .trash, hash-bound; the agent path runs inside its run's History (conflict_copies::resolve_for_live_run)	stable
+dismiss_conflict_copy	src-tauri/src/commands/needs_you_api.rs	vault	write	vault.dismiss_conflict_copy (L13): Not a copy, reversible with undismiss. Lease::Outside: the marks live in app support, which History never diffs	stable
+undismiss_conflict_copy	src-tauri/src/commands/needs_you_api.rs	vault	write	vault.undismiss_conflict_copy (L13): takes back a Not a copy mark. Lease::Outside: marks in app support	stable
+answer_lesson_memory	src-tauri/src/commands/needs_you_api.rs	learning	user-only	build run L2: the person's Delete or Keep on "Delete the memory X?"; Delete removes only that memory file and its MEMORY.md line, copy in .trash, History row; never an action	stable
+restore_lesson_memory	src-tauri/src/commands/needs_you_api.rs	learning	user-only	build run L2: the Undo after a Delete puts the memory file and its MEMORY.md line back; the person's click	stable
+list_needs_you	src-tauri/src/commands/needs_you_api.rs	review	read	merged plan slice 4 (B·F15): everything waiting on the user, paged, each with its exact id	stable
+resolve_review_item	src-tauri/src/commands.rs	review	user-only	owner decision 2026-10-02: only a person resolves a review item, in every mode (bypass shows no card, so a card is no gate); agents propose	stable
+undo_review_reject	src-tauri/src/commands.rs	review	user-only	P0-10: the Undo after one Reject puts the same review item back pending, only while it is still the rejection it saw; the person's click, never an action	stable
+run_activation_scan	src-tauri/src/commands.rs	review	confirm	A3 moved from write: up to three model calls (spends; minutes); lease Outside	stable
+snooze_review_item	src-tauri/src/commands.rs	review	confirm	A3 moved from write: can hide an approval card (workflow permissions, a failure streak) from the user	stable
+wake_review_item	src-tauri/src/commands.rs	review	write	review.wake_review_item (L13): a snoozed item back to pending and visible; settles nothing	stable
+agent_session_live	src-tauri/src/commands/sessions_api.rs	sessions	read		stable
+archive_agent_session	src-tauri/src/commands/sessions_api.rs	sessions	write	reversible	stable
+artifact_put	src-tauri/src/commands.rs	sessions	plumbing	artifact renderer plumbing	stable
+cancel_queued_run	src-tauri/src/commands/run_queue_api.rs	sessions	write	refuses the calling run's own row	stable
+main_agent_children	src-tauri/src/main_agent.rs	sessions	read	the chats the Main agent started in the last 7 days, with state, workspace, cost and whether it was told (main agent M2)	stable
+main_agent_status	src-tauri/src/main_agent.rs	sessions	read	today's spend against the cap, last and next check-in, suggestion outcomes (main agent M3/M6), the dispatcher state (M3a PR2)	stable
+ask_hollow_plan	src-tauri/src/ask_hollow.rs	sessions	user-only	the command bar's Ask Hollow (overnight 10-11 A2): spends a one-shot on the person's own request; agents have the actions themselves	stable
+ask_hollow_run	src-tauri/src/ask_hollow.rs	sessions	user-only	runs a previewed plan on the person's own Run click (overnight 10-11 A2); an agent would be approving its own plan	stable
+vault_answer_ask	src-tauri/src/vault_answer.rs	vault	write	vault.answer_question: a cited answer from the vault, scoped like vault.retrieve; one model call metered to the run. Lease::Outside: a model call, no vault write	stable
+vault_answer_save	src-tauri/src/vault_answer.rs	vault	write	vault.save_answer: save an Ask-your-vault thread to a workspace's outputs/answers/, never over a file	stable
+weekly_review	src-tauri/src/weekly_review.rs	digest	read	digest.weekly_review: one ISO week's facts from Hollow's records plus its cached take; not the Friday update	stable
+weekly_review_take	src-tauri/src/weekly_review.rs	digest	write	digest.weekly_review_take: the week's two sentences and priorities, one model call per week, cached in the COO's .review/. Lease::Own: the model call runs outside History's lock, the cache write goes through live_write	stable
+weekly_review_save	src-tauri/src/weekly_review.rs	digest	write	digest.weekly_review_save: the week's review as Markdown in the COO's outputs/review/	stable
+today_brief_cached	src-tauri/src/today_brief.rs	sessions	read	today's cached brief (paragraph and recommendations) and the person's first name (overnight 10-11 A3)	stable
+today_brief	src-tauri/src/today_brief.rs	sessions	write	sessions.write_today_brief: today's brief from facts the agent gives, one model call a day, saved under the COO's outputs/today/. Lease::Own: the model call runs outside History's lock, the saves go through live_write	stable
+inline_ai	src-tauri/src/inline_ai.rs	notes	user-only	the editor's inline AI (overnight 10-11 B5): a suggestion the person accepts; agents write text with their own tools, so no second spending path	stable
+inline_ai_cancel	src-tauri/src/inline_ai.rs	notes	user-only	Dismiss on a pending inline AI suggestion stops its model call (overnight S3); the person's own click	stable
+generate_logo_options	src-tauri/src/logo_options.rs	settings	user-only	the icon dialog's Generate a logo (overhaul H2): one tool-free model call for four dithered SVG options; the person picks one and saves it like an upload	stable
+cancel_logo_options	src-tauri/src/logo_options.rs	settings	user-only	closing the icon dialog stops its Generate a logo call (overnight 11-13 S2); the person's own close	stable
+prep_pack	src-tauri/src/prep_pack.rs	agenda	user-only	the Prepare button (overnight 10-11 A4); agents use the agenda.prepare_meeting action, which runs the same code	stable
+meeting_recap	src-tauri/src/meeting_recap.rs	agenda	write	agenda.recap_meeting: recap a finished meeting from its recording, one model call; returns the note's path and counts, never the transcript or recap text. Lease::Own: the model call runs outside History's lock; a first recap's home workspace and the recap note are written inside the caller's live run (live_write); the review queue and extraction ledger are hidden state	stable
+main_agent_activity	src-tauri/src/main_agent.rs	sessions	read	what unattended Main agent turns did through Hollow app tools (main agent M4)	stable
+get_main_agent_settings	src-tauri/src/main_agent.rs	settings	read	check-ins, hours, daily cap, acting on its own, swarm size	stable
+set_main_agent_settings	src-tauri/src/main_agent.rs	settings	confirm	settings.set_main_agent_settings: partial update of the COO's check-ins, cap, acting on its own and swarm limits; card shows old to new and flags widening; Lease::Outside: app-support settings file	stable
+get_chat_limits	src-tauri/src/chat_limits.rs	settings	read	how many chats run at once, across Hollow, in one workspace and as subagents of one chat (2026-10-20; subagents per chat 2026-11-12)	stable
+set_chat_limits	src-tauri/src/chat_limits.rs	settings	confirm	settings.set_chat_limits: partial update of chats at once, per workspace and subagents per chat (the cap a queued start_session waits on, L13 COO parity); card shows old to new; Lease::Outside: app-support settings file	stable
+chat_cancel	src-tauri/src/commands.rs	sessions	write	sessions.stop; never the calling session, never without a key (no key stops every turn); lease Outside (in-memory stop)	stable
+chat_pause	src-tauri/src/commands.rs	sessions	write	sessions.pause (P1a): never the calling session; asks only a running turn, which pauses at its next safe point keeping its native session; lease Outside (in-memory request)	stable
+chat_resume_paused	src-tauri/src/commands.rs	sessions	write	sessions.resume (P1a): never the calling session; refused unless paused and idle; queues an ordinary turn on the stored native session; lease Outside (queue write, as sessions.send)	stable
+chat_pause_all	src-tauri/src/commands.rs	sessions	write	sessions.pause_all (P1b): never the calling session; asks every running turn (queued rows untouched) to pause at its next safe point as `all`; one summary notification once all settle; lease Outside (in-memory requests)	stable
+chat_resume_all	src-tauri/src/commands.rs	sessions	write	sessions.resume_all (P1b): never the calling session; each paused chat through chat_resume_paused's claim; lists queued and refused; lease Outside (queue writes, as sessions.send)	stable
+chat_paused_list	src-tauri/src/commands.rs	sessions	plumbing	the window's cache of paused chats with note, reason and resume time (P1b, P1c; read-only); agents see paused chats in sessions.overview	stable
+chat_set_resume_at	src-tauri/src/commands.rs	sessions	write	sessions.resume_at (P1c): never the calling session; sets or clears a paused chat's resume time (within a year); a past time resumes it now through chat_resume_paused's claim; lease Outside	stable
+chat_discover	src-tauri/src/commands.rs	sessions	confirm	spawns claude -p in the vault (hooks, maybe a model call); A1 moved it from read	stable
+chat_find_file	src-tauri/src/commands.rs	sessions	plumbing	webview file-link vault-wide lookup plumbing	stable
+chat_locate_file	src-tauri/src/commands.rs	sessions	plumbing	webview file-link lookup plumbing	stable
+chat_preflight	src-tauri/src/commands.rs	sessions	plumbing	internal to chat_send	stable
+chat_preview_file	src-tauri/src/commands.rs	sessions	plumbing	webview preview plumbing	stable
+pdf_preview_page	src-tauri/src/commands.rs	sessions	plumbing	read-only scoped PDF pixels and text; main webview only	stable
+office_preview	src-tauri/src/commands.rs	sessions	plumbing	read-only scoped Word, Excel and PowerPoint text for the Preview pane (B1b); main webview only	stable
+media_grant	src-tauri/src/commands.rs	sessions	plumbing	video player plumbing: an opaque hollow-media token for one admitted file; main webview only	stable
+media_poster	src-tauri/src/commands.rs	sessions	plumbing	video poster plumbing: one admitted video's first frame as a data: JPEG (QuickLook, else ffmpeg), cached in the app cache; main webview only	stable
+media_release	src-tauri/src/commands.rs	sessions	plumbing	video player plumbing: forgets a token	stable
+chat_save_attachment	src-tauri/src/commands.rs	sessions	plumbing	webview upload plumbing	stable
+chat_send	src-tauri/src/commands.rs	sessions	write	sessions.start / sessions.send; depth and per-turn caps; a stronger permission mode needs a card; lease Outside (queues an app-support row; its dead-lease check can take HISTORY_LOCK)	stable
+chat_efforts_list	src-tauri/src/commands.rs	sessions	plumbing	the window's cache of every chat's own reasoning effort (read-only)	stable
+chat_effort_set	src-tauri/src/commands.rs	sessions	plumbing	the composer's Effort list for one chat: a level or Default; never the app default; webview plumbing	stable
+chat_efforts_import	src-tauri/src/commands.rs	sessions	plumbing	one-time move of the old localStorage per-chat levels into the store; fills only chats without one	stable
+chat_steer	src-tauri/src/commands.rs	sessions	write	sessions.steer_session (L13): steers only the running turn the caller asked for, of a conversation it created (start_session), never its own; prefixed as from the agent that started it and stored by: agent with its run, never the person's direction. Lease::Outside: writes into a running agent's input and the session store	stable
+chat_steer_support	src-tauri/src/commands.rs	sessions	plumbing	the composer's per-agent Steer now wording (steering::support_table)	stable
+chat_cancel_held	src-tauri/src/commands.rs	sessions	write	sessions.cancel_held_send (L13): drops a held send by its heldId only when the caller's run sent it (checked under the held-sends lock), never in the caller's own conversation. Lease::Outside: held sends live in app support	stable
+chat_ack_held_failed	src-tauri/src/commands.rs	sessions	plumbing	the composer's acknowledgement that it holds a failed held send's words (steering::ack_failed): removes only a send already marked failed, never one still held	stable
+delete_session	src-tauri/src/commands.rs	sessions	confirm		stable
+generate_session_title	src-tauri/src/commands.rs	sessions	plumbing	UI titling helper; rename_agent_session is the verb	stable
+list_agent_sessions	src-tauri/src/commands/sessions_api.rs	sessions	read		stable
+conversation_chain	src-tauri/src/chat_chain.rs	sessions	plumbing	the banner and earlier chats of a conversation that continued elsewhere (one Main conversation, 11-07)	stable
+session_subagents	src-tauri/src/subagents.rs	sessions	read	sessions.subagents; a conversation's subagents for the Subagents tab (L2); Done is the current conversation's, `older` pages in the chain's older finished ones	stable
+session_target	src-tauri/src/commands/needs_you_api.rs	sessions	read	B·F15: one conversation by its exact key, with its workspace id	stable
+search_sessions	src-tauri/src/commands/needs_you_api.rs	sessions	read	B·F15: the palette's conversation search by title or the person's messages (2026-11-04; the agent action reads messages redacted), every workspace, keyset-paged	stable
+list_artifact_sessions	src-tauri/src/commands/sessions_api.rs	sessions	read		stable
+list_run_queue	src-tauri/src/commands/run_queue_api.rs	sessions	read		stable
+list_sessions	src-tauri/src/commands.rs	sessions	read		stable
+move_agent_session	src-tauri/src/commands/sessions_api.rs	sessions	write	also sessions.manage move; refused while the session has a turn queued or running and for the calling session; runs in the caller's lease (the rail wraps it in the workspace edit lease)	stable
+read_agent_conversation	src-tauri/src/commands/sessions_api.rs	sessions	read	The window's cold open of a chat; since WD1 its long tool results come as previews (full length and Read line count kept) and read_tool_result brings one whole; the agents' action reads every result whole	stable
+read_tool_result	src-tauri/src/commands/sessions_api.rs	sessions	plumbing	WD1: one stored tool call's full result, when its row expands after a lean cold open; reads only	stable
+read_agent_session	src-tauri/src/commands/sessions_api.rs	sessions	read		stable
+read_artifact_session_context	src-tauri/src/commands/sessions_api.rs	sessions	read		stable
+read_session	src-tauri/src/commands.rs	sessions	read		stable
+rename_agent_session	src-tauri/src/commands/sessions_api.rs	sessions	write		stable
+regenerate_chat_title	src-tauri/src/commands/sessions_api.rs	sessions	user-only	the row menu's Regenerate title: one model call on the chat's own agent (a self-hosted chat's own entry only); rename_agent_session is the verb	stable
+session_store_status	src-tauri/src/commands/sessions_api.rs	sessions	read		stable
+add_claude_account	src-tauri/src/claude_accounts.rs	settings.accounts	confirm	secret arg: redacted in card and audit	stable
+claude_accounts	src-tauri/src/claude_accounts.rs	settings.accounts	read	tokens never returned	stable
+provider_accounts	src-tauri/src/provider_accounts.rs	settings.accounts	read		stable
+provider_sign_in	src-tauri/src/provider_accounts.rs	settings.accounts	external	opens a browser sign-in (up to 5 minutes)	stable
+provider_sign_out	src-tauri/src/provider_accounts.rs	settings.accounts	confirm		stable
+refresh_claude_accounts	src-tauri/src/claude_accounts.rs	settings.accounts	confirm	A4 moved from write: reads each account token from the Keychain and makes a 1-token model call per account	stable
+remove_claude_account	src-tauri/src/claude_accounts.rs	settings.accounts	confirm		stable
+set_claude_account_routing	src-tauri/src/claude_accounts.rs	settings.accounts	user-only	compatibility IPC saves the ceiling only; agents use accounts.claudeCeiling, rotation always on	stable
+set_claude_account_failover	src-tauri/src/claude_accounts.rs	settings.accounts	plumbing	compatibility IPC always returns enabled; no setting or agent action	stable
+settings.accounts.set_claude_account_ceiling	src-tauri/src/app_actions.rs	settings.accounts	confirm	automatic rotation early-move threshold, without an off switch	stable
+headroom	src-tauri/src/claude_accounts.rs	accounts	read	#16: account room and the next chat/long-run route; hashed labels, never a token	stable
+update_claude_account	src-tauri/src/claude_accounts.rs	settings.accounts	confirm	secret arg: redacted	stable
+app_mcp_enabled	src-tauri/src/commands/app_tools_api.rs	settings.agent-tools	read		stable
+set_agent_role	src-tauri/src/commands.rs	settings.agent-tools	confirm	standing instructions for every delegation; changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+set_app_mcp_enabled	src-tauri/src/commands/app_tools_api.rs	settings.agent-tools	confirm	an agent may only switch it off	stable
+set_computer_control_enabled	src-tauri/src/commands.rs	settings.agent-tools	confirm	changes what agents can reach; changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+set_tasks_mcp_enabled	src-tauri/src/commands/tasks_tools_api.rs	settings.agent-tools	confirm	changes what agents can reach	stable
+set_teamwork_enabled	src-tauri/src/commands.rs	settings.agent-tools	confirm	changes what agents can reach; changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+set_vault_mcp_enabled	src-tauri/src/commands.rs	settings.agent-tools	confirm	changes what agents can reach; changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+set_code_context_mcp_enabled	src-tauri/src/commands.rs	settings.agent-tools	confirm	changes what agents can reach (CC2: the read-only hollow_code_context server); changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+tasks_mcp_enabled	src-tauri/src/commands/tasks_tools_api.rs	settings.agent-tools	read		stable
+get_agent_settings	src-tauri/src/commands.rs	settings.agents	read		stable
+get_extraction_settings	src-tauri/src/commands.rs	settings.extraction	read	overnight A11: the extraction model	stable
+set_extraction_settings	src-tauri/src/commands.rs	settings.extraction	confirm	Lease::Outside: app-data settings file History never diffs (overnight A11)	stable
+set_chat_retitle	src-tauri/src/commands.rs	settings.extraction	confirm	Lease::Outside: the retitle switch in the same settings file (morning N5)	stable
+set_agent_settings	src-tauri/src/commands.rs	settings.agents	confirm	changes defaults, models, efforts; card shows each field old → new	stable
+run_on_startup_status	src-tauri/src/commands.rs	settings.app	read		stable
+set_minimize_to_tray	src-tauri/src/commands.rs	settings.app	write	changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+set_run_on_startup	src-tauri/src/commands.rs	settings.app	confirm	A4 moved from write: an OS login item (persistence outside the vault); changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+delete_custom_theme	src-tauri/src/commands.rs	settings.appearance	confirm		stable
+list_custom_themes	src-tauri/src/commands.rs	settings.appearance	read		stable
+read_custom_theme	src-tauri/src/commands.rs	settings.appearance	read		stable
+set_window_vibrancy	src-tauri/src/commands.rs	settings.appearance	write	the glass theme; changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot (theme)	stable
+themes_dir_path	src-tauri/src/commands.rs	settings.appearance	read		stable
+write_custom_theme	src-tauri/src/commands.rs	settings.appearance	write	CSS validated by existing writer	stable
+get_shortcut_settings	src-tauri/src/shortcuts.rs	settings.shortcuts	read		stable
+set_shortcut_settings	src-tauri/src/shortcuts.rs	settings.shortcuts	write	Settings → Keyboard shortcuts: the master switch and per-command keys; applies menu accelerators and the system-wide quick capture / ingest keys; lease Outside (app data)	stable
+set_menu_enabled	src-tauri/src/app_menu.rs	settings.shortcuts	plumbing	greys Stop Running Turn, Back and Forward in the menu bar when they can't act (P1-49); only those three ids	stable
+suspend_shortcuts	src-tauri/src/shortcuts.rs	settings.shortcuts	plumbing	while Settings records a new key: every shortcut paused (nothing saved), then the saved ones back	stable
+after_summoned_capture	src-tauri/src/lifecycle.rs	settings.shortcuts	plumbing	after an Add sheet ⌘⌥⇧T, ⌘⌥⇧I or their tray items opened: once saved (an import succeeded) hides Hollow again (tray, minimized or another app in front); a failed import brings it forward (S5 review)	stable
+set_heartbeat_config	src-tauri/src/commands.rs	settings.automation	confirm	changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+set_heartbeat_drafts_enabled	src-tauri/src/commands.rs	settings.automation	confirm	changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+set_heartbeat_enabled	src-tauri/src/commands.rs	settings.automation	confirm	turns background agent runs on/off; changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot; turned off by the person (`switched`), it also drops heartbeat beats waiting for a self-hosted model, a Run now included (self-hosted models Q10 follow-up)	stable
+set_nudges_enabled	src-tauri/src/commands.rs	settings.automation	write	changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+delete_budget	src-tauri/src/commands/budgets_api.rs	settings.budgets	confirm	spend limits	stable
+get_budgets	src-tauri/src/commands/budgets_api.rs	settings.budgets	read		stable
+resume_budget	src-tauri/src/commands/budgets_api.rs	settings.budgets	confirm	spend limits	stable
+save_budget	src-tauri/src/commands/budgets_api.rs	settings.budgets	confirm	spend limits	stable
+check_connectors	src-tauri/src/connectors.rs	settings.connectors	read		stable
+delete_connector	src-tauri/src/connectors.rs	settings.connectors	confirm		stable
+import_connector	src-tauri/src/connectors.rs	settings.connectors	confirm		stable
+connector_use_hollow_sign_in	src-tauri/src/connectors.rs	settings.connectors	confirm	adds Hollow's own sign-in for a claude.ai connector; never mail, Slack or Teams	stable
+list_connectors	src-tauri/src/connectors.rs	settings.connectors	read	env/header values never returned	stable
+m365_sign_in	src-tauri/src/m365_auth.rs	settings.connectors	external	opens Microsoft's browser sign-in (up to 5 minutes) for the built-in Microsoft 365 connector	stable
+m365_sign_out	src-tauri/src/m365_auth.rs	settings.connectors	confirm	forgets the built-in connector's Microsoft tokens	stable
+m365_status	src-tauri/src/m365_auth.rs	settings.connectors	read	signed in or not and the account; never tokens	stable
+plaud_mcp_sign_in	src-tauri/src/plaud_mcp_auth.rs	settings.connectors	external	runs plaud-mcp's own login tool (opens Plaud's browser sign-in, up to 5 minutes) for the built-in Plaud connector; never install or setup; one Plaud sign-in at a time (shared with Recordings)	stable
+plaud_mcp_sign_out	src-tauri/src/plaud_mcp_auth.rs	settings.connectors	confirm	runs plaud-mcp's logout tool (forgets and revokes its own sign-in; Recordings keep theirs)	stable
+remote_connector_sign_in	src-tauri/src/connectors.rs	settings.connectors	external	opens the connector's own browser sign-in (up to 5 minutes); tokens stay on this Mac	stable
+remote_connector_sign_out	src-tauri/src/connectors.rs	settings.connectors	confirm	forgets a remote connector's Hollow sign-in	stable
+save_connector	src-tauri/src/connectors.rs	settings.connectors	confirm	a command line plus secrets; card shows the command, masked args and env/header keys only	stable
+jev_decisions_report	src-tauri/src/jev_decide.rs	settings.jev	read		stable
+jev_status	src-tauri/src/jev.rs	settings.jev	read		stable
+remove_jev_key	src-tauri/src/jev.rs	settings.jev	confirm		stable
+save_jev_settings	src-tauri/src/jev.rs	settings.jev	confirm	secret arg: redacted	stable
+test_jev_key	src-tauri/src/jev.rs	settings.jev	confirm	a real scoring call on the Jev key (spends quota); A1 moved it from read	stable
+set_foreground_notification_scope	src-tauri/src/commands/system.rs	settings.notifications	write		stable
+set_notify_native_enabled	src-tauri/src/commands.rs	settings.notifications	confirm	A4 moved from write: off also silences the run-guard and budget banners; changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+announce_chat_native	src-tauri/src/commands.rs	settings.notifications	plumbing	0.4: one native banner for a chat that finished or needs you (no record); honours the macOS system notifications switch; the window's announcer applies the quiet rules; webview bridge only	stable
+set_dock_badge	src-tauri/src/commands.rs	settings.notifications	plumbing	0.4: the dock badge count for chats waiting on you or finished unseen (0 clears); webview bridge only	stable
+mark_operator_profile_reviewed	src-tauri/src/commands/system.rs	settings.profile	write		stable
+operator_context	src-tauri/src/commands/system.rs	settings.profile	read		stable
+operator_context_switch	src-tauri/src/commands/system.rs	settings.profile	read	the persisted switch the window adopts at launch (the backend's value is the source of truth)	stable
+profile_builder_accept	src-tauri/src/commands/profile_builder_api.rs	settings.profile	user-only	owner decision 2026-10-02: only a person adds a fact about themselves to me/; agents propose with profile_builder_scan	stable
+profile_builder_accept_all	src-tauri/src/commands/profile_builder_api.rs	settings.profile	user-only	owner decision 2026-10-02: only a person adds facts about themselves to me/	stable
+profile_builder_answer	src-tauri/src/commands/profile_builder_api.rs	settings.profile	user-only	owner decision 2026-10-02: an answer about the user is the user's own	stable
+profile_builder_dismiss	src-tauri/src/commands/profile_builder_api.rs	settings.profile	user-only	owner decision 2026-10-02: dismissing settles a suggestion for good (never proposed again); the user's decision	stable
+profile_builder_scan	src-tauri/src/commands/profile_builder_api.rs	settings.profile	confirm	A4 moved from write: a model call that reads the user's agent memories	stable
+profile_builder_set_auto_learn	src-tauri/src/commands/profile_builder_api.rs	settings.profile	confirm		stable
+profile_builder_skip_question	src-tauri/src/commands/profile_builder_api.rs	settings.profile	write		stable
+profile_builder_view	src-tauri/src/commands/profile_builder_api.rs	settings.profile	read		stable
+set_operator_context_enabled	src-tauri/src/commands/system.rs	settings.profile	confirm	changes what every agent is told; changes through its store setter over the webview bridge (A4); the backend persists it (operator-context.json) and is the source of truth: the window adopts it at launch and pushes only an explicit change	stable
+set_semantic_search_enabled	src-tauri/src/commands.rs	settings.search	write	changes through its store setter over the webview bridge (A4): its localStorage copy is the source of truth, pushed to the backend at boot	stable
+delete_user_skill	src-tauri/src/commands.rs	skills	confirm		stable
+commit_skill_import	src-tauri/src/commands.rs	skills	user-only	the person's Install after reading an import's preview; agents use the skills.import_skill action, whose card shows the staged files	stable
+discard_skill_import	src-tauri/src/commands.rs	skills	plumbing	drops the Import panel's staged copy	stable
+preview_skill_import	src-tauri/src/commands.rs	skills	plumbing	the Import panel's staging and preview (outside ~/.agents/skills); agents' skills.import_skill stages on its card	stable
+skill_provenance	src-tauri/src/commands.rs	skills	read	a shared skill's import record (app data), what changed outside Hollow, and its local note (repo ideas 10-27 #2)	stable
+stage_skill_update	src-tauri/src/commands.rs	skills	external	skills.stage_skill_update (L13): shallow clone of the recorded https origin (or the recorded path) into Import's staging; card names the origin; installs nothing. Lease::Outside: network and staging outside the vault	stable
+set_skill_note	src-tauri/src/commands.rs	skills	confirm	skills.set_skill_note (L13): the local note in a shared SKILL.md every agent reads, so confirm like skills.write_user_skill. Lease::Outside: ~/.agents/skills and app-data provenance, outside the vault	stable
+skills.approve_repo_skill	src-tauri/src/app_actions.rs	skills	confirm	verb: no Tauri command of its own; SK1: allows a skill that came inside a repo the person does not own, after a card (ALWAYS_ASK: every mode, Bypass included) showing its repo, owner and files; remembered by content hash in repo-trust.json (app data). Lease::Outside	stable
+skills.set_repo_owner	src-tauri/src/app_actions.rs	skills	confirm	verb: no Tauri command of its own; SK1 review: adds or removes a GitHub owner whose repos count as the person's (repo-trust.json owners, app data), after a card in every mode (ALWAYS_ASK). Lease::Outside	stable
+list_skills	src-tauri/src/commands.rs	skills	read		stable
+skill_portability_table	src-tauri/src/commands.rs	skills	plumbing	the Skills page's per-agent portability table (skill_portability::resolve), read-only; an agent reads skills through skills.read_skill	stable
+read_skill	src-tauri/src/commands.rs	skills	read		stable
+write_user_skill	src-tauri/src/commands.rs	skills	confirm	changes every agent's instructions	stable
+backup_health	src-tauri/src/commands/awareness.rs	system	read		stable
+clear_debug_logs	src-tauri/src/commands.rs	system	confirm		stable
+connect_hollow_home	src-tauri/src/commands.rs	system	confirm	changes the Hollow folder	stable
+create_profile_notes	src-tauri/src/commands.rs	system	write		stable
+diagnostics	src-tauri/src/commands/system.rs	system	read		stable
+disk_guard	src-tauri/src/commands/system.rs	system	read	overnight D1: free space and Hollow's largest folders; read-only	stable
+agent_tool_path	src-tauri/src/commands/system.rs	system	read	A12: the agents' PATH folder by folder with each folder's source, and whether the login shell's PATH was read; read-only	stable
+set_disk_threshold	src-tauri/src/commands/system.rs	system	confirm	Lease::Outside: app-data disk-guard.json, the Warn under threshold (morning N6)	stable
+disk_threshold	src-tauri/src/commands/system.rs	system	plumbing	P1-22: Disk space's Warn under before the first measure; disk_guard reports the same value	stable
+overnight_summary	src-tauri/src/commands/system.rs	system	read	overnight C8: Home's morning card (last night's runs, failures, PRs, commits, waiting)	stable
+hollow_databases	src-tauri/src/commands/system.rs	system	read	repo features R7b: Hollow's SQLite files with owner, size, -wal and schema version; check adds quick_check and row counts on read-only connections	stable
+stale_indexes	src-tauri/src/commands/system.rs	system	read	R7b: other vaults' SearchIndex/EmbedIndex files unused for an hour (Disk space → Remove old indexes…'s preview)	stable
+remove_stale_indexes	src-tauri/src/commands/system.rs	system	confirm	Lease::Outside: deletes other vaults' index files in app support (never this vault's or a Sessions DB); card bound to the exact list (R7b)	stable
+move_home_plan	src-tauri/src/commands/move_home.rs	system	read	system.move_hollow_home_plan: Move Hollow home dry run; reads only, checks dataless flags before reading any file under a moved root	stable
+move_home_start	src-tauri/src/commands/move_home.rs	system	confirm	system.move_hollow_home: Lease::Outside; stages the plan bound to its hash, starts the detached helper and quits Hollow (ends the calling turn); refused while another chat runs or is queued	stable
+move_home_status	src-tauri/src/commands/move_home.rs	system	read	system.move_hollow_home_status: the last move's journal, checks and whether it can be rolled back	stable
+move_home_rollback	src-tauri/src/commands/move_home.rs	system	confirm	system.rollback_move_home: Lease::Outside; stages a rollback from the backup and quits Hollow; refused once new work landed in the new vault	stable
+save_diagnostics	src-tauri/src/commands/system.rs	system	write	system.save_diagnostics: redacted zip into a named folder outside the vault, never overwrites, returns path, size and count; Lease::Outside: file outside the vault	stable
+settings_export	src-tauri/src/settings_transfer.rs	settings	write	settings.settings_export: non-secret settings to a new .json path outside the vault (refused inside it), never replaces a file, read as the COO; result has path and counts only; Lease::Outside: reads the window's store and writes outside the vault	stable
+settings_import_preview	src-tauri/src/settings_transfer.rs	settings	read	settings.settings_import_preview: old to new per setting, ignored keys and the hash for apply; values redacted for the COO (secret-named fields masked at any depth); the hash binds the exact values; changes nothing	stable
+settings_import_apply	src-tauri/src/settings_transfer.rs	settings	confirm	settings.settings_import_apply: applies a previewed import only if its hash still matches, as the COO through the settings setters (never a command); card lists every change old to new, redacted; Lease::Outside: settings live in app support and the window's store	stable
+result_export_markdown	src-tauri/src/result_export.rs	workspaces	confirm	workspaces.export_result_markdown: write a text Result as Markdown to a NEW absolute .md file outside the vault, published by hard link so a file made meanwhile is never replaced; card names the path. Lease::Outside: the file is outside the vault, which History never diffs	stable
+build_identity	src-tauri/src/commands.rs	system	read	compile-time provenance of this binary	stable
+directories_status	src-tauri/src/commands.rs	system	read		stable
+list_activity_ledger	src-tauri/src/commands/system.rs	system	read		stable
+refresh_directories	src-tauri/src/commands.rs	system	write		stable
+open_project_workspace	src-tauri/src/commands.rs	workspaces	write	workspaces.open_project_workspace (L13): a connected project's workspace, made on first open; a legacy notion-* workspace of the same name wins. Lease::Own: waits on the connection's update lock first (a Projects rescan holds it for minutes, never under HISTORY_LOCK), then writes a first open's workspace files inside the caller's live run (live_write)	stable
+set_directory_exclusion	src-tauri/src/commands.rs	system	write	Hollow-side ignore list beside the manifest; never writes into the project folder; lease Outside like refresh_directories	stable
+set_workspace_source	src-tauri/src/commands.rs	system	confirm	changes the Hollow folder source (obsidian only; older Notion arguments are ignored and a stored notion block is left as it is)	stable
+setup_restart	src-tauri/src/commands.rs	system	confirm	restarts Hollow 1.5 s after answering; ends the calling run	stable
+setup_status	src-tauri/src/commands.rs	system	read		stable
+dictation_status	src-tauri/src/dictation.rs	system	read	system.dictation_status: whether on-device dictation is ready; never prompts or opens the microphone	stable
+dictation_authorize	src-tauri/src/dictation.rs	system	user-only	asks macOS's own speech recognition prompt for the person (overnight 10-11 B7)	stable
+dictation_start	src-tauri/src/dictation.rs	system	user-only	starts the microphone and on-device recognition for the person's composer; events only, nothing sent (overnight 10-11 B7)	stable
+dictation_stop	src-tauri/src/dictation.rs	system	user-only	stops that dictation session (overnight 10-11 B7)	stable
+open_dictation_settings	src-tauri/src/dictation.rs	system	user-only	Person opens macOS Privacy → Microphone or Speech Recognition from a dictation refusal (P1-55)	stable
+create_project	src-tauri/src/commands.rs	tasks	write		stable
+create_task	src-tauri/src/commands.rs	tasks	write	route via task_broker (dispatch_at holds the lease itself)	stable
+dashboard	src-tauri/src/commands.rs	tasks	read		stable
+delete_task	src-tauri/src/commands.rs	tasks	confirm		stable
+delete_task_filter	src-tauri/src/commands.rs	tasks	confirm	A2 moved from write: deletes with no trash	stable
+git_activity	src-tauri/src/commands.rs	tasks	read		stable
+list_task_filters	src-tauri/src/commands.rs	tasks	read		stable
+migrate_task_priorities	src-tauri/src/commands.rs	tasks	plumbing	one-shot migration	stable
+parse_quick_add	src-tauri/src/commands.rs	tasks	read	pure parser	stable
+project_assist	src-tauri/src/commands.rs	tasks	confirm	runs a model call (spends); A1 moved it from read	stable
+projects	src-tauri/src/commands.rs	tasks	read		stable
+restore_task	src-tauri/src/commands.rs	tasks	write	url must be under tasks/	stable
+save_task_filter	src-tauri/src/commands.rs	tasks	write		stable
+set_project_status	src-tauri/src/commands.rs	tasks	write	url must be under projects/ (hollow_app only; agents change projects through hollow_tasks set_project_status, which keeps a workspace mirror in place)	stable
+set_task_priority	src-tauri/src/commands.rs	tasks	write	route via task_broker update_task {priority}	stable
+set_task_status	src-tauri/src/commands.rs	tasks	write	route via task_broker set_status; a tracker-held status is refused (TASK_LINKED) and changes through the tracker	stable
+suggest_project_next_move	src-tauri/src/commands.rs	tasks	confirm	runs a model call (spends); A1 moved it from read	stable
+task_assist	src-tauri/src/commands.rs	tasks	confirm	runs a model call (spends); A1 moved it from read	stable
+tasks	src-tauri/src/commands.rs	tasks	read		stable
+update_project	src-tauri/src/commands.rs	tasks	write	url must be under projects/ (hollow_app only; agents change projects through hollow_tasks update_project). The writer line-patches and pins mirrors in place since the D1 fix	stable
+update_task	src-tauri/src/commands.rs	tasks	write	route via task_broker update_task (ref, expectedHash, fields); tracker-held fields are refused (TASK_LINKED)	stable
+chat_preview_open	src-tauri/src/commands.rs	ui	confirm	A4 moved from write: opens a file with its default app, which can launch programs; since H4 a folder, app, executable or runnable extension (decided on the canonical target, so through a symlink too) is revealed instead; since R1 an executable is revealed unless its extension is a known document type	stable
+open_markdown_preview	src-tauri/src/md_open.rs	ui	write		stable
+reveal_themes_folder	src-tauri/src/commands.rs	ui	write		stable
+take_preview_file	src-tauri/src/md_open.rs	ui	plumbing	preview-window plumbing	stable
+fetch_remote_image	src-tauri/src/remote_image.rs	ui	plumbing	click-to-load image plumbing: one https image as a data: URL for the main window (its CSP allows no remote images); never an agent verb	stable
+obsidian_available	src-tauri/src/commands.rs	ui	plumbing	P1-41: whether an app opens obsidian:// links (Launch Services), so the workspace menu's Open brief in Obsidian says why it's off; never an agent verb	stable
+git_card_status	src-tauri/src/git_card.rs	ui	plumbing	5.2: the card's branch, ahead/behind and +N -N for any folder; read-only	stable
+git_card_branches	src-tauri/src/git_card.rs	ui	plumbing	5.2: the card's branch picker rows; read-only	stable
+git_card_switch	src-tauri/src/git_card.rs	ui	plumbing	5.2: the person's click in the card's branch picker: git switch (or -c) in the chat's folder; refused while an agent run holds the vault	stable
+git_card_new_worktree	src-tauri/src/git_card.rs	ui	plumbing	5.2: the person's click: worktree mode, git worktree add -b under Hollow's worktrees folder	stable
+git_card_suggest_message	src-tauri/src/git_card.rs	ui	plumbing	5.2: the card's generated commit message from the changed files; local, no model	stable
+git_card_diff	src-tauri/src/git_card.rs	ui	plumbing	5.3: the Diff tab's per-file diff: folder against HEAD with untracked files, or between a turn's two checkpoint commits; redacted and capped; read-only	stable
+git_card_range_files	src-tauri/src/git_card.rs	ui	plumbing	5.3: the Diff tab's file list for one turn (two checkpoint commits) with +N -N; read-only	stable
+pr_card_view	src-tauri/src/pr_card.rs	ui	plumbing	5.4: the PR tab's read of the chat folder's branch PR with checks and comments through gh (opening the tab is the click); read-only, nothing is created or posted	stable
+github_list	src-tauri/src/github_pages.rs	ui	plumbing	7.3: the Pull requests page's list of a repository's PRs or issues through gh with filters (opening the page is the click); read-only; agents use github.list	stable
+github_detail	src-tauri/src/github_pages.rs	ui	plumbing	7.3: one PR or issue with checks, comments, labels and the Linear issues it names; text redacted and capped; read-only; agents use github.view	stable
+github_triage	src-tauri/src/github_pages.rs	ui	plumbing	7.3: the person's click after the page's confirm dialog naming the repository and the change: comment (stdin), label, assign, close or reopen through gh; agents use github.triage, which asks on a card	stable
+terminal_open	src-tauri/src/terminal.rs	ui	plumbing	7.2: the drawer's New terminal: starts the person's login shell on a pty in the chat's folder, only when the chat's mode runs commands beyond a folder sandbox, with an allowlist environment (no keys, tokens or HOLLOW_ variables); at most 4 a chat and 12 in all; never an agent tool	stable
+terminal_gate	src-tauri/src/terminal.rs	ui	plumbing	7.2: the drawer re-asks after a chat's mode or agent changes; a mode that forbids a shell ends the chat's terminals and returns the reason	stable
+terminal_write	src-tauri/src/terminal.rs	ui	plumbing	7.2: the person's key presses and pastes into one terminal; capped at 1 MiB a call	stable
+terminal_resize	src-tauri/src/terminal.rs	ui	plumbing	7.2: the terminal's rows and columns follow the tab's size	stable
+terminal_close	src-tauri/src/terminal.rs	ui	plumbing	7.2: closes one terminal: SIGHUP to its whole process group, then SIGKILL after a grace period	stable
+terminal_adopt_chat	src-tauri/src/terminal.rs	ui	plumbing	7.2: a chat that had no key yet keeps its terminals under the key its first send created	stable
+git_card_commit_push	src-tauri/src/git_card.rs	ui	plumbing	5.2: the person's click after the card's confirm dialog: add -A, commit, optional push -u origin; refused while an agent run holds the vault	stable
+open_in_targets	src-tauri/src/open_in.rs	ui	plumbing	5.1: the chat card's Open in menu rows (Finder, installed editors from a fixed table)	stable
+open_in_open	src-tauri/src/open_in.rs	ui	plumbing	5.1: the person's click opens the chat folder in Finder or a table editor (open -a, no shell, id picks the app)	stable
+vault_open_in_obsidian	src-tauri/src/commands.rs	ui	write	desktop side effect only	stable
+vault_reveal_in_finder	src-tauri/src/commands.rs	ui	write	desktop side effect only	stable
+claude_quota	src-tauri/src/commands/claude_quota_api.rs	usage	read		stable
+usage_summary	src-tauri/src/commands/usage_api.rs	usage	read		stable
+ledger_query	src-tauri/src/commands/usage_api.rs	usage	read	run ledger v2: grouped runs, known cost, unknown-cost count; hashed account labels only	stable
+job_timing	src-tauri/src/commands/usage_api.rs	usage	read	median length of recent successful launched chats of this folder's work kind; null under 3 or when the kind is unknown; not hours saved	stable
+conversation_context_use	src-tauri/src/commands/usage_api.rs	usage	read	repo features R6: the usage ring's Context section; tool-result sizes, cache share per turn, compactions; never result text	stable
+run_cost	src-tauri/src/commands/usage_api.rs	usage	read	one run's cost roll-up (own, descendants, total; unknown never 0), for the automation run review	stable
+price_table	src-tauri/src/commands/usage_api.rs	usage	read	Settings → Usage → Prices lists it	stable
+set_price	src-tauri/src/commands/usage_api.rs	usage	confirm	changes every later cost of a model the agent cannot price (every Codex run); Settings → Usage → Prices saves after an inline confirm	stable
+summary	src-tauri/src/value.rs	value	read	#6: month cost vs estimated hours saved; accepted runs only (accepted Result or issue Done after the run, G4); hoursSaved hidden at 0	stable
+get_baselines	src-tauri/src/value.rs	value	read		stable
+monthly_report	src-tauri/src/value.rs	value	write	drafts outputs/value-report-YYYY-MM.md; never overwrites, never leaves the Mac	stable
+set_baseline	src-tauri/src/value.rs	value	confirm	value.set_baseline: a work kind's hours-saved baseline or one run's minutes; card shows old to new, asked in every auto chat. Lease::Outside: stored in app data (value-baselines.json), which History never diffs	stable
+run_steps	src-tauri/src/step_spine.rs	runs	read	F6 step spine: a turn's steps, files and checkpoints; running steps of an ended turn read interrupted	stable
+retry_run_from_step	src-tauri/src/step_spine.rs	runs	confirm	F6: a new conversation seeded to step n (not a replay); puts files back through History only for the person (an agent's own turn holds the vault)	stable
+read_connected_file	src-tauri/src/commands.rs	vault	read		stable
+connected_files	src-tauri/src/commands.rs	vault	read	paginated connected-project inventory plus direct lookups outside it (next-level P07)	stable
+connected_index_status	src-tauri/src/commands.rs	system	read	repo features R14b: the project content index's switch and progress (indexed of listed, image-only PDFs, failed, left out for privacy)	stable
+set_connected_index_enabled	src-tauri/src/commands.rs	settings.search	write	R14b: Settings → Advanced → Search & indexes → Search inside project files; backend-owned (a marker beside the manifest), off deletes the index DB with its -wal/-shm; lease Outside	stable
+save_preview_to_vault	src-tauri/src/md_open.rs	vault	write		stable
+semantic_search	src-tauri/src/commands.rs	vault	read		stable
+semantic_search_status	src-tauri/src/commands.rs	vault	read		stable
+vault_backlinks	src-tauri/src/commands.rs	vault	read		stable
+vault_create_note	src-tauri/src/commands.rs	vault	write	hidden, protected (run_guard) and workflows/ paths refused: the note writers attribute protected writes to the user	stable
+vault_delete_note	src-tauri/src/commands.rs	vault	confirm		stable
+vault_graph	src-tauri/src/commands.rs	vault	read		stable
+vault_items	src-tauri/src/commands.rs	vault	read		stable
+vault_move_note	src-tauri/src/commands.rs	vault	confirm		stable
+vault_note	src-tauri/src/commands.rs	vault	read		stable
+vault_notes_list	src-tauri/src/commands.rs	vault	read		stable
+vault_save_note_cas	src-tauri/src/commands.rs	vault	write	compare-and-swap; hidden, protected and workflows/ paths refused	stable
+vault_search	src-tauri/src/commands.rs	vault	read		stable
+vault_tree	src-tauri/src/commands.rs	vault	read		stable
+vault_write_note	src-tauri/src/commands.rs	vault	write	optional expectedRevision (WRITE_CONFLICT on a stale one); hidden, protected and workflows/ paths refused	stable
+vault_give_up_write	src-tauri/src/commands.rs	vault	write	after a WRITE_CONFLICT the agent could not merge: keeps its text as one conflicted copy (one Waiting on you item); same text twice is one; hidden, protected and workflows/ paths refused	stable
+attach_workspace_source	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	A2 moved from write: copies any readable file on this Mac (up to 20 MB) into the vault, where agents can read it	stable
+preview_source_refresh	src-tauri/src/commands/workspaces_api.rs	workspaces	read	workspaces.preview_source_refresh: compare a source snapshot with its original by content (texts up to 1 MB); reads only	stable
+apply_source_refresh	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	workspaces.refresh_source: replace a snapshot with its original, bound to the preview's two hashes; the earlier copy is kept	stable
+build_repo_candidates	src-tauri/src/commands/workspaces_api.rs	workspaces	read		stable
+clone_repository	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	4.4: git clone of an https or ssh address into the Projects folder (checked address, GIT_ALLOW_PROTOCOL=https:ssh, removed on failure)	stable
+quick_chat_scratch	src-tauri/src/commands/workspaces_api.rs	workspaces	plumbing	4.4: a quick chat's scratch folder and its file count; create makes it	stable
+adopt_chat_scratch	src-tauri/src/commands/workspaces_api.rs	workspaces	plumbing	4.4: Turn into project moves scratch files into the project's sources/chat-<key>	stable
+list_project_scripts	src-tauri/src/commands/workspaces_api.rs	workspaces	plumbing	4.5: a project's named scripts (validated on read); the card lists them	stable
+save_project_scripts	src-tauri/src/commands/workspaces_api.rs	workspaces	plumbing	4.5: replace a project's scripts and chords after the window's chord guard; every field validated again here	stable
+run_project_script	src-tauri/src/commands/workspaces_api.rs	workspaces	plumbing	4.5: Run or the script's chord starts it as a service in the project folder; only the person's click	stable
+create_build_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	creates a git worktree (fetch up to 90 s, add up to 10 min); lease Outside	stable
+create_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	write		stable
+ensure_main_agent_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	write	creates the built-in Main agent workspace (brief, plan, standing orders) on first use; idempotent	stable
+create_main_standing_orders	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	workspaces.create_main_standing_orders: create the COO's default standing orders only when absent (exclusive create of Hollow's built-in text); protected file, so a card	stable
+workspaces.edit_standing_orders	src-tauri/src/app_actions.rs	workspaces	confirm	workspaces.edit_standing_orders (G1): add, replace or remove one line of the COO standing orders (exact before text or index; 400 chars, 120 lines); ALWAYS_ASK, a card shows before and after in every mode; the file stays protected from agents raw Edit and Write	stable
+ensure_quick_chats_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	write	creates the built-in Chats workspace (id quick-chats) on first use; idempotent	stable
+list_workspaces	src-tauri/src/commands/workspaces_api.rs	workspaces	read		stable
+merge_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	master plan #18: card lists every file and conversation, bound to the plan hash; agents run it inside their lease, the rail inside the workspace edit lease; writes .hollow-merge.json + MERGED.md for undo_workspace_merge; never from a conversation in the merged workspace	stable
+plan_task_candidates	src-tauri/src/commands/workspaces_api.rs	workspaces	read		stable
+preview_workspace_merge	src-tauri/src/commands/workspaces_api.rs	workspaces	read	the merge plan: files (with -merged renames), conversations, hash	stable
+archive_shared_docs	src-tauri/src/commands/workspaces_api.rs	workspaces	write	workspaces.archive_shared_docs (V5a): one shared doc, WORKSPACE.md (older dated Current context entries) or PLAN.md (fully ticked sections); mode dry_run (default) returns sizes before and after, what moves and the doc hash and writes nothing, mode apply needs that hash as expectedHash (compare-and-swap, a changed doc moves nothing) and the dry run's today, always asks (asks_in_mode, every permission mode), refuses while another run holds the workspace, checks the move is lossless, writes the archive note first then the doc, and the card (apply only) lists what moves; the app runs it as its own History run, agents inside their own run	stable
+read_work_file	src-tauri/src/commands/workspaces_api.rs	workspaces	read		stable
+read_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	read	durability D3: output adds contextHealth [{name, bytes, included, limit}] per brief/plan document (sizes only)	stable
+remove_build_worktree	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	deletes a worktree, the primary or (lane) one added with workspaces.add_build_worktree; allowed while the caller holds the vault (remove_lane, remove_for); lease Outside	stable
+workspaces.add_build_worktree	src-tauri/src/app_actions.rs	workspaces	confirm	F6 part B: another git worktree (new branch) bound to a build workspace as a named lane with its own build folder and port; no UI yet; lease Outside; runs without a card in auto, like create_build_workspace	stable
+workspaces.build_worktrees	src-tauri/src/app_actions.rs	workspaces	read	F6 part B: a build workspace's worktrees, the primary (main) first, from the binding store outside the vault	stable
+trash_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	runs inside the caller's lease (workspaces::trash_for_live_run), recorded as its deletes; never the caller's own workspace	stable
+restore_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	write	workspaces.restore_workspace: move a trashed workspace back; the only restore for ones the person trashed (History covers agent trashes)	stable
+trashed_workspaces	src-tauri/src/commands/workspaces_api.rs	workspaces	read	workspaces.trashed_workspaces: the vault trash's workspaces, newest first, with why a restore is blocked	stable
+undo_workspace_merge	src-tauri/src/commands/workspaces_api.rs	workspaces	confirm	puts back what the merge record lists (files, conversations, unedited appended sections, status); anything changed since stays and is named	stable
+update_workspace	src-tauri/src/commands/workspaces_api.rs	workspaces	write	rename, status (archived unpins) and pin: pinned true/false, pinPosition 1 = top (workspace_pins.rs)	stable
+set_department	src-tauri/src/commands/workspaces_api.rs	workspaces	write	department/work kind attribution for later ledger rows	stable
+set_workspace_canvas_theme	src-tauri/src/commands/workspaces_api.rs	workspaces	write	workspace canvas palette; null restores app theme	stable
+workspace_icons	src-tauri/src/commands/workspaces_api.rs	workspaces	read		stable
+workspace_sessions	src-tauri/src/commands/workspaces_api.rs	workspaces	read		stable
+app_ui_respond	src-tauri/src/commands/app_bridge_api.rs	ui	plumbing	the webview bridge answer (A4); not a user verb	stable
+browser_open	src-tauri/src/browser_pane.rs	ui	plumbing	side-panel browser plumbing: the pane places its own tab; agents open a page with ui.navigate (page browser)	stable
+browser_show	src-tauri/src/browser_pane.rs	ui	plumbing	side-panel browser plumbing: placement and visibility follow the layout	stable
+browser_go	src-tauri/src/browser_pane.rs	ui	plumbing	side-panel browser plumbing: the toolbar's back/forward/reload	stable
+browser_close	src-tauri/src/browser_pane.rs	ui	plumbing	side-panel browser plumbing: closing a tab	stable
+browser_url	src-tauri/src/browser_pane.rs	ui	plumbing	side-panel browser plumbing: the address field follows the page	stable
+browser_snapshot	src-tauri/src/browser_pane.rs	ui	plumbing	side-panel browser plumbing: Annotate's capture of the page the user is marking up	stable
+canvas_export	src-tauri/src/canvas_export.rs	canvases	write	canvases.export_canvas: PNG, PDF or SVG file into the workspace's outputs/exports; PNG and PDF refused while Hollow's window is closed, SVG needs no window; no attachment or clipboard	stable
+canvas_measure	src-tauri/src/canvas_export.rs	ui	user-only	Repo ideas 10-27 #4: a reply canvas's Measure on the picture, two offscreen captures (text shown and hidden) for the main window to score; saves nothing; main caller only, never an agent action	stable
+canvas_capture_job	src-tauri/src/canvas_export.rs	ui	plumbing	Canvas export job for its own capture webview label only	stable
+canvas_capture_ready	src-tauri/src/canvas_export.rs	ui	plumbing	Canvas capture completion from its own webview label only	stable
+canvas_capture_failed	src-tauri/src/canvas_export.rs	ui	plumbing	Canvas capture failure from its own webview label only	stable
+browser_inspect	src-tauri/src/browser_pane.rs	ui	plumbing	side-panel browser plumbing: Annotate's element under each mark	stable
+browser_page_text	src-tauri/src/browser_pane.rs	ui	plumbing	Preview browser plumbing: Annotate's Include page text, the tab's readable text (24 KB) the person adds to the composer; never an agent action	stable
+browser_grant_tab	src-tauri/src/browser_pane.rs	ui	user-only	Repo ideas 10-27 #5: Preview toolbar → Share with chat; the person shares one tab with the conversation on screen, read only, for one turn of it; main window only, never an agent action	stable
+browser_revoke_tab	src-tauri/src/browser_pane.rs	ui	write	ui.revoke_tab: stops sharing a Preview tab with its chat (tab_grants::revoke); Lease::Outside: grants are in memory, nothing for History	stable
+browser_tab_grants	src-tauri/src/browser_pane.rs	ui	read	ui.list_tab_grants: tab ids, chat keys and titles shared now (tab_grants::list), no page content	stable
+workspace_activity	src-tauri/src/commands/workspaces_api.rs	workspaces	read	Canvas C5b Q3: the Activity section's timeline (conversations, runs with receipts and usage, result events, builds and the last install), read-only over existing records	stable
+workspace_results	src-tauri/src/commands/results_api.rs	workspaces	read	next-level P05	stable
+set_result_review	src-tauri/src/commands/results_api.rs	workspaces	write	next-level P05; the app action marks draft or ready only (agent_set_result_review, recorded as the calling run) and can't change a version the person accepted; only the person accepts, in Results, with the reviewed hash (decision 3)	stable
+result_snapshot	src-tauri/src/commands/results_api.rs	workspaces	read	next-level P05	stable
+workspace_digests	src-tauri/src/commands/results_api.rs	workspaces	read	next-level P02	stable
+result_preview	src-tauri/src/commands/results_api.rs	workspaces	read	next-level P05	stable
+agenda_events	src-tauri/src/commands/agenda_api.rs	agenda	read	read-only selected Mac or Microsoft calendar	stable
+calendar_source_status	src-tauri/src/commands/agenda_api.rs	agenda	read	Agenda source, permission and available Mac calendars; no permission request	stable
+set_calendar_source	src-tauri/src/commands/agenda_api.rs	agenda	user-only	Person's source and calendar selection; explicit Mac choice may request native permission	stable
+open_calendar_settings	src-tauri/src/commands/agenda_api.rs	agenda	user-only	Person opens macOS Calendar privacy settings	stable
+list_focus_blocks	src-tauri/src/commands/agenda_api.rs	agenda	read	next-level P10	stable
+save_focus_block	src-tauri/src/commands/agenda_api.rs	agenda	write	next-level P10; local planning only	stable
+delete_focus_block	src-tauri/src/commands/agenda_api.rs	agenda	write	next-level P10	stable
+list_recordings	src-tauri/src/commands/recordings_api.rs	recordings	read	next-level P11; on demand via the plaud CLI, nothing copied	stable
+read_recording	src-tauri/src/commands/recordings_api.rs	recordings	read	next-level P11	stable
+recording_audio_url	src-tauri/src/commands/recordings_api.rs	recordings	read	next-level P11; URL expires	stable
+set_recording_link	src-tauri/src/commands/recordings_api.rs	recordings	write	next-level P11; explicit links only	stable
+keep_recording_transcript	src-tauri/src/commands/recordings_api.rs	recordings	write	recordings.keep_transcript: keep a recording's transcript in a workspace's sources/ (never overwrites), then extract onto the review queue in the background, metered to the caller's run (the window's click: the person's); returns the path only	stable
+list_all_results	src-tauri/src/commands/results_api.rs	workspaces	read	next-level P06 Library results	stable
+list_all_results_peek	src-tauri/src/commands/results_api.rs	workspaces	plumbing	Library All: list_all_results that never moves a damaged review store	stable
+list_open_interactions	src-tauri/src/commands/interactions_api.rs	interactions	read	next-level P19 activity	stable
+list_annotation_sets	src-tauri/src/workspace_reviews.rs	workspaces	read	next-level P15: saved browser annotation sets in outputs/reviews, with requested/done counts	stable
+read_annotation_set	src-tauri/src/workspace_reviews.rs	workspaces	read	next-level P15: captures (URL, capture time, viewport, image) and the user's verdict per requested change	stable
+save_annotation_set	src-tauri/src/workspace_reviews.rs	workspaces	user-only	next-level P15: the user's marked-up capture saved as a new review file; agents read reviews, they don't author the user's marks	stable
+add_annotation_capture	src-tauri/src/workspace_reviews.rs	workspaces	user-only	next-level P15: a newer capture plus the user's done/not done verdicts; exposing it would let an agent grade its own change	stable
+list_canvases	src-tauri/src/commands/canvases_api.rs	workspaces	read	Canvas C3: saved chat canvases in outputs/canvases (or a conversation's app-data store)	stable
+read_canvas	src-tauri/src/commands/canvases_api.rs	workspaces	read	Canvas C3: current fence body, saved UI state, kept revisions	stable
+read_canvas_revision	src-tauri/src/commands/canvases_api.rs	workspaces	read	Canvas C3: one kept revision's fence body	stable
+canvas_item_source	src-tauri/src/commands/canvases_api.rs	ui	user-only	Canvas actions dialog: read current saved canvas and its local project destination; main window only	stable
+canvas_plan_items	src-tauri/src/commands/canvases_api.rs	ui	user-only	Preview or confirm canvas items in PLAN.md through compare-and-swap; main window only, no bridge or agent action	stable
+record_canvas	src-tauri/src/commands/canvases_api.rs	workspaces	plumbing	Canvas C3: the chat renderer records the agent's own hollow-canvas fence; agents make canvases by writing the fence, never through an action that could claim another conversation	stable
+record_canvas_bridge_refusal	src-tauri/src/commands/canvases_api.rs	workspaces	plumbing	Canvas C6 P1: the canvas frame host logs a bridge message it refused (kind, size, reason, ids; never the payload) to a bounded app-data file; diagnostics, not a user verb	stable
+save_canvas_state	src-tauri/src/commands/canvases_api.rs	workspaces	user-only	Canvas C3: the person's UI state in a canvas (bridge state); exposing it would let an agent overwrite how the person left a canvas	stable
+toggle_plan_row	src-tauri/src/commands/workspaces_api.rs	workspaces	user-only	Canvas C5a: the person ticks a PLAN.md row in the Plan view (compare-and-swap on the file and the line); an agent edits PLAN.md through its own file tools, never by clicking a box on the person's behalf	stable
+project_portfolio	src-tauri/src/commands/workspaces_api.rs	workspaces	read	workspaces.project_portfolio; B3 project detail: tracker fields and the vault portfolio fields of PROJECT.md	stable
+set_project_portfolio	src-tauri/src/commands/workspaces_api.rs	workspaces	write	workspaces.set_project_portfolio; compare-and-swap on PROJECT.md, portfolio keys only, never sent to the tracker	stable
+automation_windows	src-tauri/src/schedule_windows.rs	automations	read	named schedule windows (tonight, weekday-evening, friday-pm, nightly), whether each is open, next start, the overnight cap and the Mac's zone (Scheduler v2, F1)	stable
+set_automation_windows	src-tauri/src/schedule_windows.rs	automations	confirm	automations.set_automation_windows: edits the named windows and overnight cap; card lists windows added, changed, removed and the cap old to new; Lease::Outside: app-support Scheduler file	stable
+set_automation_window	src-tauri/src/schedule_windows.rs	automations	confirm	puts an automation on a window (schedule window:<name>) or back to manual, optional catch_up; card shows schedule old → new; owned set_schedule write keeps the stamp; lease Outside (takes the permission write guard)	stable
+digest_weekly	src-tauri/src/digest.rs	digest	write	drafts the weekly update for an ISO week into workspaces/main/outputs/weekly/<Friday>.md from Hollow's records (never over an existing draft); sends nothing (master plan #4)	stable
+personas_list	src-tauri/src/stakeholder_sim.rs	personas	read	#8: the four role personas, acceptance (missing, not-accepted, changed, accepted) and how much evidence still holds (simulate.pressure_test is a verb with no Tauri command)	stable
+personas_draft	src-tauri/src/stakeholder_sim.rs	personas	write	#8: personas/<role>.md from vault evidence only (refused with none), inside a Hollow-written block; the person's text kept	stable
+pressure_tests	src-tauri/src/stakeholder_sim.rs	simulate	read	#8: recent pressure tests or one with its report	stable
+workspace_connections	src-tauri/src/workspace_connections.rs	workspaces	read	five asks A2: weighted edges with reasons (project, people, link, source, task, terms, chat); cached until the vault changes; no model	stable
+triage_arrivals	src-tauri/src/triage.rs	workspaces	read	workspaces.triage_arrivals: inbox arrivals plus dismissed, filed and tasked ids	stable
+triage_suggest	src-tauri/src/triage.rs	workspaces	read	workspaces.triage_suggest: a workspace suggestion per inbox item, deterministic, no model	stable
+triage_mark	src-tauri/src/triage.rs	workspaces	write	workspaces.triage_mark: dismiss, file, restore or task-link an inbox item; writes .hollow/triage.json only	stable
+gardener_scan	src-tauri/src/gardener.rs	gardener	read	what the gardener would tidy now (worktrees, idle workspaces, duplicate learnings, test tasks), with reasons and undo; changes nothing (master plan #19)	stable
+extract_run	src-tauri/src/extract.rs	extract	write	proposals (commitments, tasks, decisions, person facts) from a kept recording transcript or a conversation range onto the review queue only; Lease::Outside: a model call plus the review queue and .hollow/extracted.json, dot-state History never diffs (master plan F3)	stable
+extract_status	src-tauri/src/extract.rs	extract	read	sources extracted so far and the extracted proposals waiting for the person (master plan F3)	stable
+records_people	src-tauri/src/records.rs	records	read	everyone with a people/ note and their open commitments each way (master plan F4)	stable
+records_person	src-tauri/src/records.rs	records	read	one person: note, commitments both ways, decisions, accepted facts; exact name or path, never a guess (master plan F4)	stable
+records_decisions	src-tauri/src/records.rs	records	read	decision records filtered by scope, status, words and asOf day (master plan F4, #20)	stable
+records_supersede_decision	src-tauri/src/records.rs	records	confirm	one decision supersedes another; agents can flag a conflict, never settle or supersede on their own (master plan F4)	stable
+records_set_decision_status	src-tauri/src/records.rs	records	confirm	records.records_set_decision_status; settle a decision again or mark it for revisit: ALWAYS_ASK, the person approves on a card (master plan F4/#20)	stable
+records_propose_decision	src-tauri/src/records.rs	records	write	queues a decision proposal (record review item) with its evidence; flags a conflicting settled decision, never edits one; refuses one already settled (master plan #20)	stable
+records_import_brief_decisions	src-tauri/src/records.rs	records	write	one-time importer on request: a brief's ## Decisions bullets become decision proposals; no model, repeats skipped, brief unchanged (master plan #20)	stable
+records_refresh_people	src-tauri/src/people_dossier.rs	records	write	regenerates only the Hollow-written block of each people/ note (master plan #3)	stable
+history_read_as_of	src-tauri/src/asof.rs	history	read	a file as of a day from the nightly snapshot or History's agent-run version; not-captured is never empty; Lease::Outside: reads dot-state only (master plan F5)	stable
+workspace_metrics_daily	src-tauri/src/asof.rs	workspaces	read	daily per-workspace turns, cost, files changed, open plan rows (master plan F5)	stable
+agenda.meetings_needing_prep	src-tauri/src/app_actions.rs	agenda	read	composite read: no single Tauri command (overnight E3)	stable
+agenda.prepare_meeting	src-tauri/src/app_actions.rs	agenda	write	a meeting's prep pack, a new note in a workspace's outputs/prep/ (overnight 10-11 A4); one model call unless kept; sends nothing	stable
+build.install_brings	src-tauri/src/app_actions.rs	build	read	composite read; optional id uses app_build_brings receipt comparison (R15a)	stable
+build.install_built_app	src-tauri/src/app_actions.rs	build	external	verb since row U10 (no Tauri command: the person installs from the Update button). Replaces the running Hollow; the card shows the commit, diffstat and changed files against the installed commit and binds the build receipt (Bypass binds it unseen); after Allow it re-hashes the bundle, offers that build as the Local build in the Update button and starts its Update when chats finish (no expiry, cancel on the button). Always asks; automations and unattended runs are refused	stable
+build.install_ready	src-tauri/src/app_actions.rs	build	read	composite read: no single Tauri command (overnight E2; asks GitHub for CI)	stable
+build.overview	src-tauri/src/app_actions.rs	build	read	composite read: no single Tauri command	stable
+build.publish	src-tauri/src/app_actions.rs	build	external	verb: no Tauri command of its own	stable
+github.list	src-tauri/src/app_actions.rs	github	read	verb: no Tauri command of its own; 7.3: a repository's PRs or issues through gh, at most 50, failures as a note	stable
+github.view	src-tauri/src/app_actions.rs	github	read	verb: no Tauri command of its own; 7.3: one PR or issue with comments, reviews and checks, redacted and capped	stable
+github.triage	src-tauri/src/app_actions.rs	github	external	verb: no Tauri command of its own; 7.3: comment, label, assign, close or reopen one PR or issue; the card names the repository and the exact text; no merge, review or create; never touches Linear	stable
+build.slots_status	src-tauri/src/app_actions.rs	build	read	composite read: no single Tauri command (OF07; build slots, the cargo lock and the dev-server lock)	stable
+build.approve_setup_hook	src-tauri/src/app_actions.rs	build	confirm	verb: no Tauri command of its own; OC15: approves a build workspace's .hollow/setup.sh for its repo by the SHA-256 of its bytes (repo-trust.json setupHooks, app data), after a card (ALWAYS_ASK: every mode, Bypass included) showing repo, owner, path, short hash and script, bound to that hash (and repo); then starts it once in the background, its result in the workspace outputs/SETUP_HOOK_RESULT.md. Lease::Outside	stable
+build.run_setup_hook	src-tauri/src/app_actions.rs	build	confirm	verb: no Tauri command of its own; OC15: starts an already approved setup hook again in the background (result in outputs/SETUP_HOOK_RESULT.md), the hash rechecked at run time; confirm like start_app_build (runs a command in a worktree). Lease::Outside	stable
+friction.draft_fix	src-tauri/src/app_actions.rs	friction	confirm	verb: no Tauri command of its own	stable
+friction.list	src-tauri/src/app_actions.rs	friction	read	verb: no Tauri command of its own (the Friction page and its three commands were cut, G2; new and growing patterns first, G3)	stable
+gardener.apply	src-tauri/src/app_actions.rs	gardener	confirm	verb: no Tauri command of its own	stable
+process.capture	src-tauri/src/app_actions.rs	process	write	verb: no Tauri command of its own (overnight B5)	stable
+process.draft_skill	src-tauri/src/app_actions.rs	process	write	verb: no Tauri command of its own (morning N1)	stable
+process.save_skill	src-tauri/src/app_actions.rs	process	confirm	verb: no Tauri command of its own (morning N1); asks in auto, stages through skill_import	stable
+process.test_skill	src-tauri/src/app_actions.rs	process	confirm	verb: no Tauri command of its own (morning N1); runs the skill's script in scratch	stable
+sessions.cancel_wake	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own	stable
+sessions.context	src-tauri/src/app_actions.rs	sessions	read	composite read: no single Tauri command (OB11)	stable
+sessions.task_state	src-tauri/src/app_actions.rs	sessions	read	composite read: no single Tauri command (repo features R1)	stable
+sessions.conversation	src-tauri/src/app_actions.rs	sessions	read	composite read: no single Tauri command	stable
+sessions.handover	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own	stable
+sessions.manage	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own	stable
+sessions.overview	src-tauri/src/app_actions.rs	sessions	read	composite read: no single Tauri command	stable
+sessions.suggestion_outcome	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own	stable
+sessions.start_workers	src-tauri/src/app_actions.rs	sessions	write	verb: explicit local worker batch	stable
+sessions.swarm	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own	stable
+sessions.wait	src-tauri/src/app_actions.rs	sessions	read	composite read: no single Tauri command	stable
+sessions.request_status	src-tauri/src/app_actions.rs	sessions	read	composite read: no single Tauri command; OC4 request-id receipts of sessions.start and sessions.send (completed, pending or absent; absent is not proof nothing happened)	stable
+sessions.wake_me	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own	stable
+sessions.submit_result	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own	stable
+sessions.route_to_runner	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own; M3a dispatcher COO: this Mac's COO conversation only, while a paired Mac runs the runner COO (dispatcher_coo::active). Asks that Mac GET /v1/machine for the runner COO's key now, then sends the request as text to that chat, or with workspace to the project's lead chat there (project_agents::key), through the hub's one tunnel. Returns where it went and its state, never the remote chat's words (S26). Offline, busy (409, never held) or no lead there: nothing sent or queued. Write with a card (route_card: target, that Mac's accounts, the request's first 600 characters) that asks by the chat's mode as sessions.start does (auto asks, bypass doesn't): the request may carry note or web text and the runner holds the person's logins; peer_send, peer_stop and peer_answer stay user-only. Not in unattended SAFE or serve WRITE_IDS. Lease::Outside: a message over the peer link, nothing in the vault for History to diff	stable
+sessions.wakes	src-tauri/src/app_actions.rs	sessions	read	verb: no Tauri command of its own	stable
+sessions.subagent_budget	src-tauri/src/app_actions.rs	sessions	write	verb: no Tauri command of its own	stable
+settings.change	src-tauri/src/app_actions.rs	settings	write	verb: no Tauri command of its own	stable
+settings.get	src-tauri/src/app_actions.rs	settings	read	composite read: no single Tauri command	stable
+simulate.pressure_test	src-tauri/src/app_actions.rs	simulate	write	verb: no Tauri command of its own	stable
+personas.accept	src-tauri/src/app_actions.rs	personas	confirm	verb: no Tauri command of its own; C7: accepts personas/<role>.md for pressure tests after a card (ALWAYS_ASK: every mode, Bypass included) showing the whole note, bound to its role and SHA-256; a note changed after the card is refused; the signed acceptance is kept in app data (Personas/<vault>.json). Lease::Outside	stable
+skills.import_skill	src-tauri/src/app_actions.rs	skills	confirm	verb: no Tauri command of its own	stable
+ui.inspect_tab	src-tauri/src/app_actions.rs	ui	read	verb: no Tauri command of its own; GU1 (2026-11-20): what a CSS selector matches in the Preview tab the person shared with this chat (count, first five: box, visible, covered, disabled, a few computed styles), read only, untrusted page content, no field value; same share, callers and host scope as ui.read_tab; Outside (a read changes nothing History records)	experimental
+ui.read_tab	src-tauri/src/app_actions.rs	ui	read	verb: no Tauri command of its own; repo ideas 10-27 #5: the Preview tab the person shared with this chat, read only, untrusted page content; refused to automations, child tasks, check-ins and wakes; include ["timing"] adds load timing, the slowest resources and failed images (CD3; no status codes: WebKit has none); Outside (a page read changes nothing History records)	experimental
+ui.navigate	src-tauri/src/app_actions.rs	ui	write	verb: no Tauri command of its own	stable
+vault.retrieve	src-tauri/src/app_actions.rs	vault	read	composite read: no single Tauri command	stable
+companion_backend_repush	src-tauri/src/companion_bridge.rs	companion	external	companion.backend_repush; re-sends the whole mirror to the saved backend, card names its address; Lease::Outside: network send and bridge flags History never diffs	stable
+companion_backend_claim	src-tauri/src/companion_bridge.rs	companion	external	companion.backend_claim; the claim code goes in as a secret param and is sent to the address on the card, the applier token it returns is saved in app support and never returned (errors mask code and token); Lease::Outside: network call and app-support config	stable
+companion_backend_test	src-tauri/src/companion_bridge.rs	companion	external	companion.backend_test; sends the given (secret) or saved token to the address on the card and saves nothing; the sentence back masks the token; Lease::Outside: network call	stable
+companion_scope_get	src-tauri/src/companion_bridge.rs	companion	read	companion.scope_get; what the homelab may copy: work data and each workspace	stable
+companion_scope_set	src-tauri/src/companion_bridge.rs	companion	confirm	companion.scope_set; work data and personal workspaces (omitted keeps the saved list); the card shows old to new and warns when it widens, the person's card is the control; Lease::Outside: scope.json in app support	stable
+companion_backend_set	src-tauri/src/companion_bridge.rs	companion	external	companion.backend_set; the backend address and applier token (a secret param, kept for the same address when omitted; empty address turns it off); external because the bridge then connects there with the token and sends the mirror, card names the address; result never holds the token; Lease::Outside: app-support config	stable
+companion_backend_status	src-tauri/src/companion_bridge.rs	companion	read	companion.backend_status; the backend connection, never the token (masked even where an error quotes it)	stable
+companion_pairing_cancel	src-tauri/src/companion_inbox.rs	companion	write	companion.pairing_cancel; closes the open code, only narrows access; Lease::Outside: the code lives in memory	stable
+companion_pairing_start	src-tauri/src/companion_inbox.rs	companion	confirm	companion.pairing_start; opens a 10-minute code in memory and tells Settings to show it; the result says only that it is open and until when, never the code; Lease::Outside: memory and .hollow-sync dot folders	stable
+companion_revoke_device	src-tauri/src/companion_inbox.rs	companion	confirm	companion.revoke_device; deletes the device key and closes its held old-op cards; returns the redacted status. Lease::Own: takes the companion pass lock first, then writes under the caller's History lease (live_write), the inbox's own lock order	stable
+companion_status	src-tauri/src/companion_inbox.rs	companion	read	companion.status; paired devices, pairingOpen and its expiry, waiting ops; the open code is left out (Settings only)	stable
+phone_access_status	src-tauri/src/phone_access.rs	companion	read	companion.phone_status; the iPhone app's status without the pairing code, its link and QR (pairingOpen and expiry instead); the command stays main-window only, the action calls the inner fn	stable
+phone_access_set_enabled	src-tauri/src/phone_access.rs	companion	confirm	companion.phone_set_enabled; starts or stops the loopback server a paired phone sends turns through; Lease::Outside: phone.json in app support and the server	stable
+phone_access_pairing_start	src-tauri/src/phone_access.rs	companion	confirm	companion.phone_pairing_start; opens a code (memory only, 10 min, one use) and tells Settings to show it; never returns the code, link or QR; Lease::Outside: memory	stable
+phone_access_pairing_cancel	src-tauri/src/phone_access.rs	companion	write	companion.phone_pairing_cancel; closes the pairing window, only narrows access; Lease::Outside: memory	stable
+phone_access_machine_pairing_start	src-tauri/src/phone_access.rs	companion	user-only	M2 peer link: Settings' Let another Mac connect opens the machine pairing window (memory only, 10 min, one use); a paired Mac steers this Mac's chats, so opening it is the person's trust decision	stable
+phone_access_machine_pairing_cancel	src-tauri/src/phone_access.rs	companion	user-only	M2 peer link: closes the machine pairing window; pairs with phone_access_machine_pairing_start	stable
+phone_access_approvals_start	src-tauri/src/phone_access.rs	companion	user-only	B4: Opens the approvals code window for one paired iPhone so it can enroll its approval keys; granting a phone the right to answer cards is the person's trust decision, made at this Mac.	stable
+phone_access_approvals_cancel	src-tauri/src/phone_access.rs	companion	user-only	B4: Closes the person's own approvals code window; pairs with phone_access_approvals_start.	stable
+phone_access_approvals_off	src-tauri/src/phone_access.rs	companion	user-only	B4: Drops one iPhone's approval keys; pairs with phone_access_approvals_start, the person's decision.	stable
+phone_access_approvals_wait	src-tauri/src/phone_access.rs	companion	user-only	B4: Sets how long an approval card waits while an iPhone can answer it; part of the person's approvals decision.	stable
+peer_machines	src-tauri/src/commands/peer_api.rs	companion	plumbing	M2 peer link: the paired Macs and their state for the strip and Settings (check asks each over its tunnel); window only, never an action: no remote content	stable
+peer_pair	src-tauri/src/commands/peer_api.rs	companion	user-only	M2 peer link: Pair a Mac over the person's ssh alias (code read over ssh, tunnel, token to the Keychain); the person's trust decision	stable
+peer_forget	src-tauri/src/commands/chat_move_api.rs	companion	user-only	M2 peer link: Forget a paired Mac (unpaired there when it answers, record and Keychain key dropped here); since M5 PR2 it also releases every chat moved or moving to that Mac (force_release); pairs with peer_pair	stable
+chat_move_to_runner	src-tauri/src/commands/chat_move_api.rs	companion	user-only	M5 PR2: Move to runner for one chat (a running turn stopped at a safe point, else outright; history sent once; one continuation there); the person moving a chat off this Mac	stable
+chat_move_keep_here	src-tauri/src/commands/chat_move_api.rs	companion	user-only	M5 PR2: Keep it here on a chat that is moving: calls the move off on the other Mac's answer to its DELETE, or waits for it	stable
+chat_move_release_here	src-tauri/src/commands/chat_move_api.rs	companion	user-only	M5 PR2: Release here, after a confirm, on a chat stuck moving to a Mac that no longer answers (force_release); may leave a copy on that Mac	stable
+chat_continue_offline	src-tauri/src/commands/chat_move_api.rs	companion	user-only	M5 PR3: Continue here offline on a chat that moved to another Mac: a new local chat from this Mac's copy of its turns, synced there (appended or forked) on the next contact	stable
+chat_move_homes	src-tauri/src/commands/chat_move_api.rs	companion	plumbing	M5 UI: the chats moving or moved to another Mac (chat_homes with the move state), for the chat notice and the moved badge; a local read, window only, never an action	stable
+chat_offline_rows	src-tauri/src/commands/chat_move_api.rs	companion	plumbing	M5 offline UI: the offline continuations of moved chats (chat_offline: open, appended, forked, kept with its reason), for the chat notices and the offline badge; a local read, window only, never an action	stable
+peer_reorder_hosts	src-tauri/src/commands/peer_api.rs	companion	user-only	M2 peer link: a paired Mac's ssh aliases and their order; part of the pairing decision	stable
+peer_pair_cancel	src-tauri/src/commands/peer_api.rs	companion	user-only	M2 peer link: Cancel on the Pairing step; stops the pairing in flight (ssh code read ends, tunnel stops opening, a trade that got through is unpaired there and forgotten here); true when one was running	stable
+peer_cancel_connect	src-tauri/src/commands/peer_api.rs	companion	user-only	M2 peer link: cancel connecting to a paired Mac; it stays closed until the person retries	stable
+peer_sessions	src-tauri/src/commands/peer_api.rs	companion	plumbing	M2 peer link: another Mac's chat list stamped with its home, never kept on this Mac; not an action, so remote words never land in a transcript here	stable
+peer_detail	src-tauri/src/commands/peer_api.rs	companion	plumbing	M2 peer link: one remote chat's turns, never kept on this Mac; not an action for the same reason	stable
+peer_watch	src-tauri/src/commands/peer_api.rs	companion	plumbing	M2 peer link: follows a Mac's chat list or one remote chat live (peer-chat-event), at most one of each per Mac	stable
+peer_unwatch	src-tauri/src/commands/peer_api.rs	companion	plumbing	M2 peer link: stops a peer_watch stream	stable
+peer_send	src-tauri/src/commands/peer_api.rs	companion	user-only	M2 peer link: the person's words into a chat at its home on another Mac (text only); agents steer another Mac only through M3a's dispatcher	stable
+peer_stop	src-tauri/src/commands/peer_api.rs	companion	user-only	M2 peer link: Stop for a remote chat's turn, at its home	stable
+peer_start_coo	src-tauri/src/commands/peer_api.rs	companion	user-only	M3a follow-up: Settings, Devices, COO on this Mac, Start its COO: POST /v1/machine/coo on a paired runner whose runner COO has no conversation yet (coo-start), with a fixed first message; the record then names that conversation and this Mac's COO dispatches. Busy (it has one) answers that key, nothing sent	stable
+peer_answer	src-tauri/src/commands/peer_api.rs	companion	user-only	M2 peer link: answers a remote chat's question card at its home; this Mac's interactions table is never written	stable
+phone_access_revoke	src-tauri/src/phone_access.rs	companion	confirm	companion.phone_revoke; removes the phone's token and Live Activity tokens and closes its streams; Lease::Outside: phone.json in app support	stable
+phone_access_publish	src-tauri/src/phone_access.rs	companion	external	companion.phone_publish; tailscale serve on https 8443, tailnet only, never Funnel; card names the tailnet; Lease::Outside: Tailscale config, process control	stable
+phone_access_unpublish	src-tauri/src/phone_access.rs	companion	confirm	companion.phone_unpublish; Stop publishing: removes only Hollow's own serve forwards (saved raw TCP forwards, then 8443's / when it serves Hollow); another app's 8443, a foreground or a service forward stay; Lease::Outside: Tailscale config, process control	stable
+phone_access_new_chat_mode	src-tauri/src/phone_access.rs	companion	user-only	phone chat API: the window reports Settings' permission mode for new chats, which a phone's New chat starts in; an agent must never set it	stable
+phone_access_chat_modes	src-tauri/src/phone_access.rs	companion	user-only	phone chat API: the window reports each chat's permission mode choice, which a phone's send to that chat runs in; an agent must never set it	stable
+phone_lid_status	src-tauri/src/phone_access/lid.rs	companion	read	companion.phone_lid_status; the lid section's reading, after the same arm or disarm sync the 60-second loop runs (it follows the setting, never changes it)	stable
+phone_lid_set	src-tauri/src/phone_access/lid.rs	companion	confirm	companion.phone_lid_set; starts installing, updating or removing the two root LaunchDaemons and returns at once: the person must type the Mac's password at macOS's prompt (closes after 10 min, changing nothing); says so on the card and in the result; Lease::Outside: root LaunchDaemons, process control	stable
+phone_push_import_key	src-tauri/src/phone_access.rs	companion	confirm	companion.phone_push_import_key; the .p8 goes in as a file path (it stays put), is checked and kept only in the Keychain; its text never reaches an agent, the vault, a log or a command line, and errors never quote the file; Lease::Outside: Keychain	stable
+phone_push_remove_key	src-tauri/src/phone_access.rs	companion	confirm	companion.phone_push_remove_key; deletes the Keychain key, stopping every push; Lease::Outside: Keychain	stable
+phone_push_test	src-tauri/src/phone_access.rs	companion	external	companion.phone_push_test; a test push through Apple (api.push.apple.com) to the paired iPhones, card names it; Lease::Outside: network send	stable
+self_hosted_models	src-tauri/src/commands/self_hosted_api.rs	settings.agents	read	Lists endpoints; auth shows only tokenCommand set or none, never the token command text. Lease::Wrap.	stable
+save_self_hosted_model	src-tauri/src/commands/self_hosted_api.rs	settings.agents	confirm	Add or edit an endpoint; tokenCommand is Kind::Secret in, never echoed (results mask auth and scrub token text); card shows the address the token goes to. Lease::Outside: app-data registry file History never diffs.	stable
+remove_self_hosted_model	src-tauri/src/commands/self_hosted_api.rs	settings.agents	confirm	Remove an endpoint and stop its forwarder. Lease::Outside: app-data registry and forwarder process.	stable
+set_self_hosted_model_enabled	src-tauri/src/commands/self_hosted_api.rs	settings.agents	write	Switch an endpoint on or off; off stops its forwarder. Lease::Outside: app-data registry and forwarder process.	stable
+test_self_hosted_model	src-tauri/src/commands/self_hosted_api.rs	settings.agents	external	Wake the model and send one 1-token call; costs GPU time; card names the endpoint address. Lease::Outside: model call, minutes long.	stable
+wake_self_hosted_model	src-tauri/src/commands/self_hosted_api.rs	settings.agents	external	Wake a self-hosted model through a cold start; costs GPU time; card names the address. Lease::Outside: model call.	stable
+self_hosted_wake_status	src-tauri/src/commands/self_hosted_api.rs	settings.agents	read	Last wake age and answer, from memory; never calls the model.	stable
+self_hosted_jobs	src-tauri/src/commands/self_hosted_api.rs	settings.agents	read	Background jobs, per-kind routing and what waits; token text scrubbed from errors.	stable
+set_self_hosted_job	src-tauri/src/commands/self_hosted_api.rs	settings.agents	confirm	Route a kind of Hollow's background model calls to an endpoint or back to As now; card says private data moves host. Lease::Outside: app-data settings file.	stable
+run_self_hosted_jobs_now	src-tauri/src/commands/self_hosted_api.rs	settings.agents	external	Wake an endpoint and run its waiting jobs; costs GPU time and sends private data; card names the address. Lease::Outside: model calls.	stable
+run_self_hosted_job_as_now	src-tauri/src/commands/self_hosted_api.rs	settings.agents	confirm	Send a held job to where its kind runs today (maybe hosted); card warns. Lease::Outside: app-data job queue and model call.	stable
+retry_self_hosted_job	src-tauri/src/commands/self_hosted_api.rs	settings.agents	external	Retry a job that gave up; wakes the model (cost); card names the address. Lease::Outside: model call and app-data queue.	stable
+discard_self_hosted_job	src-tauri/src/commands/self_hosted_api.rs	settings.agents	confirm	Drop a queued background job. Lease::Outside: app-data job queue.	stable
+cfo_settings	src-tauri/src/cfo/mod.rs	settings	read	settings.cfo_settings (L13): the CFO policy: models the CFO may use, effort mode (Automatic or Fixed), reserve, extra-usage approval (COO rebuild L7)	stable
+cfo_save_settings	src-tauri/src/cfo/mod.rs	settings	confirm	settings.cfo_save_settings (L13): the CFO allowlist (real models only, checked against each agent's list), effort mode and reserve; card shows old to new for the fields in the patch; asks in auto (what agents may do). Lease::Outside: the cfo_settings table in the app-data session store, which History never diffs	stable
+cfo_approve_extra_usage	src-tauri/src/cfo/mod.rs	settings	confirm	settings.cfo_approve_extra_usage (L13): extra usage for unattended work for 1 to 72 hours, or 0 withdraws it; card says how many hours; asks in auto (what agents may do). Lease::Outside: the cfo_settings table in the app-data session store	stable
+cfo_view	src-tauri/src/cfo/mod.rs	settings	read	settings.cfo_view (L13): each account against the reserve (room for unattended work, until when), the level per job kind; no provider request	stable
+take_pending_ui_settings	src-tauri/src/commands/app_bridge_api.rs	settings	plumbing	Webview drain (at boot, on the app-ui-pending nudge, when the window is shown or focused): returns {settings, versions} of UI settings the COO queued while the window was closed (pending-ui-settings.json in the app-data dir); clears nothing; not an agent action.	stable
+ack_pending_ui_settings	src-tauri/src/commands/app_bridge_api.rs	settings	plumbing	Webview acknowledgement: removes the queued UI settings it settled ({key: version} from take_pending_ui_settings), keeping any queued again since; not an agent action.	stable
+take_linear_links	src-tauri/src/commands/tracker_api.rs	tracker	plumbing	Webview drain (at boot and on the linear-link-pending nudge): the hollow:// links Linear's Custom link opened, each with its draft and the project chat (or COO) to open, oldest first, then the queue is empty; a draft only, never sent and never a run; not an agent action.	stable
+event_triggers_status	src-tauri/src/commands/event_triggers_api.rs	automations	read	automations.event_triggers_status (F2): each event kind on or off, since, hourly cap and fires, projects on, lead wakes, bound automations, recent decided events; Lease::Outside: app-support state History never diffs	stable
+set_event_trigger	src-tauri/src/commands/event_triggers_api.rs	automations	write	automations.set_event_trigger (F2): a kind, a project or a lead wake on or off, or the hourly cap; on never fires older events; refused from an automation run; Lease::Outside: app-support state History never diffs	stable
+context.propose_org_change	src-tauri/src/app_actions.rs	context	external	verb: no Tauri command of its own; CX8 opens a pull request against the org repo (org-context) from a throwaway clone, never the read-only org clone (context_propose.rs; no free-text chat arg, the caller's own session key is the actor). Every file is scanned first (scan_rules org layer + memory_guard), refusals name rule, file and line; paths plain, under an org folder, .md/.yml, INDEX.md under 2048 bytes. Identity from `gh api user` vs CODEOWNERS: owner login and an attended chat caller (depth 0, not an unattended run) get merge_own: bounded retries (6 x 10 s), base branch required checks (protection API, 404 = none) all reported and SUCCESS, head, branch and base equal to what was pushed, squash --admin --match-head-commit <sha>; everyone else stays open labelled needs owner approval. One JSONL line per PR in app data (context-org-prs.jsonl) for the CX8b digest. Lease::Outside: the change is on GitHub	stable
+context.merge_org_change	src-tauri/src/app_actions.rs	context	external	verb: no Tauri command of its own; CX8 later step: arg url (must be a pull request of the org clone's origin repo and the record's; the card shows the parsed repo). Re-runs the same checks as propose (attended chat, record line from context.propose_org_change with identity owner, gh login == CODEOWNERS owner == record login, head matches the record, required checks from protection and rulesets passing, an empty rollup waits where the repo has workflows) then squash merges with --match-head-commit; idempotent (merged answers merged, one merged line in the record); a teammate-record PR is refused. Lease::Outside: the change is on GitHub	stable
+context_sync_status	src-tauri/src/sync_engine.rs	settings	read	settings.context_sync_status: the personal context sync state, pending commits, pill text, last sync and error, blocking file and rule, clash copies; reads only	stable
+context_sync_now	src-tauri/src/sync_engine.rs	settings	user-only	Settings Sync now: one cycle (scan, commit, merge, push) off the UI thread; allowDeletions lets that one cycle past the mass-removal guard; the quiet timer syncs on its own	stable
+set_context_sync_enabled	src-tauri/src/sync_engine.rs	settings	user-only	the personal context sync off switch; off leaves the vault, git directory and remote as they are	stable
+configure_personal_sync	src-tauri/src/sync_engine.rs	settings	user-only	saves the personal context remote URL (no password in it) and turns sync on; where private context is pushed is the person's choice	stable
+context_layers_status	src-tauri/src/context_settings.rs	settings	read	settings.context_layers_status: Settings, Context rows at once (home slug and file, personal sync status, org clone folder, origin redacted and last fetch, project folders with CLAUDE.md or AGENTS.md, vault row); reads only	stable
+context_org_access_check	src-tauri/src/context_settings.rs	settings	user-only	Settings Check access on the org row: git ls-remote on the org clone origin, no prompt, 30 s at most; a network probe the person runs	stable
+context_personal_local_only	src-tauri/src/context_settings.rs	settings	user-only	Settings Local only: drops the personal context remote and turns sync off; files, the git directory and the remote repository stay	stable
+set_context_root	src-tauri/src/context_settings.rs	settings	user-only	Settings Context: saves or clears the personal or org clone folder under the context_roots path rules	stable
+set_context_machine_slug	src-tauri/src/context_settings.rs	settings	user-only	Settings Context: saves or clears this Mac slug, which names the home file every turn here reads	stable
+configure_vault_sync	src-tauri/src/sync_engine.rs	settings	user-only	turns the vault root on (scan of the would-be tree, then a text-only first commit in app data; no remote until V6; allowDeletions passes one cycle's removal guards) or off; whether the vault is committed is the person's choice	stable
+mac_context_offer	src-tauri/src/mac_context.rs	settings	plumbing	F3: the Connect this Mac's context card in Settings Context (which context layers this Mac has, the other Mac it is offered for); window only	stable
+mac_context_answer	src-tauri/src/mac_context.rs	settings	user-only	F3: the person's Not now (back after 14 days) or Not for this Mac on the offer, kept per Mac pair in app data	stable
+mac_context_connect	src-tauri/src/mac_context.rs	settings	user-only	F3: clones the ticked personal and org repos into their clone roots with the person's git login, names this Mac and writes home/<slug>.md when missing; per-layer results, nothing half-written	stable
+configure_file_copy	src-tauri/src/sync_files.rs	settings	user-only	sets the other Mac's vault path for the on-demand fetch (V4, N15); the timed two-way copy it once turned on is retired, so enabled true is refused and nothing copies on a timer; which vault path files come from is the person's choice	stable
+file_copy_status	src-tauri/src/sync_files.rs	settings	read	settings.file_copy_status: fetch on demand (N15), the peer and its vault path, state (noPeer or ready), the retired timed copy's last run as history; reads only	stable
+peer_files	src-tauri/src/sync_files.rs	vault	read	vault.peer_files: binaries on the other Mac (runner in slot-remote) that this Mac lacks, under an optional prefix, with size and mtime; reads only on both Macs (V4, N15)	experimental
+fetch_peer_file	src-tauri/src/sync_files.rs	vault	write	vault.fetch_peer_file: brings one binary from the other Mac to the same vault path over ssh; never overwrites, SHA-256 checked, resumable; only files the vault git keeps out (V4, N15)	experimental
+sync_clashes	src-tauri/src/sync_engine.rs	settings	read	settings.sync_clashes: the open context sync clash cards across the personal and vault roots (file, copy, machines, when, editing); the window's list adds both versions' first lines, the agent's read has paths only	stable
+resolve_sync_clash	src-tauri/src/sync_engine.rs	settings	user-only	Keep mine, Keep theirs, Keep both, Edit or Done on one clash card, named by root, file and copy; Keep mine and Keep theirs refuse when the copy changed since the clash, Keep theirs also when the file did; the replaced side goes to the vault's .trash/ and the next cycle commits the change	stable
+update_get_state	src-tauri/src/update_client/ipc.rs	build	plumbing	the top bar Update button's and Settings, Updates' state (phase, channel, connected, waiting); never the token (row U5)	stable
+update_get_settings	src-tauri/src/update_client/ipc.rs	build	plumbing	Settings, Updates: channel, overnight, skipped and dismissed versions (row U5)	stable
+update_last_result	src-tauri/src/update_client/ipc.rs	build	plumbing	the notice after an update restart: updated, went back or not installed (row U5)	stable
+update_ack_last_result	src-tauri/src/update_client/ipc.rs	build	plumbing	UI acknowledgement of that notice	stable
+update_set_channel	src-tauri/src/update_client/ipc.rs	build	user-only	Settings, Updates: Main or Nightly; a switch allows one older build. Design section 7: only the person changes how Hollow updates	stable
+update_set_overnight	src-tauri/src/update_client/ipc.rs	build	user-only	Settings, Updates: Install updates overnight (row U7 installs from it)	stable
+update_check_now	src-tauri/src/update_client/ipc.rs	build	user-only	Settings, Updates: Check now	stable
+update_connect	src-tauri/src/update_client/ipc.rs	build	user-only	stores the person's updates token in the Keychain (Settings field or the hollow://updates/connect link); answers only connected	stable
+update_disconnect	src-tauri/src/update_client/ipc.rs	build	user-only	removes the updates token from the Keychain	stable
+update_dismiss	src-tauri/src/update_client/ipc.rs	build	user-only	the Update popover's Not now	stable
+update_install_now	src-tauri/src/update_client/ipc.rs	build	user-only	Restart to update: the person's click under the restart checks; no agent action installs a channel update (design section 7)	stable
+update_install_when_idle	src-tauri/src/update_client/ipc.rs	build	user-only	Update when chats finish: waits with no expiry, in memory	stable
+update_cancel_wait	src-tauri/src/update_client/ipc.rs	build	user-only	cancels Update when chats finish	stable
+update_confirm_connect	src-tauri/src/update_client/ipc.rs	build	user-only	stores the token a Connect Hollow link brought while another was stored (pendingConnect): the person's Use the new token	stable
+update_discard_connect	src-tauri/src/update_client/ipc.rs	build	user-only	forgets that link token: the person's Keep the current token	stable
+update_offer_local_build	src-tauri/src/update_client/ipc.rs	build	user-only	Changes, Hollow app: Show in Update button. Offers the build workspace's finished build as the Local build of <branch> again (row U10); installing stays the Update button's click	stable
+context.leak_flags	src-tauri/src/app_actions.rs	context	read	verb: no Tauri command of its own; CX10 leak flags ledger (context-leak-flags.jsonl in app data): mode, counts by rule, layer and source, newest flags (time, source write or run, layer, relative path, rule ids, severity, belongs, actor, chat); never text or a value; days default 7	stable
+context.audit	src-tauri/src/app_actions.rs	context	read	verb: no Tauri command of its own; CX10 monthly audit: Hollow's ctx-scan copy (app data ctx-scan/, /usr/bin/python3) over the org clone (org), personal clone (home/ at home, rest at personal) and connected project repos (project); file, line, rule id and severity only; plus 31 days of leak flags; the Monthly context audit template runs it	stable
+context.folder_abstracts	src-tauri/src/app_actions.rs	context	read	verb: no Tauri command of its own; CX23 folder abstracts index (FolderAbstracts/<vault stem>.json in app support, derived and rebuildable): each root's abstract and overview, or every folder of one root; off (context.folderAbstracts, the default) says so and reads nothing	experimental
+context.refresh_folder_abstracts	src-tauri/src/app_actions.rs	context	write	verb: no Tauri command of its own; CX23 bottom-up refresh keyed by content hash plus prompt version (a node with an unchanged key makes no model call), at most maxCalls one-shot calls on the extraction model, refused while context.folderAbstracts is off or another refresh runs. Lease::Outside: model calls and an app-support index History never diffs	experimental
+context_check_status	src-tauri/src/leak_checks.rs	context	read	context.checks: Settings, Context check rows: leak-check mode and each repo a pre-push context check can guard with its layer and state (installed, not_installed, other_hook, unavailable); reads only	stable
+context_install_check	src-tauri/src/leak_checks.rs	context	write	context.install_check: local pre-push hook (git-path hooks/pre-push inside the repo's git folder, marker line, backup of Hollow's earlier hook, 0755) running ctx-scan at the repo's role layer, failing only on block findings; another hook refused; dry run default, apply only from an attended chat; Settings Install context check	stable
+context_remove_check	src-tauri/src/leak_checks.rs	context	write	context.remove_check: removes only a pre-push hook carrying Hollow's marker; dry run default, apply only from an attended chat; Settings Remove	stable
+update_publish_status	src-tauri/src/update_client/publish.rs	build	read	build.publish_status: Settings, Updates, Publish to Main's card (row U8): publisher, live Nightly and Main, kept builds, the proposed build and what's new since Main, read from the release builder through the runner (one ssh call)	stable
+update_publish_main	src-tauri/src/update_client/publish.rs	build	external	build.publish_main: ALWAYS_ASK (every mode, bypass too); the card names the build, its commit and what's new and binds the commit; promote.mjs on the builder copies the build's manifest to channels/main.json, no rebuild. The Settings Publish button is the person's click	stable
+update_withdraw_main	src-tauri/src/update_client/publish.rs	build	user-only	Settings, Updates: Withdraw points Main back at the previous Main (promote.mjs withdraw on the builder); refused when Main moved since the card looked	stable
+update_set_publisher	src-tauri/src/update_client/publish.rs	build	user-only	Settings, Updates: This Mac publishes to Main (UpdateSettings.publisher, off by default; shows People too, row U9)	stable
+update_people_list	src-tauri/src/update_client/people_admin.rs	build	user-only	Settings, Updates, People (publisher only): runs scripts/release/people.mjs list on the release builder over ssh; id, name, channels, revoked, createdAt, never a hash (row U9)	stable
+update_people_add	src-tauri/src/update_client/people_admin.rs	build	user-only	People, Add person: makes a 32-byte token here, sends only its SHA-256 on ssh stdin, returns the install link once (holds the token; never stored or logged) (row U9)	stable
+update_people_revoke	src-tauri/src/update_client/people_admin.rs	build	user-only	People, Revoke: sets revoked in people.json (kept as the audit trail); that Mac's next check gets the Worker's 401 (row U9)	stable
+update_people_set_channels	src-tauri/src/update_client/people_admin.rs	build	user-only	People: replace a person's allowed channels (none allowed) (row U9)	stable
+update_go_back_plan	src-tauri/src/update_client/goback_run.rs	build	plumbing	Settings, Updates Go back card: previous version, schema verdict, snapshot, what a restore sets aside (row U6)	stable
+update_go_back	src-tauri/src/update_client/goback_run.rs	build	user-only	Go back to the previous version, or with restoreData the chats from before the update, under the restart checks; skips the version gone back from (row U6, design section 9)	stable
+update_go_back_when_idle	src-tauri/src/update_client/goback_run.rs	build	user-only	Go back when chats finish: waits with no expiry, in memory; update_cancel_wait cancels it	stable
+update_unskip	src-tauri/src/update_client/goback_run.rs	build	user-only	Skipping 0.6.n: Undo; the version is offered again	stable
+codemode.run	src-tauri/src/app_actions.rs	codemode	read	CM1c: the sandboxed script runner (codemode.rs), served as the run_script tool; app_broker::dispatch runs it; read tier because every inner call is authorized on its own tier and card	experimental
+turn_checkpoints	src-tauri/src/turn_checkpoints.rs	sessions	read	sessions.turn_checkpoints: a chat's turn checkpoints in its own isolated worktree (CP1): before and after per turn, files changed, merged-in paths apart; reads only	experimental
+restore_turn_checkpoint	src-tauri/src/turn_checkpoints.rs	sessions	user-only	Restore to before this turn (CP1): puts the chat's worktree back to a turn's before checkpoint after saving the current state to a safety ref, closes the native session and leaves the undone turns out of the next session's history; refused while a turn runs or outside an isolated worktree	stable
+branch_chat	src-tauri/src/chat_branch.rs	sessions	user-only	Branch from here (CH1): a new chat with the original's turns up to a reply, linked back as its branch; the original is not written, the next turn starts a fresh native session with those turns as history, and an isolated worktree's checkpoint for that turn is kept as refs/hollow/branches/<key>	stable
+chat_branch_info	src-tauri/src/chat_branch.rs	sessions	plumbing	CH1: a branched chat's record (the original, the turn it branched after, its own turns) for the branch notice	stable
+chat_branch_handoff	src-tauri/src/chat_branch.rs	sessions	plumbing	CH1: the short written handoff of a branch's own turns that Back to the original adds to the original's draft; reads only	stable
+side_chat_open	src-tauri/src/side_chat.rs	sessions	user-only	7.6: the chat's newest side chat for the pane, or a new one (fresh); a side chat is a chat of its own beside the original (forkKind side, off every list); the original is only read	stable
+side_chat_list	src-tauri/src/side_chat.rs	sessions	plumbing	7.6: the chat's earlier side chats for the pane's picker; reads only	stable
+side_chat_send	src-tauri/src/side_chat.rs	sessions	user-only	7.6: a question in a side chat, queued like any chat turn: seeded from the original on its first turn, never above the original's permission mode (read only unless the person allows the same access)	stable
+first_run_status	src-tauri/src/first_run.rs	settings	plumbing	H6: the first-run setup sheet's progress from config.json `setup` (each step open, done or skipped, and the first open one); no block means setup is complete	stable
+first_run_set_step	src-tauri/src/first_run.rs	settings	plumbing	H6: the sheet's Continue or Skip marks one step done or skipped; refused once setup is finished	stable
+first_run_reopen	src-tauri/src/first_run.rs	settings	plumbing	H6: Settings, Sources, Where your work lives, Run setup again: every step open, so the sheet opens at the first one	stable
+session_import_sources	src-tauri/src/commands/session_import_api.rs	sessions	plumbing	H5a: the import sheet's sources and their default folders (Claude Code, Codex), with whether each exists; nothing inside is read	stable
+inspect_session_import	src-tauri/src/commands/session_import_api.rs	sessions	user-only	H5a: read a Claude Code or Codex folder (the default or one the person picks) into a staged import outside the vault, on one reader thread; read-only, never follows a link, budgeted	stable
+session_import_status	src-tauri/src/commands/session_import_api.rs	sessions	read	sessions.session_import_status: an import's progress or every staged one's, and the committed batches with their Keep out of agent search switch; reads only	experimental
+list_session_import	src-tauri/src/commands/session_import_api.rs	sessions	plumbing	H5a: a staged import's list (title, dates, counts, project folder, destination, duplicate status per conversation)	stable
+preview_session_import	src-tauri/src/commands/session_import_api.rs	sessions	plumbing	H5a: a bounded preview of one staged conversation (its first and last turns, texts cut to 2,000 characters)	stable
+commit_session_import	src-tauri/src/commands/session_import_api.rs	sessions	user-only	H5a: import the picked conversations, one transaction each (new, updated in place, or a new version), with an optional workspace for the batch and Keep out of agent search	stable
+cancel_session_import	src-tauri/src/commands/session_import_api.rs	sessions	plumbing	H5a: cancel a running or staged import and discard its staging folder	stable
+continue_imported_session	src-tauri/src/commands/session_import_api.rs	sessions	user-only	H5a Continue in Hollow (N26): a new chat linked to an imported one (fork_kind import) whose first turn gets the imported turns as quoted history; agent, model, workspace and mode are the person's	stable
+native_resume_offer	src-tauri/src/commands/session_import_api.rs	sessions	plumbing	H8: whether an imported Claude Code chat can be continued by forking its session (installed CLI lists --resume and --fork-session, source jsonl still there with the same id and folder) and the reason when not; reads --version and --help text, no model call	stable
+continue_imported_session_native	src-tauri/src/commands/session_import_api.rs	sessions	user-only	H8 Continue in Hollow, native: a new chat in the source folder whose first turn runs claude --resume <id> --fork-session (the CLI makes the fork; Hollow writes nothing under ~/.claude); refuses with the reason, then the handoff applies	stable
+set_session_import_search	src-tauri/src/commands/session_import_api.rs	sessions	user-only	H5a (N25): keep an import's conversations out of agent search, or let them back in	stable
+context_scan_sources	src-tauri/src/commands/context_scan_api.rs	context	plumbing	CX19: the scan's default folders (Claude Code, Codex, Cursor, Gemini, Windsurf) and whether each exists; nothing inside is read	stable
+start_context_scan	src-tauri/src/commands/context_scan_api.rs	context	user-only	CX19: scan the default agent folders or picked ones for instruction and memory files (CLAUDE.md, AGENTS.md, GEMINI.md, rules, commands, skills, memory folders) on one reader thread; read-only, budgeted, never follows a link, vault folders refused; stages proposals outside the vault	stable
+context_scan_status	src-tauri/src/commands/context_scan_api.rs	context	plumbing	CX19: a scan's progress (scanning, ready, cancelled, failed) and how many files it found	stable
+list_context_scan	src-tauri/src/commands/context_scan_api.rs	context	plumbing	CX19: a staged scan's proposals (path, kind, agent, scope, size, SHA-256, excerpt for clean files only, rule flags without matched text, duplicate marker) and per-folder budget notes	stable
+cancel_context_scan	src-tauri/src/commands/context_scan_api.rs	context	plumbing	CX19: stop a running scan or delete a staged one	stable
+context_review_list	src-tauri/src/commands/context_review_api.rs	context	plumbing	CX20: the review card's items (the newest or a named scan's proposals plus the queued org facts), each with its proposed layer, the target per layer and why Accept is off; skipped items marked, accepted ones left out; reads only	stable
+context_review_accept	src-tauri/src/commands/context_review_api.rs	context	user-only	CX20: accept one item (one id, no batch) into Personal (copy into the personal clone's memory/imported/, never over a file), Project (writes nothing) or Org (a CX8 pull request after the window's confirm); refuses a secret-like or blocked file and one whose hash changed since the scan	stable
+context_review_skip	src-tauri/src/commands/context_review_api.rs	context	user-only	CX20: skip one review item; recorded in app data (context-review.json), never the vault	stable
+context_review_unskip	src-tauri/src/commands/context_review_api.rs	context	user-only	CX20: take back a Skip on one review item	stable
+workspaces.project_card	src-tauri/src/app_actions.rs	workspaces	read	composite read: no single Tauri command; PC1: a project architecture card's check (project_card.rs): sections, commit and prompt-version key, stale flag, SD1 linked design brief; Hollow never writes the card	experimental
+computer_status	src-tauri/src/computer_commands.rs	settings	plumbing	the Computer control sheet reads the pin, the switches and the live session count; agents see no equivalent	stable
+computer_denied_apps	src-tauri/src/computer_commands.rs	settings	plumbing	the Computer control sheet lists This Mac's default-denied app groups and which the person allowed	stable
+computer_set_app_allowed	src-tauri/src/computer_commands.rs	settings	user-only	the person's own click: allowing a default-denied app on This Mac widens what agents can reach, so no agent may do it	stable
+computer_stop_all	src-tauri/src/computer_commands.rs	settings	user-only	the person's Stop all computer control: ends every desktop session and forgets every grant	stable
+computer_chat_state	src-tauri/src/computer_commands.rs	settings	plumbing	the chat's Computer chip and side-card section read this chat's desktop state; agents see no equivalent	stable
+computer_chat_frame	src-tauri/src/computer_commands.rs	settings	plumbing	the Computer card reads the latest frame the agent saw, from memory only	stable
+computer_chat_control	src-tauri/src/computer_commands.rs	settings	user-only	the person's own Pause, Resume, Take over, Hand back and Stop on one chat's desktop	stable
+computer_doctor	src-tauri/src/computer_commands.rs	settings	plumbing	the Computer control sheet's Doctor: checks with copyable fixes; reads, installs nothing; agents see no equivalent	stable
+computer.deny_host	src-tauri/src/app_actions.rs	computer	write	verb: no Tauri command of its own; ND1: adds a host to the agent deny list with no approval (it only narrows access), capped at 100, only the person removes one	stable
+host_scope_agent_denied	src-tauri/src/computer_commands.rs	settings	plumbing	the Computer control sheet lists the hosts agents denied; agents see no equivalent	stable
+host_scope_remove_agent_deny	src-tauri/src/computer_commands.rs	settings	user-only	the person's own Remove on a host an agent denied; no agent may remove an entry (ND1)	stable

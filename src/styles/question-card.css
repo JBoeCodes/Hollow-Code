@@ -1,0 +1,298 @@
+/* Structured questions on one reading plane, with ruled fieldsets.
+   Loaded by components/QuestionCard.tsx. No ambient animation: a card waits
+   for the user, it does not ask for attention. */
+@layer components {
+.question-card {
+  margin: var(--sp-3) 0 var(--sp-1);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.question-card.is-stale {
+  border-color: var(--hairline);
+}
+.question-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+}
+.question-card.is-stale .question-card-head { color: var(--muted); }
+.question-card-kicker {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.question-card-title {
+  margin-left: auto;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--body-strong);
+  overflow-wrap: anywhere;
+}
+.question-card-desc,
+.question-card-block {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--muted);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.question-card-help {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* A decision card's scenario: one short wrapping paragraph before the options.
+   The dock scrolls, so a long one never clips. Its options' outcomes are
+   `.question-card-outcome`, a second muted line under the label. */
+.question-card-scenario {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.question-card-outcome { min-width: 0; overflow-wrap: anywhere; }
+.question-card-q {
+  margin: 0;
+  padding: 0 0 var(--sp-3);
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+.question-card-prompt {
+  padding: 0;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: var(--lh-base);
+  color: var(--body-strong);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.question-card-optional {
+  font-weight: 400;
+  color: var(--muted);
+}
+.question-card-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* The round control sits inside the card's left edge (E7). */
+  padding-inline-start: 4px;
+}
+.question-card-option {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 8px;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  color: var(--body);
+  cursor: pointer;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+}
+.question-card-option:has(input:checked) { background: var(--teal-soft); border-color: color-mix(in srgb, var(--accent-teal) 35%, transparent); color: var(--ink); }
+.question-card-option:has(input:checked) .question-card-option-desc { color: var(--ink); }
+.question-card-option input { margin: 0; flex: none; align-self: center; accent-color: var(--accent-teal); }
+.question-card-option-desc {
+  flex-basis: 100%;
+  padding-left: 22px;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+.question-card-badge {
+  padding: 1px 8px;
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  color: var(--accent-teal);
+  background: var(--teal-soft);
+  border-radius: var(--r-pill);
+}
+.question-card-text,
+.question-card-other {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  color: var(--body-strong);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  resize: vertical;
+}
+.question-card-text:focus-visible,
+.question-card-other:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+.question-card-target {
+  margin: 0;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.question-card-md { font-size: var(--fs-meta); }
+.question-card-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.question-card-choice {
+  padding: 4px 14px;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  border-radius: var(--r-sm);
+  min-height: var(--control-h);
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
+  color: var(--body-strong);
+  cursor: pointer;
+}
+.question-card-choice.on {
+  border-color: var(--accent-teal);
+  background: var(--teal-soft);
+  color: var(--accent-teal);
+}
+.question-card-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline-soft);
+}
+.question-card-item:first-of-type { border-top: 0; padding-top: 0; }
+.question-card-item-label {
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  color: var(--body-strong);
+  overflow-wrap: anywhere;
+}
+.question-card-field-error,
+.question-card-error {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--error);
+}
+.question-card-btns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.question-card-btn {
+  align-self: flex-start;
+  padding: 6px 18px;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  min-height: var(--control-h);
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
+  color: var(--body-strong);
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+.question-card-btn:disabled { opacity: 0.5; cursor: default; }
+.question-card-btn.submit {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* Docked question cards (2026-10-14): one question at a time where the
+   message box is (components/QuestionDock.tsx). */
+/* The dock replaces the fixed-height composer but must shrink inside the
+   available conversation height. Its own overflow keeps every answer reachable. */
+.chat-main .chat-input.chat-input-dock:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1;
+  min-height: 0;
+}
+.question-dock {
+  margin: 0 0 8px;
+  padding: 12px 14px 10px;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  max-height: min(60vh, 520px);
+  overflow-y: auto;
+}
+.question-dock[hidden] { display: none; }
+.question-dock .question-card { margin: 0; padding: 0; border: 0; background: none; box-shadow: none; }
+.question-dock-steps { display: flex; flex-direction: column; gap: var(--sp-2); }
+.question-dock-steps.is-stale .question-dock-head { color: var(--muted); }
+.question-dock-head { display: flex; align-items: center; gap: 8px; color: var(--primary); }
+.question-dock-kicker { font-family: var(--ui); font-size: var(--fs-caption); font-weight: 600; }
+.question-dock-title { min-width: 0; font-family: var(--ui); font-size: var(--fs-meta); color: var(--body-strong); overflow-wrap: anywhere; }
+.question-dock-count { margin-left: auto; font-family: var(--mono); font-variant-numeric: var(--type-numeric); font-size: var(--fs-caption); color: var(--muted); white-space: nowrap; }
+.question-dock-hide { flex-shrink: 0; }
+.question-dock-count + .question-dock-hide { margin-left: 4px; }
+.question-dock-title + .question-dock-hide { margin-left: auto; }
+.question-dock-desc { margin: 0; font-family: var(--ui); font-size: var(--fs-meta); line-height: var(--lh-base); color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; }
+.question-dock-help { margin: 0; font-family: var(--ui); font-size: var(--fs-meta); line-height: var(--lh-base); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.question-dock-trail { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.question-dock-trail-btn {
+  display: flex; gap: 8px; width: 100%; padding: 2px 6px; border: 0; border-radius: var(--r-sm);
+  background: none; color: var(--muted); font-family: var(--ui); font-size: var(--fs-meta); text-align: left; cursor: pointer;
+}
+.question-dock-trail-btn:hover { background: var(--surface-soft); color: var(--ink); }
+.question-dock-trail-q { flex-shrink: 0; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.question-dock-trail-a { min-width: 0; color: var(--body-strong); overflow-wrap: anywhere; }
+.question-dock-q { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.question-dock-prompt { margin: 0; font-family: var(--ui); font-size: var(--fs-body); font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.question-dock-options { display: flex; flex-direction: column; gap: 2px; padding-inline-start: 4px; border-radius: var(--r-md); outline: none; }
+.question-dock-options:focus-visible { box-shadow: var(--ring); }
+.question-dock-option {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; padding: 6px 8px;
+  border: 1px solid transparent; border-radius: var(--r-md); cursor: pointer;
+  font-family: var(--ui); font-size: var(--fs-meta); color: var(--body-strong);
+}
+.question-dock-option.is-cursor { background: var(--teal-soft); border-color: color-mix(in srgb, var(--accent-teal) 35%, transparent); }
+@media (forced-colors: active) {
+  .question-dock-option.is-cursor { outline: 2px solid Highlight; outline-offset: -2px; }
+}
+.question-dock-option.is-cursor :is(.question-dock-key, .question-dock-option-desc) { color: var(--ink); }
+.question-dock-option.is-on .question-dock-label { font-weight: 600; color: var(--ink); }
+.question-dock-key { width: 1.2em; flex-shrink: 0; font-family: var(--mono); font-size: var(--fs-caption); color: var(--muted); text-align: right; }
+.question-dock-tick { flex-shrink: 0; color: var(--accent-teal); }
+.question-dock-label { min-width: 0; overflow-wrap: anywhere; }
+.question-dock-option-desc { flex-basis: 100%; padding-left: calc(1.2em + 8px); color: var(--muted); overflow-wrap: anywhere; }
+.question-dock-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.question-dock-hint { flex: 1 1 12em; min-width: 0; font-family: var(--ui); font-size: var(--fs-caption); color: var(--muted); }
+.question-dock-chip-row { display: flex; padding: 0 0 6px; }
+.question-dock-chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px;
+  border: 1px solid var(--primary-soft-strong); border-radius: var(--r-pill);
+  background: var(--primary-soft); color: var(--ink); font-family: var(--ui); font-size: var(--fs-meta); cursor: pointer;
+}
+.question-dock-chip:focus-visible { box-shadow: var(--ring); outline: none; }
+}

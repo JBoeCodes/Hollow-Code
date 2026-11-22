@@ -1,0 +1,13 @@
+{
+  "agent": "claude",
+  "away": "workspace",
+  "changed": [
+    "model"
+  ],
+  "clientTurnId": "ct-1",
+  "conversationKey": "s-20261118-abc",
+  "queueId": 42,
+  "reason": "configChanged",
+  "sessionKey": "s-20261118-abc",
+  "type": "sessionReset"
+}

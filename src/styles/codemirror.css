@@ -1,0 +1,318 @@
+/* CodeMirror (the Markdown editor, editor/MarkdownEditor.tsx).
+
+   Deliberately UNLAYERED. CodeMirror injects its own base theme as an
+   unlayered <style>, and unlayered rules beat every @layer regardless of
+   specificity, so overrides of CodeMirror's own properties only work from
+   outside the layer stack. Keep this file to `.cm-*` editor rules; everything
+   else belongs in a layered stylesheet (see styles.css). */
+
+/* CodeMirror host — the editor styles itself, this is just layout */
+.vault-editor-host { width: 100%; }
+.vault-editor-host .cm-editor { height: auto; outline: none; }
+.vault-editor-host .cm-scroller { font-family: inherit; overflow-y: visible; }
+/* Frontmatter lines: line decorations from hideFrontmatter plugin attach
+   this class. display:none collapses the line in layout, so the body
+   sits at the very top of the editor. */
+.vault-editor-host .cm-line.cm-hide-line { display: none; }
+
+/* ── Markdown TABLE rendering in edit mode ────────────────────────────
+   Each table row gets a per-line class from tableDecoPlugin; the
+   `|` pipes become `cm-md-table-pipe` spans. The result is a
+   visually-distinct table block that's still inline-editable. */
+.vault-editor-host .cm-line.cm-md-table {
+  font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: var(--fs-body);
+  padding: 1px 8px;
+  white-space: pre;
+  /* Soft side borders to evoke a table; combined with the per-row
+     header/delim/odd/even bg colours below they form a grid. */
+  border-left: 1px solid var(--hairline);
+  border-right: 1px solid var(--hairline);
+}
+.vault-editor-host .cm-line.cm-md-table-header {
+  background: var(--surface-cream-strong);
+  font-weight: 600;
+  border-top: 1px solid var(--hairline);
+  border-top-left-radius: var(--r-xs);
+  border-top-right-radius: var(--r-xs);
+}
+.vault-editor-host .cm-line.cm-md-table-delim {
+  color: var(--muted-soft);
+  background: color-mix(in srgb, var(--surface-cream-strong) 55%, transparent);
+  font-size: var(--fs-meta);
+  line-height: 1.2;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.vault-editor-host .cm-line.cm-md-table-odd  { background: var(--surface-card); }
+.vault-editor-host .cm-line.cm-md-table-even { background: transparent; }
+/* Close the bottom border on the last visual row — approximated by
+   adding it to every body row; rendering with one extra hairline at
+   the bottom is acceptable here. */
+.vault-editor-host .cm-line.cm-md-table-odd,
+.vault-editor-host .cm-line.cm-md-table-even {
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.cm-md-table-pipe {
+  color: var(--primary);
+  opacity: 0.55;
+  padding: 0 1px;
+}
+
+/* ── Obsidian-style CALLOUTS in edit mode ─────────────────────────────
+   `> [!type]` opens a callout block; the whole blockquote (incl. the
+   first line) gets the cm-md-callout-<type> class. Per-type accent
+   colour drives the border-left + tinted background. */
+.vault-editor-host .cm-line.cm-md-callout {
+  padding: 2px 12px 2px 14px;
+  border-left: 3px solid var(--muted);
+  background: color-mix(in srgb, var(--muted) 6%, transparent);
+}
+.vault-editor-host .cm-line.cm-md-callout-head {
+  padding-top: 6px;
+  margin-top: 4px;
+  border-top-left-radius: var(--r-xs);
+  border-top-right-radius: var(--r-xs);
+  font-weight: 600;
+}
+.vault-editor-host .cm-line.cm-md-callout-tail {
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom-left-radius: var(--r-xs);
+  border-bottom-right-radius: var(--r-xs);
+}
+/* Per-flavour colour overrides. Falls back to the generic muted accent
+   above when an unrecognised type is used. */
+.vault-editor-host .cm-line.cm-md-callout-note,
+.vault-editor-host .cm-line.cm-md-callout-info,
+.vault-editor-host .cm-line.cm-md-callout-abstract,
+.vault-editor-host .cm-line.cm-md-callout-summary {
+  border-left-color: var(--primary);
+  background: var(--primary-soft);
+}
+.vault-editor-host .cm-line.cm-md-callout-tip,
+.vault-editor-host .cm-line.cm-md-callout-hint,
+.vault-editor-host .cm-line.cm-md-callout-success,
+.vault-editor-host .cm-line.cm-md-callout-check {
+  border-left-color: var(--success);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+}
+.vault-editor-host .cm-line.cm-md-callout-warning,
+.vault-editor-host .cm-line.cm-md-callout-caution,
+.vault-editor-host .cm-line.cm-md-callout-attention,
+.vault-editor-host .cm-line.cm-md-callout-todo {
+  border-left-color: var(--accent-amber);
+  background: color-mix(in srgb, var(--accent-amber) 12%, transparent);
+}
+.vault-editor-host .cm-line.cm-md-callout-danger,
+.vault-editor-host .cm-line.cm-md-callout-error,
+.vault-editor-host .cm-line.cm-md-callout-bug,
+.vault-editor-host .cm-line.cm-md-callout-failure,
+.vault-editor-host .cm-line.cm-md-callout-fail {
+  border-left-color: var(--error);
+  background: color-mix(in srgb, var(--error) 9%, transparent);
+}
+.vault-editor-host .cm-line.cm-md-callout-example,
+.vault-editor-host .cm-line.cm-md-callout-question,
+.vault-editor-host .cm-line.cm-md-callout-quote,
+.vault-editor-host .cm-line.cm-md-callout-cite {
+  border-left-color: var(--accent-teal);
+  background: color-mix(in srgb, var(--accent-teal) 10%, transparent);
+}
+
+/* Wikilinks */
+.cm-wikilink {
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--t-fast) var(--ease);
+}
+.cm-wikilink:hover { border-bottom-color: var(--primary); }
+.cm-wikilink.unresolved {
+  color: var(--muted-soft);
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+.cm-wikilink.unresolved:hover { color: var(--primary); border-bottom-color: transparent; }
+/* ==highlight== */
+.cm-md-highlight {
+  background: color-mix(in srgb, var(--accent-amber) 40%, transparent);
+  border-radius: var(--r-xs);
+  padding: 0 2px;
+  color: var(--ink);
+}
+/* %% comments %% */
+.cm-md-comment { color: var(--muted-soft); font-style: italic; opacity: 0.75; }
+/* footnotes: [^id] / ^[inline] references (superscript) + [^id]: marker */
+.cm-md-footnote {
+  color: var(--primary);
+  font-size: 0.72em;
+  vertical-align: super;
+  line-height: 0;
+}
+.cm-md-footnote-def { color: var(--muted); font-weight: 600; }
+/* #tags */
+.cm-md-tag {
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-radius: var(--r-pill);
+  padding: 1px 8px;
+  font-size: 0.84em;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.cm-md-tag:hover { background: var(--primary-soft-strong); }
+/* embed chips ![[note]] */
+.cm-md-embed {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--r-xs);
+  padding: 1px 8px 1px 7px;
+  color: var(--primary);
+  text-decoration: none;
+}
+.cm-md-embed::before { content: '⧉'; margin-right: 5px; opacity: 0.65; font-size: 0.9em; }
+
+/* Task-list checkboxes (replace `[ ]` / `[x]`) */
+.cm-md-task-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0 6px 0 0;
+  border: 1.5px solid var(--muted);
+  border-radius: var(--r-xs);
+  background: var(--canvas);
+  vertical-align: -2px;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.cm-md-task-checkbox:hover { border-color: var(--primary); }
+.cm-md-task-checkbox:checked { background: var(--primary); border-color: var(--primary); }
+.cm-md-task-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--canvas);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.vault-editor-host .cm-line.cm-md-task-done {
+  color: var(--muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--muted-soft);
+}
+
+/* Inline external images */
+.cm-md-image { display: inline-block; max-width: 100%; }
+.cm-md-image img {
+  display: block;
+  max-width: 100%;
+  max-height: 440px;
+  margin: 6px 0;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--hairline-soft);
+}
+
+/* Horizontal rule — collapse the source, paint a divider */
+.vault-editor-host .cm-line.cm-md-hr {
+  font-size: 0;
+  line-height: 0;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* Unordered list bullets (• replaces the - / * / + marker) */
+.cm-md-bullet {
+  color: var(--primary);
+  font-weight: 600;
+  padding-right: 2px;
+}
+
+/* CodeMirror autocomplete styling — match the Claude system */
+.cm-tooltip.cm-tooltip-autocomplete {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--elev-2);
+  font-family: var(--mono);
+  font-size: var(--fs-body);
+  padding: 4px;
+  max-height: 280px;
+}
+.cm-tooltip.cm-tooltip-autocomplete > ul { font-family: inherit; max-width: 380px; }
+.cm-tooltip.cm-tooltip-autocomplete > ul > li {
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+.cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected] {
+  background: var(--primary-soft);
+  color: var(--ink);
+}
+.cm-completionLabel { font-weight: 500; }
+.cm-completionDetail {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  font-style: normal;
+}
+
+/* The work pane's editor keeps a usable height when a file is short.
+   Three classes out-rank CodeMirror's `.ͼN .cm-content` theme rule. */
+.work-file .cm-scroller .cm-content { min-height: 250px; }
+
+/* Autocomplete popover: the popover elevation, like every Hollow menu. */
+.cm-tooltip.cm-tooltip-autocomplete {
+  background: var(--surface-raised);
+  border-color: var(--hairline-soft);
+  box-shadow: none;
+}
+html[data-glass] .cm-tooltip.cm-tooltip-autocomplete {
+  background: var(--glass-raised);
+  backdrop-filter: blur(var(--glass-blur-heavy)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness));
+  -webkit-backdrop-filter: blur(var(--glass-blur-heavy)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness));
+  border-color: var(--glass-border-strong);
+  box-shadow: var(--glass-lift), var(--glass-spec-top), var(--glass-ring);
+  transform: translateZ(0);
+  contain: paint;
+}
+html[data-glass] .cm-scroller { background: var(--glass-well); }
+
+/* ── Inline AI (overnight 10-11 B5, editor/inlineAi.ts): the selection bar,
+   the text being worked on, and the inline diff beneath it (the original
+   struck through in the error tone, the suggestion in the success tone). */
+.cm-tooltip.cm-ai-bar { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--surface-raised); box-shadow: var(--elev-2); }
+.cm-ai-btn { padding: 3px var(--sp-2); border: 0; border-radius: var(--r-sm); background: transparent; color: var(--body-strong); font: 500 var(--fs-meta)/1.3 var(--ui); cursor: pointer; }
+.cm-ai-btn:hover { background: var(--fill-hover); color: var(--ink); }
+.cm-ai-btn:focus-visible { outline: none; box-shadow: var(--ring); }
+.cm-ai-btn.is-primary { background: var(--primary); color: var(--on-primary); }
+.cm-ai-btn.is-primary:hover { background: var(--primary-active); color: var(--on-primary); }
+.cm-ai-target { background: var(--primary-soft); border-radius: var(--r-xs); }
+.cm-ai-old { color: var(--error); text-decoration: line-through; text-decoration-thickness: 1px; background: color-mix(in srgb, var(--error) 8%, transparent); }
+.cm-ai-suggestion { margin: var(--sp-1) 0 var(--sp-2); padding: var(--sp-2) var(--sp-3); border: 1px solid var(--hairline); border-left: 3px solid var(--success); border-radius: var(--r-md); background: var(--surface-card); font-family: var(--ui); }
+.cm-ai-suggestion.is-pending { border-left-color: var(--primary); display: flex; align-items: center; gap: var(--sp-2); }
+.cm-ai-suggestion.is-error { border-left-color: var(--error); }
+/* The file changed under it (overnight S3): a plain notice, no motion. */
+.cm-ai-suggestion.is-expired { border-left-color: var(--muted); display: flex; align-items: center; gap: var(--sp-2); }
+.cm-ai-expired { flex: 1; color: var(--ink); font-size: var(--fs-meta); }
+/* Reading text in ink: a custom palette's green can fall under 4.5:1 (cross-PR review S2); the border says "new". */
+.cm-ai-new { white-space: pre-wrap; color: var(--ink); font-size: var(--fs-body); line-height: var(--lh-prose); }
+.cm-ai-writing { flex: 1; color: var(--muted); font-size: var(--fs-meta); background: linear-gradient(90deg, var(--fill-hover) 0%, var(--fill-selected) 50%, var(--fill-hover) 100%); background-size: 200% 100%; border-radius: var(--r-xs); padding: 2px var(--sp-1); }
+@layer components {
+:root:not([data-motion="reduced"]) .cm-ai-writing { animation: shimmer 1.4s var(--ease-soft) infinite; animation-play-state: var(--ambient-play, running); }
+}
+.cm-ai-error { color: var(--error); font-size: var(--fs-meta); }
+.cm-ai-actions { display: flex; align-items: center; gap: var(--sp-1); margin-top: var(--sp-2); }
+.cm-ai-hint { margin-left: auto; color: var(--muted); font-size: var(--fs-caption); }

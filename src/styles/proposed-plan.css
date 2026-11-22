@@ -1,0 +1,7 @@
+@layer components {
+.chat-proposed-plan { padding: var(--sp-3); margin-block: var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-shell); background: var(--surface-card); }
+.chat-proposed-plan h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-body); font-weight: var(--fw-semibold); }
+.chat-proposed-plan summary { cursor: pointer; color: var(--body); }
+.chat-proposed-plan p { color: var(--muted); font-size: var(--fs-meta); }
+.chat-proposed-plan-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+}

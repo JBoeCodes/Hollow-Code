@@ -1,0 +1,34 @@
+/* Main agent presence (V3): the same mark at three sizes. No painting loop.
+   Offscreen/hidden starts paused; either motion gate leaves complete shapes. */
+@layer components {
+.main-agent-chat-avatar { display:inline-flex;vertical-align:middle;margin-right:var(--sp-2); }
+.main-indicator { --orb-play: paused; position: relative; display: inline-flex; flex: none; align-items: center; justify-content: center; color: var(--primary); line-height: 0; border-radius: var(--r-pill); background: var(--material-solid); box-shadow: var(--elev-edge), var(--elev-1); }
+.main-indicator svg { display: block; overflow: visible; }
+.main-indicator[data-state="resting"] { color: var(--muted); }
+.main-indicator[data-state="waiting"] { color: var(--warning); }
+.main-indicator[data-state="failed"] { color: var(--error); }
+.main-indicator[data-state="paused"] { color: var(--muted); }
+.main-indicator[data-state="night"] { color: var(--primary); }
+.main-indicator[data-state="working"][data-provider="claude"] { color: var(--syn-number); }
+.main-indicator[data-state="working"][data-provider="codex"] { color: var(--syn-function); }
+.main-indicator[data-state="working"][data-provider="antigravity"] { color: var(--syn-type); }
+.main-indicator[data-state="working"][data-provider="grok"] { color: var(--ink); }
+.main-orb-aura, .main-orb-shell, .main-orb-orbit, .main-orb-counter { transform-box: view-box; transform-origin: 16px 16px; }
+.main-orb-orbit, .main-orb-counter { opacity: 0; }
+.main-indicator:is([data-state="working"], [data-state="night"]) :is(.main-orb-orbit, .main-orb-counter) { opacity: 1; }
+.main-indicator[data-state="paused"] .main-orb-shell { stroke-dasharray: 2 4; opacity: .8; }
+.main-indicator[data-state="failed"] .main-orb-shell { stroke-dasharray: 57 25; transform: rotate(46deg); opacity: .85; }
+.main-indicator[data-state="night"] .main-orb-shell { opacity: .25; }
+.main-orb-count { position: absolute; right: -.6em; bottom: -.2em; min-width: 1.4em; padding: .15em .3em; border: 1px solid currentColor; border-radius: var(--r-pill); background: var(--surface-card); color: var(--ink); font: 600 var(--fs-caption)/1 var(--ui); text-align: center; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .main-indicator:is([data-state="working"], [data-state="night"]) .main-orb-orbit { animation: main-orb-swirl 3.2s linear infinite; animation-play-state: var(--orb-play, var(--ambient-play, running)); }
+  :root:not([data-motion="reduced"]) .main-indicator:is([data-state="working"], [data-state="night"]) .main-orb-counter { animation: main-orb-swirl 5.4s linear infinite reverse; animation-play-state: var(--orb-play, var(--ambient-play, running)); }
+  :root:not([data-motion="reduced"]) .main-indicator[data-state="night"] .main-orb-orbit { animation-duration: 8s; }
+}
+.main-indicator[data-visible="true"] { --orb-play: var(--ambient-play, running); }
+@keyframes main-orb-swirl { to { transform: rotate(360deg); } }
+@media (forced-colors: active) {
+  .main-indicator, .main-indicator[data-state][data-provider], .main-orb-count { color: CanvasText; box-shadow: none; }
+  .main-orb-count, .main-orb-moon { background: Canvas; fill: Canvas; }
+}
+}

@@ -1,0 +1,12 @@
+{
+  "about" : "Software P-256 keys made with Apple's Security framework (SecKeyCreateRandomKey) and signatures from SecKeyCreateSignature(.ecdsaSignatureMessageX962SHA256), the DER a Secure Enclave key returns. Not Secure Enclave keys; a real device's join on the first device run.",
+  "allowSignature" : "MEYCIQDr0fItveff_aq9LTpvdOqyyKfwrJz1fUgpPQhbEgBk1AIhAOWd6fE-mxFh5q7aaZSQgZBpdn5o4WUt5jOdAdeO6LfD",
+  "approvalId" : "apr-1a2b3c4d-1",
+  "approveKey" : "BFLWTmjcPYMMRAn8D7JqgsomNFA8ib5JoaJ93nQ_Sviuls12MaXewDT6LRlYwbuyrqEQPKxGgWxY3BMH6yJSQUA",
+  "denyKey" : "BFClsQJi3A8fkpwG3NnPzZ_lm2Lpu5KoJOPXTBqTPECfNKfJ_h4l2oCKHb6DpI-8hA-zJEMp3pgx-Woz3oidaL4",
+  "denySignature" : "MEQCIF0lzmGDxXsrCGXhcVKEpqGPsm6W7TpIGsSjgaX51RERAiAprq6XaZsFVKZuPVhsz-BLoj2DHujNJOyKDxns6NDnYQ",
+  "deviceId" : "ph-0a1b2c3d",
+  "digest" : "7d0c5f2b8e5a1c3d94a6b7e8f0123456789abcdef0123456789abcdef0123456",
+  "expiresAt" : "2026-11-19T09:01:00Z",
+  "nonce" : "Tn3kQ0v1bY8cWm5xLr2pEa9dHsJf7uZtGiOyNwKqXMA"
+}

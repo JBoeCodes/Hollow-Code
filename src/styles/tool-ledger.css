@@ -1,0 +1,233 @@
+/* Tool ledger (Paperclip PR 21): folded tool runs, the per-turn Raw view,
+   and approval badges on tool rows. Imported by ToolLedger.tsx so it rides
+   the chat chunk, not the main bundle. Rows compose the shared `.toolcall`
+   chrome in notifications-people.css; nothing here animates. */
+@layer components {
+.tool-ledger-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--sp-1);
+}
+.tool-ledger-raw-toggle {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-flat);
+  padding: 3px var(--sp-2);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.tool-ledger-raw-toggle[aria-pressed="true"] {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+/* A folded run's members sit indented under its header. */
+.tool-group-members {
+  margin-left: var(--sp-4);
+  border-left: 1px solid var(--hairline-soft);
+}
+
+/* The Raw view past the virtualization threshold: a fixed-height window. */
+.tool-ledger-raw-list {
+  position: relative;
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-md);
+}
+.tool-ledger-raw-spacer { position: relative; }
+.tool-ledger-raw-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-2);
+  font-size: var(--fs-caption);
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.tool-ledger-raw-n {
+  flex: none;
+  min-width: 3.5em;
+  text-align: right;
+  font-family: var(--mono);
+  color: var(--muted-soft);
+}
+.tool-ledger-raw-verb { flex: none; font-weight: 600; color: var(--ink); }
+.tool-ledger-raw-target {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--mono);
+  color: var(--accent-teal);
+}
+.tool-ledger-raw-status { flex: none; color: var(--success); }
+.tool-ledger-raw-row.st-running .tool-ledger-raw-status { color: var(--accent-teal); }
+.tool-ledger-raw-row.st-error .tool-ledger-raw-status { color: var(--error); }
+
+/* Approval badge on the exact tool row the approval was bound to. */
+.toolcall-approval {
+  flex: none;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-flat);
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--hairline-soft);
+  color: var(--muted);
+}
+.toolcall-approval.pending {
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+  background: var(--primary-soft);
+}
+.toolcall-approval.allowed,
+.toolcall-approval.allowed_phone { color: var(--success); border-color: var(--success); }
+.toolcall-approval.denied,
+.toolcall-approval.denied_phone { color: var(--error); border-color: var(--error); background: var(--error-soft); }
+.toolcall-approval.timed_out,
+.toolcall-approval.cancelled { color: var(--muted); }
+
+/* The tail approval card names the tool call it was bound to. */
+.chat-approval-tool {
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  margin-top: var(--sp-1);
+}
+.chat-approval-tool strong { color: var(--ink); font-weight: 600; }
+
+/* The ledger header reads as a sentence about the turn ("Ran 2 commands,
+   read ToolLedger.tsx"), not as the shared uppercase ledger cap. */
+.tool-ledger-cap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--body);
+}
+.tool-ledger-cap::-webkit-details-marker { display: none; }
+.tool-ledger-cap-icon { display: inline-flex; flex: none; color: var(--accent-teal); }
+.tool-ledger-cap-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.tool-ledger-cap-spacer { flex: 1; min-width: 8px; }
+.tool-ledger-cap-meta { flex: none; color: var(--muted); font-family: var(--mono); font-size: var(--fs-meta); }
+.tool-ledger-cap-failed { color: var(--error); }
+/* A collapsed ledger is just its header: no rule under it. */
+.chat-tool-ledger:not([open]) > .tool-ledger-cap { border-bottom: none; }
+.tool-ledger-cap-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 45%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--primary);
+}
+.tool-ledger-cap-now-target { font-family: var(--mono); font-size: var(--fs-meta); color: var(--accent-teal); overflow: hidden; text-overflow: ellipsis; }
+/* The strip gives way before the summary does: the text keeps at least
+   40% of the header and the strip clips. */
+.tool-ledger-glyphs {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+}
+.tool-ledger-cap .tool-ledger-cap-text { flex: 0 1 auto; min-width: min(40%, max-content); }
+.tool-ledger-glyph { flex: none; }
+.tool-ledger-glyph { display: inline-flex; }
+.tool-ledger-glyph.st-error { color: var(--error); }
+.tool-ledger-glyph.st-running { color: var(--primary); }
+.tool-ledger-glyph-more { font-family: var(--mono); font-size: var(--fs-caption); color: var(--muted-soft); }
+
+/* Ledger rows read like a sentence: a sans verb, then what it acted on as a
+   file chip or a mono pill. Scoped to the chat ledger, since the evidence
+   receipt shares `.toolcall-head`. */
+.chat-tool-ledger .toolcall-head { font-family: var(--ui); }
+/* The verb (a command's reason) keeps its width up to 60% of the row;
+   the pill beside it clips first. */
+.chat-tool-ledger .toolcall-verb {
+  font-weight: 500;
+  min-width: 0;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+/* In a tool row the verb sits in the toggle (with the icon), so the 60%
+   is the toggle's, against the row; a percentage inside the toggle would
+   be of the toggle's own width and clip the verb short. */
+.chat-tool-ledger .toolcall-toggle { flex: 0 0 auto; max-width: 60%; }
+.chat-tool-ledger .toolcall-toggle > .toolcall-verb { flex: 0 1 auto; max-width: none; }
+.chat-tool-ledger .toolcall-target.toolcall-pill {
+  flex: 0 1 auto;
+  padding: 2px 7px;
+  border-radius: var(--r-xs);
+  background: var(--canvas);
+  color: var(--body);
+  font-family: var(--mono);
+}
+.chat-tool-ledger .toolcall-extra { font-family: var(--mono); }
+
+/* A file chip: type icon and name in a hairline box. */
+.toolcall-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 260px;
+  padding: 1px 7px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xs);
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+.toolcall-file svg { flex: none; color: var(--muted); }
+/* Its icon colour by type is shared with reply file chips (vault-inbox-chat.css). */
+.toolcall-file-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* An absolute path opens in the side panel. */
+.toolcall-file.openable { cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+.toolcall-file.openable:hover { border-color: var(--primary-soft-strong); color: var(--ink); }
+.toolcall-file.openable:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+
+.toolcall-counts {
+  display: inline-flex;
+  gap: 4px;
+  flex: none;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  font-variant-numeric: tabular-nums;
+}
+.toolcall-add { color: var(--success); }
+.toolcall-del { color: var(--error); }
+
+/* A folded run lists the files it touched beside its label. */
+.tool-group-files { display: inline-flex; align-items: center; gap: 5px; min-width: 0; overflow: hidden; }
+.tool-group-more { flex: none; font-family: var(--mono); font-size: var(--fs-caption); color: var(--muted); }
+.tool-ledger { border-radius: var(--r-lg); border-color: var(--hairline-soft); }
+}

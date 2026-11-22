@@ -1,0 +1,901 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Workflows tab
+   --------------------------------------------------------------------------
+   List of Claude-driven automations (`vault/workflows/*.md`). Split layout:
+   aside on the left lists workflows with status + schedule; right pane is
+   the editor + live run log. Reuses `.split`, `.split-aside`, `.list-row`
+   and the shared bracket-reticle hover applied via the list above.
+   ────────────────────────────────────────────────────────────────────────── */
+@layer components {
+.workflow-support { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-2) var(--sp-5); margin: 0 var(--page-gutter) var(--sp-2); flex: 0 0 auto; }
+.workflow-support > :is(.background-clock, .background-work) { margin: 0; min-width: 0; }
+.workflow-support > .background-work > summary { padding-block: var(--sp-1); }
+.workflow-support > :is(.background-work[open], .background-clock:has(> details[open])) { flex-basis: 100%; }
+.workflows-split.workflow-empty-collection .split-aside { display: flex; width: 100%; flex: 1; min-height: 0; max-height: none; border: 0; }
+.workflows-split.workflow-empty-collection .workflow-viewer { display: none; }
+.workflow-empty-collection .workflow-empty { align-items: center; }
+.workflow-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0; padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4); /* left gutter hosts the status conduit */
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  border-radius: 0;
+  box-shadow: none;
+}
+.workflow-row .title {
+  font-family: var(--ui);
+  font-size: var(--fs-body); font-weight: 500;
+  color: var(--ink);
+  flex: 1;
+}
+.workflow-row:hover { background: var(--fill-hover); }
+.workflow-row.active { background: var(--fill-selected); }
+.workflow-row.active::before {
+  content: '';
+  position: absolute;
+  inset: var(--sp-2) auto var(--sp-2) 0;
+  width: 2px;
+  background: var(--primary);
+  pointer-events: none;
+}
+.workflow-row.active .title { color: var(--ink); }
+/* Amber-on-amber-tint washes out — deepen the chip text on selection. */
+.workflow-row.active .workflow-schedule-tag { color: var(--ink); }
+.workflow-row.active .meta .dim, .workflow-row.active .workflow-row-foot.dim { color: var(--body-strong); }
+.workflow-row-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.workflow-row .meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+}
+.workflow-row .meta .dim { color: var(--muted); }
+.workflow-row-foot {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  letter-spacing: 0;
+}
+
+/* Signature: the status conduit — a vertical light-line in the row's
+   left gutter carrying run-state (shared .status-conduit colors:
+   ok teal / busy breathing amber / error red / never dashed / off
+   unlit). Absolute inside the row, so the .list-row hover translate
+   carries it along. position:relative comes from the shared ember-edge
+   group near the top of this file. */
+.status-conduit.workflow-conduit {
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+}
+
+/* Truncated last-error snippet under an errored row. */
+.workflow-row-err {
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  color: var(--error);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.workflow-row-err.is-budget { color: var(--warning); }
+
+/* Aside group headers (shared .rail-group-label) — bleed across the
+   .split-list gutters so scrolled rows never peek beneath the sticky band. */
+.rail-group-label.workflow-group-label { margin: 4px -10px 2px; }
+
+.workflow-status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted-soft);
+  box-shadow: 0 0 0 1px var(--canvas);
+  flex-shrink: 0;
+}
+.workflow-status-dot.success   { background: var(--success); }
+.workflow-status-dot.error     { background: var(--error); }
+.workflow-status-dot.running   { background: var(--primary); }
+.workflow-status-dot.cancelled { background: var(--muted); }
+.workflow-status-dot.never     { background: transparent; box-shadow: inset 0 0 0 1px var(--muted-soft); }
+
+@keyframes workflow-running-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--amber-soft), 0 0 0 1px var(--canvas); }
+  50%      { box-shadow: 0 0 0 5px transparent,    0 0 0 1px var(--canvas); }
+}
+
+.workflow-schedule-tag {
+  font-family: var(--mono);
+  font-size: var(--fs-caption);
+  font-variant-numeric: var(--type-numeric);
+  padding: 1px 6px;
+  border-radius: var(--r-pill);
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+/* ── Right-side viewer + detail editor ────────────────────────────── */
+
+.workflow-viewer {
+  padding: 24px 32px 48px;
+  overflow-y: auto;
+}
+
+@container hollow-window (max-width: 53.75em) {
+  .workflows-split { flex-direction: column; }
+  .workflows-split > .split-aside {
+    width: 100%;
+    max-height: 180px;
+    border-right: 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .workflows-split .split-list { min-height: 0; }
+  .workflow-viewer { padding: 16px 18px 36px; }
+}
+
+/* Outputs-first view of a selected workflow (subsumes the old Morning
+   Briefs tab — reuses .briefs-bar / .viewer / .chip below). */
+.workflow-output-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* Fills whatever width the viewer gives it — and the viewer scales with the
+     rail + aside, so the rendered output grows and shrinks with the window
+     instead of stranding at a fixed cap. The reading gutter is fluid too (see
+     `.workflow-output-pane > .viewer` below and HtmlDoc's vw-based body
+     padding), so the output breathes proportionally, not at one hard-coded
+     size. */
+  width: 100%;
+}
+/* Rendered-output host. The markdown path keeps a comfortable prose gutter, but
+   FLUID (vw-based clamp) so it tracks the pane width rather than a fixed inset.
+   The HTML path goes flush: the sandboxed HtmlDoc frame paints its own fluid
+   gutter inside itself, so any host padding here would just stack on top into
+   the dead space we used to see. The flex `gap` already spaces the chips from
+   the output, so the chip bar drops its legacy bottom margin. */
+.workflow-output-pane > .viewer {
+  padding: clamp(20px, 2.4vw, 44px) clamp(20px, 3vw, 56px) clamp(28px, 3.5vw, 64px);
+  overflow: visible;
+}
+.workflow-output-pane > .viewer:has(> .html-doc) { padding: 0; }
+.workflow-output-pane > .briefs-bar { margin-bottom: 0; }
+/* Compact reading cover: title, actions with their paid-run note, then
+   schedule readouts. Keep the existing controls and static state edge. */
+.doc-cover.workflow-cover {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-2) 0 var(--sp-3) var(--sp-4);
+  background: transparent;
+  border: 0;
+  border-inline-start: 3px solid var(--material-edge);
+  border-radius: 0;
+  box-shadow: none;
+}
+.workflow-cover-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.workflow-cover-title { min-width: 0; }
+/* Shared title family, at the existing compact cover size. */
+.workflow-cover-title .doc-cover-title { margin: 0; font-size: var(--fs-lg); overflow-wrap: anywhere; }
+.workflow-title-line { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2); }
+.workflow-title-line .workflow-routine-chip { margin: 0; }
+.workflow-cover-title p { margin: 4px 0 0; font-size: var(--fs-body); color: var(--muted); }
+
+/* A static state edge; words and actions remain authoritative. */
+.workflow-cover[data-state="error"] { border-inline-start-color: var(--error); }
+.workflow-cover[data-state="busy"] { border-inline-start-color: var(--primary); }
+
+/* Schedule / Next run / Last run, with tabular figures. */
+.workflow-cover-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0;
+  padding-block: var(--sp-1);
+  border-block: 1px solid var(--hairline-soft);
+  font-variant-numeric: var(--type-numeric);
+}
+.workflow-cover-stat dt {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin: 0 0 2px;
+  font: var(--fs-meta) var(--ui);
+}
+.workflow-cover-stat dd {
+  color: var(--body-strong);
+  margin: 0;
+  font: var(--fs-meta)/1.6 var(--ui);
+  overflow-wrap: anywhere;
+}
+
+.workflow-cover-next dd { font-weight: 600; }
+.workflow-cover-stat dd.workflow-next-warn { color: var(--warning); }
+
+.workflow-output-actions .btn.is-running { animation: workflow-running-pulse 1.6s var(--ease-soft) infinite; }
+.workflow-output-pane .briefs-bar .chip {
+  animation: stagger-in var(--t-med) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 20ms);
+}
+.workflow-output-empty { display: flex; flex-direction: column; gap: 20px; }
+
+/* Editor wrap — the "← Back to latest result" affordance above the editor. */
+.workflow-editor-wrap { display: flex; flex-direction: column; gap: 12px; }
+.workflow-back { align-self: flex-start; }
+
+.workflow-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.workflow-detail-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.workflow-title-input {
+  flex: 1 1 220px;
+  min-width: 0;
+  font-family: var(--display);
+  font-size: var(--fs-display);
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--hairline);
+  padding: 4px 0;
+  color: var(--ink);
+  outline: none;
+}
+.workflow-title-input:focus { border-bottom-color: var(--primary-soft-strong); }
+.workflow-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.workflow-description-input {
+  width: 100%;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  color: var(--body);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  resize: vertical;
+  min-height: 48px;
+  outline: none;
+}
+.workflow-description-input:focus { border-color: var(--primary-soft-strong); }
+
+.workflow-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: var(--sp-4) 0 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  border-radius: 0;
+}
+.workflow-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+.workflow-section-head h3 {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin: 0;
+}
+.workflow-section-head .dim {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  color: var(--muted-soft);
+}
+
+/* ── Schedule presets ─────────────────────────────────────────────── */
+
+.schedule-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.schedule-chip {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  color: var(--body);
+  cursor: pointer;
+  transition: var(--motion-base);
+}
+.schedule-chip:hover {
+  border-color: var(--primary-soft-strong);
+  color: var(--primary);
+}
+.schedule-chip.active {
+  background: var(--primary-soft);
+  border-color: var(--primary-soft-strong);
+  color: var(--primary);
+}
+.schedule-cron-input {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  outline: none;
+}
+.schedule-cron-input:focus { border-color: var(--primary-soft-strong); }
+
+/* ── Prompt textarea + advanced grid ─────────────────────────────── */
+
+.workflow-prompt-input {
+  width: 100%;
+  min-height: 220px;
+  font-family: var(--mono);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  resize: vertical;
+  outline: none;
+}
+.workflow-prompt-input:focus { border-color: var(--primary-soft-strong); }
+
+.workflow-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+.workflow-field { display: flex; flex-direction: column; gap: 6px; }
+.workflow-field.span-2 { grid-column: span 2; }
+/* A Select in a div field (Runs in, Runs on) keeps its height: the grid
+   sizes the row to min-content, which shrank it to its text. */
+.workflow-field > .hs-select { flex: none; }
+.workflow-runs-on .workflow-hint:empty { display: none; }
+.workflow-label {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.workflow-field input,
+.workflow-field select {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  padding: 6px 10px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  outline: none;
+}
+.workflow-field input:focus,
+.workflow-field select:focus { border-color: var(--primary-soft-strong); }
+/* Skip when nothing changed (Paperclip PR 9b): checkbox, label, then hint. */
+.workflow-field.workflow-field-check {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+.workflow-field.workflow-field-check input { padding: 0; }
+.workflow-hint {
+  flex-basis: 100%;
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  line-height: var(--lh-base);
+}
+
+/* Carved terminal well — live log rows land in a recessed channel. */
+.workflow-run-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 10px 12px;
+  background: var(--surface-card);
+  border-radius: var(--r-md);
+}
+.workflow-run-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  line-height: 1.45;
+  animation: stagger-in var(--t-fast) var(--ease-out) both;
+}
+.workflow-run-row.kind-started { color: var(--primary); }
+/* A run that moved off its agent budget ceiling (merged plan decision 6). */
+.workflow-run-row.kind-switched,
+.workflow-log-icon.icon-switched { color: var(--warning); }
+.workflow-run-row.kind-tool    { color: var(--body); }
+.workflow-run-row.kind-text    { color: var(--muted); }
+.workflow-run-row.kind-done    { color: var(--success); }
+.workflow-run-row.kind-error   { color: var(--error); background: var(--error-soft); }
+/* A run the user stopped (Paperclip PR 22): neutral, not an error. */
+.workflow-run-row.kind-stopped,
+.workflow-log-icon.icon-stopped { color: var(--muted); }
+
+.workflow-log-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  flex-shrink: 0;
+}
+.workflow-log-icon.icon-started { color: var(--primary); }
+.workflow-log-icon.icon-tool    { color: var(--muted); }
+.workflow-log-icon.icon-text    { color: var(--muted-soft); }
+.workflow-log-icon.icon-done    { color: var(--success); }
+.workflow-log-icon.icon-error   { color: var(--error); }
+
+.workflow-running-pill {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: var(--amber-soft);
+  color: var(--accent-amber);
+  animation: workflow-running-pulse 1.6s ease-in-out infinite;
+}
+
+/* ── Run history (collapsed view shown when no live log) ─────────── */
+
+.workflow-history {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.workflow-history-row {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  padding: 5px 8px;
+  border-radius: var(--r-sm);
+  color: var(--body);
+}
+.workflow-history-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.workflow-history-row .execution-receipt { margin: 6px 0 2px 18px; }
+.workflow-history-row.kind-success { color: var(--ink); }
+.workflow-history-row.kind-error   { color: var(--error); }
+.workflow-history-row.kind-cancelled { color: var(--muted); }
+.workflow-history-at { min-width: 120px; color: var(--muted); }
+.workflow-history-row .dim { color: var(--muted); }
+.workflow-durations { margin: 0 0 var(--sp-3); padding: var(--sp-3) 0; background: transparent; border: 0; border-block: 1px solid var(--hairline); border-radius: 0; font: var(--fs-meta)/1.5 var(--ui); }
+.workflow-durations figcaption { color: var(--body-strong); }
+.workflow-durations svg { display: block; width: min(100%, 300px); height: 52px; overflow: visible; color: var(--primary); }
+.workflow-durations path { fill: none; stroke: currentColor; stroke-width: 2; }
+.workflow-durations circle { fill: currentColor; }
+.workflow-history-note {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: var(--fs-meta);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50%;
+}
+
+.execution-receipt-path {
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  text-align: left;
+}
+.run-record { min-width: 0; }
+.execution-receipt.receipt-failed > summary .toolcall-status { color: var(--error); }
+.receipt-check-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.run-record .toolcall-result { overflow-wrap: anywhere; }
+.execution-receipt-path code {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Paperclip PR 16: repository changes and their on-demand patches. */
+.execution-receipt-repo + .execution-receipt-repo { margin-top: var(--sp-2); }
+.execution-receipt-patch {
+  max-height: 320px;
+  overflow: auto;
+}
+/* Overnight A8: a pass claim the run's checks don't back. Words, not colour. */
+.execution-receipt-claim {
+  display: inline-block;
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--warning);
+  border-radius: var(--r-pill);
+  color: color-mix(in srgb, var(--warning) 60%, var(--ink));
+}
+
+/* ── New-workflow form + starter templates ───────────────────────── */
+
+.workflow-new {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.workflow-new h2 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: var(--fs-display);
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+.workflow-new label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.workflow-new .form-label {
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.workflow-new input,
+.workflow-new textarea {
+  font-family: var(--mono);
+  font-size: var(--fs-body);
+  padding: 8px 12px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  outline: none;
+}
+.workflow-new textarea { min-height: 180px; resize: vertical; line-height: var(--lh-prose); }
+.workflow-new input:focus,
+.workflow-new textarea:focus { border-color: var(--primary-soft-strong); }
+
+.workflow-templates {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.workflow-template-card {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  cursor: pointer;
+  font-family: var(--ui);
+}
+.workflow-template-card.active {
+  background: var(--primary-soft);
+  border-color: var(--primary-soft-strong);
+}
+.workflow-template-title {
+  font-size: var(--fs-meta);
+  color: var(--primary);
+  font-weight: 500;
+}
+.workflow-template-desc {
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.workflow-new-actions { display: flex; gap: 10px; margin-top: 6px; }
+
+/* "No workflow selected" rides the shared arch .empty-state; the
+   compound only gives the create button some air under the message. */
+.empty-state.workflow-empty .btn { margin-top: 12px; }
+
+.workflow-empty-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  align-items: flex-start;
+}
+.workflow-empty-list .hint {
+  max-width: 280px;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--muted);
+}
+
+/* Past-due next-run readout — this occurrence has not started yet, because
+   Hollow was closed or another automated run holds the vault; the scheduler
+   starts it once free (within grace) or skips + reschedules it. */
+.workflow-next-warn { color: var(--warning); }
+/* B04: the unreadable-schedule line under the Schedule stat; its Details toggle wraps below it. */
+.workflow-schedule-problem { margin: 2px 0 0; max-width: var(--measure); }
+/* Full strength: --warning is only 4.6:1 on --surface-soft, so the shared toggle's .8 fade would drop below 4.5. */
+.workflow-schedule-problem .inline-error-toggle { opacity: 1; }
+
+/* Routine marker — the workflow's hour is managed from Settings, Background work. */
+.workflow-routine-chip {
+  display: inline-block;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 1px 6px;
+  border-radius: var(--r-pill);
+  color: var(--muted);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font: var(--fs-meta)/1.5 var(--ui);
+}
+.workflow-cover-title .workflow-routine-chip { margin-top: 6px; }
+
+/* Skipped runs in history read as a deliberate warn, not an error. */
+.workflow-status-dot.skipped { background: var(--warning); }
+
+/* Receipt-derived outputs caption (workflow declares no output_glob). */
+.workflow-derived-note {
+  margin: 0;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+.workflow-derived-note code { font-family: var(--mono); }
+.workflow-derived-note summary { cursor: pointer; }
+.workflow-derived-note p { margin: var(--sp-2) 0 0; }
+
+/* stderr tail of a failed run — carved mono well, scrolls when long. */
+.workflow-stderr-tail {
+  margin: 6px 0 0;
+  max-height: 220px;
+  overflow: auto;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-sm);
+  background: var(--canvas);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* The known-cause banner (expired claude CLI login). */
+.workflow-auth-hint {
+  margin: 6px 0 0;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-meta);
+  color: var(--warning);
+  background: var(--primary-soft);
+}
+
+/* Failures stay auditable after a recovery. */
+.workflow-recent-failure { margin-top: var(--sp-2); }
+.workflow-recent-failure .workflow-debugger-run {
+  display: grid;
+  grid-template-columns: 90px 60px 40px minmax(0, 1fr);
+  gap: 6px;
+  color: var(--muted);
+  font-size: var(--fs-meta);
+}
+.workflow-recent-failure .workflow-debugger-run b { color: var(--error); }
+
+/* Structured schedule picker (presets + time-of-day; custom reveals raw). */
+.schedule-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.schedule-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.workflow-triggers { margin-block: var(--sp-3); }
+.workflow-triggers ul { padding-left: var(--sp-4); }
+.workflow-triggers li { overflow-wrap: anywhere; margin-block: var(--sp-1); }
+.workflow-triggers input { max-width: 100%; }
+.schedule-picker-row select {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  padding: 6px 10px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  outline: none;
+}
+.schedule-picker-row select:focus { border-color: var(--primary-soft-strong); }
+.workflow-new .schedule-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.workflow-empty { max-width: 560px; margin: var(--sp-7) auto; text-align: center; }
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+.workflows-split .split-aside { background: var(--surface-soft); border-color: var(--hairline-soft); box-shadow: none; width: 280px; }
+@container hollow-window (max-width: 68.75em) {
+  .workflows-split { display:flex; flex-direction:column; min-height:0; overflow:hidden; }
+  .workflows-split .split-aside { display:none; }
+  .workflows-split.workflow-browsing .split-aside { display:flex; width:100%; flex:1; min-height:0; border:0; }
+  .workflows-split.workflow-browsing .workflow-viewer { display:none; }
+  .workflows-split .workflow-viewer { min-height:0; overflow:auto; flex:1; }
+  .workflow-cover-top { flex-direction:column; gap:16px; }
+}
+.workflow-viewer,.workflow-output-pane { min-width:0; }
+/* ── Automations: detail and creator use the page (R02) ─────────────────── */
+.workflow-detail, .workflow-new { max-width: none; }
+.workflow-detail p, .workflow-new p, .workflow-new .hint { max-width: var(--measure); }
+.workflow-empty h3 { margin: 0 0 var(--sp-2); font: 600 var(--fs-lg) var(--ui); color: var(--ink); }
+
+/* ── Run review (next-level P17) ──────────────────────────────────────────
+   Header + status line → what to fix → latest output → receipt → history →
+   logs on demand. Sections and separators, not cards inside cards. */
+.workflow-review { gap: var(--section-gap); }
+.workflow-status-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); }
+.workflow-status-line > .studio-action-menu { margin-left: auto; }
+.workflow-run-note { margin: 0; color: var(--muted); font: var(--fs-meta)/1.5 var(--ui); max-width: var(--measure); }
+.workflow-fix {
+  display: grid; gap: var(--sp-1); justify-items: start;
+  padding: var(--sp-3) var(--sp-4);
+  border-left: 2px solid var(--error);
+  background: var(--surface-sunken);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+.workflow-fix[data-action="budgets"], .workflow-fix[data-action="permissions"] { border-left-color: var(--warning); }
+.workflow-fix-title { display: flex; align-items: center; gap: var(--sp-2); font: 600 var(--fs-body) var(--ui); color: var(--ink); }
+.workflow-fix-reason { margin: 0; color: var(--body-strong); font-size: var(--fs-body); }
+.workflow-fix-step { margin: 0 0 var(--sp-1); color: var(--muted); font-size: var(--fs-meta); }
+/* "What happened" (plan completion L2): the newest run in the failing run's
+   context. A quiet record, not an alarm: the fix above carries the tone. */
+.workflow-outcome { display: grid; gap: var(--sp-2); padding-top: var(--sp-3); border-top: 1px solid var(--hairline-soft); }
+.workflow-outcome-head { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; }
+.workflow-outcome-head h3 { margin: 0; font: 600 var(--fs-md) var(--ui); color: var(--ink); }
+.workflow-outcome-when { color: var(--muted); font-size: var(--fs-meta); }
+.workflow-outcome-grid { margin: 0; display: grid; gap: var(--sp-1); }
+.workflow-outcome-line { display: grid; grid-template-columns: minmax(110px, 22%) 1fr; gap: var(--sp-2); font-size: var(--fs-meta); }
+.workflow-outcome-line dt { color: var(--muted); }
+.workflow-outcome-line dd { margin: 0; color: var(--body-strong); overflow-wrap: anywhere; min-width: 0; }
+.workflow-outcome .workflow-outcome-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+.workflow-outcome-effect { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); }
+.workflow-outcome-guard { color: var(--muted); font-size: var(--fs-caption); }
+.workflow-outcome-examples { display: block; color: var(--muted); font-size: var(--fs-caption); }
+.workflow-outcome-coverage { margin: 0; color: var(--muted); font-size: var(--fs-meta); max-width: var(--measure); }
+.workflow-outcome-retry { display: grid; gap: var(--sp-1); justify-items: start; }
+.workflow-outcome-retry p { margin: 0; color: var(--body-strong); font-size: var(--fs-meta); max-width: var(--measure); }
+.workflow-outcome-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+@container hollow-window (max-width: 53.75em) { .workflow-outcome-line { grid-template-columns: 1fr; gap: 0; } }
+.workflow-latest { display: flex; flex-direction: column; gap: var(--sp-3); min-width: 0; }
+.workflow-latest-head { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; }
+.workflow-latest-head h3 { margin: 0; font: 600 var(--fs-md) var(--ui); color: var(--ink); }
+.workflow-latest-caption { color: var(--muted); font: var(--fs-meta) var(--mono); overflow-wrap: anywhere; }
+.workflow-latest > .viewer {
+  padding: clamp(20px, 2.4vw, 44px) clamp(20px, 3vw, 56px) clamp(28px, 3.5vw, 64px);
+  overflow: visible;
+  border-top: 1px solid var(--hairline-soft);
+}
+.workflow-latest > .viewer:has(> .html-doc) { padding: 0; }
+.workflow-latest > .briefs-bar { margin-bottom: 0; }
+.workflow-review > .ui-section { margin: 0; }
+.workflow-logs { border-top: 1px solid var(--hairline-soft); padding-top: var(--sp-3); }
+.workflow-logs > summary {
+  display: flex; align-items: center; gap: var(--sp-2); cursor: pointer;
+  color: var(--muted); font: 500 var(--fs-meta) var(--ui);
+}
+.workflow-logs > summary:hover { color: var(--ink); }
+.workflow-logs-count { color: var(--error); }
+.workflow-logs[open] > summary { margin-bottom: var(--sp-3); }
+.workflow-stderr-label { margin-top: var(--sp-2); color: var(--muted); font-size: var(--fs-caption); }
+
+/* "Preview · nothing runs": a quiet, dashed frame so it never reads as a run. */
+.workflow-preview {
+  display: grid; gap: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1px dashed var(--hairline);
+  border-radius: var(--r-md);
+  background: var(--surface-sunken);
+}
+.workflow-preview-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
+.workflow-preview-head h3 { display: flex; align-items: center; gap: var(--sp-2); margin: 0; font: 600 var(--fs-body) var(--ui); color: var(--ink); }
+.workflow-preview-head p { margin: var(--sp-1) 0 0; color: var(--muted); font-size: var(--fs-meta); max-width: var(--measure); }
+.workflow-preview-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--sp-3) var(--sp-5); }
+.workflow-preview-group h4 { margin: 0 0 var(--sp-1); color: var(--muted); font: 600 var(--fs-caption) var(--ui); }
+.workflow-preview-group dl { margin: 0; display: grid; gap: var(--sp-1); }
+.workflow-preview-line { display: grid; grid-template-columns: minmax(96px, 34%) 1fr; gap: var(--sp-2); font-size: var(--fs-meta); }
+.workflow-preview-line.is-sentence { grid-template-columns: 1fr; }
+.workflow-preview-line dt { color: var(--muted); }
+.workflow-preview-line dd { margin: 0; color: var(--body-strong); overflow-wrap: anywhere; }
+.workflow-preview-line[data-tone="warn"] dd { color: var(--warning); }
+.workflow-preview-line[data-tone="error"] dd { color: var(--error); }
+.workflow-preview-line[data-tone="ok"] dd { color: var(--success); }
+.workflow-preview-line.is-sentence dd { color: var(--muted); }
+.workflow-preview-detail { display: block; color: var(--muted); font-size: var(--fs-caption); }
+
+/* ── Outcome-first editor (next-level P17) ── */
+.workflow-editor-index { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-3); font-size: var(--fs-meta); }
+.workflow-editor-index a { color: var(--muted); text-decoration: none; }
+.workflow-editor-index a:hover, .workflow-editor-index a:focus-visible { color: var(--ink); text-decoration: underline; }
+.workflow-section { scroll-margin-top: var(--sp-4); }
+.workflow-section > .workflow-description-input { margin-bottom: var(--sp-3); }
+.workflow-next-runs { display: grid; gap: var(--sp-1); margin-top: var(--sp-3); }
+.workflow-next-list { margin: 0 0 var(--sp-2); padding: 0 0 0 var(--sp-3); list-style: none; display: grid; border-inline-start: 2px solid var(--material-edge); }
+.workflow-next-list li { display: flex; flex-wrap: wrap; gap: var(--sp-2); padding-block: var(--sp-1); font: var(--fs-meta)/1.5 var(--ui); color: var(--body-strong); font-variant-numeric: var(--type-numeric); }
+.workflow-next-label { min-width: 4ch; color: var(--muted); }
+.workflow-next-list li:first-child .workflow-next-label { color: var(--primary); font-weight: 600; }
+.workflow-next-runs .workflow-hint { margin: 0; }
+.workflow-approval { display: grid; gap: var(--sp-1); margin-top: var(--sp-3); padding-top: var(--sp-3); border-top: 1px solid var(--hairline-soft); font-size: var(--fs-meta); }
+.workflow-approval p { margin: 0; }
+.workflow-approval-ok { display: flex; align-items: center; gap: var(--sp-1); color: var(--muted); }
+.workflow-approval-title { color: var(--ink); font-weight: 600; }
+.workflow-approval[data-state="widens"] .workflow-approval-title { color: var(--warning); }
+.workflow-approval-hold { color: var(--warning); }
+.workflow-approval-list { margin: 0; padding-left: var(--sp-4); color: var(--body-strong); }
+.workflow-budget-list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--sp-1); font-size: var(--fs-meta); }
+.workflow-budget-list li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+@media (forced-colors: active) {
+  .workflow-row.active { outline: 1px solid Highlight; outline-offset: -1px; }
+  .workflow-row.active::before { background: Highlight; border-left: 2px solid Highlight; box-sizing: border-box; }
+}
+}
+@layer components {
+/* Flight recorder (master plan #15): the first failed step and what fed it. */
+.flight-recorder-steps { list-style: none; margin: 0.25rem 0; padding: 0; }
+.flight-recorder-step { padding-block: 0.2rem; border-inline-start: 2px solid transparent; }
+.flight-recorder-step.is-first-error { border-inline-start-color: var(--error); }
+.flight-recorder-step.fed-the-error { border-inline-start-color: var(--warning); }
+.flight-recorder-step .btn { margin-inline-start: 0.5rem; font-size: 0.8em; }
+
+/* Consolidation H (2026-10-13; review F12): tool lists fold under a labelled
+   Advanced summary; a custom cron is read back in words. */
+.workflow-advanced > summary { cursor: pointer; color: var(--body); font-size: var(--fs-meta); padding: var(--sp-1) 0; }
+.workflow-advanced[open] > summary { margin-bottom: var(--sp-2); }
+.schedule-cron-reading { margin: var(--sp-1) 0 0; color: var(--muted); font-size: var(--fs-meta); }
+}
+

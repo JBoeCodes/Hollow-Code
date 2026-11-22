@@ -1,0 +1,130 @@
+{
+  "session": {
+    "key": "s-20261104-6e772c5f",
+    "title": "Release notes for 5.2",
+    "agent": "claude",
+    "workspace": {"id": "hollow-companion-app-cdc399a4852fa14c", "title": "Hollow Companion App", "kind": "vault"},
+    "createdAt": "2026-11-04T16:07:11.658361+00:00",
+    "lastActivityAt": "2026-11-04T16:18:09.702896+00:00",
+    "turnCount": 3,
+    "state": "running",
+    "needsAnswer": false,
+    "preview": "Drafting the release notes now.",
+    "runsOn": "mac-mini"
+  },
+  "permissionMode": "bypassPermissions",
+  "turns": [
+    {
+      "id": "s-20261104-6e772c5f-1-user",
+      "ord": 1,
+      "role": "user",
+      "text": "What changed since 5.1?",
+      "agent": "claude",
+      "startedAt": "2026-11-04T16:07:11.700000+00:00",
+      "status": "success",
+      "error": null,
+      "truncated": false,
+      "tools": [],
+      "questions": null
+    },
+    {
+      "id": "s-20261104-6e772c5f-1-assistant",
+      "ord": 1,
+      "role": "assistant",
+      "text": "Three things changed:\n\n- **Phone access** for chats\n- Faster `search_vault`\n- [Smart routing](https://example.com/routing) for builds\n\n```hollow-canvas\n<hc-canvas id=\"changes\" title=\"Three changes since 5.1\"><hc-stats><hc-stat label=\"PRs\" value=\"42\"></hc-stat></hc-stats></hc-canvas>\n```\n\n```hollow-next\nDraft the release notes\nList the PRs\n```",
+      "agent": "claude",
+      "startedAt": "2026-11-04T16:07:11.700000+00:00",
+      "status": "success",
+      "error": null,
+      "truncated": false,
+      "tools": [
+        {"id": "toolu_01", "name": "Bash", "status": "done", "detail": "List merged PRs since 5.1"},
+        {"id": "toolu_02", "name": "Read", "status": "error", "detail": "docs/BUILD_LOG.md"}
+      ],
+      "questions": null
+    },
+    {
+      "id": "s-20261104-6e772c5f-2-user",
+      "ord": 2,
+      "role": "user",
+      "text": "Draft them",
+      "agent": "claude",
+      "startedAt": "2026-11-04T16:12:00Z",
+      "status": "success",
+      "error": null,
+      "truncated": false,
+      "tools": [],
+      "questions": null
+    },
+    {
+      "id": "s-20261104-6e772c5f-2-assistant",
+      "ord": 2,
+      "role": "assistant",
+      "text": "Before I write them: who reads these?",
+      "agent": "claude",
+      "startedAt": "2026-11-04T16:12:00Z",
+      "status": "success",
+      "error": null,
+      "truncated": false,
+      "tools": [
+        {"id": "toolu_03", "name": "mcp__hollow_questions__ask_user_questions", "status": "done", "detail": null}
+      ],
+      "questions": {
+        "id": "qi-5d1f0c2a9b7e4f13",
+        "state": "closed",
+        "items": [
+          {
+            "id": "audience",
+            "header": "Audience",
+            "prompt": "Who reads the release notes?",
+            "mode": "single",
+            "required": true,
+            "allowsOther": true,
+            "options": [
+              {"id": "me", "label": "Just me", "description": null, "recommended": true},
+              {"id": "team", "label": "The team", "description": "Plain language, no internals", "recommended": false}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s-20261104-6e772c5f-3-user",
+      "ord": 3,
+      "role": "user",
+      "text": "Just me",
+      "agent": "claude",
+      "startedAt": "2026-11-04T16:18:09.702896+00:00",
+      "status": "running",
+      "error": null,
+      "truncated": false,
+      "tools": [],
+      "questions": null
+    },
+    {
+      "id": "s-20261104-6e772c5f-3-assistant",
+      "ord": 3,
+      "role": "assistant",
+      "text": "",
+      "agent": "claude",
+      "startedAt": "2026-11-04T16:18:09.702896+00:00",
+      "status": "running",
+      "error": null,
+      "truncated": false,
+      "tools": [],
+      "questions": null
+    }
+  ],
+  "hasMore": false,
+  "live": {
+    "key": "s-20261104-6e772c5f",
+    "ord": 3,
+    "gen": 1,
+    "startedAt": "2026-11-04T16:18:09.702896+00:00",
+    "text": "Drafting the release notes now.",
+    "truncated": false,
+    "tools": [
+      {"id": "toolu_04", "name": "Write", "status": "running", "detail": "outputs/release-notes-5.2.md"}
+    ]
+  }
+}

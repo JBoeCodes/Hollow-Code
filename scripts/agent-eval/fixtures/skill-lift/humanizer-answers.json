@@ -1,0 +1,17 @@
+{
+  "about": "Passing answers for each humanizer.json case, used by scripts/agent-eval-skill-lift.test.mjs to build recorded arms; a failing answer is the case's own input text (its tells) or an empty-looking wrong number.",
+  "answers": {
+    "newsletter": "Our garden club is a friendly bunch of neighbours. We meet on Thursdays at 6 pm.",
+    "product-note": "The new kettle boils water quickly and makes a good cup of tea. It holds 1.7 litres.",
+    "team-update": "Here is what happened this week. The team shipped the export button. Two bugs remain open.",
+    "bio": "Sam leads logistics teams and likes trying new ideas. Sam has worked in shipping for 12 years.",
+    "recipe-intro": "This is a warm soup for cold nights. It takes 40 minutes.",
+    "event": "Come for an evening of music with your neighbours. Tickets are 15 dollars.",
+    "apology": "Sorry about the trouble with your order. Your refund was sent on Monday.",
+    "summary": "The study found that sleep affects memory, mood and focus. It followed 300 adults.",
+    "cover-letter": "I would like to join your team. I have five years of nursing experience.",
+    "neg-percent": "397.8",
+    "neg-json": "{\"ok\": true}",
+    "neg-colors": "red, green, blue"
+  }
+}

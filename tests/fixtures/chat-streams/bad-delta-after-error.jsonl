@@ -1,0 +1,4 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"error","message":"boom"}
+{"type":"assistantDelta","text":"still talking"}
+{"type":"done","sessionId":null}

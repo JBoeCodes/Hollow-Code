@@ -1,0 +1,44 @@
+/* Review notes on a file in the Preview pane (PreviewReviewNotes.tsx, row OC9):
+   a line-numbered view with a note on any line and one footer that sends them
+   all to the chat. Hollow's tokens only; nothing here moves, so there is no
+   motion to turn off. The add button is hidden until a line is hovered or
+   focused, and always shown where there is no hover (touch). */
+@layer components {
+.rn { display: flex; flex-direction: column; min-width: 0; gap: var(--sp-2); }
+.rn-hint { margin: 0; }
+.rn .btn { height: auto; min-height: 28px; padding-block: var(--sp-1); white-space: normal; text-align: left; }
+.rn-list { min-width: 0; font-family: var(--mono); font-size: var(--fs-meta); line-height: var(--lh-prose); color: var(--ink); }
+.rn-row { min-width: 0; }
+.rn-line { display: grid; grid-template-columns: 5ch minmax(0, 1fr) 28px; column-gap: var(--sp-2); align-items: start; min-width: 0; padding-inline: var(--sp-1); border-radius: var(--r-xs); }
+.rn-line:hover, .rn-row:focus-within > .rn-line { background: var(--fill-hover); }
+.rn-gutter { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; user-select: none; }
+.rn-text { min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.rn-add { display: inline-grid; place-items: center; width: 28px; height: 28px; margin-block: -3px; padding: 0; border: 0; border-radius: var(--r-md); background: none; color: var(--muted); cursor: pointer; opacity: 0; }
+.rn-line:hover .rn-add, .rn-row:focus-within .rn-add, .rn-add:focus-visible { opacity: 1; }
+.rn-add:hover { background: var(--fill-selected); color: var(--ink); }
+.rn-add:focus-visible { outline: var(--focus-outline); outline-offset: var(--focus-offset); }
+@media (hover: none), (pointer: coarse) { .rn-add { opacity: 1; } }
+
+.rn-notes { display: flex; flex-direction: column; gap: var(--sp-1); margin: var(--sp-1) 0 var(--sp-2) calc(5ch + var(--sp-3)); padding: 0; list-style: none; min-width: 0; font-family: var(--ui); font-size: var(--fs-meta); line-height: var(--lh-base); }
+.rn-note { min-width: 0; padding: var(--sp-2); border: 1px solid var(--hairline); border-left: 3px solid var(--primary); border-radius: var(--r-md); background: var(--surface-raised); color: var(--body); }
+.rn-note.is-lost { border-left-color: var(--warning); }
+.rn-note.is-resolved { border-left-color: var(--muted-soft); color: var(--muted); background: var(--surface-sunken); }
+.rn-note-text { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.rn-flag { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1); margin: 0 0 var(--sp-1); color: var(--body-strong); font-weight: 600; }
+.rn-quote { min-width: 0; font: 400 var(--fs-meta)/var(--lh-base) var(--mono); overflow-wrap: anywhere; }
+.rn-note-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); margin-top: var(--sp-1); }
+.rn-chip { padding: 1px var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-pill); color: var(--muted); font-size: var(--fs-micro); }
+
+.rn-outside { padding: var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--surface-soft); }
+.rn-outside-title { margin: 0; color: var(--body-strong); font: 600 var(--fs-meta)/var(--lh-base) var(--ui); }
+.rn-outside .rn-notes { margin-left: 0; }
+
+.rn-editor { display: flex; flex-direction: column; gap: var(--sp-1); margin: var(--sp-1) 0 var(--sp-2) calc(5ch + var(--sp-3)); font-family: var(--ui); font-size: var(--fs-meta); }
+.rn-editor-label { color: var(--body-strong); font-weight: 600; }
+.rn-editor-input { width: 100%; min-height: 4.5em; resize: vertical; font: 400 var(--fs-meta)/var(--lh-base) var(--ui); }
+.rn-editor-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); }
+.rn-keys { color: var(--muted); }
+
+.rn-footer { position: sticky; bottom: 0; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-2); margin-top: var(--sp-2); padding: var(--sp-2); border: 1px solid var(--hairline); border-radius: var(--r-md); background: var(--surface-raised); box-shadow: var(--elev-1); font-family: var(--ui); font-size: var(--fs-meta); }
+.rn-count { min-width: 0; color: var(--body); overflow-wrap: anywhere; }
+}

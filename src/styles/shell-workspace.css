@@ -1,0 +1,538 @@
+/* ── Brand row ─────────────────────────────────────────────── */
+@layer components {
+/* The palette's selected-row bar retains its entrance. Rail selection is static. */
+@keyframes nav-indicator-in {
+  0%   { transform: scaleY(0.3); opacity: 0; }
+  60%  { transform: scaleY(1.15); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+/* Sits above every page inside .canvas. Holds: sidebar toggle, history
+   nav, breadcrumb (file.ext / project / version + branch chip), and a
+   right cluster of icon buttons (search, +, theme). Reads as the
+   IDE/terminal title bar. */
+
+.top-bar {
+  flex-shrink: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp-3);
+  border-bottom: 1px solid var(--hairline);
+  background: var(--canvas);
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  color: var(--body);
+  box-shadow: none;
+  min-height: 44px;
+  gap: var(--sp-2);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.top-bar-right {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.top-bar-left { flex: 1; min-width: 0; gap: var(--sp-1); }
+.top-bar-nav {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0;
+  padding: 0 var(--sp-2) 0 2px;
+  border-right: 0;
+  box-shadow: inset -1px 0 var(--hairline-soft);
+  margin-right: 4px;
+  height: 22px;
+}
+
+.top-bar-iconbtn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-family: var(--ui);
+  font-size: 0;
+  line-height: var(--lh-flat);
+  padding: 0;
+  transition:
+    color var(--t-fast) var(--ease),
+    background var(--t-fast) var(--ease),
+    opacity var(--t-med) var(--ease);
+  min-width: 28px;
+  min-height: 28px;
+}
+.top-bar-iconbtn:hover:not(:disabled) {
+  background: var(--fill-hover);
+  color: var(--ink);
+}
+.top-bar-iconbtn:active:not(:disabled) { background: var(--fill-selected); color: var(--ink); }
+.top-bar-iconbtn[aria-pressed="true"]:active:not(:disabled) { border: 1px solid var(--body-strong); }
+.top-bar-iconbtn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+.top-bar-iconbtn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+/* The top bar's three places (asks 10-11 A3): the open workspace's own state
+   after its name (left), everything global in one group (right), and the
+   Chat · Workspace switch at the far right edge, where the side-panel toggle
+   mirrored the sidebar's at the far left. */
+/* Fixed controls keep their full boxes; only the breadcrumb gives up width.
+   Shrinking the action slot let its buttons paint over Search at Largest. */
+.top-bar-left .top-bar-page-actions { display: flex; flex: none; align-items: center; gap: var(--sp-2); min-width: 0; margin-left: var(--sp-2); }
+.top-bar-global { display: inline-flex; align-items: center; gap: var(--sp-1); }
+/* H14 (2026-10-15): the orb's waiting count reaches .6em past its 22px mark,
+   ~5px past the button at the Largest text, which with a 2px gap sat on Ask's
+   edge at the 720px minimum window. Two steps of air keep them apart. */
+.top-bar-global > .main-agent-orb { margin-right: var(--sp-1); }
+.top-bar-pane-slot { display: contents; }
+/* Project files (COO rebuild L4; it was the workspace panel's button):
+   pressed while the Preview pane shows a file. */
+.work-files-toggle { flex: none; }
+.work-files-toggle[aria-pressed="true"] { background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--ink); }
+
+/* The Main agent's orb (main agent M1): its session indicator (asks 10-11
+   A2, session-indicator.css) in the 28px button; pressed while its space is
+   open. Restored 2026-10-14 after consolidation D folded it into Ask. */
+.main-agent-orb[aria-pressed="true"] { background: color-mix(in srgb, var(--primary) 10%, transparent); }
+.main-agent-orb { position: relative; }
+/* Chats it started that are still working (M2). */
+.main-agent-orb-count { position: absolute; top: 0; right: -2px; min-width: 14px; height: 14px; padding: 0 3px; border-radius: 7px; background: var(--primary); color: var(--canvas); font: 600 var(--fs-caption)/14px var(--ui); text-align: center; pointer-events: none; }
+@media (forced-colors: active) {
+  .main-agent-orb[aria-pressed="true"] { color: CanvasText; }
+}
+
+.top-bar-crumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-left: var(--sp-1);
+  font: 500 var(--fs-body)/1 var(--ui);
+}
+/* Context stays readable immediately when the destination changes. */
+.crumb-file, .crumb-project { animation:none; }
+.crumb {
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  letter-spacing: 0;
+}
+.crumb-file {
+  color: var(--muted);
+  font-weight: 500;
+}
+.crumb-project { color: var(--ink); display: inline-flex; align-items: center; font-weight: 500; gap: 6px; min-width: 0; }
+.crumb-project-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.crumb-sep {
+  color: var(--muted-soft);
+  font-family: var(--mono);
+}
+
+/* Now a tight context bar sitting between TopBar (file/branch/version)
+   and the page body. Title becomes a mono small-caps label since the
+   breadcrumb already shows page identity; meta + actions own most of
+   the row width. ~36px tall total. */
+/* ============== PAGES ============== */
+
+/* The page and the Preview pane beside it, under the top bar (run 15 P1).
+   Always loaded: the pane's own stylesheet arrives with its lazy chunk. */
+.canvas-split { display: flex; flex: 1; min-width: 0; min-height: 0; }
+.page { display: none; }
+/* Your work stays mounted behind the other pages (overnight 11-04 U4,
+   App.tsx): its wrapper has no box of its own, and hides it. */
+.page-retained { display: contents; }
+.page-retained[hidden] { display: none; }
+/* `display: flex` (not `display: contents`) so the .page wrapper has a
+   real box — the Threshold transition animates the wrapper and parks
+   its floor-bloom on .page::after (which also needs the
+   position: relative below). `min-height: 0; min-width: 0` keep
+   overflowing children (vault editor, graph canvas) from blowing out
+   the flex container. */
+.page.active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+}
+
+/* Cream feature panels */
+.panel {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-5);
+  box-shadow: none;
+}
+.panel-link {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  transition: var(--motion-base);
+}
+.panel-link:hover:not(:disabled) {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+.panel-link:active:not(:disabled) {
+  background: var(--primary-soft-strong);
+  transition-duration: var(--t-xs);
+}
+.panel-link:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.panel-link:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ============== TASK ROWS ============== */
+
+.task-list { display: flex; flex-direction: column; contain: content; }
+
+/* Tasks — natural-language quick-add bar. The base is a single carved
+   channel (the .qa-slot deepening lives in the WORKBENCH block below):
+   input row + parsed-token readout fused into one bordered body. */
+.quick-add {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 14px;
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-lg);
+  background: var(--surface-card);
+  overflow: hidden;
+  transition: box-shadow var(--t-med) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.btn.sm { height: 28px; padding: 0 10px; } /* legacy alias of .btn.small */
+
+/* Tasks — rich editor modal (priority picker, sub-tasks, AI assist). */
+
+.subtask-editor .form-label,
+.assist-row .form-label,
+.assist-staged .form-label {
+  display: block;
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  font-weight: 500;
+  margin: var(--sp-4) 0 var(--sp-1);
+}
+.subtask-row { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) 0; }
+/* The task editor's sub-task check: the list row's .task-check, one size down,
+   so the sheet and the row speak the same visual language. */
+.subtask-tick {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  border-radius: 50%;
+  border: 1.5px solid var(--hairline);
+  background: var(--canvas);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    background var(--t-med) var(--ease),
+    border-color var(--t-med) var(--ease),
+    box-shadow var(--t-med) var(--ease);
+}
+.subtask-tick:hover { border-color: var(--success); box-shadow: 0 0 0 3px var(--success-soft); }
+.subtask-tick:active { background: var(--success-soft); border-color: var(--success); box-shadow: 0 0 0 3px var(--success-soft); }
+.subtask-tick-mark {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  color: var(--success);
+  transition: opacity var(--t-med) var(--ease);
+}
+.subtask-tick:hover .subtask-tick-mark { opacity: 0.55; }
+.subtask-tick.checked { background: var(--success); border-color: var(--success); }
+.subtask-tick.checked .subtask-tick-mark { opacity: 1; color: var(--on-primary); }
+.subtask-text { flex: 1; font-family: var(--ui); font-size: var(--fs-body); color: var(--ink); }
+.subtask-text.done { color: var(--muted-soft); text-decoration: line-through; }
+.subtask-del {
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: none; border: none; padding: 0; cursor: pointer;
+  color: var(--muted-soft);
+  opacity: 0; transition: opacity var(--t-fast), color var(--t-fast) var(--ease);
+}
+.subtask-row:hover .subtask-del,
+.subtask-del:focus-visible { opacity: 1; }
+.subtask-del:hover { color: var(--error); }
+.subtask-add { display: flex; gap: var(--sp-2); margin-top: var(--sp-1); align-items: center; }
+.subtask-add input { flex: 1; }
+.assist-row { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-1); }
+
+/* Assist output is staged here for review before it reaches a field. */
+.assist-staged {
+  margin: var(--sp-1) 0 var(--sp-3);
+  padding: 0 var(--sp-3) var(--sp-3);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-md);
+  background: var(--surface-soft);
+}
+.assist-staged-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) 0;
+}
+.assist-staged-text {
+  flex: 1;
+  margin: 0;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  line-height: var(--lh-tight);
+  color: var(--ink);
+}
+.assist-staged-row:hover .row-quick-btn { opacity: 1; }
+.assist-staged-actions { display: flex; gap: var(--sp-2); margin-top: var(--sp-2); }
+.assist-rename .assist-staged-text { padding: var(--sp-1) 0; }
+
+/* Task editor — the near-unused scheduling fields, folded away by default. */
+.task-more { margin-bottom: var(--sp-3); }
+.task-more > summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--ui);
+  font-size: var(--fs-caption);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--muted);
+  padding: var(--sp-1) 0;
+  transition: color var(--t-fast) var(--ease);
+}
+.task-more > summary::-webkit-details-marker { display: none; }
+.task-more > summary::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-right: var(--sp-2);
+  border-left: 4px solid currentColor;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  transition: transform var(--t-med) var(--ease);
+}
+.task-more[open] > summary::before { transform: rotate(90deg); }
+.task-more > summary:hover { color: var(--ink); }
+.task-more > summary:focus-visible { outline: none; color: var(--primary); }
+.task-more[open] > summary { margin-bottom: var(--sp-2); }
+
+/* Editor footer: destructive action stays quiet until it's aimed at. Beats
+   the generic .btn.ghost hover below on specificity, not source order. */
+.btn.ghost.task-delete:hover:not(:disabled) { color: var(--error); border-color: var(--error); }
+
+/* ============== STATUS PILLS ============== */
+
+.pill {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: var(--canvas);
+  color: var(--muted);
+  display: inline-block;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  transition:
+    background var(--t-slow) var(--ease),
+    color var(--t-slow) var(--ease);
+}
+/* Pill morph — when the status changes, the new color is reached via
+   the transition above, AND a brief shimmer sweep races across the
+   pill once. Plays each time the pill's class list changes thanks to
+   restarting the animation via class re-binding (Solid reuses the
+   node, so the animation simply runs once per mount unless toggled).
+   The shimmer is keyed off a re-entering ::after layer. */
+.pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    color-mix(in srgb, currentColor 25%, transparent) 50%,
+    transparent 100%
+  );
+  transform: translateX(-110%);
+  pointer-events: none;
+  animation: pill-shimmer 1.1s var(--ease-out) 1;
+}
+@keyframes pill-shimmer {
+  0%   { transform: translateX(-110%); }
+  100% { transform: translateX(110%); }
+}
+.pill.active { background: var(--primary-soft); color: var(--primary); }
+.pill.in-progress { background: var(--teal-soft); color: var(--accent-teal); }
+.pill.discovery { background: var(--amber-soft); color: var(--accent-amber); }
+.pill.deployed { background: var(--success-soft); color: var(--success); }
+.pill.backlog { background: var(--surface-card); color: var(--muted); }
+.pill.idea { background: var(--canvas); color: var(--muted); border: 1px solid var(--hairline); }
+.pill.planning { background: var(--canvas); color: var(--muted); border: 1px solid var(--hairline); }
+.pill.superseded { background: var(--surface-card); color: var(--muted-soft); text-decoration: line-through; }
+.pill.not-started { background: var(--surface-card); color: var(--muted); }
+.pill.delivered { background: var(--primary-soft); color: var(--primary); }
+.pill.done { background: var(--success-soft); color: var(--success); }
+
+/* ============== BUCKETS ============== */
+
+.bucket { margin-bottom: 32px; }
+.bucket:last-child { margin-bottom: 0; }
+
+/* ============== SESSIONS / VAULT split ============== */
+
+.split {
+  display: flex;
+  height: 100%;
+  border-top: 1px solid var(--hairline);
+  min-height: 0;
+}
+.split-aside {
+  background: var(--surface-soft);
+  border-right: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  width: var(--aside-w);
+}
+.viewer { flex: 1; min-width: 0; }
+.split-search {
+  padding: 14px;
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.split-search input {
+  flex: 1;
+  min-width: 0;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  padding: 8px 12px;
+  font-family: var(--ui);
+  font-size: var(--fs-body);
+  color: var(--ink);
+  outline: none;
+  height: 40px;
+  transition: border-color var(--t-fast) var(--ease);
+}
+.split-search input:focus { border-color: var(--primary); box-shadow: var(--ring); }
+.split-search input::placeholder { color: var(--muted-soft); }
+
+.split-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  /* Long unvirtualized lists (Inbox rail can hold hundreds of rows):
+     containment scopes layout+paint invalidation to the rail so row
+     hover/animation never repaints the whole pane. */
+  contain: content;
+}
+
+.list-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.list-row:hover { background: var(--fill-hover); }
+.list-row.active { background: var(--fill-selected); }
+.list-row .title {
+  font-size: var(--fs-body);
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list-row .meta {
+  font-family: var(--ui);
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+}
+.list-row .preview {
+  font-size: var(--fs-meta);
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+@container hollow-window (max-width: 53.75em) {
+  .top-bar-crumbs .crumb-sep { display: none; }
+}
+/* Narrow windows (390px and similar): the bar's controls added up to
+   more than the column, so the page actions ran over the global group and
+   Back and Forward sat under it. Tighter 26px buttons and gaps give every
+   control its own room; Back and Forward stay visible, never folded away. */
+/* Narrow window: 390px Playwright host. */
+@media (max-width: 600px) {
+  .top-bar { padding: 0 var(--sp-2); gap: var(--sp-1); }
+  .top-bar-iconbtn { width: 26px; height: 26px; }
+  .top-bar-nav { padding: 0 var(--sp-1) 0 0; margin-right: 0; box-shadow: none; }
+  .top-bar-nav .top-bar-iconbtn { flex: none; }
+  .top-bar-left .top-bar-page-actions { gap: 0; margin-left: 0; }
+  .top-bar-global { gap: 0; }
+  .top-bar-global > .main-agent-orb { margin-right: 0; }
+}
+/* The page column's wrapper (`.canvas-split`, run 15 P1) is the `.canvas`
+   child the launch cascade targets: it stays still like the page itself. */
+.canvas-split, .page.active, .crumb { animation:none; }
+.top-bar-page-actions > div { display: contents; }
+.top-bar-crumbs .crumb-project .project-icon { width: 16px; height: 16px; }
+.top-bar-crumbs .crumb-file:last-child { color: var(--ink); }
+}

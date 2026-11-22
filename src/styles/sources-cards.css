@@ -1,0 +1,27 @@
+/* What a source is, summary first (plan L3 X3), its three actions (X4) and
+   the reviewed refresh (X5): WorkspaceSources.tsx (SourceActions on each
+   Sources card), SourceRefresh.tsx and the Library reader. */
+@layer components {
+.source-state { display: grid; gap: 2px; margin: 0; font-size: var(--fs-meta); line-height: var(--lh-base); min-width: 0; overflow-wrap: anywhere; }
+.source-state strong { font-weight: 500; color: var(--body-strong); }
+.source-state span { color: var(--muted); font-size: var(--fs-caption); }
+.source-state[data-tone="warn"] strong { color: var(--warning); }
+.source-actions { display: grid; gap: var(--sp-2); min-width: 0; }
+.source-actions-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); }
+.source-action-why { color: var(--muted); font-size: var(--fs-caption); }
+.source-replaced { margin: 0; color: var(--success); font-size: var(--fs-meta); }
+.src-refresh { display: grid; gap: var(--sp-2); min-width: 0; padding: var(--sp-3); border: 1px solid var(--hairline); border-radius: var(--r-sm); background: var(--surface-soft); font-size: var(--fs-meta); }
+.src-refresh p { margin: 0; }
+.src-refresh-status { color: var(--body-strong); }
+.src-refresh-detail { color: var(--muted); font-size: var(--fs-caption); overflow-wrap: anywhere; }
+.src-refresh-warn { color: var(--warning); }
+.src-refresh-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.src-refresh-diff { max-height: 320px; overflow: auto; margin: 0; padding: var(--sp-1) 0; list-style: none; border: 1px solid var(--hairline-soft); border-radius: var(--r-sm); background: var(--canvas); font: var(--fs-caption) var(--mono); }
+.src-refresh-diff li { display: flex; gap: var(--sp-2); padding: 0 var(--sp-2); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--body); }
+.src-refresh-diff li[data-kind="added"] { background: color-mix(in srgb, var(--success) 12%, transparent); }
+.src-refresh-diff li[data-kind="removed"] { background: var(--error-soft); }
+.src-refresh-mark { flex: none; width: 1ch; color: var(--muted); }
+.library-reader-source { display: grid; min-width: 0; }
+.library-reader-source > .source-state { padding: var(--sp-3) 24px 0; }
+.library-reader-source > .source-actions { padding: var(--sp-2) 24px var(--sp-3); border-bottom: 1px solid var(--hairline); }
+}

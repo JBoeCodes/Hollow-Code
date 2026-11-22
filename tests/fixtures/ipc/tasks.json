@@ -1,0 +1,57 @@
+{
+  "items": [
+    {
+      "url": "vault:tasks/ship-generated-types.md",
+      "title": "Ship generated IPC types",
+      "status": "In progress",
+      "priority": "P1",
+      "due": "2026-10-05",
+      "effort": null,
+      "description": "Generate the frontend's IPC types from Rust.",
+      "projectUrl": "vault:projects/hollow.md",
+      "projectName": "Hollow",
+      "daysUntilDue": 2,
+      "bucket": "thisweek",
+      "vaultPath": "tasks/ship-generated-types.md",
+      "labels": [
+        "frontend"
+      ],
+      "section": null,
+      "dueTime": "09:30",
+      "durationMin": 45,
+      "recurrence": null,
+      "subtasks": [
+        {
+          "text": "Add the drift check",
+          "done": true
+        }
+      ],
+      "contentHash": "c0ffee",
+      "fingerprint": null,
+      "origin": "plan:workspaces/local-results-view/PLAN.md",
+      "doneWhen": "`cargo test --lib` passes.",
+      "activity": null,
+      "blockedBy": [
+        "vault:tasks/fmt-gate.md",
+        "vault:tasks/old.md"
+      ],
+      "blocks": [],
+      "ready": false,
+      "unresolvedBlockers": [
+        "vault:tasks/fmt-gate.md",
+        "vault:tasks/old.md"
+      ],
+      "blockerWarnings": [
+        {
+          "url": "vault:tasks/old.md",
+          "kind": "missing"
+        }
+      ]
+    }
+  ],
+  "fetched": "2026-10-03T08:00:00Z",
+  "source": "vault",
+  "todoPath": null,
+  "lastSyncedAt": null,
+  "syncError": null
+}

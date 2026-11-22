@@ -1,0 +1,83 @@
+{
+  "_doc": "Canvas fences per assistant reply, for the turn receipt (Canvas C3 wave 2 C4). src-tauri/src/canvas_fence.rs reply_canvases and src/chatSegments.ts parseSegments must both give these counts and UTF-8 body bytes. Change both and this file together.",
+  "cases": [
+    {
+      "name": "no fences",
+      "text": "Just text, no visuals.",
+      "count": 0,
+      "bytes": 0
+    },
+    {
+      "name": "one closed canvas with prose",
+      "text": "The release is on track.\n\n```hollow-canvas\n<hc-canvas id=\"a\" title=\"A\"></hc-canvas>\n```\n\nDone.",
+      "count": 1,
+      "bytes": 40
+    },
+    {
+      "name": "two canvases beside an html fence, a board and code",
+      "text": "A.\n```hollow-canvas\n<hc-canvas id=\"a\" title=\"A\"></hc-canvas>\n```\n```html\n<p>x</p>\n```\n```hollow-whiteboard\n{}\n```\n```js\nlet a = 1;\n```\n```hollow-canvas\nline one\nline two\n```",
+      "count": 2,
+      "bytes": 57
+    },
+    {
+      "name": "a fence left open runs to the end",
+      "text": "Stopped.\n```hollow-canvas\nline1\nline2",
+      "count": 1,
+      "bytes": 11
+    },
+    {
+      "name": "a language still being typed at the very end",
+      "text": "Drawing now\n```hollow-canv",
+      "count": 1,
+      "bytes": 0
+    },
+    {
+      "name": "a typed-language fence with a body is a code block",
+      "text": "```hollow-canv\nx\n```",
+      "count": 0,
+      "bytes": 0
+    },
+    {
+      "name": "the language is case-insensitive and indented fences count",
+      "text": "- item\n  ```Hollow-Canvas\n  <hc-canvas id=\"b\" title=\"B\"></hc-canvas>\n  ```",
+      "count": 1,
+      "bytes": 42
+    },
+    {
+      "name": "a longer fence holds a shorter one",
+      "text": "````hollow-canvas\na\n```\nb\n````",
+      "count": 1,
+      "bytes": 7
+    },
+    {
+      "name": "tilde fences",
+      "text": "~~~hollow-canvas\nabc\n~~~",
+      "count": 1,
+      "bytes": 3
+    },
+    {
+      "name": "bytes are UTF-8",
+      "text": "```hollow-canvas\n<hc-canvas id=\"e\" title=\"Café\">é ✓</hc-canvas>\n```",
+      "count": 1,
+      "bytes": 50
+    },
+    {
+      "name": "an empty closed canvas",
+      "text": "```hollow-canvas\n```",
+      "count": 1,
+      "bytes": 0
+    },
+    {
+      "name": "a blank line inside counts its newline",
+      "text": "```hollow-canvas\na\n\nb\n```",
+      "count": 1,
+      "bytes": 4
+    },
+    {
+      "name": "a fence line with trailing text is not a fence",
+      "text": "```hollow-canvas extra\nx\n```",
+      "count": 0,
+      "bytes": 0
+    }
+  ]
+}

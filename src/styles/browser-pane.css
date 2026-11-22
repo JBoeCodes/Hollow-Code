@@ -1,0 +1,126 @@
+/* The Preview pane's web mode (components/BrowserPane.tsx). The page is a
+   native webview laid over .browser-page, so .browser-page must stay the
+   topmost DOM at every point of its area: anything drawn over it hides the
+   page (BrowserPane's covered check). */
+@layer components {
+.browser-pane { display:flex; flex-direction:column; flex:1; min-height:0; min-width:0; }
+.browser-tabs { display:flex; align-items:center; gap:2px; padding:6px var(--sp-2) 0; overflow-x:auto; scrollbar-width:none; flex-shrink:0; }
+.browser-tab { display:flex; align-items:center; min-width:0; max-width:200px; flex:0 1 auto; border-radius:var(--r-sm) var(--r-sm) 0 0; color:var(--muted); }
+.browser-tab[data-active=true] { background:var(--surface-card); color:var(--ink); box-shadow:inset 0 -2px 0 var(--primary); }
+.browser-tab-main { display:flex; align-items:center; gap:6px; min-width:0; padding:6px 4px 6px 10px; border:0; background:none; color:inherit; font:500 var(--fs-meta) var(--ui); cursor:pointer; }
+.browser-tab-label { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.browser-tab-close { flex-shrink:0; width:20px; height:20px; margin-right:4px; border:0; border-radius:var(--r-sm); background:none; color:var(--muted); font:var(--fs-body) var(--ui); line-height:1; cursor:pointer; }
+.browser-tab-close:hover { background:var(--primary-soft); color:var(--ink); }
+.browser-tab-spin { width:10px; height:10px; border:1.5px solid var(--hairline); border-top-color:var(--primary); border-radius:50%; animation:browser-spin 800ms linear infinite; animation-play-state:var(--ambient-play, running); }
+.browser-toolbar { display:flex; align-items:center; gap:4px; padding:6px var(--sp-2); border-bottom:1px solid var(--hairline-soft); flex-shrink:0; }
+.browser-icon-btn { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; flex-shrink:0; border:0; border-radius:var(--r-sm); background:none; color:var(--muted); cursor:pointer; }
+.browser-icon-btn:hover:not(:disabled) { background:var(--primary-soft); color:var(--ink); }
+.browser-icon-btn:disabled { opacity:.4; cursor:default; }
+.browser-address { flex:1; min-width:0; height:28px; padding:0 10px; border:1px solid var(--hairline); border-radius:var(--r-pill); background:var(--canvas); color:var(--ink); font:var(--fs-meta) var(--ui); }
+.browser-address:focus { outline:2px solid var(--primary); outline-offset:-1px; }
+.browser-page { position:relative; display:flex; flex:1; min-height:0; background:var(--surface-card); }
+.browser-placeholder { display:flex; align-items:center; justify-content:center; flex:1; color:var(--muted); font:var(--fs-meta) var(--ui); }
+.browser-start { display:flex; flex-direction:column; align-items:center; gap:var(--sp-2); flex:1; padding:var(--sp-7) var(--sp-5); text-align:center; color:var(--muted); }
+.browser-start h2 { margin:var(--sp-1) 0 0; color:var(--ink); font:500 var(--fs-lg) var(--ui); }
+.browser-start p { max-width:340px; margin:0; font-size:var(--fs-body); line-height:var(--lh-base); }
+.browser-services { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-top:var(--sp-2); }
+.browser-icon-btn.browser-annotate-btn { width:auto; gap:5px; padding:0 8px; font:500 var(--fs-meta) var(--ui); }
+.browser-icon-btn.browser-annotate-btn[aria-pressed=true] { background:var(--primary-soft); color:var(--primary); }
+
+/* Annotate (BrowserAnnotate.tsx): the snapshot fills the page area and the
+   marks sit over it. Ink is --error on screen; the sent image burns in its
+   own fixed red so it reads the same in every theme. */
+.browser-annotate { display:flex; flex-direction:column; flex:1; min-height:0; min-width:0; }
+.annotate-bar { display:flex; align-items:center; gap:6px; padding:6px var(--sp-2); border-bottom:1px solid var(--hairline-soft); background:var(--surface-card); flex-shrink:0; }
+/* Annotate's bar wraps: in a narrow side panel its actions (Add to chat last)
+   move together to a second line, still right-aligned, instead of past the
+   panel's edge. Page reviews share the bar and keep one line. */
+.browser-annotate > .annotate-bar { flex-wrap:wrap; }
+.annotate-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:6px; margin-left:auto; }
+/* Repo ideas 2026-10-27 #5: a tab shared with a chat, and its Stop. */
+.browser-grant { display:flex; align-items:center; gap:var(--sp-2); padding:4px var(--sp-2); border-bottom:1px solid var(--hairline-soft); background:var(--surface-soft); font-size:var(--fs-caption); color:var(--body); flex-shrink:0; }
+.browser-grant > span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.browser-grant strong { color:var(--ink); }
+/* Repo ideas 2026-10-27 #3: Include page text, beside Add to chat. */
+.annotate-include { display:inline-flex; align-items:center; gap:var(--sp-1); font-size:var(--fs-caption); color:var(--muted); cursor:pointer; white-space:nowrap; }
+.annotate-spacer { flex:1; }
+.annotate-stage { flex:1; min-height:0; overflow:auto; padding:var(--sp-2); background:var(--surface-soft); }
+.annotate-canvas { position:relative; width:100%; margin-top:var(--sp-2); user-select:none; box-shadow:var(--elev-1); }
+.annotate-canvas:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+.annotate-instructions, .annotate-position { margin:0 0 var(--sp-2); color:var(--ink); font:var(--fs-meta)/var(--lh-base) var(--ui); }
+.annotate-position:empty { display:none; }
+.annotate-crosshair { fill:none; stroke:var(--primary); pointer-events:none; }
+.annotate-crosshair path { stroke-width:1.5px; vector-effect:non-scaling-stroke; }
+.annotate-entries { list-style:none; margin:var(--sp-2) 0 0; padding:0; display:grid; gap:var(--sp-2); }
+.annotate-entry { display:flex; flex-direction:column; align-items:flex-start; gap:var(--sp-1); width:100%; text-align:left; padding:var(--sp-2); border:1px solid var(--hairline); border-radius:var(--r-md); background:var(--surface-card); color:var(--ink); font:var(--fs-meta)/var(--lh-base) var(--ui); overflow-wrap:anywhere; cursor:pointer; }
+.annotate-entry > span:first-child { font-weight:600; }
+.annotate-canvas img { display:block; width:100%; height:100%; }
+.annotate-canvas > svg { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
+.annotate-ink { fill:none; stroke:var(--error); stroke-width:2.5px; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round; }
+.annotate-label { position:absolute; display:flex; align-items:flex-start; gap:6px; transform:translate(-11px, -11px); pointer-events:none; }
+.annotate-num { width:22px; height:22px; flex-shrink:0; border:2px solid var(--white); border-radius:50%; background:var(--error); color:var(--on-error); font:600 var(--fs-caption) var(--ui); line-height:1; cursor:pointer; pointer-events:auto; box-shadow:var(--elev-1); }
+.annotate-note { display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-1); padding:var(--sp-2); border:1px solid var(--hairline); border-radius:var(--r-md); background:var(--surface-raised); }
+.annotate-note input { flex:1 1 160px; min-width:0; width:100%; min-height:2em; padding:var(--sp-1) var(--sp-2); border:1px solid var(--hairline); border-radius:var(--r-sm); background:var(--canvas); color:var(--ink); font:var(--fs-meta) var(--ui); }
+.annotate-note input:focus { outline:2px solid var(--primary); outline-offset:-1px; }
+
+/* Next-level P15: loading and failed states, the dev preview strip, unsent
+   annotation drafts, capture labels and page reviews. Everything outside
+   .browser-page sits above or below the page area (never over it); the
+   review layer lives inside it, so the native page hides while it shows. */
+.browser-loading-bar { position:relative; height:2px; margin-top:-1px; overflow:hidden; background:var(--primary-soft); flex-shrink:0; }
+.browser-loading-bar::after { content:''; position:absolute; inset:0 auto 0 0; width:35%; background:var(--primary); }
+.browser-loading-text { display:inline-flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--sp-2); }
+.browser-failed { align-self:center; }
+.browser-auth-note { max-width:360px; margin-top:var(--sp-3); padding-top:var(--sp-3); border-top:1px solid var(--hairline-soft); color:var(--muted); font-size:var(--fs-meta); line-height:var(--lh-base); }
+.browser-dev, .browser-drafts { display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-1) var(--sp-3); min-height:var(--row-h); padding:2px var(--sp-2); border-bottom:1px solid var(--hairline-soft); background:var(--surface-soft); color:var(--body); font:var(--fs-meta) var(--ui); flex-shrink:0; }
+.browser-dev-label { color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; font-size:var(--fs-caption); }
+.browser-dev-service, .browser-draft { display:inline-flex; align-items:center; gap:6px; min-width:0; }
+.browser-dev-service strong { color:var(--ink); font-weight:600; }
+.browser-dev-port { color:var(--muted); font-family:var(--mono); font-size:var(--fs-caption); }
+.browser-dev-showing { color:var(--success); font-weight:500; }
+.browser-draft > svg { color:var(--warning); flex-shrink:0; }
+.browser-draft-text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.annotate-capture { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:var(--r-pill); background:var(--fill-hover); color:var(--muted); font:500 var(--fs-caption) var(--ui); white-space:nowrap; }
+.annotate-capture-badge { position:absolute; left:var(--sp-2); bottom:var(--sp-2); padding:2px 8px; border-radius:var(--r-pill); background:var(--surface-raised); color:var(--muted); font:500 var(--fs-caption) var(--ui); box-shadow:var(--elev-1); pointer-events:none; opacity:.92; }
+
+.browser-reviews-layer { position:absolute; inset:0; display:flex; background:var(--surface-card); }
+.browser-reviews-layer[data-suspended] { visibility:hidden; }
+.browser-reviews { display:flex; flex-direction:column; flex:1; min-height:0; min-width:0; }
+.browser-reviews-title { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink); font:600 var(--fs-body) var(--ui); }
+.browser-reviews-body { display:flex; flex-direction:column; gap:var(--sp-3); flex:1; min-height:0; overflow:auto; padding:var(--sp-3); }
+.browser-reviews-list { display:flex; flex-direction:column; }
+.browser-review-detail, .browser-review-compare { display:flex; flex-direction:column; gap:var(--sp-3); }
+.browser-review-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-2); }
+.browser-review-progress { color:var(--muted); font:var(--fs-meta) var(--ui); }
+.browser-review-versions { display:inline-flex; flex-wrap:wrap; gap:2px; padding:2px; border:1px solid var(--hairline); border-radius:var(--r-pill); background:var(--canvas); align-self:flex-start; }
+.browser-review-versions button { padding:3px 10px; border:0; border-radius:var(--r-pill); background:none; color:var(--muted); font:500 var(--fs-meta) var(--ui); cursor:pointer; }
+.browser-review-versions button[aria-pressed=true] { background:var(--primary-soft); color:var(--primary); }
+.browser-review-pair { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:var(--sp-3); }
+.review-capture { display:flex; flex-direction:column; gap:var(--sp-1); margin:0; min-width:0; }
+.review-capture-frame { position:relative; width:100%; overflow:hidden; border:1px solid var(--hairline-soft); border-radius:var(--r-sm); background:var(--surface-soft); }
+.review-capture-frame img { display:block; width:100%; height:100%; }
+.review-capture-frame > svg { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.review-capture-missing { display:grid; place-items:center; height:100%; color:var(--muted); font:var(--fs-meta) var(--ui); }
+.review-capture-label { color:var(--muted); font:500 var(--fs-caption) var(--ui); }
+.review-mark-num { position:absolute; display:grid; place-items:center; width:18px; height:18px; transform:translate(-9px, -9px); border:1.5px solid var(--white); border-radius:50%; background:var(--error); color:var(--on-error); font:600 var(--fs-micro) var(--ui); }
+.review-mark-num.static { position:static; transform:none; flex-shrink:0; }
+.browser-review-changes { display:flex; flex-direction:column; margin:0; padding:0; list-style:none; }
+.browser-review-changes li { display:flex; align-items:flex-start; gap:var(--sp-2); padding:var(--row-pad-y) 0; border-bottom:1px solid var(--hairline-soft); color:var(--ink); font:var(--fs-body) var(--ui); }
+.browser-review-change-main { display:flex; flex-direction:column; gap:4px; min-width:0; flex:1; }
+.browser-review-change-meta { color:var(--muted); font-size:var(--fs-meta); }
+.browser-review-verdict { display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-2); }
+.browser-review-note { flex:1 1 140px; min-width:0; height:26px; padding:0 8px; border:1px solid var(--hairline); border-radius:var(--r-sm); background:var(--canvas); color:var(--ink); font:var(--fs-meta) var(--ui); }
+.browser-review-note:focus { outline:2px solid var(--primary); outline-offset:-1px; }
+.browser-review-empty { margin:0; color:var(--muted); font:var(--fs-meta) var(--ui); }
+/* While a live page shows (BrowserPane sets these), notices stack left of
+   it: over the native page, each toast hid the whole page (run 15 P2). */
+:root[data-native-page] .notif-toast-stack { right:calc(100vw - var(--native-page-left, 100vw) + 16px); }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion="reduced"]) .browser-loading-bar::after { animation:browser-loading 1.1s var(--ease-soft) infinite; animation-play-state:var(--ambient-play, running); }
+  :root:not([data-motion="reduced"]) .browser-reviews-layer:not([data-suspended]) { animation:browser-layer-in var(--t-fast) var(--ease-out) both; }
+}
+}
+
+@keyframes browser-loading { from { transform:translateX(-100%); } to { transform:translateX(290%); } }
+@keyframes browser-layer-in { from { opacity:0; } to { opacity:1; } }
+@keyframes browser-spin { to { transform:rotate(360deg); } }

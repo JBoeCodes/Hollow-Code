@@ -1,0 +1,12 @@
+@layer components {
+  .main-action-history { margin: 0 var(--sp-6) var(--sp-2); flex: 0 0 auto; min-width: 0; font-size: var(--fs-meta); }
+  .main-action-history > summary { cursor: pointer; color: var(--body); width: fit-content; overflow-wrap: anywhere; }
+  .main-action-history-body { max-height: min(34vh, 360px); overflow: auto; overscroll-behavior: contain; padding: var(--sp-2); margin-top: var(--sp-2); background: var(--surface-card); border-block: 1px solid var(--hairline); }
+  .main-action-history-body ul { list-style: none; margin: var(--sp-2) 0 0; padding: 0; }
+  .main-action-history-body li { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: var(--sp-3); padding-block: var(--sp-2); border-top: 1px solid var(--hairline-soft); }
+  .main-action-history-body time { color: var(--muted); font-variant-numeric: var(--type-numeric); }
+  .main-action-history-body p { margin: var(--sp-1) 0; color: var(--body); }
+  .main-action-history-body li > div { min-width: 0; overflow-wrap: anywhere; }
+  @container hollow-window (max-width: 68.75em) { .main-action-history { margin-inline: var(--sp-4); } }
+  @container hollow-window (max-width: 53.75em) { .main-action-history-body li { grid-template-columns: minmax(0, 1fr); gap: var(--sp-1); } }
+}

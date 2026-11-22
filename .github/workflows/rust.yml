@@ -1,0 +1,48 @@
+# Rust checks: rustfmt, clippy (warnings denied) and the unit-test suite.
+# macOS on purpose: the backend's platform deps (keyring → Security.framework,
+# FSEvents) match the shipped target, and Linux would need the webkit2gtk system
+# stack. Only on pull requests that change Rust or the toolchain, or by hand
+# (2026-10-03, owner: fewer CI runs; merges are gated on the local checks).
+name: rust
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src-tauri/**'
+      - 'rust-toolchain.toml'
+      - 'docs/HOLLOW_APP_COMMAND_MAP.tsv'
+      - '.github/workflows/rust.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: macos-14
+    env:
+      # The calendar tests exercise local-time behaviour and are written against
+      # the operator's timezone; a UTC runner shifts which day a fixed UTC
+      # timestamp lands on.
+      TZ: America/New_York
+    steps:
+      - uses: actions/checkout@v4
+      # rust-toolchain.toml pins the exact release. Install it explicitly:
+      # whether rustup auto-installs a missing pinned toolchain depends on the
+      # runner image's rustup version.
+      - run: rustup toolchain install "$(sed -n 's/^channel = "\(.*\)"$/\1/p' rust-toolchain.toml)" --profile minimal --component rustfmt,clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      # Default rustfmt style (no rustfmt.toml), edition from Cargo.toml.
+      # Cheap, so it runs before the slow test build and fails fast.
+      - run: cargo fmt --check
+        working-directory: src-tauri
+      # Lints the library and its unit tests; any warning fails the job. Lints
+      # the crate tolerates for now are allowed in src-tauri/Cargo.toml
+      # [lints.clippy], a recorded baseline to shrink, not to grow.
+      - run: cargo clippy --lib --tests -- -D warnings
+        working-directory: src-tauri
+      - run: cargo test --lib
+        working-directory: src-tauri

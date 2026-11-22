@@ -1,0 +1,143 @@
+/* Settings, Usage (Paperclip PR 6), and Prices under Advanced
+   (overnight 11-08 S5). Imported by UsagePanel.tsx and PricesPanel.tsx so
+   Prices is styled before Usage has opened. Tokens only. */
+@layer components {
+.usage-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.usage-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.usage-total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-2) var(--sp-5);
+  font-size: var(--fs-body);
+  color: var(--body);
+}
+
+.usage-total-runs strong {
+  font-size: var(--fs-xl);
+  font-variant-numeric: tabular-nums;
+  font-optical-sizing: auto;
+  color: var(--ink);
+}
+
+.usage-panel > .usage-total {
+  margin: 0;
+  padding: var(--sp-3) 0;
+  border: 0;
+  border-block: 1px solid var(--hairline);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.usage-total-tokens,
+.usage-total-cost {
+  font-family: var(--mono);
+  font-size: var(--fs-meta);
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-counts,
+.usage-explainer,
+.usage-footer,
+.usage-empty {
+  margin: 0;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-base);
+  color: var(--muted);
+}
+
+.usage-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.usage-block-title {
+  margin: 0;
+  font-size: var(--fs-md);
+  letter-spacing: var(--ls-tight);
+  color: var(--ink);
+}
+
+/* Settings, Usage, Prices (overnight 9 A13): the disclosure's title is
+   the clickable summary, and the add-or-change form wraps onto one or two
+   lines instead of six stacked fields. */
+.usage-prices > summary {
+  cursor: pointer;
+}
+
+.usage-price-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: var(--sp-2);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-md);
+}
+
+.usage-price-form legend {
+  padding: 0 4px;
+  font-size: var(--fs-meta);
+  color: var(--muted);
+}
+
+.usage-price-form .settings-input {
+  flex: 1 1 6rem;
+  width: auto;
+  min-width: 5.5rem;
+}
+
+.usage-price-form .settings-input:first-of-type,
+.usage-price-form .settings-input:nth-of-type(5) {
+  flex-basis: 11rem;
+}
+
+.usage-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-meta);
+}
+
+.usage-table th,
+.usage-table td {
+  padding: var(--sp-1) var(--sp-2);
+  border-bottom: 1px solid var(--hairline-soft);
+  text-align: left;
+  color: var(--body);
+}
+
+.usage-table thead th {
+  font-size: var(--fs-caption);
+  border-bottom-color: var(--hairline);
+  color: var(--muted);
+}
+
+.usage-table th[scope="row"] {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.usage-table .num {
+  text-align: right;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+  /* Value baselines (overnight A12): when each was set, or "not set". */
+  .value-set-on { font-size: var(--fs-meta); color: var(--muted); }
+}

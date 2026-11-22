@@ -1,0 +1,65 @@
+[
+ {
+  "uuid": "11111111-aaaa-4bbb-8ccc-000000000001",
+  "name": "Sourdough starter",
+  "summary": "",
+  "created_at": "2025-03-01T10:00:00.000000Z",
+  "updated_at": "2025-03-01T10:05:00.000000Z",
+  "account": {"uuid": "99999999-aaaa-4bbb-8ccc-account-sample"},
+  "chat_messages": [
+   {
+    "uuid": "m-1",
+    "sender": "human",
+    "text": "How do I feed a starter?",
+    "content": [{"type": "text", "text": "How do I feed a starter?"}],
+    "created_at": "2025-03-01T10:00:01.000000Z",
+    "attachments": [{"file_name": "feeding-notes.txt", "file_size": 12, "file_type": "txt", "extracted_content": "SECRET-ATTACHMENT-BODY"}],
+    "files": [{"file_name": "starter.png"}]
+   },
+   {
+    "uuid": "m-2",
+    "sender": "assistant",
+    "text": "Equal parts flour and water.",
+    "content": [
+     {"type": "thinking", "thinking": "PRIVATE-REASONING"},
+     {"type": "text", "text": "Equal parts flour and water."},
+     {"type": "tool_use", "id": "toolu_sample_1", "name": "web_search", "input": {"query": "starter feeding ratio"}},
+     {"type": "tool_result", "tool_use_id": "toolu_sample_1", "content": [{"type": "text", "text": "1:1:1 is common"}], "is_error": false},
+     {"type": "hologram", "data": "x"}
+    ],
+    "created_at": "2025-03-01T10:00:30.000000Z",
+    "attachments": [],
+    "files": []
+   },
+   {
+    "uuid": "m-3",
+    "sender": "human",
+    "text": "How often?",
+    "content": [],
+    "created_at": "2025-03-01T10:01:00.000000Z",
+    "attachments": [],
+    "files": []
+   },
+   "not a message",
+   {
+    "uuid": "m-4",
+    "sender": "assistant",
+    "text": "Daily at room temperature, or weekly in the fridge.",
+    "created_at": "2025-03-01T10:05:00.000000Z"
+   }
+  ]
+ },
+ {
+  "uuid": "11111111-aaaa-4bbb-8ccc-000000000002",
+  "name": "",
+  "created_at": "not a time",
+  "chat_messages": [
+   {"sender": "human", "text": "Hello there"},
+   {"sender": "assistant", "text": "Hi! How can I help?"}
+  ]
+ },
+ {"uuid": "11111111-aaaa-4bbb-8ccc-000000000003", "name": "No messages key"},
+ {"name": "No uuid", "chat_messages": []},
+ 7,
+ "stray"
+]

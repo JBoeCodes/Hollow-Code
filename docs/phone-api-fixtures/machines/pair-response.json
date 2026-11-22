@@ -1,0 +1,18 @@
+{
+  "token": "q3Zt8wQ0b1V4mN7xK2sY9cR5uE6aH0jL3pD8fG1iT4o",
+  "deviceId": "mc-1a2b3c4d",
+  "machine": {
+    "machineId": "m-8d21c4be90f17a3e",
+    "slug": "mac-mini",
+    "name": "Mac mini",
+    "app": "hollow",
+    "api": 1,
+    "peerApi": 1,
+    "version": "0.5.17",
+    "commit": "abc1234",
+    "headless": true,
+    "capabilities": ["chats", "send", "stop", "cards", "events", "usage", "moves", "appends"]
+  },
+  "api": 1,
+  "peerApi": 1
+}

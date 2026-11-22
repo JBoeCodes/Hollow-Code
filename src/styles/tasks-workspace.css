@@ -1,0 +1,79 @@
+/* Tasks belongs to the outcome workspace shell: plain surfaces, quiet borders,
+   readable rows and a persistent context pane. No completion delay or entrance motion. */
+@layer components {
+.tasks-workspace{--task-detail-width:360px;background:var(--canvas);overflow:hidden}
+.tasks-workspace .btn{box-shadow:none;animation:none}
+.task-search{display:flex;align-items:center;gap:9px;flex:1;min-width:90px;color:var(--muted)}
+.task-search input{width:100%;background:transparent;border:0;padding:8px 0;outline-offset:4px}
+.task-desk{display:grid;grid-template-columns:minmax(0,1fr) var(--task-detail-width,360px);flex:1;min-height:0;overflow:hidden}
+.task-collection{overflow:auto;min-width:0;padding:0 28px 28px;padding-top:8px;}
+.task-detail{overflow:auto;border-left:1px solid var(--hairline);background:var(--surface-card);padding:var(--sp-4) var(--sp-5) var(--sp-6);min-width:0;container:task-detail / inline-size}
+.task-detail-top{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:var(--fs-meta);margin-bottom:var(--sp-4)}
+.task-detail-top .btn{font-size:var(--fs-meta)}
+.task-detail-title{font:600 var(--fs-xl)/1.3 var(--ui);letter-spacing:var(--ls-tight);overflow-wrap:anywhere;margin:0 0 17px}
+.task-detail-state{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:var(--sp-5)}
+.task-detail-state>span{font-size:var(--fs-meta);color:var(--body);padding:2px 8px;background:var(--fill-hover);border:0;border-radius:var(--r-pill)}
+.task-detail-state>span.done{color:var(--success)}
+.task-properties{margin:0 0 var(--sp-4);display:grid;gap:0;font-size:var(--fs-meta)}
+.task-properties>div{display:grid;grid-template-columns:75px minmax(0,1fr);gap:10px;padding:var(--sp-2) 0;border-bottom:1px solid var(--hairline-soft)}
+.task-properties dt{color:var(--muted)}
+.task-properties dd{margin:0;color:var(--ink);line-height:1.5;overflow-wrap:anywhere}
+.task-workspace-link{border:0;border-block:1px solid var(--hairline);border-radius:0;padding:var(--sp-3) 0;margin:var(--sp-4) 0;background:none}
+.task-workspace-link>span{display:block;color:var(--muted);font-size:var(--fs-caption);margin-bottom:8px}
+.task-workspace-link strong{font-size:var(--fs-body);font-weight:500;overflow-wrap:anywhere}
+.task-workspace-link p{color:var(--body);font-size:var(--fs-meta);line-height:1.6;margin:8px 0 14px}
+.task-detail h3{font:500 var(--fs-meta) var(--ui);margin:25px 0 10px;color:var(--ink)}
+.task-detail-notes>p{font-size:var(--fs-meta);line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--body)}
+.task-detail-steps p{font-size:var(--fs-meta);display:flex;gap:10px;line-height:1.6;color:var(--body)}
+/* Read-only reserved sections (Paperclip PR 11): Done when, Activity. */
+.task-detail-reserved{margin-top:18px;border-top:1px solid var(--hairline);padding-top:10px}
+.task-detail-reserved>summary{font:500 var(--fs-meta) var(--ui);color:var(--ink);cursor:pointer}
+.task-detail-reserved .md-view{font-size:var(--fs-meta);line-height:1.7;color:var(--body);overflow-wrap:anywhere;margin-top:8px}
+/* Blocked by / Blocks (Paperclip PR 11b). */
+/* Its blockers are all done (P1-16). */
+.task-detail-blockers{margin-top:18px}
+.task-blocker-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.task-blocker-list li{font-size:var(--fs-meta);line-height:1.6;color:var(--body);display:flex;flex-wrap:wrap;gap:8px;overflow-wrap:anywhere}
+.task-blocker-list li.resolved>span:not(.task-blocker-mark){text-decoration:line-through;color:var(--muted)}
+.task-blocker-mark{color:var(--muted)}
+.task-blocker-warning{flex-basis:100%;margin:0;color:var(--warning)}
+.task-blocker-edit{margin-top:10px}
+.task-detail-blockers .work-actions{margin-top:10px}
+.task-detail-links{display:flex;gap:7px;border-top:1px solid var(--hairline);padding-top:var(--sp-3);margin-top:var(--sp-5)}
+.task-detail-empty{padding:80px 10px;max-width:270px;margin:auto;color:var(--muted)}
+.task-detail-empty h2{font:500 var(--fs-lg)/1.45 var(--ui);color:var(--ink);margin-top:20px}
+.task-detail-empty p{font-size:var(--fs-meta);line-height:1.8;color:var(--body)}
+.task-detail-error,.task-detail-conflict{border:1px solid var(--hairline);padding:12px;margin-top:18px;font-size:var(--fs-meta);line-height:1.6;overflow-wrap:anywhere}
+.task-detail-conflict h3{margin-top:0}
+.task-empty{max-width:440px;margin-inline:auto}
+.task-empty:has(> .empty-art, > .empty-art-space){padding-block:var(--sp-6)}
+.tasks-workspace button:focus-visible,.tasks-workspace summary:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
+/* The advanced/new-task sheet uses the same restrained surfaces. */
+.task-editor.modal-content{background:var(--surface-card);border:1px solid var(--hairline);border-radius:var(--r-lg);box-shadow:var(--elev-3);font-family:var(--ui)}
+.task-editor .modal-head{background:none;box-shadow:none;border-bottom:1px solid var(--hairline)}
+.task-editor form{padding:22px 26px}
+.task-editor input,.task-editor select{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-sm);box-shadow:none;font:var(--fs-body) var(--ui)}
+.task-editor .btn,.task-editor .seg-toggle-btn{box-shadow:none;animation:none;font-family:var(--ui)}
+.task-editor .seg-toggle{box-shadow:none;background:var(--canvas);border:1px solid var(--hairline)}
+.task-create-note{font-size:var(--fs-meta);color:var(--body);line-height:1.6;margin:0 0 20px}
+.task-linked-note{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 20px;padding:10px 12px;border:1px solid var(--hairline);border-radius:var(--r-sm);font-size:var(--fs-meta);color:var(--body);line-height:1.6}
+.task-linked-note p{flex:1 1 240px;margin:0}
+@container hollow-window (max-width: 68.75em){.tasks-workspace{--task-detail-width:310px}}
+@container hollow-window (max-width: 68.75em){.task-desk{grid-template-columns:minmax(0,1fr)}.task-detail{display:none}.task-desk.has-selection .task-collection{display:none}.task-desk.has-selection .task-detail{display:block;max-width:720px;width:100%;margin:0 auto;border-width:0;border-style:none}.task-search{flex-basis:calc(100% - 260px)}.task-detail-empty{display:none}.task-detail-top{margin-bottom:20px}}
+/* Narrow window: 390px Playwright host. */
+@media(max-width:600px){.task-search{flex-basis:100%}.task-collection{padding:0 16px 20px}.task-detail{padding:18px 20px}.task-editor form{padding:18px}.task-editor .seg-toggle{flex-wrap:wrap}}
+
+/* Folded from styles/shell.css (P2, 2026-09-30): these rules used to override
+   this file from the shell layer. They keep their old order, so a later rule
+   still wins a tie; the declarations they overrode were deleted. */
+.task-desk:not(.has-selection) { grid-template-columns:minmax(0,1fr); }
+.task-desk:not(.has-selection) .task-detail { display:none; }
+/* ── Tasks: list column and detail pane (H11, R02) ─────────────── */
+.tasks-workspace .task-collection { padding: 0 var(--page-gutter) var(--sp-6); padding-left: max(var(--page-gutter), var(--sp-6)); }
+/* Keep a usable list floor at minimum height and let the owning page scroll to it. */
+.tasks-workspace { overflow-y: auto; }
+.tasks-workspace .task-desk { flex: 1 0 180px; min-height: 180px; }
+.tasks-workspace .task-collection { container: task-list / inline-size; }
+.tasks-workspace .task-desk { --task-detail-width: clamp(360px, 30vw, 520px); }
+.task-collection.hidden{display:none}
+}

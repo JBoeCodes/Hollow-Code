@@ -1,0 +1,3 @@
+{"type":"thread.started","thread_id":"th1"}
+{"type":"item.started","item":{"id":"item_0","type":"command_execution","command":"/bin/zsh -lc \"ls /h/.agents/skills\"","status":"in_progress"}}
+{"type":"item.started","item":{"id":"item_1","type":"mcp_tool_call","server":"hollow_vault","tool":"read_skill","arguments":"{\"name\":\"beta\"}","status":"in_progress"}}

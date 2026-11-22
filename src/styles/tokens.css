@@ -1,0 +1,489 @@
+/* Hollow design tokens — the one place a design value is defined.
+
+   Every colour, type step, radius, shadow, easing and duration the app uses
+   lives here. Component stylesheets read these names; they never write raw
+   hex, px font sizes or ad-hoc shadows (scripts/check-css-tokens.mjs fails
+   the build on those outside this file).
+
+   A new colour-bearing token has to be registered in FOUR places or a theme
+   will miss it:
+     1. the light `:root` block AND the `:root[data-theme="dark"]` block below;
+     2. CUSTOM_VAR_KEYS in src/store/theme.ts and deriveCustomVars() in
+        src/customThemeVars.ts, so custom
+        (kitty) palettes re-derive it and clearCustomVars() removes it;
+     3. the Liquid Glass block at the end of this file if glass needs its own
+        value (glass overrides surfaces, never --canvas: htmlSandbox.ts reads
+        --canvas into sandboxed iframes and needs it opaque);
+     4. THEME_TOKENS in src/components/htmlSandbox.ts, which exports it to
+        artifact frames and the Canvas Kit as --app-* (a test fails if a
+        colour here is missing there).
+   Layout, type, radius, motion and elevation tokens carry no theme colour of
+   their own and stay out of the custom-theme contract.
+
+   Text colours must reach WCAG AA (4.5:1) on every surface in both themes:
+   scripts/check-contrast.mjs (run by `npm run build` and `css:check`) lists
+   the pairs and fails the build under it. */
+@layer tokens {
+:root {
+  color-scheme: light;
+  /* Window layout: compact <= 53.75em (860px at Default), medium <=
+     68.75em (1100px), wide > 68.75em. A named root container makes em
+     follow --text-scale; media-query em uses the browser default instead.
+     windowLayout.ts reads the same tokens for navigation and pane policy.
+     Local unnamed pane queries remain independent. Sub-720 media rules
+     carry an explicit narrow-window host comment at each block. */
+  container: hollow-window / inline-size;
+  font-size: calc(16px * var(--text-scale));
+  --window-compact-em: 53.75;
+  --window-medium-em: 68.75;
+  /* ── Type stacks: one sans, one mono. Self-hosted in main.tsx. */
+  --ui:      'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --display: var(--ui);
+  --mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* ── Radii */
+  --r-xs:  3px;    /* chips, tags, small controls */
+  --r-sm:  5px;    /* buttons, inputs, rows */
+  --r-md:  6px;    /* menus, list containers */
+  --r-lg:  8px;    /* cards, panels, dialogs, the composer */
+  --r-pill: 999px;
+  --r-xl:   var(--r-lg);   /* alias: the scale stops at 8 */
+  --r-hair: var(--r-xs);   /* alias */
+
+  /* ── Spacing: one 4px rhythm. */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+
+  /* ── Type scale: 11 / 12 / 13 (UI base) / 15 (reading) / 17 / 20 (page
+     titles, 600) / 28 (rare). Weights 400 / 500 / 600 only. Tracking is 0
+     except --ls-tight on titles and --ls-caps on the few uppercase labels. */
+  /* Text scaling (next-level P01): Settings, General sets
+     html[data-text-scale]; every step multiplies, so the whole interface
+     scales together instead of one panel being enlarged. */
+  --text-scale: 1;
+  --fs-caption: calc(11px * var(--text-scale));   /* counts, kbd, the smallest meta — the floor */
+  --fs-meta:    calc(12px * var(--text-scale));   /* row metadata, secondary lines */
+  --fs-body:    calc(13px * var(--text-scale));   /* UI base */
+  --fs-md:      calc(15px * var(--text-scale));   /* reading text, section titles */
+  --fs-lg:      calc(17px * var(--text-scale));   /* panel titles */
+  --fs-xl:      calc(20px * var(--text-scale));   /* page titles */
+  --fs-display: calc(28px * var(--text-scale));   /* rare: document covers */
+  --fs-title:   var(--fs-xl);   /* page and section titles share the 20px step */
+  --fs-prose:    var(--fs-md);    /* reading surfaces: chat, documents, previews */
+  --fs-prose-h1: var(--fs-xl);
+  --fs-prose-h2: var(--fs-lg);
+  --fs-prose-h3: var(--fs-md);
+  --fs-code:     var(--fs-body);
+  --fs-micro:    var(--fs-caption);  /* alias: nothing renders below 11px */
+  --fs-art:      7px; /* decorative SVG glyph cells only, never reading text */
+  --lh-flat:  1;
+  --lh-tight: 1.25;
+  --lh-base:  1.5;
+  --lh-prose: 1.55;
+  --lh-reading: 1.6;
+  --ls-tight: -0.01em;
+  --ls-display: -0.02em;  /* page titles and larger */
+  --ls-caps:  0.04em;
+  --measure: 76ch;
+  /* Optical roles supplement the existing scaled size ladder. */
+  --type-optical: auto;
+  --type-numeric: tabular-nums lining-nums;
+  --lh-title: 1.25;
+  --title-optical-size: calc(20 * var(--text-scale));
+
+  /* ── Elevation: three levels. Resting surfaces are flat with a hairline
+     border (--elev-1 is a transparent compatibility role);
+     --elev-2 popovers and menus; --elev-3
+     dialogs and the palette. The --lift-* and --sh-focus names are kept as
+     aliases for older call sites. */
+  --elev-1: 0 0 0 transparent;
+  --elev-2: 0 1px 2px rgba(24, 20, 30, 0.06), 0 8px 24px -6px rgba(24, 20, 30, 0.16);
+  --elev-3: 0 2px 6px rgba(24, 20, 30, 0.06), 0 24px 56px -12px rgba(24, 20, 30, 0.26);
+  --elev-edge: inset 0 0 0 transparent;
+  --elev-action: 0 0 0 transparent;
+  --ring: 0 0 0 3px var(--primary-soft-strong);
+  --focus-outline: 2px solid var(--primary);
+  --focus-offset: 2px;
+  --lift-0: var(--elev-1);
+  --lift-1: var(--elev-2);
+  --lift-2: var(--elev-3);
+  --sh-focus: var(--ring);
+
+  /* ── Motion */
+  --ease:        cubic-bezier(0.3, 0.7, 0.3, 1);
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in:     cubic-bezier(0.55, 0, 0.78, 0.22);
+  --ease-spring: cubic-bezier(0.34, 1.30, 0.64, 1);
+  --ease-snap:   cubic-bezier(0.2, 0, 0, 1);
+  --ease-soft:   cubic-bezier(0.4, 0, 0.2, 1);
+  --studio-ease: cubic-bezier(.16, 1, .3, 1);
+  --t-xs:   60ms;
+  --t-fast: 120ms;
+  --t-med:  200ms;
+  --t-slow: 300ms;
+  --t-xl:   480ms;
+  --t-stagger: 20ms; /* existing menu cascade; cap total delay at --t-fast */
+  --motion-base:
+    background-color var(--t-fast) var(--ease),
+    color           var(--t-fast) var(--ease),
+    border-color    var(--t-fast) var(--ease),
+    box-shadow      var(--t-med)  var(--ease),
+    transform       var(--t-fast) var(--ease-spring),
+    filter          var(--t-med)  var(--ease),
+    opacity         var(--t-fast) var(--ease);
+  --motion-lift:
+    background-color var(--t-fast) var(--ease),
+    border-color    var(--t-fast) var(--ease),
+    box-shadow      var(--t-slow) var(--ease-out),
+    transform       var(--t-med)  var(--ease-out);
+
+  /* ── Layout */
+  --rail-w: 240px;
+  --rail-w-collapsed: 60px;
+  --aside-w: 320px;
+  --viewer-pad: var(--sp-6) var(--sp-7) var(--sp-8);
+  --page-gutter: var(--sp-5);
+  --control-h: 32px;
+  --studio-index: 0;
+  /* Density (next-level P01): comfortable is the default; html[data-density=
+     "compact"] tightens list rows and controls with the same components. */
+  --row-h: 30px;        /* rail rows, compact list rows */
+  --row-pad-y: 6px;     /* vertical padding of a two-line list row */
+  --list-gap: 2px;      /* between rows in a dense list */
+  --section-gap: var(--sp-5);   /* between page sections */
+
+  /* ── Neutral fills: hover and selection on rows, tabs and icon buttons.
+     Derived from --ink, so light, dark and custom palettes all get them. */
+  --fill-hover:    color-mix(in srgb, var(--ink) 5%, transparent);
+  --fill-selected: color-mix(in srgb, var(--ink) 8%, transparent);
+  --fill-strong:   color-mix(in srgb, var(--ink) 12%, transparent);
+  /* Depth and the luminous accent (next-level P01), derived so light, dark
+     and custom palettes all get them: a recessed well, and a soft accent
+     halo used only for arrivals (a new result) and the primary action's focus. */
+  --surface-sunken: color-mix(in srgb, var(--ink) 3%, var(--canvas));
+  --accent-glow:    color-mix(in srgb, var(--primary) 26%, transparent);
+  --accent-wash:    color-mix(in srgb, var(--primary) 7%, var(--surface-card));
+  /* Material roles are live aliases, not independently themed colors.
+     Glass uses reading-well floors; a11y replaces those source tokens. */
+  --material-solid: var(--surface-card);
+  --material-glass: var(--glass-well, var(--surface-card));
+  --material-glass-strong: var(--glass-well-strong, var(--surface-raised));
+  --material-edge: var(--glass-border-strong, var(--hairline));
+
+  /* ── Fixed colours (identical in every theme) */
+  --white: #ffffff;
+  --black: #000000;
+  --scrim: rgba(0, 0, 0, 0.22);         /* behind dialogs and the palette */
+  --scrim-strong: rgba(0, 0, 0, 0.6);   /* controls laid over images */
+
+  /* Light palette: neutral planes with a red action accent.
+     #DD3227 is the signature red; darker #B5251C supports small text.
+     Dark's #EB847D is a contrast tint, not a separate brand colour.
+     Status words/icons carry meaning independently of the action accent. */
+  --canvas: #ffffff;
+  --surface-soft: #f3f3f4;
+  --surface-card: #ffffff;
+  --surface-cream-strong: #e8e8e9;
+  --surface-raised: #ffffff;
+  --hairline: #d5d6d8;
+  --hairline-soft: #e8e8e9;
+  --ink: #1a1a1a;
+  --body-strong: #393839;
+  --body: #454545;
+  --muted: #626262;
+  --muted-soft: #666666;
+  --primary: #b5251c;
+  --primary-active: #dd3227;
+  --primary-disabled: #d6c7c5;
+  --on-primary: #ffffff;
+  --on-error: #ffffff;   /* the label on an error fill (danger button, badges): 5.6:1 */
+  --primary-soft: rgba(221, 50, 39, .06);
+  --primary-soft-strong: rgba(221, 50, 39, .12);
+  /* One accent (--primary). "teal" is a quiet slate for info marks and
+     "amber" is the warning colour; neither is an action accent. */
+  --accent-teal:      #5f6b7a;
+  /* The ambient layer's peak tint (styles/motion.css, overnight 10-11 B1): the
+     most --muted-soft text can sit on and keep 4.5:1 (4.60 at 6 % in light). */
+  --ambient-tint: 6%;
+  --ambient-rail-opacity: .1;
+  --accent-amber:     var(--warning);
+  --success: #3d7634;   /* 4.6:1 on --surface-soft (F5; was #4a8f3f, 3.4) */
+  --warning: #896213;   /* 4.6:1 on --surface-soft (F5; was #b8841a, 2.8) */
+  --error:   #b73d3d;
+  --risk:    #855699; /* 4.7:1 on --surface-soft (was #8a5a9e, 4.41) */
+  --teal-soft:           rgba(95, 107, 122, 0.12);
+  --amber-soft:          rgba(184, 132, 26, 0.14);
+  --success-soft:        rgba(74, 143, 63, 0.14);
+  --error-soft:          rgba(183, 61, 61, 0.12);
+  --risk-soft:           rgba(138, 90, 158, 0.14);
+
+  /* Syntax: red keywords, sage strings, blue calls and steel types. */
+  --syn-keyword:  #b5251c;
+  --syn-string:   #3b7556;
+  --syn-comment:  #666666;
+  --syn-number:   #805320;
+  --syn-function: #3a64b0;
+  --syn-type:     #2f6f8f;
+  --syn-builtin:  #805320;
+  --syn-operator: #626262;
+  --syn-punct:    #666666;
+  --syn-property: #3a64b0;
+  --syn-tag:      #b5251c;
+  --syn-attr:     #2f6f8f;
+  --syn-meta:     #805320;
+}
+@container hollow-window (max-width: 53.75em) { body { --page-gutter: var(--sp-4); } }
+:root[data-density="compact"] { --row-h: 26px; --row-pad-y: 4px; --list-gap: 0px; --control-h: 28px; --section-gap: var(--sp-5); }
+:root[data-text-scale="90"]  { --text-scale: 0.92; }
+:root[data-text-scale="112"] { --text-scale: 1.12; }
+:root[data-text-scale="125"] { --text-scale: 1.25; }
+
+:root[data-theme="dark"] {
+  --ambient-rail-opacity: .5;
+  color-scheme: dark;
+  /* Neutral charcoal; retain the existing flat geometry and theme policy. */
+  --canvas: #1a1a1a;
+  --surface-soft: #151515;
+  --surface-card: #222222;
+  --surface-cream-strong: #373737;
+  --surface-raised: #2b2b2b;
+  --hairline: #414141;
+  --hairline-soft: #303030;
+  --ink: #f9f9f9;
+  --body-strong: #e7e7e7;
+  --body: #c8c8c8;
+  --muted: #ababab;
+  --muted-soft: #a3a3a3;
+  --primary: #eb847d;
+  --primary-active: #f0a39e;
+  --primary-disabled: #55403f;
+  --on-primary: #1a1a1a;
+  --on-error: #1a1a1a;
+  --primary-soft: rgba(221, 50, 39, .10);
+  --primary-soft-strong: rgba(221, 50, 39, .18);
+  --accent-teal:    #9aa6b4;
+  --accent-amber:   var(--warning);
+  --teal-soft:           rgba(154, 166, 180, 0.14);
+  --amber-soft:          rgba(236, 189, 98, 0.16);
+  --success-soft:        rgba(115, 191, 95, 0.18);
+  --error-soft:          rgba(227, 108, 108, 0.16);
+  --risk-soft: rgba(199, 155, 224, 0.18);
+  --success: #82c46f;
+  --warning: #ecbd62;
+  --error:   #e57272;
+  --risk:    #c79be0;
+
+  --elev-1: 0 0 0 transparent;
+  --elev-2: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px -6px rgba(0, 0, 0, 0.55);
+  --elev-3: 0 2px 8px rgba(0, 0, 0, 0.40), 0 28px 64px -12px rgba(0, 0, 0, 0.70);
+  --elev-edge: inset 0 0 0 transparent;
+
+  --syn-keyword:  #eb847d;
+  --syn-string:   #9fcfa6;
+  --syn-comment:  #a3a3a3;
+  --syn-number:   #dfbf86;
+  --syn-function: #8fb4f5;
+  --syn-type:     #86bfe0;
+  --syn-builtin:  #dfbf86;
+  --syn-operator: #c8c8c8;
+  --syn-punct:    #a3a3a3;
+  --syn-property: #8fb4f5;
+  --syn-tag:      #eb847d;
+  --syn-attr:     #86bfe0;
+  --syn-meta:     #dfbf86;
+}
+/* Not a colour, so outside the dark colour block (artifactSandbox.test.ts reads
+   that block as the colour set): the ambient layer's peak tint in dark, where
+   --muted-soft keeps 4.77:1 at 8 %. */
+:root[data-theme="dark"] { --ambient-tint: 8%; }
+
+/* ── Base layer (T0, 2026-11-20): the shared contrast, type, spacing, radius,
+   motion and stillness vocabulary the 11-20 look lanes read. Additive: nothing
+   above is renamed, and no existing rule reads these yet. Values follow the
+   MIT-licensed t3code design system (see THIRD_PARTY_NOTICES.md), wearing
+   Hollow's own colours: no colour is defined here, only derived mixes of
+   existing tokens, so the four-place colour registration above does not apply.
+   Use docs/reference/styling.md "Base layer" for which token a surface takes. */
+:root {
+  /* Contrast is its own transform. Text mixes in Oklab, borders in sRGB. A
+     surface (the root, the rail) can raise its own boost without touching the
+     palette. 0% is the shipped look. */
+  --contrast-boost: 0%;
+  --contrast-border-boost: 0%;
+  --ink-boosted:   color-mix(in oklab, var(--ink) 100%, var(--black) var(--contrast-boost));
+  --muted-boosted: color-mix(in oklab, var(--muted), var(--ink) var(--contrast-boost));
+  --hairline-boosted: color-mix(in srgb, var(--hairline), var(--ink) var(--contrast-border-boost));
+
+  /* Edge hierarchy by colour alpha, never by geometry (borders stay 1px). */
+  --alpha-faint: 3%;
+  --alpha-hover: 4%;
+  --alpha-quiet: 5%;
+  --alpha-fill: 7%;
+  --alpha-edge: 8%;
+  --alpha-active: 11%;
+  --alpha-strong: 15%;
+  --alpha-error-wash: 16%;
+  /* Metadata and disabled text opacity (observed usage, not a single scale). */
+  --op-meta-soft: 0.6;
+  --op-meta: 0.7;
+  --op-meta-strong: 0.8;
+  --op-disabled: 0.64;
+
+  /* Type: line height pairs for the sizes above, weights, wider tracking. */
+  --lh-caption: 1.4545;   /* 16 over 11 */
+  --lh-meta: 1.3333;      /* 16 over 12 */
+  --lh-snug: 1.375;
+  --lh-relaxed: 1.625;
+  --lh-loose: 2;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-strong: 700;       /* Markdown strong only */
+  --ls-wide: 0.025em;
+  --ls-wider: 0.05em;
+  --ls-widest: 0.1em;
+
+  /* Spacing half steps (the 4px unit's .5 multiples) and layout measures. */
+  --sp-half: 2px;
+  --sp-1h: 6px;
+  --sp-2h: 10px;
+  --topbar-h: 52px;
+  --control-h-sm: 28px;
+  --control-gap: 12px;
+  --chat-measure: 46rem;  /* content column cap */
+  --card-w: 17.5rem;      /* floating context card */
+  --card-gap: 12px;
+  --content-gutter: 12px;      /* narrow windows */
+  --content-gutter-wide: 48px; /* from a wide window up; lanes switch with a named window container query */
+  --hit-coarse: 44px;     /* least touch target under a coarse pointer */
+
+  /* Radii above the shipped scale (--r-xl stays the 8px alias). */
+  --r-float: 12px;        /* floating content inset, dialogs, popovers */
+  --r-shell: 16px;        /* the composer and the details card */
+  --r-sheet: 20px;
+
+  /* Layers, named. Local stacking contexts only; never compare across them. */
+  --z-card: 20;
+  --z-sheet: 46;
+  --z-modal: 50;
+  --z-toast: 100;
+  --z-menu: 130;
+  --z-tooltip: 140;
+
+  /* Elevation extras (shadow colour is neutral black at the observed alphas). */
+  --elev-composer: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --elev-dialog: 0 24px 64px -24px rgba(0, 0, 0, 0.65);
+  --elev-popover: 0 16px 40px -18px rgba(0, 0, 0, 0.55);
+  --glass-opacity: 80%;
+  --scrim-blur: 4px;
+
+  /* Easing. --ease-standard is the 150ms default curve (same as --ease-soft);
+     --ease-decel is a pure ease-out; --ease-drawer is for panels and the
+     composer; --ease-css-out is the browser keyword curve, kept apart because
+     it differs from --ease-decel. --ease-toast is the settle curve for stacks
+     (same as --ease-out). */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decel: cubic-bezier(0, 0, 0.2, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-css-out: cubic-bezier(0, 0, 0.58, 1);
+  --ease-toast: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Durations by use. Multiply by --motion-scale at the call site:
+     transition: opacity calc(var(--dur-hover) * var(--motion-scale)) var(--ease-standard). */
+  --dur-hover: 150ms;     /* hover, press, tooltips, popovers, width changes */
+  --dur-collapse: 200ms;  /* height changes, collapsibles, dialogs, sheets */
+  --dur-label: 180ms;     /* context label compacting, badge entry */
+  --dur-attach: 300ms;    /* attachment entry */
+  --dur-settle: 500ms;    /* toast stack transform */
+  --dur-stream-in: 600ms; /* a newly streamed block fading in */
+  --dur-reorder: 150ms;   /* list reorder (FLIP) */
+  --dur-step: 150ms;      /* page-step scrolling */
+  --dur-tooltip-open: 600ms;
+  --dur-tooltip-open-quick: 150ms;
+  --dur-tooltip-group: 400ms;
+  /* Panels read the user's setting (0 to 400ms, default 0 = no motion). PR 0.2
+     (store/panelAnimation.ts) writes --panel-duration-user on <html>; reduced
+     motion and navigation (data-panel-still) force 0ms below. */
+  --panel-duration: var(--panel-duration-user, 0ms);
+  --panel-ease: var(--ease-standard);
+  --motion-scale: 1;
+
+  /* Stillness: the vocabulary for loops. A loop is stepped, runs only while it
+     is visible and the motion preference allows it, and holds still otherwise. */
+  --dur-skeleton: 2400ms;
+  --dur-pulse: 2000ms;
+  --dur-ping: 2000ms;
+  --dur-shine: 2200ms;
+  --steps-pulse: 6;
+  --steps-ping: 8;
+  --steps-shine: 30;
+  --steps-skeleton: 4;
+}
+/* Reduced motion: one switch. Calls that multiply by --motion-scale go to zero
+   with it, and panels never animate. The existing a11y layer still removes
+   animation and transition outright. */
+:root[data-motion="reduced"] { --motion-scale: 0; --panel-duration: 0ms; }
+@media (prefers-reduced-motion: reduce) { :root { --motion-scale: 0; --panel-duration: 0ms; } }
+:root[data-panel-still] { --panel-duration: 0ms; }
+
+/* ── Liquid Glass (html[data-glass]): a structural overlay on either polarity.
+   Glass overrides surfaces with these tints; it never redefines --canvas. */
+:root[data-glass] {
+  /* Frosted "Regular"-weight material. The first pass used near-clear tints
+     (0.16-0.42 alpha) which collapsed the whole UI into a low-contrast gray
+     wash over the blurred desktop. Apple's actual chrome material is much
+     more opaque — panes read as distinct, legible frosted sheets and the
+     desktop shows as a subtle ~30% bleed, not the dominant layer. NOTE:
+     a CSS backdrop-filter here would be a no-op (it only blurs web pixels,
+     and the page behind these is transparent) — the blur comes entirely from
+     the native NSVisualEffectView behind the window, so the levers that
+     matter are OPACITY, edges, and saturation. */
+  --glass-chrome:      rgba(239, 239, 239, 0.80);  /* rail / top-bar / asides */
+  --glass-panel:       rgba(248, 248, 248, 0.88);  /* resting planes */
+  --glass-raised:      rgba(255, 255, 255, 0.94);  /* floating chrome */
+  --glass-well:        rgba(255, 255, 255, 0.97);  /* AA even over black */
+  --glass-well-strong: rgba(255, 255, 255, 0.98);
+
+  /* Defined pane edge — bright inner catch-light + a faint dark hairline so
+     panes have a crisp boundary against the bright blurred desktop. */
+  --glass-border:        rgba(40, 40, 40, 0.16);
+  --glass-border-strong: rgba(40, 40, 40, 0.24);
+
+  --glass-blur:        18px;   /* modals/chat panel only — over APP content */
+  --glass-blur-heavy:  22px;
+  --glass-saturate:    180%;   /* strong pop so the backdrop reads colorful, not gray */
+  --glass-brightness:  105%;
+
+  --glass-spec-top: inset 0 1px 0 rgba(255, 255, 255, 0.90);  /* bright top catch-light */
+  --glass-spec-bot: inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  --glass-ring:     inset 0 0 0 1px rgba(255, 255, 255, 0.50); /* inner glass rim */
+  --glass-lift:     0 18px 44px -18px rgba(23, 20, 16, 0.42), 0 2px 8px rgba(23, 20, 16, 0.14);
+
+  --glass-text-halo: none;
+}
+
+html[data-glass][data-theme="dark"] {
+  --glass-chrome:      rgba(32, 32, 32, 0.80);
+  --glass-panel:       rgba(36, 36, 36, 0.88);
+  --glass-raised:      rgba(43, 43, 43, 0.94);
+  --glass-well:        rgba(26, 26, 26, 0.97); /* AA even over white */
+  --glass-well-strong: rgba(26, 26, 26, 0.98);
+
+  --glass-border:        rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.20);
+
+  --glass-saturate:    165%;
+  --glass-brightness:  112%;   /* dark glass needs a touch more lift to feel lit */
+
+  --glass-spec-top: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  --glass-spec-bot: inset 0 -1px 0 rgba(0, 0, 0, 0.30);
+  --glass-ring:     inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --glass-lift:     0 18px 44px -18px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(0, 0, 0, 0.50);
+  --glass-text-halo: 0 1px 2px rgba(0, 0, 0, 0.40);
+}
+}

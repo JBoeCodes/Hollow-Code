@@ -1,0 +1,22 @@
+@layer components {
+/* "How background work runs" (plan completion L2): a quiet disclosure on
+   Automations. Four short columns that wrap; no cards inside cards. */
+.background-work { margin: 0 var(--sp-6) var(--sp-2); font-size: var(--fs-meta); flex: 0 0 auto; }
+@container hollow-window (max-width: 68.75em) { .background-work { margin: 0 var(--sp-4) var(--sp-2); } }
+.background-work > summary { cursor: pointer; color: var(--muted); font: 500 var(--fs-meta) var(--ui); width: fit-content; }
+.background-work > summary:hover, .background-work[open] > summary { color: var(--ink); }
+.background-work-lead, .background-work-common { margin: var(--sp-2) 0; color: var(--muted); max-width: var(--measure); }
+.background-work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-3) var(--sp-5); margin-top: var(--sp-2); }
+.background-work-system { display: grid; gap: var(--sp-1); align-content: start; justify-items: start; padding-top: var(--sp-2); border-top: 1px solid var(--hairline-soft); min-width: 0; }
+.background-work-system h4 { margin: 0; font: 600 var(--fs-body) var(--ui); color: var(--ink); }
+.background-work-purpose { margin: 0; color: var(--body-strong); }
+.background-work-system dl { margin: 0; display: grid; gap: var(--sp-1); }
+.background-work-system dt { color: var(--muted); font-size: var(--fs-caption); }
+.background-work-system dd { margin: 0; color: var(--body-strong); overflow-wrap: anywhere; }
+/* Automation windows and the run queue fold (Settings PR 4). */
+.workflow-windows-part { display: grid; gap: var(--sp-1); padding-top: var(--sp-2); }
+.workflow-windows-part + .workflow-windows-part { margin-top: var(--sp-3); border-top: 1px solid var(--hairline-soft); }
+.workflow-windows-part h4 { margin: 0; font: 600 var(--fs-body) var(--ui); color: var(--ink); }
+.background-work-body { max-height: min(46vh, 520px); overflow: auto; padding-right: var(--sp-2); overscroll-behavior: contain; }
+}
+

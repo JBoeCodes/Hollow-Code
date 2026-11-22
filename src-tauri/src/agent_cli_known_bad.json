@@ -1,0 +1,4 @@
+{
+  "_doc": "Agent CLI versions known to break Hollow (repo ideas 2026-10-27 #9), shipped inside Hollow: nothing is fetched. Hollow warns and never blocks: Settings → Accounts → Agent updates flags an installed one, warns before Update installs one (and on the agents.update_cli card), and Automatic doesn't install one by itself. Add an entry when a release breaks Hollow, and remove it when Hollow copes: {\"agent\": \"claude|codex|antigravity|grok\", \"version\": \"the exact version its --version prints\", \"reason\": \"what breaks, one sentence\"}. Schema checked by agent_cli::tests.",
+  "versions": []
+}

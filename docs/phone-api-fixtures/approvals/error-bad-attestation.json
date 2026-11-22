@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "bad_attestation",
+    "message": "Apple's attestation for this iPhone was refused: the attestation is for another app."
+  }
+}

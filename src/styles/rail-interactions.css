@@ -1,0 +1,13 @@
+@layer components {
+  .rail-drop-zones { display: grid; gap: var(--sp-1); padding: var(--sp-2); }
+  .rail-drop-zone { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2); border: 1px dashed var(--hairline); border-radius: var(--r-sm); background: var(--canvas); color: var(--ink); }
+  .rail-drop-action { margin-left: auto; font-size: var(--fs-caption); color: var(--muted); }
+  .rail-drop-active { border-color: var(--primary); border-style: solid; outline: 1px solid var(--primary); background: var(--surface-card); }
+  .rail-drop-active .rail-drop-action { color: var(--ink); }
+  .rail-drop-refused { border-style: dotted; }
+  .rail-drag-ghost { position: fixed; left: -10000px; top: 0; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: var(--sp-2) var(--sp-3); border: 1px solid var(--primary); border-radius: var(--r-sm); background: var(--surface-card); color: var(--ink); pointer-events: none; }
+  @media (forced-colors: active) {
+    .rail-drop-active { outline-color: Highlight; border-color: Highlight; }
+    .rail-drag-ghost { border-color: CanvasText; background: Canvas; color: CanvasText; }
+  }
+}

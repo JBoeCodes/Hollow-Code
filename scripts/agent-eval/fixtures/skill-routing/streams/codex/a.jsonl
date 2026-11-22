@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"th1"}
+{"type":"turn.started"}
+{"type":"item.started","item":{"id":"item_0","type":"command_execution","command":"/bin/zsh -lc \"sed -n 1,200p /h/.agents/skills/beta/SKILL.md\"","aggregated_output":"","exit_code":null,"status":"in_progress"}}
+{"type":"item.completed","item":{"id":"item_0","type":"command_execution","command":"/bin/zsh -lc \"sed -n 1,200p /h/.agents/skills/beta/SKILL.md\"","aggregated_output":"...","exit_code":0,"status":"completed"}}

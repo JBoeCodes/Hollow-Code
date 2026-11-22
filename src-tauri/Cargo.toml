@@ -1,0 +1,240 @@
+[package]
+name = "hollow"
+version = "0.5.15"
+description = "Hollow: outcome workspaces with local files, agents, and connected sources"
+authors = ["Hollow Contributors"]
+edition = "2021"
+rust-version = "1.89"
+
+[lib]
+name = "hollow_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# `test`: the mock runtime, which `hollow serve` uses only to hold its
+# `AppState` so Hollow app tool handlers get a `tauri::State` (M1 PR 5,
+# `serve_actions.rs`). It adds the `tauri::test` module and no dependencies,
+# and changes nothing in the Wry runtime the app runs on.
+tauri = { version = "2", features = ["tray-icon", "image-png", "macos-private-api", "unstable", "test"] }
+tauri-plugin-shell = "2"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-dialog = "2"
+# macOS / Linux native system notifications (NSUserNotification on macOS,
+# fdo-notify on Linux). Used by the in-app notification center for the
+# `notify_native` opt-in so workflow completions also pop in the system
+# notification surface.
+tauri-plugin-notification = "2"
+# Launch-at-login. Registers a per-user macOS LaunchAgent (no admin rights);
+# the `--hidden` arg below tells the auto-launched process to stay in the tray.
+tauri-plugin-autostart = "2"
+# Window size, position and zoom survive a relaunch (frontier F8), like every
+# native Mac app. Rust-side only: no webview permission is needed. VISIBLE is
+# not restored, because `main` starts hidden and the setup thread shows it.
+# Pinned to 2.4: 2.5 requires tauri 2.12, and pulling tauri past the npm
+# `@tauri-apps/api` minor makes `tauri build` refuse to bundle (version-mismatch
+# check). Move both sides together when upgrading Tauri.
+tauri-plugin-window-state = "~2.4"
+# The updater client (updates design section 2, lane U row U5,
+# `update_client/`): check and download with its minisign signature check
+# only; Hollow's own installer (`update_install/`) does the swap and the
+# plugin's `install()` is never called. Rust API only (no npm package).
+# Pinned to 2.12: 2.13 and later require tauri 2.12 (same reason as the
+# window-state pin above). Default features off: no `zip` (Windows only) and
+# no `system-proxy`; rustls only.
+tauri-plugin-updater = { version = "~2.12", default-features = false, features = ["rustls-tls"] }
+# The plugin's own reqwest (0.13, already locked through it), named only for
+# its redirect policy type in `update_client/fetch.rs`: the token's requests
+# follow redirects on the update host alone.
+reqwest_updater = { package = "reqwest", version = "0.13", default-features = false }
+# Unpacking the downloaded `Hollow.app.tar.gz` member by member with path
+# checks (`update_client/unpack.rs`). Both are already in the lock graph
+# through the updater plugin on macOS.
+tar = "0.4"
+flate2 = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Static SVG validation; already locked through plist.
+quick-xml = "=0.39.4"
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "rustls-tls"] }
+walkdir = "2"
+ignore = "0.4"
+# Filesystem watcher (FSEvents on macOS, inotify on Linux) behind the
+# live vault-update feature: a recursive watch on the vault root emits a
+# debounced `vault-changed` event so the UI reflects edits made outside the
+# app (Obsidian, the embedded Claude, a text editor) without a manual reload.
+notify = "6"
+chrono = { version = "0.4", features = ["serde"] }
+regex = "1"
+# SIMD substring search for retrieval's line scoring (run 15 S1); already
+# locked through regex and aho-corasick.
+memchr = "2"
+once_cell = "1"
+# Cron-expression evaluator for the Workflows tab scheduler. Takes a
+# 7-field cron string and yields a stream of upcoming UTC DateTime.
+cron = "0.12"
+dirs = "5"
+toml = "0.8"
+urlencoding = "2"
+# Binary-plist reader for the computer-control bookmark search: Safari keeps
+# its bookmarks in ~/Library/Safari/Bookmarks.plist (binary plist). Chromium
+# browsers store bookmarks as plain JSON, handled by serde_json.
+plist = "1"
+sha2 = "0.10"
+# Private company input/runtime snapshots with owned cleanup; already locked.
+tempfile = "3"
+# Reading ChatGPT / claude.ai data-export zips (session importers,
+# 2026-09-30). Already in the tree through candle; only the deflate reader
+# (flate2 on miniz_oxide, both already locked) is added.
+zip = { version = "7.2", default-features = false, features = ["deflate-flate2"] }
+# FTS5 trigram acceleration for vault search (a derived prefilter cache, DB
+# kept OUTSIDE the vault). `bundled` ships a recent SQLite amalgamation with
+# FTS5 compiled in, so there's no system-sqlite version dependency.
+rusqlite = { version = "0.31", features = ["bundled"] }
+# The code-context index (code_index/, CC2, 2026-11-18): tree-sitter and three
+# grammars, all MIT, pinned exactly. tree-sitter 0.27 declares rust-version
+# 1.90, over this crate's 1.89, and so do tree-sitter-language 0.1.8 and
+# later (the lock holds 0.1.7). Each grammar's build.rs only compiles its own
+# generated C with `cc`. Default features only (no wasm, no bindgen). Parsing
+# runs where the tools are served: the `code-context-mcp` and `code-context`
+# subprocesses, and the shared MCP endpoint's blocking worker in the app
+# process (never on its async runtime or the UI thread), each parse under a
+# 3 s timeout and a 2 MB file cap.
+tree-sitter = "=0.26.13"
+tree-sitter-rust = "=0.24.2"
+tree-sitter-typescript = "=0.23.2"
+tree-sitter-python = "=0.25.0"
+# Code mode's script sandbox (codemode.rs, CM1a, 2026-11-17). Licence MIT
+# (rquickjs, rquickjs-core, rquickjs-sys; bundled QuickJS-ng is MIT too).
+# Crates: 37 KB facade, 148 KB core, 2 MB sys (the vendored C, built with
+# `cc` like rusqlite's SQLite). Chosen for its built-in memory limit, max
+# stack size and interrupt handler (the deadline), and because bare QuickJS
+# has no os/std, network or timer modules unless a host adds them (quickjs-libc
+# is not compiled in). Default features (`std` is the Rust std, not the JS
+# `std` module) plus `allocator`, so the run counts its own allocations and
+# knows a refusal was the memory limit; no `loader` (dynamic import fails),
+# no `futures`. The lock also gains `relative-path` 2.0.3 (MIT OR
+# Apache-2.0), the loader's optional dependency: locked, never built. Rhai
+# and Boa were considered; see docs/BUILD_LOG.md 2026-11-17.
+rquickjs = { version = "0.14.0", features = ["allocator"] }
+base64 = "0.22"
+image = { version = "0.25.10", default-features = false, features = ["png", "jpeg"] }
+# Companion apps (T0): ECDSA P-256 verification of device ops and the
+# pairing HMAC. Already in the lock graph through rustls; no new download.
+ring = "0.17"
+rand = "0.8"
+keyring = "2"
+# The phone chat API (phone_access.rs, 2026-11-04): an HTTP/1.1 server on
+# 127.0.0.1 with keep-alive and event streams. hyper, hyper-util and
+# http-body-util are already in the lock graph through reqwest; only their
+# server features are added. M2 PR 2 adds `client`: the peer link's HTTP
+# client (`peer_client.rs`) over the SSH tunnel's Unix socket, which reqwest
+# can't dial.
+hyper = { version = "1", features = ["server", "http1", "client"] }
+hyper-util = { version = "0.1", features = ["tokio"] }
+http-body-util = "0.1"
+# The pairing link's QR code as SVG (phone_access.rs): the most used Rust QR
+# encoder, maintained, with its own SVG renderer and no dependencies once
+# its image feature is off.
+qrcode = { version = "0.14", default-features = false, features = ["svg"] }
+# Local semantic-search embedder (phase 1). Pure-Rust candle — inference
+# compiles INTO the signed binary, the same way `rusqlite { bundled }` ships
+# SQLite's C, so there's no native ONNX dylib to vendor / rpath / re-sign
+# (rationale in docs/history/SEMANTIC_SEARCH_PLAN.md). The default (gemm) CPU backend
+# keeps this cross-platform; Apple Accelerate is a later macOS-only perf add
+# (an `accelerate` feature + the accelerate-src linker shim), not needed to
+# embed. bge-small-en-v1.5 weights ship as a bundled Tauri resource (data,
+# not code → no signing implication).
+candle-core = "0.10"
+candle-nn = "0.10"
+candle-transformers = "0.10"
+# Match candle-transformers' own tokenizers (0.22) so the graph unifies on one
+# copy — pinning 0.21 pulls a duplicate.
+tokenizers = "0.22"
+
+# macOS native window vibrancy (NSVisualEffectView) applied behind the
+# transparent `main` window — the real "glass over the desktop" layer the
+# Liquid Glass theme rides on (CSS backdrop-filter can't sample the desktop,
+# and WebKit can't do SVG-displacement refraction). macOS-only: the
+# `set_window_vibrancy` command is `#[cfg(target_os = "macos")]`-gated, so
+# the crate is never linked on Linux/Windows.
+[target.'cfg(target_os = "macos")'.dependencies]
+window-vibrancy = "0.5"
+# The side panel browser's Annotate snapshot (browser_pane.rs): WKWebView's
+# takeSnapshot, NSImage → PNG. The same versions wry already links, so the
+# lock graph gains no packages; only features are added.
+block2 = "0.6"
+objc2-event-kit = { version = "0.3", default-features = false, features = ["std", "block2", "EKObject", "EKEventStore", "EKEvent", "EKCalendar", "EKCalendarItem", "EKParticipant", "EKSource", "EKTypes"] }
+objc2-foundation = { version = "0.3", default-features = false, features = ["std", "block2", "NSBundle", "NSData", "NSDictionary", "NSError", "NSLocale", "NSString", "NSURL"] }
+# NSWorkspace: whether an app opens obsidian:// links (P1-41, obsidian_available).
+# NSResponder + NSRunningApplication: helper subcommands set the Prohibited
+# activation policy so they stay out of the Dock (PER-34, background_only.rs).
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "NSApplication", "NSResponder", "NSRunningApplication", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSPasteboard", "NSWorkspace"] }
+objc2-web-kit = { version = "0.3", default-features = false, features = ["std", "block2", "objc2-app-kit", "WKWebView", "WKSnapshotConfiguration", "WKPDFConfiguration", "WKContentWorld", "WKFrameInfo"] }
+# Push-to-talk (overnight 10-11 B7, dictation.rs): macOS's Speech framework
+# with on-device recognition only, fed from AVAudioEngine's input tap. The
+# same objc2 family as above; nothing is sent off the Mac.
+objc2 = "0.6"
+objc2-speech = { version = "0.3", default-features = false, features = ["std", "block2", "objc2-avf-audio", "SFErrors", "SFSpeechRecognitionRequest", "SFSpeechRecognitionResult", "SFSpeechRecognitionTask", "SFSpeechRecognizer", "SFTranscription"] }
+objc2-avf-audio = { version = "0.3", default-features = false, features = ["std", "block2", "AVAudioApplication", "AVAudioBuffer", "AVAudioEngine", "AVAudioFormat", "AVAudioIONode", "AVAudioNode", "AVAudioTime", "AVAudioTypes"] }
+# The text layer of PDFs in connected projects and workspace sources (repo
+# features R14a, doc_text.rs): PDFKit's PDFDocument/PDFPage. The same objc2
+# family as above; read on a blocking thread, nothing leaves the Mac.
+objc2-pdf-kit = { version = "0.3", default-features = false, features = ["std", "PDFDocument", "PDFPage", "objc2-app-kit"] }
+
+# The terminal drawer's pseudo-terminal (t3code parity 7.2, `terminal.rs`):
+# MIT (wezterm's pty layer), no network code and no telemetry. It forks the
+# shell on a pty with its own session and controlling terminal; the child's
+# environment is built from an allowlist, never inherited. New to the lock
+# graph with it: downcast-rs, filedescriptor, serial2 (a serial-port backend
+# this app never opens), shell-words, shared_library (Windows only) and the
+# build helper cfg_aliases (all MIT or Apache-2.0, none with a network or
+# telemetry path), and nix 0.28 beside the nix the lock already holds.
+portable-pty = "0.9"
+
+# killpg / kill / getpgid for ending an agent run's whole process tree on stop
+# and finish (src/process_group.rs). Already in the lock graph transitively.
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+# The mock runtime, so `app_actions`' handlers run against a managed
+# `AppState` in tests (PR A1). Adds no dependencies. Since M1 PR 5 the
+# release build has it too (see `[dependencies]`); kept here for clarity.
+tauri = { version = "2", features = ["test"] }
+# The frontend's IPC types, generated from the Rust structs into
+# src/generated/ipc.ts (merged plan slice 6 item 7, src/ts_bindings.rs).
+# ts-rs rather than specta: it reads the serde attributes the wire already
+# uses (rename_all, rename, flatten, skip, skip_serializing_if + default), so
+# the structs only gain a `#[cfg_attr(test, derive(ts_rs::TS))]` line, and
+# specta 2 is still a release candidate. A dev-dependency because the types
+# are only generated and checked by `cargo test --lib`: nothing reaches the
+# shipped binary. Adds ts-rs, ts-rs-macros and termcolor to the lock graph
+# (syn, quote and thiserror 2 are already there). `no-serde-warnings`: the
+# serde attributes ts-rs does not model (`alias`, `skip_deserializing`) only
+# matter for reading, never for the shape the frontend receives.
+ts-rs = { version = "12", features = ["no-serde-warnings"] }
+
+# Lint baseline. CI runs `cargo clippy --lib --tests -- -D warnings`, so any
+# warning not allowed here fails the build. Each `allow` below is a
+# pre-existing lint that was too noisy or not mechanical to fix (without a
+# refactor) when the gate landed (2026-10-02, merged plan slice 6); the count
+# is its sites then. It is a baseline to SHRINK: fix a lint's sites and delete
+# its line; never add a line to get a new change through.
+[lints.clippy]
+type_complexity = "allow"     # 23: needs named type aliases per site
+large_enum_variant = "allow"  # 14: boxing a variant changes the type's layout and matches
+result_large_err = "allow"    # 3: same, for error types
+too_many_arguments = "allow"  # 2: needs a parameter struct
+await_holding_lock = "allow"  # 2: needs a lock-scope redesign, not a lint fix
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

@@ -1,0 +1,26 @@
+/* Parity 5.4: the PR tab. Muted and error text reuse build-changes.css. */
+@layer components {
+.pr-panel { display: flex; flex-direction: column; gap: var(--sp-3); height: 100%; min-height: 0; padding: var(--sp-3); overflow: auto; }
+.pr-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.pr-title-line { display: inline-flex; align-items: center; gap: var(--sp-1); color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.pr-head h2 { margin: 0; font: 600 var(--fs-body)/var(--lh-tight) var(--ui); }
+.pr-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin: var(--sp-1) 0 0; color: var(--muted); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.pr-link { padding: 0; border: 0; background: none; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
+.pr-link:hover { text-decoration: underline; }
+.pr-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.pr-chip { display: inline-block; padding: 1px var(--sp-2); border-radius: var(--r-md); background: var(--surface-soft); color: var(--body); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.pr-chip[data-state="merged"] { color: var(--success); }
+.pr-chip[data-state="closed"], .pr-chip[data-checks="failure"], .pr-chip[data-review="CHANGES_REQUESTED"] { color: var(--error); }
+.pr-chip[data-review="APPROVED"], .pr-chip[data-checks="success"] { color: var(--success); }
+.pr-section h3 { display: flex; align-items: center; gap: var(--sp-2); margin: 0 0 var(--sp-1); font: 600 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.pr-checks, .pr-comments { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.pr-checks li { display: flex; align-items: center; gap: var(--sp-2); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.pr-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+.pr-dot[data-state="success"] { background: var(--success); }
+.pr-dot[data-state="failure"] { background: var(--error); }
+.pr-dot[data-state="pending"] { background: transparent; border: 2px solid var(--muted); }
+.pr-comments li { padding: var(--sp-2); border: 1px solid var(--hairline-soft); border-radius: var(--r-lg); }
+.pr-comment-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); font: 400 var(--fs-meta)/var(--lh-tight) var(--ui); }
+.pr-comment-body { margin: var(--sp-1) 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 400 var(--fs-body)/var(--lh-body, 1.45) var(--ui); }
+.pr-comment-actions { display: flex; gap: var(--sp-1); }
+}

@@ -1,0 +1,57 @@
+{
+  "key": "memory-current-3",
+  "task": "memory-current",
+  "slice": "memory",
+  "rep": 3,
+  "status": "timeout",
+  "startedAt": "2026-10-07T09:00:00.000Z",
+  "endedAt": "2026-10-07T09:10:00.000Z",
+  "queue": {
+    "id": 6,
+    "status": "timeout",
+    "error": null
+  },
+  "transcript": {
+    "sessionKey": "s-r-base-memory-current-3",
+    "nativeSessionId": "native-memory-current-3",
+    "historyRunId": "run-r-base-memory-current-3",
+    "queueId": 6,
+    "sessionRecord": "session-record.md"
+  },
+  "sessionFolders": [],
+  "composer": {
+    "workspace": "eval-outcome",
+    "agent": "claude",
+    "model": "opus",
+    "effort": "High",
+    "mode": "Edits only"
+  },
+  "cost": {
+    "turnCostUsd": null,
+    "otherCostUsd": 0,
+    "costUsd": null,
+    "knownCostUsd": 0,
+    "inputTokens": null,
+    "cachedInputTokens": null,
+    "outputTokens": null,
+    "models": [
+      "claude-opus-5-5"
+    ],
+    "rows": []
+  },
+  "pendingCards": 0,
+  "artifacts": {
+    "created": [],
+    "modified": [],
+    "deleted": []
+  },
+  "reverted": {
+    "removed": 0,
+    "restored": 0
+  },
+  "facts": {
+    "contains": [],
+    "absent": [],
+    "pass": true
+  }
+}

@@ -1,0 +1,24 @@
+/* The shell layer: app-wide element affordances that no component rule may
+   undo — the disabled cursor and the focus ring on buttons, summaries and
+   selects. It sits above `components` (order declared in styles.css), so these
+   element selectors win over any component rule for the same element without
+   selector escalation or !important.
+
+   Why they are not in a component stylesheet: dozens of component rules set
+   `cursor` or `outline` on buttons at a higher specificity than
+   `button:disabled` / `button:focus-visible` (`.wb button`, `.ui-tabs > button`,
+   `.chat-main .chat-send`, …). In the components layer those would win in the
+   disabled and focused states; here they cannot.
+
+   A component that deliberately differs states its exception in its own
+   stylesheet, inside `@layer shell`, where its class selector outranks these
+   element selectors (workbench.css: the rail's icon buttons; chat-frontier.css:
+   the run fold and Jump to latest; settings-graph.css and skills.css:
+   inset list focus). Everything else belongs in the owning component stylesheet
+   (P2, 2026-09-30, folded the old shell passes into their owners). */
+@layer shell {
+button:disabled { cursor: not-allowed; }
+button:focus-visible, summary:focus-visible, select:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+/* Scroll strips clip an outward ring. Keep all four sides inside the button. */
+.ui-tabs button:focus-visible { outline-offset: -2px; }
+}

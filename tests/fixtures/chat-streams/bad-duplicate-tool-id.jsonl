@@ -1,0 +1,5 @@
+{"type":"runStarted","runId":"r1","sessionKey":"s1","asked":"hi","permissionMode":"auto"}
+{"type":"toolUse","id":"t","name":"Read","input":{}}
+{"type":"toolResult","id":"t","content":"","isError":false}
+{"type":"toolUse","id":"t","name":"Read","input":{}}
+{"type":"done","sessionId":null}
